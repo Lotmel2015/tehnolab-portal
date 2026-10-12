@@ -456,19 +456,12 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     var result = { courses: {}, doneTotal: 0, totalAll: 0 };
     if (!u) return result;
     COURSE_CONFIG.forEach(function (cfg) {
-      if (cfg.parent) return;
-      var pr = ach.courses[cfg.id] || { done: 0, total: cfg.total };
-      var pct = pr.total ? Math.round(pr.done / pr.total * 100) : 0;
-      html += '<a href="' + cfg.href + '" style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:8px 10px;border:1px solid #2A2D35;border-radius:8px;text-decoration:none;color:#EAECEF;"><span style="font-weight:600;">' + escapeHtml(cfg.label) + '</span><span style="font-size:12px;color:#8B8FA3;">' + pr.done + ' / ' + pr.total + ' · ' + pct + '%</span></a>';
-      COURSE_CONFIG.forEach(function (child) {
-        if (child.parent !== cfg.id) return;
-        var cpr = ach.courses[child.id] || { done: 0, total: child.total };
-        var unlocked = pr.done >= (child.requireLesson || 99);
-        var status = unlocked
-          ? '<span style="font-size:12px;color:#8B8FA3;">открыт · ' + cpr.done + ' / ' + cpr.total + '</span>'
-          : '<span style="font-size:12px;color:#B45309;">🔒 ' + escapeHtml(child.lockText || 'Доступ после прохождения условий') + '</span>';
-        html += '<a href="' + child.href + '" style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px;padding:6px 10px;border:1px dashed #3A3E47;border-radius:8px;text-decoration:none;color:#EAECEF;"><span style="font-weight:600;font-size:13px;padding-left:14px;">↳ ' + escapeHtml(child.label) + '</span>' + status + '</a>';
-      });
+      var pr = courseProgressOf(cfg, u);
+      result.courses[cfg.id] = pr;
+      if (!cfg.parent) {
+        result.doneTotal += pr.done;
+        result.totalAll += pr.total;
+      }
     });
     return result;
   }
