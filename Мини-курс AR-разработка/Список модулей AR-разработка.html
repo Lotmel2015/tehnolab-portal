@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AR-разработка · Список модулей</title>
+<style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--def:#B45309;--def-soft:#FDF1E1;--pr:#167A4D;--pr-soft:#E7F4EE;--line:#D9E2EF;}
+*{box-sizing:border-box;}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;}
+.wrap{max-width:960px;margin:0 auto;padding:2rem 1.25rem 3rem;}
+header .kicker{color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;}
+header h1{font-size:2rem;line-height:1.2;margin:.2rem 0 .3rem;}header .sub{color:var(--muted);margin:0 0 .6rem;}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.95rem 1.15rem;border-radius:0 8px 8px 0;margin:1.4rem 0;}.tldr b{color:var(--accent);}
+.howto{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin:1rem 0;font-size:.95rem;}.howto b{color:var(--pr);}
+.lock-msg{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin:1rem 0;font-size:.95rem;}.lock-msg b{color:var(--def);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.8rem;}
+.mcard{border:1px solid var(--line);border-radius:14px;padding:.9rem 1rem;background:#fbfcfe;position:relative;}
+.mcard .lw{display:inline-flex;font-size:.78rem;font-weight:800;color:#fff;background:var(--vr);border-radius:8px;padding:.12rem .45rem;}
+.mcard h3{margin:.25rem 0 .15rem;font-size:1rem;line-height:1.25;}
+.mcard .why{font-size:.82rem;color:var(--muted);margin:.15rem 0 .35rem;line-height:1.5;}
+.mcard a{text-decoration:none;color:inherit;}.mcard a:hover h3{color:var(--vr);}
+.mcard.done{background:var(--pr-soft);border:1px solid var(--pr);}.mcard.done h3{color:var(--pr);}
+.mcard.locked{opacity:.55;}.mcard.locked h3{color:var(--muted);}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.8rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><p class="kicker">VR-студия · углублённый трек</p><h1>AR-разработка</h1><p class="sub">Углублённый мини-курс по дополненной реальности: AR Foundation, маркеры, размещение объектов поверх реального мира.</p></header>
+  <div class="tldr"><b>Главное.</b> Мини-курс из 3 модулей: что такое AR и AR Foundation, определение плоскостей и размещение объектов, сборка AR-приложения.</div>
+  <div class="howto"><b>Как учиться.</b> Идёшь по порядку: теория → практика → домашнее задание → рефлексия. Каждый модуль открывает следующий.</div>
+  <div id="accessLock" class="lock-msg" style="display:none"></div>
+  <div class="grid" id="grid"></div>
+  <a href="../Курс-VR-студия/Список занятий VR студии.html" style="color:var(--muted);font-size:.9rem;text-decoration:none;display:inline-block;margin-top:1rem">← к списку занятий VR-студии</a>
+  <footer><p>AR-разработка · дополняет VR-студию</p></footer>
+</div>
+<script>
+const MODULES=[{"num":1,"title":"Введение в AR Foundation","why":"Поймёшь, как работает дополненная реальность и как Unity «видит» реальный мир через камеру устройства.","fileId":"ar-01-vvedenie-ar-foundation","module":"Модуль 1"},{"num":2,"title":"Плоскости и размещение объектов","why":"Научишься ставить 3D-объекты на реальные поверхности: по касанию экрана, с привязкой к плоскости.","fileId":"ar-02-ploskosti-razmeshhenie","module":"Модуль 2"},{"num":3,"title":"AR-проект: конфигуратор мебели","why":"Соберёшь мини-AR-приложение — конфигуратор: выбираешь предмет, ставишь его на реальный пол, двигаешь и убираешь.","fileId":"ar-03-ar-proekt-konfetturi","module":"Модуль 3"}];
+const CUKEY="vr_current_user", PFKEY="vr_profiles";
+function me(){const id=(function(){try{var s=JSON.parse(localStorage.getItem(CUKEY)||"null");return s&&s.uid?s.uid:null;}catch(e){return null;}})();if(!id)return null;try{const a=JSON.parse(localStorage.getItem(PFKEY)||"[]");return a.find(p=>String(p.uid)===String(id))||null;}catch(e){return null;}}
+const GATE="vr_u_"+((me()||{}).uid||"")+"_l_23";
+function modDone(uid,num){ return localStorage.getItem("ar_u_"+uid+"_m_"+num)==="1"; }
+function render(){
+  var grid=document.getElementById("grid"); var u=me(); var lock=document.getElementById("accessLock");
+  if(!u){ lock.style.display=""; lock.innerHTML="<b>Нужен вход.</b> Войди в профиль на <a href='../Курс-VR-студия/Список занятий VR студии.html'>списке занятий VR-студии</a>."; grid.innerHTML=""; return; }
+  if(localStorage.getItem(GATE)!=="1"){ lock.style.display=""; lock.innerHTML="<b>Доступ откроется после занятия 23 VR-студии.</b> Пройди занятие «AR: обзор и мини-практикум» — и модули откроются."; grid.innerHTML=""; return; }
+  lock.style.display="none";
+  grid.innerHTML=MODULES.map(function(m,idx){
+    var done=modDone(u.uid,m.num);
+    var avail=(u.role==="teacher")||(idx===0)||modDone(u.uid,MODULES[idx-1].num);
+    var inner='<span class="lw">'+m.module+'</span><h3>'+m.title+'</h3><div class="why">'+m.why+'</div>';
+    var cls="mcard"+(done?" done":"")+(avail?"":" locked");
+    if(avail){ return '<div class="'+cls+'"><a href="Модуль '+m.num+'/'+m.fileId+'.html">'+inner+'</a></div>'; }
+    return '<div class="'+cls+'">'+inner+'</div>';
+  }).join("");
+}
+render();
+</script>
+</body>
+</html>

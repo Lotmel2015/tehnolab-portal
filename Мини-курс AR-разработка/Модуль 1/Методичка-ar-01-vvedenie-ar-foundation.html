@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Методичка · AR-разработка · Введение в AR Foundation</title><style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--line:#D9E2EF;--yellow:#8a6d00;--yellow-soft:#FFF6DA;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:1rem 1.25rem 3rem}
+nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10}
+nav .inner{max-width:860px;margin:0 auto;padding:.5rem 1.25rem;display:flex;flex-wrap:wrap;gap:.3rem .9rem}
+nav a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:600}nav a:hover{color:var(--accent)}
+.backlink{display:inline-block;margin:1rem 0 -.2rem;color:var(--accent);text-decoration:none;font-size:.9rem;font-weight:600}.backlink:hover{text-decoration:underline}
+header.hero{padding:1.2rem 0 .2rem}
+header .kicker{color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em}
+header h1{font-size:1.65rem;line-height:1.25;margin:.2rem 0 .3rem}
+header .sub{font-size:1rem;color:var(--muted);margin:0 0 .4rem}
+.badges{margin:.6rem 0 1rem;display:flex;flex-wrap:wrap;gap:.4rem}.badge{font-size:.78rem;font-weight:700;padding:.22rem .6rem;border-radius:999px}
+.b-ac{background:var(--accent-soft);color:var(--accent)}.b-vr{background:var(--vr-soft);color:var(--vr)}.b-pr{background:var(--pr-soft);color:var(--pr)}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.9rem 1.15rem;border-radius:0 8px 8px 0;margin:1.2rem auto}.tldr b{color:var(--accent)}
+section{margin:2.2rem 0}
+h2{font-size:1.25rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;margin:0 0 1rem}h2 .n{color:var(--accent);margin-right:.45rem}
+h3{font-size:1.08rem;margin:1.4rem 0 .5rem}
+p{margin:.5rem 0}
+code{background:var(--accent-soft);padding:.12em .35em;border-radius:4px;font-size:.88em;color:#333a54}
+pre{background:#20263f;color:#e6e9f5;border-radius:10px;padding:1rem 1.1rem;overflow-x:auto;font-size:.84rem;line-height:1.6;margin:.6rem 0}
+pre .c{color:#8da0c8}
+kbd{background:var(--accent-soft);border:1px solid var(--line);border-radius:5px;padding:.08em .5em;font-size:.82em;font-family:inherit}
+.step{border:1px solid var(--line);border-radius:14px;padding:1rem 1.15rem;background:#fbfcfe;margin:.9rem 0}
+.step .st-head{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.02rem;color:var(--ink)}
+.step .st-n{display:inline-flex;align-items:center;justify-content:center;min-width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem}
+.step .why{color:var(--muted);font-size:.92rem;margin:.3rem 0 .6rem}
+.step .w{display:block;margin-top:.6rem;color:var(--pr);font-weight:600}
+.warn{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.warn b{color:var(--def)}
+.tipb{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.tipb b{color:var(--pr)}
+.gotcha{background:var(--yellow-soft);border-left:4px solid var(--yellow);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.gotcha b{color:var(--yellow)}
+.quiz{background:var(--vr-soft);border:1px solid var(--vr);border-radius:12px;padding:.95rem 1.1rem;margin:1.2rem 0}.quiz ol{margin:.4rem 0 0;padding-left:1.3rem}.quiz li{margin:.4rem 0}
+.screen{margin:.9rem 0}.screen .s-label{font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:.3rem}
+.screen .s-box{background:#eef2f8;border:1px dashed var(--line);border-radius:10px;padding:.8rem 1rem;font-family:Consolas,Menlo,monospace;font-size:.82rem;white-space:pre-line}
+.result{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.95rem;margin:1.2rem 0}.result b{color:var(--pr)}
+table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);color:var(--accent)}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.8rem}
+@media print{nav,.quiz{display:none}}
+</style></head>
+<body>
+<nav><div class="inner"><a href="#env">Что понадобится</a><a href="#steps">Пошагово</a><a href="#errors">Ошибки</a><a href="#quiz">Проверь себя</a></div></nav>
+<main class="wrap">
+  <p class="backlink"><a href="javascript:history.back()">← назад к модулю</a></p>
+  <header class="hero">
+    <p class="kicker">AR-разработка · методичка</p>
+    <h1>Введение в AR Foundation</h1>
+    <p class="sub">Подробное руководство для школьника: как делать, зачем и что должно получиться.</p>
+    <div class="badges"><span class="badge b-vr">Модуль 01</span><span class="badge b-ac">Начинающим</span><span class="badge b-pr">Подробно</span></div>
+  </header>
+  <div class="tldr"><b>Цель модуля.</b> Дополненная реальность добавляет цифровые объекты поверх настоящего мира через камеру телефона. В этом модуле запустим первую AR-сцену и научимся «видеть» поверхности.</div><div class="tipb"><b>Полезно запомнить сразу.</b> Дополненная реальность держит объекты на месте потому, что телефон одновременно смотрит на мир камерой, считывает датчики движения и сравнивает кадры между собой — строя «живую 3D-карту» комнаты. Чем больше «особых точек» видит камера, тем точнее стоят объекты.</div><table><tr><th>AR (дополненная реальность)</th><th>VR (виртуальная реальность)</th></tr><tr><td>Цифра поверх реального мира: видишь и комнату, и объект</td><td>Шлем закрывает мир, ты полностью внутри сцены</td></tr><tr><td>Работает на телефоне/планшете с камерой</td><td>Требует шлем и мощный ПК</td></tr><tr><td>Примеры: Pokemon GO, IKEA Place, фильтры камеры</td><td>Примеры: VR-игры, VR-лаборатории</td></tr></table>
+  <section id="env"><h2><span class="n">0</span>Что понадобится</h2><ul><li><b>Телефон или планшет с камерой</b> — iOS (ARKit) или Android (ARCore) — подойдёт любой современный.</li><li><b>Unity</b> — Тот же проект/версия, что и на уроках.</li><li><b>AR Foundation</b> — Пакет Unity для AR (бесплатный).</li></ul></section>
+  <section id="steps"><h2><span class="n">1</span>Пошагово — делай по порядку</h2><div class="step"><div class="st-head"><span class="st-n">1</span><span>Что такое AR и чем отличается от VR</span></div><p class="why">💡 VR прячет реальный мир, AR его дополняет. В этом модуле работаем НЕ в шлеме, а на экране телефона: камера показывает реальность, а Unity ставит сверху объекты.</p><p><b>Что делать:</b> Прочитай и запомни разницу — она важна для всей работы.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Ты можешь объяснить: «в VR мир заменяется, в AR дополняется».</div></div></div><div class="step"><div class="st-head"><span class="st-n">2</span><span>Установи пакеты AR</span></div><p class="why">💡 AR Foundation — основа. Плюс нужен драйвер под твоё устройство: ARCore (Android) или ARKit (iOS).</p><p><b>Что делать:</b> Unity → Window → Package Manager → Add package by name: com.unity.xr.arfoundation и com.unity.xr.arcore (или arkit).</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">В Project появились папки пакетов AR.</div></div><div class="warn"><b>Осторожно:</b> Поставь именно AR Foundation, а не просто ARCore — иначе нет общих компонентов.</div></div><div class="step"><div class="st-head"><span class="st-n">3</span><span>Создай AR-сцену (AR Session + Origin)</span></div><p class="why">💡 Два главных компонента: AR Session — «сердце» AR (включает камеру и обработку мира), AR Session Origin — «центр» виртуального пространства у тебя под ногами.</p><p><b>Что делать:</b> Создай пустую сцену. Добавь: GameObject → XR → AR Session и AR Session Origin. В них сами появятся нужные подкомпоненты и камера.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">В иерархии есть AR Session и AR Session Origin со встроенной камерой.</div></div></div><div class="step"><div class="st-head"><span class="st-n">4</span><span>Добавь распознавание плоскостей</span></div><p class="why">💡 Чтобы ставить объект на стол, движок ищет горизонтальные поверхности — плоскости. AR Plane Manager этим занимается.</p><p><b>Что делать:</b> На объект AR Session Origin добавь компонент AR Plane Manager.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">При запуске на телефоне на полу/столе видны полупрозрачные «патчи» плоскостей.</div></div><div class="warn"><b>Осторожно:</b> На глянцевом стекле распознавание хуже — пробуй на матовой поверхности.</div></div><div class="step"><div class="st-head"><span class="st-n">5</span><span>Запусти на устройстве</span></div><p class="why">💡 AR работает только на реальном устройстве с камерой — в редакторе «виртуальный мир» не снять.</p><p><b>Что делать:</b> Подключи телефон по USB (или собери APK), включи Developer mode и Run. Или просто собери APK и установи.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Приложение открывает камеру и рисует плоскости на реальной поверхности.</div></div><div class="warn"><b>Осторожно:</b> Без установки ARCore на Android AR не заработает — Unity предложит установить.</div></div></section>
+  <section id="errors"><h2><span class="n">2</span>Типичные ошибки и как их исправить</h2><div class="gotcha"><b>Ошибка «Экран чёрный/пустой».</b> Камеры не видно.</div><div class="tipb"><b>Как исправить:</b> Убедись, что добавил AR Session (он включает камеру) и на устройстве установлен ARCore/ARKit.</div><div class="gotcha"><b>Ошибка «Плоскости не появляются».</b> Нет «патчей» на поверхности.</div><div class="tipb"><b>Как исправить:</b> Освети место, медленно понаводи камеру на пол/стол в течение пары секунд. Или добавь AR Plane Manager на AR Session Origin.</div><div class="gotcha"><b>Ошибка «Объект плывёт/дрожит».</b> Плоскость «прыгает» при движении.</div><div class="tipb"><b>Как исправить:</b> Двигай камеру плавно и освети место — алгоритму не хватает «опорных точек». Теперь на однотонном светлом столе распознавание хуже: добавь контрастные детали.</div></section>
+  <section id="quiz"><div class="quiz"><b>Проверь себя (ответь устно или письменно):</b><ol><li>Чем AR отличается от VR?</li><li>Зачем нужны AR Session и AR Session Origin?</li><li>Что делает AR Plane Manager?</li><li>Почему объект должен быть поставлен на распознанную плоскость, а не «в пустоту»?</li><li>На какой поверхности плоскость найдётся быстрее: на однотонной стене или на столе с узором? Почему?</li></ol></div></section>
+  <div class="result"><b>Итог модуля.</b> Итог: ты запустил AR-приложение, которое видит реальный мир и определяет поверхности. Основа готова — дальше ставим объекты.</div>
+</main>
+<footer><p>Методичка · AR-разработка · Модуль 01 · Технологическая лаборатория</p></footer>
+</body>
+</html>

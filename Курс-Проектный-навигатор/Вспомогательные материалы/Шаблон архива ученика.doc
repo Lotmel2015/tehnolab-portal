@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Шаблон архива ученика</title>
+<style>
+  @page { size: A4; margin: 2cm 1.5cm; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: #1B2A4A; font-size: 11pt; line-height: 1.4; }
+  h1 { font-size: 18pt; margin: 0 0 2px; color: #1B2A4A; }
+  h2 { font-size: 12pt; margin: 14px 0 4px; border-bottom: 2px solid #4D008C; padding-bottom: 2px; color: #4D008C; }
+  .sub { color: #5A6B85; margin: 0 0 4px; }
+  .meta { font-size: 9pt; color: #5A6B85; }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0; }
+  th, td { border: 1px solid #B9C7DD; padding: 4px 6px; font-size: 9.5pt; vertical-align: top; text-align: left; }
+  th { background: #F0EBF5; font-weight: 700; }
+  .badge { display: inline-block; background: #E7F4EE; color: #167A4D; border-radius: 8px; padding: 1px 8px; font-size: 8.5pt; font-weight: 600; }
+  .sum { background: #F5F7FB; font-weight: 700; }
+  .ph { color: #9A90AB; }
+</style>
+</head>
+<body>
+  <h1>Архив прогресса ученика</h1>
+  <p class="sub">Технологическая лаборатория · Региональный центр «Спутник»</p>
+  <p class="meta">Курс: <span class="ph">VR-студия / Проектный навигатор</span></p>
+  <p class="meta">Дата формирования: ______________________</p>
+
+  <h2>1. Личные данные</h2>
+  <table>
+    <tr><th style="width:35%">Фамилия и имя</th><td class="ph">Иванов Иван</td></tr>
+    <tr><th>Класс</th><td class="ph">8А</td></tr>
+    <tr><th>Группа / модуль</th><td class="ph">Основная группа</td></tr>
+    <tr><th>Школа / образовательная организация</th><td class="ph">КОУ «Школа космонавтики»</td></tr>
+  </table>
+
+  <h2>2. Успеваемость по занятиям</h2>
+  <table>
+    <tr><th style="width:6%">№</th><th style="width:44%">Занятие</th><th style="width:15%">Статус</th><th>Рефлексия / самооценка</th></tr>
+    <tr><td>1</td><td>Занятие-пример</td><td><span class="badge">пройдено</span></td><td>Ответ ученика…</td></tr>
+    <tr><td>2</td><td>Занятие-пример</td><td>—</td><td></td></tr>
+    <tr><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+    <tr><td>36</td><td>Итоговое занятие</td><td>—</td><td></td></tr>
+  </table>
+
+  <h2>3. Итог</h2>
+  <table>
+    <tr class="sum"><th>Пройдено занятий</th><td>0 / 36 (0%)</td></tr>
+    <tr class="sum"><th>Процент выполнения</th><td>0%</td></tr>
+    <tr><th>Готовность к следующему уровню</th><td class="ph">начальная / средняя / высокая</td></tr>
+  </table>
+
+  <h2>4. Заключение педагога</h2>
+  <p class="ph">Сильные стороны: …</p>
+  <p class="ph">Зоны роста: …</p>
+  <p class="ph">Рекомендации: …</p>
+
+  <p class="meta" style="margin-top:20px">Педагог: ____________________________ / Подпись: __________ / Дата: ____.____.20____</p>
+  <p class="meta">Родитель / законный представитель: ____________________________ / Дата: ____.____.20____</p>
+</body>
+</html>

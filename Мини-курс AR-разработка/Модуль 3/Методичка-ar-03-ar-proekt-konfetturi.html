@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Методичка · AR-разработка · AR-проект: конфигуратор мебели</title><style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--line:#D9E2EF;--yellow:#8a6d00;--yellow-soft:#FFF6DA;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:1rem 1.25rem 3rem}
+nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10}
+nav .inner{max-width:860px;margin:0 auto;padding:.5rem 1.25rem;display:flex;flex-wrap:wrap;gap:.3rem .9rem}
+nav a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:600}nav a:hover{color:var(--accent)}
+.backlink{display:inline-block;margin:1rem 0 -.2rem;color:var(--accent);text-decoration:none;font-size:.9rem;font-weight:600}.backlink:hover{text-decoration:underline}
+header.hero{padding:1.2rem 0 .2rem}
+header .kicker{color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em}
+header h1{font-size:1.65rem;line-height:1.25;margin:.2rem 0 .3rem}
+header .sub{font-size:1rem;color:var(--muted);margin:0 0 .4rem}
+.badges{margin:.6rem 0 1rem;display:flex;flex-wrap:wrap;gap:.4rem}.badge{font-size:.78rem;font-weight:700;padding:.22rem .6rem;border-radius:999px}
+.b-ac{background:var(--accent-soft);color:var(--accent)}.b-vr{background:var(--vr-soft);color:var(--vr)}.b-pr{background:var(--pr-soft);color:var(--pr)}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.9rem 1.15rem;border-radius:0 8px 8px 0;margin:1.2rem auto}.tldr b{color:var(--accent)}
+section{margin:2.2rem 0}
+h2{font-size:1.25rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;margin:0 0 1rem}h2 .n{color:var(--accent);margin-right:.45rem}
+h3{font-size:1.08rem;margin:1.4rem 0 .5rem}
+p{margin:.5rem 0}
+code{background:var(--accent-soft);padding:.12em .35em;border-radius:4px;font-size:.88em;color:#333a54}
+pre{background:#20263f;color:#e6e9f5;border-radius:10px;padding:1rem 1.1rem;overflow-x:auto;font-size:.84rem;line-height:1.6;margin:.6rem 0}
+pre .c{color:#8da0c8}
+kbd{background:var(--accent-soft);border:1px solid var(--line);border-radius:5px;padding:.08em .5em;font-size:.82em;font-family:inherit}
+.step{border:1px solid var(--line);border-radius:14px;padding:1rem 1.15rem;background:#fbfcfe;margin:.9rem 0}
+.step .st-head{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.02rem;color:var(--ink)}
+.step .st-n{display:inline-flex;align-items:center;justify-content:center;min-width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem}
+.step .why{color:var(--muted);font-size:.92rem;margin:.3rem 0 .6rem}
+.step .w{display:block;margin-top:.6rem;color:var(--pr);font-weight:600}
+.warn{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.warn b{color:var(--def)}
+.tipb{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.tipb b{color:var(--pr)}
+.gotcha{background:var(--yellow-soft);border-left:4px solid var(--yellow);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.gotcha b{color:var(--yellow)}
+.quiz{background:var(--vr-soft);border:1px solid var(--vr);border-radius:12px;padding:.95rem 1.1rem;margin:1.2rem 0}.quiz ol{margin:.4rem 0 0;padding-left:1.3rem}.quiz li{margin:.4rem 0}
+.screen{margin:.9rem 0}.screen .s-label{font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:.3rem}
+.screen .s-box{background:#eef2f8;border:1px dashed var(--line);border-radius:10px;padding:.8rem 1rem;font-family:Consolas,Menlo,monospace;font-size:.82rem;white-space:pre-line}
+.result{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.95rem;margin:1.2rem 0}.result b{color:var(--pr)}
+table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);color:var(--accent)}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.8rem}
+@media print{nav,.quiz{display:none}}
+</style></head>
+<body>
+<nav><div class="inner"><a href="#env">Что понадобится</a><a href="#steps">Пошагово</a><a href="#errors">Ошибки</a><a href="#quiz">Проверь себя</a></div></nav>
+<main class="wrap">
+  <p class="backlink"><a href="javascript:history.back()">← назад к модулю</a></p>
+  <header class="hero">
+    <p class="kicker">AR-разработка · методичка</p>
+    <h1>AR-проект: конфигуратор мебели</h1>
+    <p class="sub">Подробное руководство для школьника: как делать, зачем и что должно получиться.</p>
+    <div class="badges"><span class="badge b-vr">Модуль 03</span><span class="badge b-ac">Начинающим</span><span class="badge b-pr">Подробно</span></div>
+  </header>
+  <div class="tldr"><b>Цель модуля.</b> Финальный проект: конфигуратор мебели. Выбираешь предмет в меню, ставишь его на пол, переносишь и убираешь. Как в приложениях для покупки мебели из IKEA!</div><div class="tipb"><b>Как всё связано.</b> У всего конфигуратора один фундамент — Raycast из модуля 2. Размещение ищет плоскость, перемещение цепляет collider объекта, удаление ведёт список поставленных предметов (List). Поняв эти три приёма, ты сможешь собрать любое AR-приложение «расставь объекты по комнате».</div><table><tr><th>Действие</th><th>Что использует</th><th>Результат</th></tr><tr><td>Разместить предмет</td><td>Raycast ищет плоскость</td><td>Новый объект появился по касанию</td></tr><tr><td>Переместить предмет</td><td>Луч цепляет Collider объекта</td><td>Объект переехал на новое место</td></tr><tr><td>Удалить предмет</td><td>Список List размещённых объектов</td><td>Последний объект уничтожен</td></tr></table>
+  <section id="env"><h2><span class="n">0</span>Что понадобится</h2><ul><li><b>Проект из Модуля 2</b> — Там уже есть размещение по касанию.</li><li><b>3 префаба мебели</b> — Стул, стол, лампа (примитивы или модели).</li><li><b>UI-меню</b> — Панель с кнопками.</li></ul></section>
+  <section id="steps"><h2><span class="n">1</span>Пошагово — делай по порядку</h2><div class="step"><div class="st-head"><span class="st-n">1</span><span>Подготовь 3 префаба мебели</span></div><p class="why">💡 Нужны объекты, которые будем ставить. Сделай простые варианты из примитивов.</p><p><b>Что делать:</b> Создай три префаба: Chair (куб+куб вместо спинки), Table (цилиндр-ножка + плоскость-столешница), Lamp (цилиндр+сфера). Помести в Resources.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Три префаба готовы.</div></div></div><div class="step"><div class="st-head"><span class="st-n">2</span><span>Сделай меню выбора</span></div><p class="why">💡 Чтобы выбирать, какой предмет ставить, сделаем панель с тремя кнопками.</p><p><b>Что делать:</b> В Canvas добавь горизонтальную панель с 3 Button (Стул, Стол, Лампа).</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Меню в углу экрана с тремя кнопками.</div></div></div><div class="step"><div class="st-head"><span class="st-n">3</span><span>Напиши код меню и размещения</span></div><p class="why">💡 Кнопки задают, какой префаб ставить; касание ставит его.</p><p><b>Что делать:</b> Создай скрипт MenuAR.cs с методом SetItem(index) и используй Placement из прошлого модуля, но с выбором префаба.</p><div class="screen"><div class="s-label">Код (копируй целиком)</div><pre>public class MenuAR : MonoBehaviour {
+    public GameObject[] items;   // стул, стол, лампа
+    public Placement placement;
+    public void Pick(int i) { placement.objPrefab = items[i]; }
+}</pre></div><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Выбрал «Стул» — теперь касание ставит стул.</div></div></div><div class="step"><div class="st-head"><span class="st-n">4</span><span>Добавь перемещение (drag)</span></div><p class="why">💡 Размещённый предмет иногда нужно передвинуть.</p><p><b>Что делать:</b> Когда касание попадает в уже размещённый объект с collider — двигай его за пальцем.</p><div class="screen"><div class="s-label">Код (копируй целиком)</div><pre>void Update() {
+  if (Input.touchCount <= 0) return;
+  var touch = Input.GetTouch(0);
+  var ray = Camera.main.ScreenPointToRay(touch.position);
+  if (Physics.Raycast(ray, out var hit)) {
+    if (touch.phase == TouchPhase.Began) grabbed = hit.collider.gameObject;
+  }
+  if (grabbed && (touch.phase == TouchPhase.Moved)) {
+    // ставим объект на найденную плоскость поблизости
+  }
+}</pre></div><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Пойманный объект перемещается.</div></div></div><div class="step"><div class="st-head"><span class="st-n">5</span><span>Добавь удаление</span></div><p class="why">💡 Чтобы убрать лишний предмет.</p><p><b>Что делать:</b> Добавь кнопку «Удалить» — она убирает последний поставленный предмет.</p><div class="screen"><div class="s-label">Код (копируй целиком)</div><pre>public void DeleteLast() {
+    if (placed.Count > 0) { Destroy(placed[placed.Count-1]); placed.RemoveAt(placed.Count-1); }
+}</pre></div><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Кнопка убирает последний объект.</div></div></div><div class="step"><div class="st-head"><span class="st-n">6</span><span>Собери и протестируй</span></div><p class="why">💡 Финал AR-приложения.</p><p><b>Что делать:</b> Собери APK и проверь на разных поверхностях и освещении.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Приложение работает на телефоне: выбираешь, ставишь, двигаешь, убираешь.</div></div></div></section>
+  <section id="errors"><h2><span class="n">2</span>Типичные ошибки и как их исправить</h2><div class="gotcha"><b>Ошибка «Выбранный предмет не тот».</b> Ставится не то, что выбрал.</div><div class="tipb"><b>Как исправить:</b> Проверь порядок items[] — он должен совпадать с индексами кнопок (0,1,2).</div><div class="gotcha"><b>Ошибка «Нельзя передвинуть объект».</b> Drag не работает.</div><div class="tipb"><b>Как исправить:</b> У объекта должен быть Collider, а касание — попадать в него. Добавь Collider ко всем префабам.</div><div class="gotcha"><b>Ошибка «Кнопка удаления не работает».</b> Нажал «Удалить» — ничего.</div><div class="tipb"><b>Как исправить:</b> Проверь, что ты ведёшь список размещённых объектов (List), добавляешь в него каждый новый предмет при размещении и отслеживаешь, что список не пустой, прежде чем удалять.</div></section>
+  <section id="quiz"><div class="quiz"><b>Проверь себя (ответь устно или письменно):</b><ol><li>Как связать кнопку меню и выбираемый префаб?</li><li>Зачем объекту Collider для перемещения?</li><li>Почему приложение нужно тестировать на разных поверхностях и освещении?</li><li>В чём разница между «разместить» и «переместить» с точки зрения того, что ищет луч?</li></ol></div></section>
+  <div class="result"><b>Итог модуля.</b> Итог: рабочее AR-приложение-конфигуратор с меню, размещением, перемещением и удалением предметов.</div>
+</main>
+<footer><p>Методичка · AR-разработка · Модуль 03 · Технологическая лаборатория</p></footer>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Хакатоны: Varwin и всероссийские конкурсы · Инструкция · VR-студия</title>
+<!-- Сквозная система ТЛ (общий кабинет с порталом) -->
+<script src="../tl-portal-core.js"></script>
+<script src="../tl-bridge.js"></script>
+<script>try { if (window.TLCore) TLCore.init(); if (window.TLBridge) TLBridge.init({ total: 36 }); } catch (e) { console.error("tl-bridge init error", e); }</script>
+<style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--line:#D9E2EF;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:900px;margin:0 auto;padding:0 1.25rem 3rem}
+header.hero{background:linear-gradient(135deg,#1B2A4A 0%,#1F6FE0 60%,#4D008C 130%);color:#fff;border-radius:0 0 18px 18px;padding:2.2rem 1.5rem 1.8rem;margin:0 -1.25rem 1.5rem}
+header.hero h1{font-size:1.7rem;line-height:1.25;margin:0 0 .4rem}header.hero .sub{font-size:1rem;opacity:.92;max-width:64ch;margin:0}header.hero .meta{margin-top:1rem;font-size:.8rem;opacity:.75}
+.backlink{display:inline-block;margin:1rem 0 -.4rem;color:var(--accent);text-decoration:none;font-size:.9rem;font-weight:600}.backlink:hover{text-decoration:underline}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.9rem 1.1rem;border-radius:0 8px 8px 0;margin:1.4rem 0}.tldr b{color:var(--accent)}
+.steps-band{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin:1.4rem 0}.kpi{background:var(--card,#fff);border:1px solid var(--line);border-radius:10px;padding:.85rem 1rem}.kpi b{display:block;font-size:1.2rem;color:var(--accent)}.kpi span{color:var(--muted);font-size:.8rem}
+.toc{background:#fbfcfe;border:1px solid var(--line);border-radius:12px;padding:.9rem 1.2rem;margin:1.2rem 0}.toc ol{margin:.4rem 0 0;padding-left:1.3rem}.toc a{color:var(--accent);text-decoration:none}
+section{margin:2.2rem 0}h2{font-size:1.28rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;color:var(--ink)}h3{font-size:1.05rem;margin:1.2rem 0 .4rem}
+.mstep{background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:.8rem 1rem;margin:.7rem 0}.mstep b{color:var(--accent);display:block;margin:.2rem 0 .3rem}.mstep .w{color:var(--pr);font-weight:600}.mstep p{margin:.3rem 0}
+.result{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.95rem;margin:1rem 0}.result b{color:var(--pr)}
+.resources{margin:1rem 0}.resources a{color:var(--accent);font-weight:600;text-decoration:none;background:var(--accent-soft);border-radius:6px;padding:.25rem .6rem;margin:.2rem .3rem .2rem 0;display:inline-block}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.8rem}
+@media print{header.hero{border-radius:0}}
+</style>
+</head>
+<body>
+<main>
+<p class="backlink"><a href="./Занятие-31-хакатоны-varwin-и-всероссийские-конкурсы.html">← занятие 31 · Хакатоны: Varwin и всероссийские конкурсы</a></p>
+<header class="hero">
+  <h1>Хакатоны: Varwin и всероссийские конкурсы</h1>
+  <p class="sub">Пошагово: что нужно сделать на занятии, как действовать и какой результат ты увидишь.</p>
+  <p class="meta">Занятие 31 · VR-студия · для 8–11 классов</p>
+</header>
+<div class="tldr"><b>Главное.</b> Готовимся к внешним конкурсам: разбираем форматы хакатонов (Varwin), требования заявок и как представить свой проект.</div>
+<div class="steps-band"><div class="kpi"><b>Varwin</b><span>платформа хакатона</span></div><div class="kpi"><b>Заявка</b><span>документ</span></div><div class="kpi"><b>Питч</b><span>3 минуты</span></div><div class="kpi"><b>Портфолио</b><span>заполнено</span></div></div>
+<div class="toc"><ol><li><a href="#s1">Изучи формат Varwin</a></li><li><a href="#s2">Соотнеси проект с кейсами</a></li><li><a href="#s3">Подготовь заявку</a></li><li><a href="#s4">Сделай питч</a></li><li><a href="#s5">Обнови портфолио</a></li></ol></div>
+<section id="s1"><h2>1. Изучи формат Varwin</h2><div class="mstep"><p>Открой платформу hackathons.varwin.com, посмотри правила и требования текущего сезона.</p><span class="w">✓ Должно получиться: Понимаешь, какие кейсы участвуют и что нужно для заявки.</span></div></section><section id="s2"><h2>2. Соотнеси проект с кейсами</h2><div class="mstep"><p>Подумай, к какому кейсу подходит твой VR-проект; при необходимости адаптируй фичу.</p><span class="w">✓ Должно получиться: Проект «ложится» на кейс конкурса.</span></div></section><section id="s3"><h2>3. Подготовь заявку</h2><div class="mstep"><p>Заполни заявку: название, команда, суть решения, стек, ссылка на демо/видео, кто участники.</p><span class="w">✓ Должно получиться: Заявка отправлена или готова к отправке.</span></div></section><section id="s4"><h2>4. Сделай питч</h2><div class="mstep"><p>Подготовь 3-минутный питч проекта (проблема → решение → демо → результат).</p><span class="w">✓ Должно получиться: Питч понятен и увлекателен.</span></div></section><section id="s5"><h2>5. Обнови портфолио</h2><div class="mstep"><p>Добавь проект в портфолио: описание, роль, скриншоты/видео, ссылки.</p><span class="w">✓ Должно получиться: Страница/файл портфолио дополнен этим проектом.</span></div></section>
+<section><h2>Результат занятия</h2><div class="result"><b>Что должно получиться:</b> Готовая заявка на хакатон (Varwin), адаптированный питч и обновлённое портфолио проекта.</div></section>
+<section><h2>Полезные материалы</h2><div class="resources"><a href="https://hackathons.varwin.com" target="_blank" rel="noopener">Varwin Hackathon</a><a href="https://ntcontest.ru" target="_blank" rel="noopener">Календарь соревнований НТО</a></div></section>
+<footer><p>Инструкция занятия 31 · VR-студия · дополняет материалы занятия.</p></footer>
+</main>
+</body>
+</html>

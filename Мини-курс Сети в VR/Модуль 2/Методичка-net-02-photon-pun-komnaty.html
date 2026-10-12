@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Методичка · Сети в VR · Photon PUN: комнаты и подключение игроков</title><style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--line:#D9E2EF;--yellow:#8a6d00;--yellow-soft:#FFF6DA;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:1rem 1.25rem 3rem}
+nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10}
+nav .inner{max-width:860px;margin:0 auto;padding:.5rem 1.25rem;display:flex;flex-wrap:wrap;gap:.3rem .9rem}
+nav a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:600}nav a:hover{color:var(--accent)}
+.backlink{display:inline-block;margin:1rem 0 -.2rem;color:var(--accent);text-decoration:none;font-size:.9rem;font-weight:600}.backlink:hover{text-decoration:underline}
+header.hero{padding:1.2rem 0 .2rem}
+header .kicker{color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em}
+header h1{font-size:1.65rem;line-height:1.25;margin:.2rem 0 .3rem}
+header .sub{font-size:1rem;color:var(--muted);margin:0 0 .4rem}
+.badges{margin:.6rem 0 1rem;display:flex;flex-wrap:wrap;gap:.4rem}.badge{font-size:.78rem;font-weight:700;padding:.22rem .6rem;border-radius:999px}
+.b-ac{background:var(--accent-soft);color:var(--accent)}.b-vr{background:var(--vr-soft);color:var(--vr)}.b-pr{background:var(--pr-soft);color:var(--pr)}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.9rem 1.15rem;border-radius:0 8px 8px 0;margin:1.2rem auto}.tldr b{color:var(--accent)}
+section{margin:2.2rem 0}
+h2{font-size:1.25rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;margin:0 0 1rem}h2 .n{color:var(--accent);margin-right:.45rem}
+h3{font-size:1.08rem;margin:1.4rem 0 .5rem}
+p{margin:.5rem 0}
+code{background:var(--accent-soft);padding:.12em .35em;border-radius:4px;font-size:.88em;color:#333a54}
+pre{background:#20263f;color:#e6e9f5;border-radius:10px;padding:1rem 1.1rem;overflow-x:auto;font-size:.84rem;line-height:1.6;margin:.6rem 0}
+pre .c{color:#8da0c8}
+kbd{background:var(--accent-soft);border:1px solid var(--line);border-radius:5px;padding:.08em .5em;font-size:.82em;font-family:inherit}
+.step{border:1px solid var(--line);border-radius:14px;padding:1rem 1.15rem;background:#fbfcfe;margin:.9rem 0}
+.step .st-head{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.02rem;color:var(--ink)}
+.step .st-n{display:inline-flex;align-items:center;justify-content:center;min-width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem}
+.step .why{color:var(--muted);font-size:.92rem;margin:.3rem 0 .6rem}
+.step .w{display:block;margin-top:.6rem;color:var(--pr);font-weight:600}
+.warn{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.warn b{color:var(--def)}
+.tipb{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.tipb b{color:var(--pr)}
+.gotcha{background:var(--yellow-soft);border-left:4px solid var(--yellow);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.gotcha b{color:var(--yellow)}
+.quiz{background:var(--vr-soft);border:1px solid var(--vr);border-radius:12px;padding:.95rem 1.1rem;margin:1.2rem 0}.quiz ol{margin:.4rem 0 0;padding-left:1.3rem}.quiz li{margin:.4rem 0}
+.screen{margin:.9rem 0}.screen .s-label{font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:.3rem}
+.screen .s-box{background:#eef2f8;border:1px dashed var(--line);border-radius:10px;padding:.8rem 1rem;font-family:Consolas,Menlo,monospace;font-size:.82rem;white-space:pre-line}
+.result{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.95rem;margin:1.2rem 0}.result b{color:var(--pr)}
+table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);color:var(--accent)}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.8rem}
+@media print{nav,.quiz{display:none}}
+</style></head>
+<body>
+<nav><div class="inner"><a href="#env">Что понадобится</a><a href="#steps">Пошагово</a><a href="#errors">Ошибки</a><a href="#quiz">Проверь себя</a></div></nav>
+<main class="wrap">
+  <p class="backlink"><a href="javascript:history.back()">← назад к модулю</a></p>
+  <header class="hero">
+    <p class="kicker">Сети в VR · методичка</p>
+    <h1>Photon PUN: комнаты и подключение игроков</h1>
+    <p class="sub">Подробное руководство для школьника: как делать, зачем и что должно получиться.</p>
+    <div class="badges"><span class="badge b-vr">Модуль 02</span><span class="badge b-ac">Начинающим</span><span class="badge b-pr">Подробно</span></div>
+  </header>
+  <div class="tldr"><b>Цель модуля.</b> В этом модуле сделаем настоящую игру-«встречалку»: меню с кнопкой, вход в комнату и появление игроков. Научишься отличать меню от игровой сцены и создавать персонажа на сети.</div>
+  <section id="env"><h2><span class="n">0</span>Что понадобится</h2><ul><li><b>Продолжаем проект из Модуля 1</b> — В нём уже есть PUN 2 и App ID.</li><li><b>Две сцены</b> — Создадим Menu и Game (их можно сделать в одном проекте).</li><li><b>Персонаж-префаб</b> — Обычный куб или готовая модель.</li></ul></section>
+  <section id="steps"><h2><span class="n">1</span>Пошагово — делай по порядку</h2><div class="step"><div class="st-head"><span class="st-n">1</span><span>Создай две сцены: Menu и Game</span></div><p class="why">💡 В жизни игр разделяют: меню (где выбирают) и игру (где играют). Когда игрок нажимает «Играть», он переходит из меню в игру.</p><p><b>Что делать:</b> File → New Scene дважды. Сохрани как Menu и Game. Добавь обе в File → Build Settings (перетащи их в список).</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">В Build Settings обе сцены видны в списке.</div></div><div class="warn"><b>Осторожно:</b> Если сцену не добавить в Build Settings, переход по кнопке не сработает.</div></div><div class="step"><div class="st-head"><span class="st-n">2</span><span>Сделай меню: поле имени и кнопка «Играть»</span></div><p class="why">💡 Поле для имени, чтобы игроки знали, кто есть кто. Кнопка — чтобы войти в игру.</p><p><b>Что делать:</b> В сцене Menu добавь: Canvas → Text (Подпись «Имя»), InputField (куда вводить имя), Button (текст «Играть»).</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">На экране меню есть поле, кнопка и заголовок.</div></div></div><div class="step"><div class="st-head"><span class="st-n">3</span><span>Напиши сценарий меню</span></div><p class="why">💡 Скрипт сохраняет имя и запускает подключение.</p><p><b>Что делать:</b> Создай скрипт MenuManager.cs и вставь код.</p><div class="screen"><div class="s-label">Код (копируй целиком)</div><pre>using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using Photon.Pun;
+
+public class MenuManager : MonoBehaviour {
+    public InputField nameInput;
+    public void Play() {
+        PhotonNetwork.NickName = nameInput.text == "" ? "Игрок" : nameInput.text;
+        PhotonNetwork.ConnectUsingSettings();
+    }
+    void Update() {
+        if (PhotonNetwork.IsConnectedAndReady)
+            SceneManager.LoadScene("Game");
+    }
+}</pre></div><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">После нажатия кнопки сцена переключается на Game.</div></div></div><div class="step"><div class="st-head"><span class="st-n">4</span><span>Создай персонажа в игровой сцене</span></div><p class="why">💡 Когда игрок вошёл в комнату, ему нужно появиться в игре. Создаём персонажа через PhotonNetwork.Instantiate — так он появится у ВСЕХ.</p><table><tr><th>Способ</th><th>У кого появится</th><th>Зачем</th></tr><tr><td><b>Instantiate</b></td><td>Только у тебя</td><td>Локальные эффекты, личные детали</td></tr><tr><td><b>PhotonNetwork.Instantiate</b></td><td>У всех в комнате</td><td>Общие персонажи и предметы</td></tr></table><p><b>Что делать:</b> Сделай префаб Player (куб со скриптом PlayerController и Photon View). В сцене Game добавь пустой объект Spawner со скриптом ниже.</p><div class="screen"><div class="s-label">Код (копируй целиком)</div><pre>using UnityEngine;
+using Photon.Pun;
+
+public class Spawner : MonoBehaviourPunCallbacks {
+    void Start() {
+        if (PhotonNetwork.IsConnectedAndReady)
+            PhotonNetwork.Instantiate("Player", Random.insideUnitSphere*2, Quaternion.identity);
+    }
+}</pre></div><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">В игре появляется куб; если запустить дважды — два куба.</div></div></div><div class="step"><div class="st-head"><span class="st-n">5</span><span>Сделай простое управление (твой куб)</span></div><p class="why">💡 Чтобы понять, что кубы «твои», добавь управление только своему кубу.</p><p><b>Что делать:</b> В префаб Player добавь скрипт PlayerController.</p><div class="screen"><div class="s-label">Код (копируй целиком)</div><pre>using UnityEngine;
+using Photon.Pun;
+
+public class PlayerController : MonoBehaviourPun {
+    void Update() {
+        if (!photonView.IsMine) return;  // управляем только своим кубом
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+        transform.Translate(new Vector3(h, 0, v) * 3f * Time.deltaTime);
+    }
+}</pre></div><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Стрелки двигают твой куб, а чужой стоит.</div></div></div><div class="step"><div class="st-head"><span class="st-n">6</span><span>Выведи список игроков</span></div><p class="why">💡 Табло игроков помогает видеть, кто в комнате — пригодится для командных игр.</p><p><b>Что делать:</b> Добавь на Canvas текст PlayerListText и скрипт, который пишет список.</p><div class="screen"><div class="s-label">Код (копируй целиком)</div><pre>using UnityEngine;
+using UnityEngine.UI;
+using Photon.Pun;
+
+public class PlayerList : MonoBehaviour {
+    public Text txt;
+    void Update() {
+        if (PhotonNetwork.InRoom) {
+            string s = "";
+            foreach (var p in PhotonNetwork.CurrentRoom.PlayerList) s += p.NickName + "\n";
+            txt.text = s;
+        }
+    }
+}</pre></div><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">На экране список имён подключённых игроков.</div></div></div></section>
+  <section id="errors"><h2><span class="n">2</span>Типичные ошибки и как их исправить</h2><div class="gotcha"><b>Ошибка «Кнопка не переключает сцену».</b> Жмёшь «Играть» — ничего.</div><div class="tipb"><b>Как исправить:</b> Проверь: обе сцены в Build Settings, у кнопки назначен OnClick → MenuManager.Play, а nameInput привязан в Inspector.</div><div class="gotcha"><b>Ошибка «Персонаж не появляется».</b> После входа в Game нет куба.</div><div class="tipb"><b>Как исправить:</b> Убедись, что префаб Player лежит в папке Resources и называется именно «Player», и у него есть Photon View.</div><div class="gotcha"><b>Ошибка «Управляются все кубы сразу».</b> Двигаешь свой — двигаются и чужие.</div><div class="tipb"><b>Как исправить:</b> В PlayerController проверь photonView.IsMine (как в примере). Если забыть — управляются все.</div><div class="gotcha"><b>Ошибка «Два одинаковых персонажа у одного игрока».</b> После входа в Game появляются две копии.</div><div class="tipb"><b>Как исправить:</b> Спавнер PhotonNetwork.Instantiate есть в сцене в единственном экземпляре. Если его добавить и на Player — появится лишний персонаж. Проверь, что скрипт-спавнер стоит только на одном объекте.</div><div class="gotcha"><b>Ошибка «Не удаётся найти префаб Player».</b> Ошибка в консоли при входе в Game.</div><div class="tipb"><b>Как исправить:</b> Префаб «Player» обязан лежать в папке Resources (или подпапке) — Photon ищет сетевые префабы именно там, и имя должно точно совпадать со строкой в Instantiate.</div></section>
+  <section id="quiz"><div class="quiz"><b>Проверь себя (ответь устно или письменно):</b><ol><li>Зачем делить игру на сцены Menu и Game?</li><li>Почему персонажа создаём через PhotonNetwork.Instantiate, а не Instantiate?</li><li>Зачем нужен NickName?</li><li>Где должен лежать сетевой префаб Player, чтобы Photon нашёл его?</li><li>Как по коду понять, что объектом управляет только его владелец?</li></ol></div></section>
+  <div class="result"><b>Итог модуля.</b> Итог: есть меню, вход в комнату, появление персонажей у всех и список игроков. Готово к настоящей совместной игре!</div>
+</main>
+<footer><p>Методичка · Сети в VR · Модуль 02 · Технологическая лаборатория</p></footer>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Углублённый C# · Список модулей</title>
+<!-- Сквозная система ТЛ (общий кабинет с порталом) -->
+<script src="tl-portal-core.js"></script>
+<script src="tl-bridge.js"></script>
+<script>try { if (window.TLCore) TLCore.init(); if (window.TLBridge) TLBridge.init({ total: 6 }); } catch (e) { console.error("tl-bridge init error", e); }</script>
+<style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--def:#B45309;--def-soft:#FDF1E1;--pr:#167A4D;--pr-soft:#E7F4EE;--line:#D9E2EF;}
+*{box-sizing:border-box;}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;}
+.wrap{max-width:960px;margin:0 auto;padding:2rem 1.25rem 3rem;}
+header .kicker{color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;}
+header h1{font-size:2rem;line-height:1.2;margin:.2rem 0 .3rem;}header .sub{color:var(--muted);margin:0 0 .6rem;}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.95rem 1.15rem;border-radius:0 8px 8px 0;margin:1.4rem 0;}.tldr b{color:var(--accent);}
+.howto{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.9rem 1.1rem;margin:1rem 0;font-size:.95rem;}.howto b{color:var(--pr);}
+.lock-msg{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin:1rem 0;font-size:.95rem;}.lock-msg b{color:var(--def);}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.8rem;}
+.mcard{border:1px solid var(--line);border-radius:14px;padding:.9rem 1rem;background:#fbfcfe;position:relative;}
+.mcard .lw{display:inline-flex;font-size:.78rem;font-weight:800;color:#fff;background:var(--vr);border-radius:8px;padding:.12rem .45rem;}
+.mcard h3{margin:.25rem 0 .15rem;font-size:1rem;line-height:1.25;}
+.mcard .why{font-size:.82rem;color:var(--muted);margin:.15rem 0 .35rem;line-height:1.5;}
+.mcard .status{position:absolute;top:.9rem;right:1rem;font-size:.78rem;font-weight:700;}
+.mcard a{text-decoration:none;color:inherit;}.mcard a:hover h3{color:var(--vr);}
+.mcard.done{background:var(--pr-soft);border:1px solid var(--pr);}.mcard.done h3{color:var(--pr);}
+.mcard.locked{opacity:.55;}.mcard.locked h3{color:var(--muted);}
+.auth{max-width:460px;margin:1.4rem auto;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 12px 40px rgba(27,42,74,.10);padding:1.4rem 1.4rem .9rem;}
+.auth-head{margin-bottom:.5rem;}.auth-title{font-size:1.25rem;font-weight:800;color:var(--ink);}.auth-sub{font-size:.86rem;color:var(--muted);margin:.1rem 0 .6rem;}
+.role-tabs{display:flex;gap:.4rem;margin:.4rem 0 .9rem;background:var(--accent-soft);border-radius:12px;padding:.25rem;}
+.role-tabs .rtab{flex:1;border:0;background:transparent;border-radius:9px;padding:.5rem;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer;color:var(--ink);}
+.role-tabs .rtab.active{background:#fff;box-shadow:0 1px 4px rgba(27,42,74,.12);color:var(--accent);}
+.rtab-body .field{margin-bottom:.8rem;}.rtab-body .field label{display:block;font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:.3rem;}
+.rtab-body input,.rtab-body select{width:100%;border:1px solid var(--line);border-radius:10px;padding:.6rem .7rem;font:14px/1.4 system-ui,sans-serif;}
+.btn{display:inline-block;border:0;border-radius:10px;padding:.6rem 1.1rem;font:700 15px/1.2 system-ui,sans-serif;background:var(--vr);color:#fff;cursor:pointer;text-decoration:none;}.btn:hover{filter:brightness(1.08);}
+.btn-enter{width:100%;justify-content:center;}
+.mode-tabs{display:flex;gap:.4rem;margin:0 0 .9rem;}.mode-tabs .mtab{flex:1;border:1px solid var(--line);background:#fff;border-radius:9px;padding:.45rem .5rem;font:700 13px/1.2 system-ui,sans-serif;cursor:pointer;color:var(--muted);}
+.mode-tabs .mtab.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);}
+.authmsg{color:var(--def,#B45309);font-size:.85rem;margin-top:.3rem;}
+.reg-done{margin:.9rem 0 .2rem;border:2px solid var(--pr);border-radius:12px;background:var(--pr-soft);padding:.8rem .9rem;}
+.reg-done-title{font-weight:800;color:var(--pr);margin-bottom:.5rem;}
+.reg-row{display:flex;justify-content:space-between;gap:.6rem;padding:.28rem 0;border-bottom:1px dashed var(--line);font-size:.9rem;}.reg-row:last-of-type{border-bottom:0;}.reg-row span{color:var(--muted);}.reg-row b{color:var(--ink);}
+.stud-code{font-size:1.3rem;font-weight:800;letter-spacing:.06em;color:var(--vr);font-family:ui-monospace,Consolas,monospace;}
+.reg-hint{font-size:.76rem;color:var(--muted);margin:.5rem 0 0;}
+.userbar{background:var(--vr-soft);border:1px solid var(--vr);border-radius:12px;padding:.7rem 1rem;margin:1rem 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;}.userbar .small{color:var(--muted);font-size:.85rem;}
+.progressbar{background:var(--line);border-radius:999px;height:14px;overflow:hidden;margin:.5rem 0 1.2rem;}.progressbar .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--vr));width:0%;}
+.progress-text{color:var(--muted);font-size:.9rem;margin:.2rem 0 1.4rem;}
+.students-panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.8rem 1rem;margin:1rem 0;}.stp-head{font-weight:800;font-size:1rem;margin-bottom:.4rem;}.stp-list{display:flex;flex-direction:column;gap:.4rem;}
+.stp-row{display:flex;align-items:center;justify-content:space-between;gap:.8rem;border:1px solid var(--line);border-radius:10px;padding:.5rem .7rem;background:#fbfcfe;flex-wrap:wrap;}.stp-info b{font-size:.92rem;}.stp-info span{font-size:.8rem;color:var(--muted);}.stp-info i{font-style:normal;font-weight:700;color:var(--vr);font-family:ui-monospace,Consolas,monospace;}
+.stp-reset{border:1px solid var(--def,#B45309);background:#fff;color:var(--def);border-radius:8px;padding:.35rem .7rem;font:700 13px/1.2 system-ui,sans-serif;cursor:pointer;}
+.infographic{display:none;margin:1.2rem 0 1.6rem;border:1px solid var(--line);border-radius:14px;background:linear-gradient(135deg,#FFF,#F6F8FD);padding:1rem 1.1rem;}.infographic.revealed{display:block;}.infographic h3{margin:0 0 .3rem;font-size:1rem;color:var(--vr);}.infographic .ig-sub{color:var(--muted);font-size:.85rem;margin:0 0 .7rem;}
+.ig-flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:.4rem;}.ig-step{flex:1 1 150px;min-width:130px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:.55rem .65rem;position:relative;}
+.ig-step .ig-num{position:absolute;top:-8px;left:8px;background:var(--vr);color:#fff;font-size:.72rem;font-weight:800;border-radius:999px;padding:0 .45rem;}.ig-step b{display:block;font-size:.9rem;margin:.2rem 0 .1rem;}.ig-step span{font-size:.78rem;color:var(--muted);line-height:1.35;display:block;}.ig-step.hi{border-color:var(--vr);box-shadow:0 2px 8px rgba(108,77,240,.12);}
+.ig-legend{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:.6rem;font-size:.8rem;color:var(--muted);}.ig-legend b{color:var(--vr);}
+.layer-map{margin:1.4rem 0;}.lm-wrap{border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden;box-shadow:0 2px 10px rgba(27,42,74,.05);}
+.lm-summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.1rem;font-weight:800;font-size:1rem;color:var(--ink);background:var(--accent-soft);}.lm-summary::-webkit-details-marker{display:none;}.lm-summary:hover{background:var(--vr-soft);}
+.lm-wrap[open] .lm-summary{border-bottom:1px solid var(--line);}.lm-chev{transition:transform .2s;color:var(--accent);}.lm-wrap[open] .lm-chev{transform:rotate(180deg);}.lm-body{padding:.9rem 1.1rem 1rem;}.lm-list{display:flex;flex-direction:column;gap:.5rem;}
+.lm-slot{border:1px solid var(--line);border-radius:12px;padding:.6rem .8rem;background:#fbfcfe;}.lm-slot .lm-name{display:block;font-weight:800;color:var(--vr);font-size:.95rem;}.lm-slot .lm-learn{display:block;font-size:.82rem;color:var(--muted);margin:.1rem 0 .3rem;}.lm-slot .lm-detail{font-size:.88rem;color:var(--ink);line-height:1.5;}.lm-slot .lm-result{font-size:.82rem;color:var(--pr);font-weight:600;margin-top:.3rem;}
+.scale-wrap{margin:1.4rem 0;border:1px solid var(--line);border-radius:16px;background:#fff;overflow:hidden;}.scale-wrap summary{cursor:pointer;list-style:none;padding:.9rem 1.2rem;font-weight:800;font-size:1.02rem;display:flex;align-items:center;justify-content:space-between;}.scale-wrap summary::-webkit-details-marker{display:none;}.scale-wrap summary .sc-chev{transition:transform .2s;color:var(--accent);}.scale-wrap[open] summary .sc-chev{transform:rotate(180deg);}
+.scale-body{padding:.4rem 1.2rem 1.2rem;}.scale-body .units{display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;font-size:.82rem;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:.6rem;margin-bottom:.8rem;}
+.metal-scale{display:flex;align-items:stretch;gap:1rem;margin:.4rem 0 1.4rem;}.metal-column{flex:0 0 168px;display:flex;flex-direction:column;gap:.3rem;}.metal-step{border-radius:11px;padding:.5rem .55rem;text-align:center;flex:1 1 0;min-height:40px;display:flex;align-items:center;justify-content:center;gap:.3rem;font-weight:800;}.metal-step .ms-icon{font-size:1rem;}.metal-step .ms-name{font-size:.85rem;line-height:1.05;}.metal-step .ms-need{display:block;font-size:.62rem;font-weight:600;opacity:.85;}
+.metal-rows{flex:1 1 auto;display:flex;flex-direction:column;gap:.5rem;}.medal-card{display:flex;align-items:center;gap:.8rem;padding:.65rem .85rem;border:1px solid var(--line);border-radius:14px;background:#fbfcfe;}.medal-round{flex:0 0 48px;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.35rem;border:3px solid;}.m-info{flex:0 0 185px;}.m-info b{display:block;font-size:.95rem;}.m-info .m-rank{font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.02em;}.m-bar{flex:1 1 auto;}.m-bar .bar-head{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-bottom:.25rem;}.bar-track{background:var(--line);border-radius:999px;height:11px;overflow:hidden;}.bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--vr));width:0%;}.m-q{flex:0 0 auto;text-align:left;}.m-q .q-num{font-size:1.05rem;font-weight:800;color:var(--vr);}.m-q .q-detail,.m-q .q-lab{font-size:.7rem;color:var(--muted);}.m-q .stars{font-size:.82rem;color:#e0a800;letter-spacing:.08em;}.scale-empty{color:var(--muted);font-size:.9rem;padding:.3rem 0;}.scale-body .method-note{font-size:.82rem;color:var(--muted);background:#fbfcfe;border:1px dashed var(--line);border-radius:10px;padding:.6rem .8rem;margin:.6rem 0 0;}
+.classes-wrap{border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden;}.classes-summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.1rem;font-weight:800;font-size:1rem;background:var(--vr-soft);}.classes-summary::-webkit-details-marker{display:none;}.classes-chev{transition:transform .2s;color:var(--vr);}.classes-wrap[open] .classes-chev{transform:rotate(180deg);}.classes-body{padding:.9rem 1.1rem 1rem;}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.8rem;}
+@media (max-width:760px){.metal-scale{flex-direction:column;}.metal-column{flex-direction:row;overflow-x:auto;order:2;}.metal-step{min-width:84px;min-height:auto;}.medal-card{flex-wrap:wrap;}.m-info{flex:1 1 140px;}}
+@media (max-width:640px){header h1{font-size:1.4rem;}.grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="kicker">VR-студия · углублённый трек</p>
+    <h1>Углублённый курс «C#»</h1>
+    <p class="sub">Для тех, кто прошёл занятие 04 VR-студии и хочет по-настоящему разобраться в C# — от типов данных до собственных игровых скриптов.</p>
+  </header>
+  <div class="tldr"><b>Главное.</b> Курс из 6 модулей: база на консоли (типы, условия, циклы, массивы, методы, ООП) + применение в Unity. Идёшь по порядку — каждый модуль открывает следующий.</div>
+  <div class="howto"><b>Как учиться.</b> Сначала зарегистрируйся (или войди по коду) — прогресс запомнится лично для тебя. В каждом модуле: читаешь теорию по шагам → проверяешь, что увидишь на экране → делаешь практику → выполняешь домашнее задание → отмечаешь модуль пройденным. После этого открывается следующий модуль.</div>
+
+  <div class="auth" id="authPanel" style="background:var(--vr-soft);border:1px solid var(--vr);border-radius:14px;padding:1.1rem 1.3rem;margin:1.2rem 0;"> <div class="auth-head"><div class="auth-title">🔗 Вход через портал Технологической лаборатории</div><p class="auth-sub">Чтобы войти в свой профиль и начать занятия, открой портал ТЛ и войди под своим именем — курс подключится автоматически.</p></div> <p style="margin:.8rem 0 0"><a class="btn btn-enter" href="../ТЛ/ТЛ концепция/Портал Технологическая лаборатория.html" style="display:inline-block;border:0;border-radius:10px;padding:.6rem 1.2rem;font:700 15px/1.2 system-ui,sans-serif;background:var(--vr);color:#fff;text-decoration:none;cursor:pointer;">Открыть портал и войти →</a></p> </div>id="userBar" style="display:none">
+    <div><b id="ubName"></b> <span class="small" id="ubRole"></span> <span class="small" id="ubStudCode" style="display:none"></span></div>
+    <button class="btn" onclick="doLogout()">Выйти / сменить</button>
+  </div>
+
+  <div class="students-panel" id="studentsPanel" style="display:none">
+    <div class="stp-head">Обучающиеся курса (твои ученики)</div>
+    <div class="stp-list" id="studentsList"></div>
+  </div>
+
+  <div class="infographic" id="infographic">
+    <h3>🧩 Как рождается код на C#</h3>
+    <p class="ig-sub">Весь курс — путь от маленькой консольной программы до игрового скрипта.</p>
+    <div class="ig-flow">
+      <div class="ig-step"><span class="ig-num">1</span><b>Переменные</b><span>Храним данные</span></div>
+      <div class="ig-step"><span class="ig-num">2</span><b>Условия</b><span>Программа выбирает путь</span></div>
+      <div class="ig-step hi"><span class="ig-num">3</span><b>Циклы</b><span>Повторяем действия</span></div>
+      <div class="ig-step"><span class="ig-num">4</span><b>Массивы</b><span>Много данных сразу</span></div>
+      <div class="ig-step"><span class="ig-num">5</span><b>Классы</b><span>Свои типы данных</span></div>
+      <div class="ig-step hi"><span class="ig-num">6</span><b>Unity</b><span>Скрипт в игре</span></div>
+    </div>
+    <div class="ig-legend"><b>2 ключевые точки:</b> циклы (автоматизация) и Unity (код оживает в игре).</div>
+  </div>
+
+  <div class="layer-map" id="layerMap">
+    <details class="lm-wrap">
+      <summary class="lm-summary"><span class="lm-title">🗺 Слойная карта курса C#</span><span class="lm-chev">▾</span></summary>
+      <div class="lm-body">
+        <p class="ig-sub">Каждый слой — уровень мастерства. Идёшь снизу вверх: понял типы — переходишь к условиям и дальше.</p>
+        <div class="lm-list"><div class="lm-slot"><b class="lm-name">6 · Unity</b><span class="lm-learn">Компоненты, механики, мини-игра</span><div class="lm-detail">Встраиваешь свой код в Unity: скрипт движения, вращения, взаимодействия. Собираешь мини-игру «поймай куб».</div><div class="lm-result">Сможешь: написать игровой скрипт и собрать мини-игру.</div></div><div class="lm-slot"><b class="lm-name">5 · ООП</b><span class="lm-learn">Классы, свойства, инкапсуляция</span><div class="lm-detail">Создаёшь собственные типы данных — классы. Учишься делать код гибким и переиспользуемым.</div><div class="lm-result">Сможешь: проектировать код с классами и свойствами.</div></div><div class="lm-slot"><b class="lm-name">4 · Массивы и методы</b><span class="lm-learn">Массивы, списки, методы, рекурсия</span><div class="lm-detail">Хранишь десятки значений в массивах и списках, собираешь логику в методы и функции.</div><div class="lm-result">Сможешь: обрабатывать списки данных и писать методы.</div></div><div class="lm-slot"><b class="lm-name">3 · Циклы</b><span class="lm-learn">for, while, do-while, foreach</span><div class="lm-detail">Автоматизируешь повторяющиеся действия: считаешь, перебираешь списки, ждёшь условие.</div><div class="lm-result">Сможешь: написать цикл для любой повторяющейся задачи.</div></div><div class="lm-slot"><b class="lm-name">2 · Условия</b><span class="lm-learn">if, else, switch, тернарный оператор</span><div class="lm-detail">Учишь программу принимать решения: сравниваешь значения и выбираешь ветку выполнения.</div><div class="lm-result">Сможешь: строить ветвления в своих программах.</div></div><div class="lm-slot"><b class="lm-name">1 · Типы данных</b><span class="lm-learn">int, double, string, bool и операторы</span><div class="lm-detail">Знакомишься с переменными и типами: числа, строки, логические значения, арифметика и вывод.</div><div class="lm-result">Сможешь: писать первую программу с переменными.</div></div></div>
+        <div class="ig-legend">Двигайся от <b>Типов данных</b> к <b>Unity</b> — как по лестнице.</div>
+      </div>
+    </details>
+  </div>
+
+  <div class="progressbar" style="display:none"><div class="fill" id="fill"></div></div>
+  <div class="progress-text" id="progressText" style="display:none">Войди, чтобы увидеть свой прогресс</div>
+
+  <details class="scale-wrap" id="scaleWrap" open>
+    <summary><span>🏅 Мотивационная шкала · C#</span><span class="sc-chev">▾</span></summary>
+    <div class="scale-body">
+      <div class="units"><span><b>Итоговый балл</b> — 0–100 баллов (прогресс + качество)</span><span><b>Прогресс</b> — % пройденных модулей из 6</span><span><b>Качество</b> — 0–100 баллов (см. ниже)</span></div>
+      <div class="metal-scale"><div class="metal-column" id="scaleSteps"></div><div class="metal-rows" id="scaleRows"></div></div>
+      <div class="method-note"><b>Как считается итог.</b> Итог 0–100 = прогресс (до 40) + качество (до 60). Качество = средняя самооценка в рефлексии (до 40) + доля выполненных заданий и ДЗ (до 30) + бонусы за финальный проект (до 30).</div>
+      <div class="method-note"><b>Принцип «от железа к иридию».</b> Металл — по итогу: Железо 5 · Медь 15 · Бронза 25 · Олово 35 · Серебро 45 · Золото 55 · Платина 65 · Палладий 75 · Родий 85 · Иридий 93.</div>
+    </div>
+  </details>
+
+  <details class="classes-wrap" id="classesWrap">
+    <summary class="classes-summary"><span>📚 Модули курса C#</span><span class="classes-chev">▾</span></summary>
+    <div class="classes-body"><div class="grid" id="grid"></div></div>
+  </details>
+
+  <a href="../Курс-VR-студия/Список занятий VR студии.html" style="color:var(--muted);font-size:.9rem;text-decoration:none;display:inline-block;margin-top:1rem">← к списку занятий VR-студии</a>
+  <footer><p>Углублённый курс «C#» · дополняет VR-студию · Технологическая лаборатория, региональный центр «Спутник»</p></footer>
+</div>
+<script>
+const MODULES=[{"num":1,"title":"Типы данных и операторы","fileId":"csharp-01-tipy-i-operatory","module":"Модуль 1","why":"Научишься выбирать тип данных для каждой величины и выводить числа на экран ровно так, как нужно."},{"num":2,"title":"Условия, ветвления и тернарный оператор","fileId":"csharp-02-usloviya-i-vetvleniya","module":"Модуль 2","why":"Научишься заставлять программу выбирать: «если так — сделай одно, иначе — другое». Это мозг любой игры."},{"num":3,"title":"Циклы: for, while, do-while и foreach","fileId":"csharp-03-cikly-i-iteratsii","module":"Модуль 3","why":"Научишься повторять действия: for — по счёту, while — пока условие, foreach — по списку. Без этого не бывает игр."},{"num":4,"title":"Массивы, списки и методы","fileId":"csharp-04-massivy-metody","module":"Модуль 4","why":"Научишься хранить много данных сразу (массивы и списки) и собирать код в методы, чтобы не повторять одно и то же."},{"num":5,"title":"ООП: классы, свойства, инкапсуляция","fileId":"csharp-05-oop-klassy","module":"Модуль 5","why":"Научишься создавать собственные типы — классы. Это как чертёж: по одному чертежу можно создать много объектов."},{"num":6,"title":"C# в Unity: компоненты, механики и мини-проект","fileId":"csharp-06-unity-skripty","module":"Модуль 6","why":"Применишь весь C# в Unity: создашь скрипт для движения и вращения куба и соберёшь мини-игру «поймай куб»."}];
+const CUKEY="cs_current_user", PFKEY="cs_profiles", PROGKEY="cs_progress_", TEACHER_KEY="mt_teacher_mode", TEACHER_CODE="012345678", COURSE_TOTAL=6;
+const BASE_TEACHERS=["Казакевич Константин Михайлович"];
+const METALS=[{"name":"Железо","icon":"⚙","need":5,"bg":"linear-gradient(160deg,#6b7a8c,#39434f)","fg":"#fff"},{"name":"Медь","icon":"◎","need":15,"bg":"linear-gradient(160deg,#ee7a4b,#b23c1f)","fg":"#fff"},{"name":"Бронза","icon":"⑂","need":25,"bg":"linear-gradient(160deg,#c98a3d,#7c4e18)","fg":"#fff"},{"name":"Олово","icon":"❆","need":35,"bg":"linear-gradient(160deg,#9fc2da,#56748e)","fg":"#0f1c28"},{"name":"Серебро","icon":"◐","need":45,"bg":"linear-gradient(160deg,#eef1f5,#aab4c0)","fg":"#232a36"},{"name":"Золото","icon":"☀","need":55,"bg":"linear-gradient(160deg,#ffd75e,#c3940f)","fg":"#3a2c00"},{"name":"Платина","icon":"✧","need":65,"bg":"linear-gradient(160deg,#9aa6b3,#616e7d)","fg":"#fff"},{"name":"Палладий","icon":"❖","need":75,"bg":"linear-gradient(160deg,#e0c69a,#976f34)","fg":"#2b2006"},{"name":"Родий","icon":"✪","need":85,"bg":"linear-gradient(160deg,#fbfdff,#c6cdd6)","fg":"#1a2430"},{"name":"Иридий","icon":"✦","need":93,"bg":"linear-gradient(160deg,#4a5561,#232b34)","fg":"#fff"}];
+
+function getUsers(){try{return JSON.parse(localStorage.getItem(PFKEY)||"[]");}catch(e){return [];}}
+function saveUsers(a){try{localStorage.setItem(PFKEY,JSON.stringify(a));}catch(e){}}
+function sessionUser(){try{var s=JSON.parse(localStorage.getItem(CUKEY)||"null");return s;}catch(e){return null;}}
+function setSession(s){try{localStorage.setItem(CUKEY,JSON.stringify(s));}catch(e){}}
+function me(){var s=sessionUser();if(!s||!s.uid)return null;return getUsers().find(function(p){return String(p.uid)===String(s.uid);})||null;}
+function isTeacherMode(){try{return localStorage.getItem(TEACHER_KEY)==="1";}catch(e){return false;}}
+function setTeacherMode(v){try{localStorage.setItem(TEACHER_KEY,v?"1":"");}catch(e){}}
+function getProgress(uid){var a=[];try{a=JSON.parse(localStorage.getItem(PROGKEY+uid)||"[]");}catch(e){a=[];}if(!Array.isArray(a))a=[];while(a.length<COURSE_TOTAL)a.push(false);return a;}
+function setProgress(uid,num,done){var a=getProgress(uid);a[num-1]=!!done;try{localStorage.setItem(PROGKEY+uid,JSON.stringify(a));}catch(e){}try{localStorage.setItem("cs_u_"+uid+"_m_"+num,done?"1":"");}catch(e){}}
+function csDone(uid,num){if(uid){try{if(localStorage.getItem("cs_u_"+uid+"_m_"+num)==="1")return true;}catch(e){}}return !!getProgress(uid)[num-1];}
+function getTeachers(){var names=BASE_TEACHERS.slice();try{var u=getUsers();u.forEach(function(p){if(p.role==="teacher"){var n=p.name||"";if(names.indexOf(n)<0)names.push(n);}});}catch(e){}return names;}
+function initTeacherSelect(){var sel=document.getElementById("inpTeacher");if(!sel)return;var t=getTeachers();sel.innerHTML='<option value="">— выбери учителя —</option>'+t.map(function(x){return '<option value="'+x+'">'+x+'</option>';}).join("");}
+function genCode(){var code;do{code=String(Math.floor(1000+Math.random()*9000));code=code+"/"+Math.random().toString(36).slice(2,6).toUpperCase();}while(false);return code;}
+window.__roleTab=function(r){var tabs=document.querySelectorAll(".rtab");tabs.forEach(function(b){b.classList.remove("active");});var el=document.querySelector('.rtab[data-r="'+r+'"]');if(el)el.classList.add("active");document.getElementById("tab-student").style.display=r==="student"?"":"none";document.getElementById("tab-teacher").style.display=r==="teacher"?"":"none";};
+window.__studMode=function(m){var tabs=document.querySelectorAll(".mtab");tabs.forEach(function(b){b.classList.remove("active");});document.getElementById("stud-new").style.display=m==="new"?"":"none";document.getElementById("stud-exist").style.display=m==="exist"?"":"none";if(tabs.length)tabs[m==="new"?0:1].classList.add("active");};
+function doRegisterStudent(){
+  var name=document.getElementById("inpName").value.trim();
+  var klass=document.getElementById("inpKlass").value.trim();
+  var sel=document.getElementById("inpTeacher");var teacher=sel?(sel.value||"").trim():"";
+  var msg=document.getElementById("authMsg");
+  if(!name){msg.textContent="Укажи фамилию и имя.";return;}
+  if(!teacher){msg.textContent="Выбери своего учителя.";return;}
+  var users=getUsers();
+  if(users.some(function(p){return p.role==="student"&&p.name.toLowerCase()===name.toLowerCase()&&(p.klass||"")===klass;})){msg.textContent="Такой ученик уже есть. Переключись на «Я уже есть» и войди по коду.";return;}
+  var code=genCode();
+  var found={uid:"u"+Date.now().toString(36)+Math.random().toString(36).slice(2,7),role:"student",name:name,klass:klass,teacher:teacher,code:code,created:new Date().toISOString()};
+  users.push(found);saveUsers(users);setSession({uid:found.uid,role:"student"});
+  /* Показать данные в окне ученика */ 
+  var ip1=document.getElementById("inpName");if(ip1)ip1.style.display="none";
+  var ip2=document.getElementById("inpKlass");if(ip2)ip2.style.display="none";
+  var br=document.getElementById("btnRegStud");if(br)br.style.display="none";
+  if(sel)sel.style.display="none";
+  var fd=document.getElementById("regDone");if(fd)fd.style.display="";
+  document.getElementById("regName").textContent=found.name;
+  document.getElementById("regKlass").textContent=found.klass||"—";
+  document.getElementById("regTeacher").textContent=found.teacher;
+  document.getElementById("regCode").textContent=found.code;
+  msg.textContent="Готово. Это твой профиль на этом компьютере.";
+  renderAuth();
+}
+function doStudentLogin(){
+  var name=document.getElementById("inpName2").value.trim();
+  var code=document.getElementById("inpCode2").value.trim();
+  var msg=document.getElementById("authMsg2");
+  if(!name||!code){msg.textContent="Укажи имя и код ученика.";return;}
+  var users=getUsers();
+  var found=users.find(function(p){return p.role==="student"&&p.name.toLowerCase()===name.toLowerCase()&&String(p.code).toUpperCase()===code.toUpperCase();});
+  if(!found){msg.textContent="Неверно имя или код. Если забыл — зарегистрируйся заново.";return;}
+  setSession({uid:found.uid,role:"student"});msg.textContent="";renderAuth();
+}
+function doTeacherLogin(){
+  var name=document.getElementById("inpTeacherName").value.trim();
+  var code=document.getElementById("inpTeacherCode").value.trim();
+  var msg=document.getElementById("authMsgT");
+  if(!name){msg.textContent="Укажи ФИО.";return;}
+  if(code!==TEACHER_CODE){msg.textContent="Неверный код учителя.";return;}
+  var users=getUsers();
+  var found=users.find(function(p){return p.role==="teacher"&&p.name.toLowerCase()===name.toLowerCase();});
+  if(!found){found={uid:"t"+Date.now().toString(36)+Math.random().toString(36).slice(2,7),role:"teacher",name:name,created:new Date().toISOString()};users.push(found);saveUsers(users);}
+  setSession({uid:found.uid,role:"teacher"});msg.textContent="";renderAuth();
+}
+function doLogout(){setSession(null);renderAuth();}
+function renderStudents(){
+  var listEl=document.getElementById("studentsList");if(!listEl)return;
+  var users=getUsers();var teacher=me();
+  var students=users.filter(function(p){return p.role==="student";});
+  if(teacher&&teacher.role==="teacher")students=students.filter(function(p){return p.teacher===teacher.name;});
+  if(!students.length){listEl.innerHTML='<div class="stp-empty">Пока нет учеников, привязанных к тебе как к учителю.</div>';return;}
+  listEl.innerHTML=students.map(function(s){return '<div class="stp-row"><div class="stp-info"><b>'+s.name+'</b><span>'+(s.klass||"—")+' · учитель: '+s.teacher+' · код: <i>'+s.code+'</i></span></div><button type="button" class="stp-reset" data-uid="'+s.uid+'" onclick="resetStudentCode(this.dataset.uid)">Сбросить код</button></div>';}).join("");
+}
+function resetStudentCode(uid){var users=getUsers();var s=users.find(function(p){return p.uid===uid;});if(!s||s.role!=="student")return;s.code=genCode();saveUsers(users);renderStudents();alert("Новый код ученика ("+s.name+"): "+s.code);}
+function renderAuth(){ var panel=document.getElementById("authPanel"), ubar=document.getElementById("userBar"); var u=me(); if(u){ if(panel) panel.style.display="none"; if(ubar){ ubar.style.display="flex"; var un=document.getElementById("ubName"); if(un) un.textContent=u.name; var uk=document.getElementById("ubKlass"); if(uk) uk.textContent=u.klass||""; } var sp=document.getElementById("studentsPanel"); if(sp) sp.style.display=(u.role==="teacher")?"":"none"; if(u.role==="teacher") renderStudents(); render(); return; } if(panel) panel.style.display="block"; if(ubar) ubar.style.display="none"; render(); }
+
+function render(){
+  var u=me();var grid=document.getElementById("grid");if(!grid)return;
+  grid.innerHTML="";var isTeacher=!!u&&u.role==="teacher";var lockMsg=null;
+  MODULES.forEach(function(m,idx){
+    var num=idx+1;
+    var done=!!u&&(isTeacher||csDone(u.uid,num));
+    var avail=isTeacher?true:(!!u&&(num===1||csDone(u.uid,MODULES[idx-1].num)));
+    var inner='<span class="lw">'+m.module+'</span><h3>'+m.title+'</h3><div class="why">'+m.why+'</div>';
+    var card=document.createElement("div");
+    card.className="mcard"+(done?" done":"")+(avail?"":" locked");
+    if(avail){
+      var a=document.createElement("a");a.href="Модуль "+m.num+"/"+m.fileId+".html";a.style.cssText="display:block;color:inherit;text-decoration:none;";a.innerHTML=inner;card.appendChild(a);
+    } else {
+      card.style.cursor="not-allowed";card.title="Сначала пройди предыдущий модуль";card.innerHTML=inner;
+      card.addEventListener("click",function(ev){ev.preventDefault();if(!lockMsg){lockMsg=document.createElement("div");lockMsg.className="lock-msg";lockMsg.textContent="Этот модуль откроется после того, как ты пройдёшь предыдущий.";grid.insertBefore(lockMsg,grid.firstChild);setTimeout(function(){if(lockMsg){lockMsg.remove();lockMsg=null;}},2500);}});
+    }
+    var st=document.createElement("span");st.className="status";st.textContent=done?"✓":"•";card.appendChild(st);
+    grid.appendChild(card);
+  });
+  if(u){
+    var progEl=document.querySelector(".progressbar"),pt=document.getElementById("progressText"),fill=document.getElementById("fill");
+    var dc=0;for(var i=0;i<MODULES.length;i++){if(csDone(u.uid,i+1))dc++;}
+    var prog=Math.round(100*dc/MODULES.length);
+    if(progEl)progEl.style.display="block";if(pt)pt.style.display="block";
+    if(pt)pt.textContent="Пройдено модулей: "+dc+" из "+MODULES.length+" ("+prog+"%)";
+    if(fill)fill.style.width=prog+"%";
+  }
+  if(window.__scaleRender){try{window.__scaleRender();}catch(e){}}
+}
+function reflOf(uid,num){try{return JSON.parse(localStorage.getItem("cs_u_"+uid+"_m_"+num+"_draft")||"null");}catch(e){return null;}}
+function scaleCompute(uid){
+  var dc=0,sr=0,wr=0,dd=0,dt=0,bn=0;
+  for(var n=1;n<=COURSE_TOTAL;n++){
+    if(csDone(uid,n))dc++;
+    var r=reflOf(uid,n);
+    if(r){wr++;var rt=parseFloat(r.rating);if(!isNaN(rt))sr+=rt;if(r.done===true||r.done==="true")dd++;dt++;}
+    if(n===6&&csDone(uid,n))bn++;
+  }
+  var prog=Math.round(dc/COURSE_TOTAL*100);
+  var avg=wr?sr/wr:0;
+  var q=Math.min(100,Math.round(Math.min(1,avg/5)*40+(wr?Math.min(1,dd/Math.max(1,dt))*30:0)+Math.min(1,bn)*30));
+  var total=Math.min(100,Math.round(prog*0.4)+Math.round(q*0.6));
+  return {prog:prog,quality:q,total:total};
+}
+function metalOf(t){var m=METALS[0];for(var i=0;i<METALS.length;i++){if(t>=METALS[i].need)m=METALS[i];}return m;}
+function stars(q){var n=Math.max(1,Math.min(5,Math.round(q/20)));return Array(n+1).join("★")+Array(6-n).join("☆");}
+function scaleBuildSteps(){var el=document.getElementById("scaleSteps");if(!el)return;el.innerHTML=METALS.slice().reverse().map(function(m){return '<div class="metal-step" style="background:'+m.bg+';color:'+m.fg+'"><span class="ms-icon">'+m.icon+'</span><span class="ms-name">'+m.name+'<span class="ms-need">итог ≥ '+m.need+' б.</span></span></div>';}).join("");}
+function scaleBuildCards(){
+  var el=document.getElementById("scaleRows");if(!el)return;
+  var all=getUsers();var list=all.filter(function(q){return q.role!=="teacher";});
+  if(!list.length){el.innerHTML='<div class="scale-empty">В этом курсе пока нет зарегистрированных учеников. Войди в профиль под своим именем.</div>';return;}
+  var rows=list.map(function(p){var c=scaleCompute(p.uid);return {name:p.name,klass:p.klass||"",prog:c.prog,quality:c.quality,total:c.total};});
+  rows.sort(function(a,b){return b.total-a.total;});
+  el.innerHTML=rows.map(function(r){var m=metalOf(r.total);return '<div class="medal-card"><div class="medal-round" style="background:'+m.bg+';border-color:'+(m.fg==="#fff"?"#444":m.fg)+'">'+m.icon+'</div><div class="m-info"><b>'+r.name+'</b><span class="m-rank" style="color:#7a5c00">'+m.name+'</span></div><div class="m-bar"><div class="bar-head"><span>прогресс по курсу</span><b>'+r.prog+'% модулей</b></div><div class="bar-track"><div class="bar-fill" style="width:'+r.prog+'%"></div></div></div><div class="m-q"><div><span class="q-num">'+r.total+'</span> <span class="q-lab">баллов</span></div><div class="q-detail">качество '+r.quality+' б.</div><div class="stars">'+stars(r.quality)+'</div></div></div>';}).join("");
+}
+function scaleRender(){scaleBuildSteps();scaleBuildCards();}
+window.__scaleRender=scaleRender;
+(function handleReturn(){
+  try{
+    var sp=new URLSearchParams(window.location.search);
+    var uid=sp.get("uid");var lesson=parseInt(sp.get("lesson"),10);var done=sp.get("done")==="1";
+    if(uid&&lesson&&done)setProgress(uid,lesson,true);
+    history.replaceState(null,"",window.location.pathname);
+  }catch(e){}
+  renderAuth();
+})();
+</script>
+</body>
+</html>

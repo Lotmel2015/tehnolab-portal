@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модуль 1 · Типы данных и операторы · Углублённый C#</title>
+<!-- Сквозная система ТЛ (общий кабинет с порталом) -->
+<script src="../tl-portal-core.js"></script>
+<script src="../tl-bridge.js"></script>
+<script>try { if (window.TLCore) TLCore.init(); if (window.TLBridge) TLBridge.init({ total: 6 }); } catch (e) { console.error("tl-bridge init error", e); }</script>
+<style>:root{--bg:#ffffff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--def:#B45309;--def-soft:#FDF1E1;--pr:#167A4D;--pr-soft:#E7F4EE;--pr-strong:#0F5C38;--line:#D9E2EF;--up:#167A4D;}
+*{box-sizing:border-box;}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;}
+.wrap{max-width:900px;margin:0 auto;padding:2.2rem 1.25rem 3rem;}
+nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10;}
+nav .inner{max-width:900px;margin:0 auto;padding:.5rem 1.25rem;display:flex;flex-wrap:wrap;gap:.3rem .9rem;}
+nav a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:600;}nav a:hover{color:var(--accent);}
+header .kicker{color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;}
+header h1{font-size:1.8rem;line-height:1.2;margin:.2rem 0 .3rem;}header .sub{font-size:1.02rem;color:var(--muted);margin:0 0 .5rem;}
+.meta{color:var(--muted);font-size:.85rem;}
+.badges{margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.4rem;}.badge{font-size:.78rem;font-weight:700;padding:.22rem .6rem;border-radius:999px;}
+.b-vr{background:var(--vr-soft);color:var(--vr);}.b-ac{background:var(--accent-soft);color:var(--accent);}.b-pr{background:var(--pr-soft);color:var(--pr);}.b-def{background:var(--def-soft);color:var(--def);}
+.goalwrap{background:linear-gradient(90deg,var(--pr-soft),var(--accent-soft));border:1px solid var(--line);border-radius:14px;padding:.9rem 1.15rem;margin:1.3rem 0;}
+.goalwrap b{color:var(--pr);}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.9rem 1.15rem;border-radius:0 8px 8px 0;margin:1.4rem 0;}
+.tldr b{color:var(--accent);}
+section{margin:2.4rem 0;}h2{font-size:1.28rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;margin:0 0 .8rem;}h2 .n{color:var(--accent);margin-right:.45rem;}
+h3{font-size:1.06rem;margin:0 0 .3rem;color:var(--ink);}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.7rem;margin:1.2rem 0;}
+.step-card{border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;background:#fbfcfe;}
+.step-card .num{display:inline-flex;align-items:center;justify-content:center;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.9rem;margin-bottom:.4rem;}
+.step-card b{display:block;margin-bottom:.2rem;}.step-card span{color:var(--muted);font-size:.88rem;}
+.introbox{background:#fbfcfe;border:1px solid var(--line);border-radius:14px;padding:.2rem 1.2rem;margin:.6rem 0;}
+.introbox h3{color:var(--accent);margin:1rem 0 .2rem;}
+.introbox p{margin:.2rem 0 1rem;color:#333;}
+.microwrap{display:flex;flex-direction:column;gap:.9rem;margin-top:.4rem;}
+.micro{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fbfcfe;}
+.micro .m-head{background:var(--accent-soft);padding:.7rem 1.1rem;display:flex;align-items:center;gap:.55rem;}
+.micro .m-n{display:inline-flex;align-items:center;justify-content:center;min-width:1.6rem;height:1.6rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.9rem;padding:0 .1rem;}
+.micro .m-head h3{margin:0;color:var(--accent);}
+.micro .m-body{padding:.8rem 1.1rem 1rem;}
+.micro .m-text{margin:.2rem 0 .6rem;line-height:1.7;}
+.micro .m-label{font-size:.76rem;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);margin:1rem 0 .25rem;}
+pre{background:#20263f;color:#e6e9f5;border-radius:10px;padding:.85rem 1rem;overflow-x:auto;font-size:.86rem;line-height:1.55;margin:.3rem 0;}
+pre .c{color:#8b93b8;}
+.outbox{background:#F4F7FF;border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-family:Consolas,Menlo,monospace;font-size:.88rem;color:#223;margin:.3rem 0;white-space:pre-line;}
+.outbox .ol{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--accent);font-family:system-ui,sans-serif;margin-bottom:.1rem;}
+.rem{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-size:.92rem;margin:.7rem 0 0;}
+.rem b{color:var(--pr);}
+.pracwrap{display:flex;flex-direction:column;gap:.7rem;margin-top:.4rem;}
+.pstep{border:1px solid var(--line);border-radius:12px;padding:.85rem 1.05rem;background:#fbfcfe;}
+.pstep .p-top{display:flex;gap:.55rem;align-items:flex-start;}
+.pstep .p-n{display:inline-flex;align-items:center;justify-content:center;min-width:1.5rem;height:1.5rem;border-radius:50%;background:var(--def);color:#fff;font-weight:700;font-size:.85rem;flex:none;margin-top:.1rem;}
+.pstep b{color:var(--ink);}
+.pstep .p-see{display:block;margin-top:.5rem;padding-left:2.05rem;font-size:.92rem;color:var(--pr);background:url(data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="%23167A4D" stroke-width="2.4"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>) left top no-repeat;}
+.pstep .p-see b{color:var(--pr);}
+.donecheck{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin:1.2rem 0 .4rem;}.donecheck b{color:var(--pr);}
+.donecheck ul{margin:.4rem 0 0;padding-left:1.2rem;}
+.note{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.9rem;margin:.9rem 0;}.note b{color:var(--def);}
+.tip{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.9rem;margin:.9rem 0;}.tip b{color:var(--pr);}
+.homebox{border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;background:#fbfcfe;}
+.homebox .h-task{font-size:1.02rem;font-weight:700;color:var(--ink);margin:0 0 .5rem;}
+.homebox ol{margin:.4rem 0 .6rem;padding-left:1.3rem;}.homebox li{margin:.3rem 0;}
+.homebox .h-res{background:var(--pr-soft);border-radius:8px;padding:.6rem .9rem;font-size:.92rem;margin-top:.4rem;}
+.homebox .h-res b{color:var(--pr);}
+.quiz{background:var(--vr-soft);border:1px solid var(--vr);border-radius:12px;padding:.95rem 1.1rem;margin:1.1rem 0 0;}
+.quiz h4{margin:0 0 .4rem;color:var(--vr);}.quiz ol{margin:.3rem 0 0;padding-left:1.3rem;}.quiz li{margin:.35rem 0;font-size:.95rem;}
+.show-answers{margin-top:.5rem;}.show-answers button{font:inherit;border:none;border-radius:8px;padding:.35rem .8rem;cursor:pointer;background:var(--vr);color:#fff;font-weight:600;}
+.answers{display:none;margin-top:.6rem;background:#F7F5FF;border:1px dashed var(--vr);border-radius:8px;padding:.7rem .9rem;font-size:.92rem;}.answers.show{display:block;}
+.metmini{background:var(--vr-soft);border:1px solid var(--vr);border-radius:14px;padding:1rem 1.2rem;margin:1rem 0;}
+.metmini h3{color:var(--vr);}
+.metmini .ms{border:1px solid var(--line);border-radius:10px;background:#fff;padding:.6rem .8rem;margin:.5rem 0;}
+.metmini .ms b{color:var(--ink);display:block;font-size:.92rem;}
+.metmini .ms p{margin:.25rem 0 0;font-size:.9rem;}
+.metmini .ms .w{display:block;color:var(--pr);font-size:.86rem;margin-top:.1rem;}
+.reflection{background:var(--vr-soft);border:1px solid var(--vr);border-radius:14px;padding:1.1rem 1.2rem;margin:1rem 0;}
+.reflection textarea{width:100%;min-height:52px;border:1px solid var(--line);border-radius:8px;padding:.45rem .6rem;font:14px/1.5 system-ui,sans-serif;resize:vertical;}
+.reflection .ratings{display:flex;flex-wrap:wrap;gap:.6rem;}.reflection .ratings label{display:inline-flex;align-items:center;gap:.25rem;font-weight:500;margin:0;}
+.reflection .check{display:flex;align-items:center;gap:.5rem;margin:1rem 0 .6rem;font-weight:600;}
+.btn{display:inline-block;border:0;border-radius:10px;padding:.6rem 1.1rem;font:700 15px/1.2 system-ui,sans-serif;background:var(--vr);color:#fff;cursor:pointer;margin-right:.5rem;}
+.btn:hover{filter:brightness(1.08);}.btn.btn-outline{background:transparent;color:var(--vr);border:2px solid var(--vr);}
+.nextcard{border:2px dashed var(--vr);border-radius:14px;padding:1rem 1.2rem;text-align:center;margin:1.5rem 0 0;}
+.nextcard a{color:var(--vr);font-weight:700;text-decoration:none;}.nextcard a:hover{text-decoration:underline;}
+.progress{color:var(--muted);font-size:.9rem;margin:.6rem 0 0;}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:3rem;padding-top:.8rem;}
+@media print{nav,.metmini,.reflection,.nextcard,.whoami{display:none!important;}}</style>
+</head>
+<body>
+<nav><div class="inner"><a href="#plan">План</a><a href="#theory">Теория</a><a href="#practice">Практика</a><a href="#home">Домашнее задание</a><a href="#metodichka">Методичка</a><a href="#links">Ссылки</a><a href="#reflect">Рефлексия</a><a href="#nextcard">Дальше</a></div></nav>
+<main class="wrap">
+  <div class="whoami" id="whoami" style="background:var(--vr-soft);border:1px solid var(--vr);border-radius:12px;padding:.6rem 1rem;margin-bottom:1.2rem;font-size:.9rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+    <span id="whoText" style="font-weight:700;color:var(--vr)">Загружаю профиль…</span>
+    <a href="../%D0%A1%D0%BF%D0%B8%D1%81%D0%BE%D0%BA%20%D0%BC%D0%BE%D0%B4%D1%83%D0%BB%D0%B5%D0%B9%20C%23.html" style="color:var(--muted);font-size:.85rem;text-decoration:none">← список модулей C#</a>
+  </div>
+  <header>
+    <p class="kicker">Углублённый C# · Модуль 1</p>
+    <h1>Типы данных и операторы</h1>
+    <p class="sub">Теория + практика · консоль и Unity</p>
+    <p class="meta">Курс для школьников</p>
+    <div class="badges">
+      <span class="badge b-vr">Модуль 1</span>
+      <span class="badge b-ac">Теория + практика</span>
+      <span class="badge b-pr">C# · Unity</span>
+      <span class="badge b-def" id="stateBadge">Статус: не пройдено</span>
+    </div>
+  </header>
+  <div class="tldr"><b>Про что модуль.</b> Научишься выбирать тип данных для каждой величины и выводить числа на экран ровно так, как нужно.</div>
+  <div class="goalwrap"><b>Цель модуля.</b> К концу модуля ты создашь консольную программу-«смету», которая сама посчитает стоимость и налог.</div>
+
+  <section id="plan">
+    <h2><span class="n">01</span>План модуля — 4 шага</h2>
+    <div class="plan"><div class="step-card"><span class="num">1</span><b>Что такое тип данных</b></div><div class="step-card"><span class="num">2</span><b>Числа: целые и дробные</b></div><div class="step-card"><span class="num">3</span><b>Слова и правда/ложь</b></div><div class="step-card"><span class="num">4</span><b>Вывод чисел на экран</b></div></div>
+  </section>
+
+  <section id="theory">
+    <h2><span class="n">01·A</span>Теория по шагам</h2>
+    <p>Внимательно прочитай каждый шаг по очереди. Не спеши — после каждого шага проверяй себя на «что увидишь».</p>
+    <div class="introbox"><h3>Открой Visual Studio</h3><p>Файл → Создать → Проект → Консольное приложение (C#). Назови проект Booka и выбери папку, где его легко найти. Появится окно с программой-заглушкой Hello World.</p></div><div class="introbox"><h3>Что происходит на экране</h3><p>В окне уже есть текст: Console.WriteLine("Hello, World!");. Это команда «напечатать на экран». Запусти проект кнопкой ▶ (или клавишей F5): внизу откроется чёрное окно с надписью Hello, World!. Это и есть результат работы программы.</p></div>
+    <div class="microwrap"><div class="micro"><div class="m-head"><span class="m-n">1</span><h3>Зачем нужен тип данных</h3></div><div class="m-body"><p class="m-text">Компьютер хранит каждую величину в памяти и должен заранее знать, какого она вида: число это или слово. Этот вид и называется типом данных. Выбор правильного типа — первая команда программиста.</p><div class="m-label">Скопируй этот код</div><pre>int age;          // целое число (для возраста, очков, жизни)
+float speed;       // дробное число (для скорости, координат)
+bool isMood;       // правда или ложь (для флагов «жив», «включён»)
+string name;       // текст (для имени, названия)</pre><div class="m-label">Что ты увидишь на экране</div><div class="outbox">При объявлении переменных на экране ничего не появится — это просто «заметка» для компьютера.</div><div class="rem"><b>Запомни.</b> Тип = какой вид данных. int (целое), float (дробное), bool (да/нет), string (текст).</div></div></div><div class="micro"><div class="m-head"><span class="m-n">2</span><h3>Целые и дробные числа</h3></div><div class="m-body"><p class="m-text">Для целых чисел (3, -7, 0) используется int. Для дробных (3.5, -0.25) — float. В играх у человека здоровье int (80), а скорость передвижения float (5.5). К дробному числу в C# добавляют букву f — это знак, что число дробное.</p><div class="m-label">Скопируй этот код</div><pre>int score = 100;        // целое очко
+float speed = 3.5f;      // дробная скорость. Буква f в конце ВАЖНА!
+Console.WriteLine(score);
+Console.WriteLine(speed);</pre><div class="m-label">Что ты увидишь на экране</div><div class="outbox">На экране появятся две строки:
+100
+3,5</div><div class="rem"><b>Запомни.</b> Целое число — int, дробное — float. У дробного в коде в конце ставим f.</div></div></div><div class="micro"><div class="m-head"><span class="m-n">3</span><h3>Слова и правда/ложь</h3></div><div class="m-body"><p class="m-text">Текст хранится в string, в кавычках "...". Правда или ложь — в bool, словами true (правда) и false (ложь). bool удобен для переключателей: «жив ли персонаж», «открыта ли дверь».</p><div class="m-label">Скопируй этот код</div><pre>string player = "Аня";
+bool isAlive = true;
+Console.WriteLine("Игрок: " + player);
+Console.WriteLine("Жив: " + isAlive);</pre><div class="m-label">Что ты увидишь на экране</div><div class="outbox">На экране:
+Игрок: Аня
+Жив: True</div><div class="rem"><b>Запомни.</b> Текст пишем в кавычках — string. Правда/ложь — true/false — bool.</div></div></div><div class="micro"><div class="m-head"><span class="m-n">4</span><h3>Выводим числа красиво</h3></div><div class="m-body"><p class="m-text">С помощью $ можно вставить переменную прямо в текст, а с помощью :F2 — написать число с двумя знаками после запятой (например, для цен и измерений).</p><div class="m-label">Скопируй этот код</div><pre>double price = 1234.5;
+Console.WriteLine($"Цена: {price:N0} руб.");
+Console.WriteLine($"Точная: {price:F2}");</pre><div class="m-label">Что ты увидишь на экране</div><div class="outbox">На экране:
+Цена: 1 235 руб.
+Точная: 1234,50</div><div class="rem"><b>Запомни.</b> $ и {переменная} — вставить переменную в текст. :F2 — два знака после запятой, :N0 — тысячи.</div></div></div><div class="micro"><div class="m-head"><span class="m-n">5</span><h3>Приведение типов</h3></div><div class="m-body"><p class="m-text">Чтобы превратить дробное число в целое, не хватает простого присваивания — нужно явное приведение: (int). Простое (int) отбрасывает дробную часть, Convert.ToInt32 округляет.</p><div class="m-label">Скопируй этот код</div><pre>double d = 59.7;
+int a = (int)d;            // отбросит дробь → 59
+int b = Convert.ToInt32(d); // округлит → 60
+Console.WriteLine(a);
+Console.WriteLine(b);</pre><div class="m-label">Что ты увидишь на экране</div><div class="outbox">На экране:
+59
+60</div><div class="rem"><b>Запомни.</b> (int) — отбрасывает дробную часть. Convert.ToInt32(...) — округляет.</div></div></div></div>
+  </section>
+
+  <section id="practice">
+    <h2><span class="n">01·Б</span>Практика — сделай и проверь</h2>
+    <p>Выполняй шаги по порядку. У каждого шага внизу написано, что у тебя ДОЛЖНО получиться. Совпадёт — идёшь дальше.</p>
+    <div class="pracwrap"><div class="pstep"><div class="p-top"><span class="p-n">1</span><b>Создай новый проект Console App и назови его Booka.</b></div><span class="p-see"><b>Должно получиться:</b> Откроется файл с текстом Hello, World! — это точка старта.</span></div><div class="pstep"><div class="p-top"><span class="p-n">2</span><b>Набери в коде переменные (int score, float speed, string name, bool on) и присвой им значения.</b></div><span class="p-see"><b>Должно получиться:</b> Под переменными не будет красных подчёркиваний — значит, C# понял твой код.</span></div><div class="pstep"><div class="p-top"><span class="p-n">3</span><b>Выведи каждую из них через Console.WriteLine.</b></div><span class="p-see"><b>Должно получиться:</b> В чёрном окне (▶ / F5) появятся их значения — 4 строки.</span></div><div class="pstep"><div class="p-top"><span class="p-n">4</span><b>Добавь строку вывода цены с :F2 и :N0.</b></div><span class="p-see"><b>Должно получиться:</b> Число выведется с запятой и разделителем тысяч.</span></div><div class="pstep"><div class="p-top"><span class="p-n">5</span><b>Преврати дробное число в целое двумя способами (int и Convert) и выведи оба результата.</b></div><span class="p-see"><b>Должно получиться:</b> Два числа: одно меньше (без округления), второе равно округлённому.</span></div></div>
+    <div class="donecheck"><b>✓ Чек-лист готовности.</b> Модуль считается пройденным, когда:
+      <ul>
+        <li>Ты выполнил все шаги практики и увидел описанный результат.</li>
+        <li>Выполнил домашнее задание и оно работает.</li>
+        <li>Заполнил рефлексию ниже.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="home">
+    <h2><span class="n">01·В</span>Домашнее задание</h2>
+    <div class="homebox">
+      <p class="h-task">📋 Напиши программу-«смету»: стоимость 3 предметов с налогом 13%.</p>
+      <ol><li>Заведи три переменные int с ценами товаров.</li><li>Посчитай сумму и сохрани её в переменную sum.</li><li>Посчитай налог: sum * 0.13f и сохрани в tax.</li><li>Выведи итог строкой: «Итого с налогом: ... руб.» и налог с двумя знаками (:F2).</li><li>Запусти (F5) — на экране должны быть сумма, налог и итог с налогом.</li></ol>
+      <div class="h-res"><b>Что должно получиться:</b> Ты увидишь три числа: сумму товаров, налог и общую стоимость с налогом (с копейками).</div>
+    </div>
+  </section>
+
+  <section id="metodichka">
+    <h2><span class="n">01·Г</span>Методичка — что и где нажать</h2>
+    <div class="metmini">
+      <h3>Пошагово: действие → что появится</h3>
+      <div class="ms"><b>Шаг 1. Запусти Visual Studio. Если проекта ещё нет — Файл → Создать → Проект.</b><p>Открой среду</p><span class="w">✔ { Откроется окно выбора шаблона проекта. }</span></div><div class="ms"><b>Шаг 2. Выбери «Консольное приложение (C#)» и нажми Далее. В названии напиши Booka.</b><p>Создай консольный проект</p><span class="w">✔ { Появится окно кода с текстом Hello, World!. }</span></div><div class="ms"><b>Шаг 3. Замени Hello World на строки с переменными из теории.</b><p>Набери первый код</p><span class="w">✔ { После набора строк под ними не будет ошибок. }</span></div><div class="ms"><b>Шаг 4. Нажми кнопку ▶ наверху или клавишу F5.</b><p>Запусти программу</p><span class="w">✔ { Откроется чёрное окно с результатом, например 100 и 3,5. }</span></div><div class="ms"><b>Шаг 5. Добавь :F2 и :N0 в вывод числа и запусти снова.</b><p>Проверь форматы</p><span class="w">✔ { Число появится с запятой и разделителем тысяч. }</span></div>
+      <div class="note" style="margin-top:.7rem"><b>Если не работает:</b> Если запустил и сразу всё закрылось — в конец Main добавь Console.ReadKey();, чтобы окно ждало нажатия клавиши.</div>
+    </div>
+    <div class="tip" style="margin-top:.8rem"><b>Полная версия.</b> Открой <a href="Методичка-csharp-01-tipy-i-operatory.html" style="color:var(--pr);font-weight:700">отдельную методичку Модуль 1</a> — там то же самое, но с большим пояснением.</div>
+  </section>
+
+  <section id="links">
+    <h2><span class="n">01·Д</span>Источники и материалы</h2>
+    <p>Открываются в России без VPN. Читай, если хочешь больше примеров по этой теме.</p>
+    <div class="theory-body" style="border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;background:#fbfcfe"><p style="margin:.35rem 0"><a href="https://metanit.com/sharp/tutorial/2.2.php" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">→ metanit · Типы данных и переменные в C#</a></p><p style="margin:.35rem 0"><a href="https://itproger.com/course/csharp/3" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">→ itproger · C# урок 3 — переменные и типы</a></p><p style="margin:.35rem 0"><a href="https://learn.microsoft.com/ru-ru/dotnet/csharp/tour-of-csharp/types" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">→ Microsoft Learn · Типы данных (общие сведения о C#)</a></p></div>
+  </section>
+
+  <section id="reflect">
+    <h2><span class="n">01·Е</span>Рефлексия модуля</h2>
+    <div class="reflection">
+      <h3>Ответь кратко — это помогает закрепить материал</h3>
+      <label>Что нового я узнал в этом модуле?</label><textarea id="r1" placeholder="Напиши 1–2 предложения"></textarea>
+      <label>Что получилось лучше всего?</label><textarea id="r2" placeholder="Напиши 1–2 предложения"></textarea>
+      <label>Что было сложно и как я это преодолел?</label><textarea id="r3" placeholder="Напиши 1–2 предложения"></textarea>
+      <label>Оцени себя</label>
+      <div class="ratings" id="ratingWrap">
+        <label><input type="radio" name="rating" value="1"> 1</label><label><input type="radio" name="rating" value="2"> 2</label><label><input type="radio" name="rating" value="3"> 3</label><label><input type="radio" name="rating" value="4"> 4</label><label><input type="radio" name="rating" value="5"> 5</label>
+      </div>
+      <div class="check"><input type="checkbox" id="doneCheck"> Я выполнил практику и домашнее задание модуля</div>
+      <button class="btn" id="saveBtn" onclick="completeLesson()">Отметить модуль пройденным</button>
+      <p class="progress" id="reflMsg"></p><p class="progress" id="saveMsg"></p>
+    </div>
+  </section>
+
+  <div class="nextcard" id="nextcard">
+    <p style="margin:.2rem 0 .5rem"><b>Следующий модуль:</b> Условия, ветвления и тернарный оператор</p><a href="../Модуль 2/csharp-02-usloviya-i-vetvleniya.html" id="nextLink" class="nextlink">Перейти к модулю Условия, ветвления и тернарный оператор →</a><p class="progress" id="nextStatus">Ссылка откроется после прохождения этого модуля.</p>
+  </div>
+  <footer><p>Углублённый курс «C#» · для школьников 8–11 классов.</p></footer>
+</main>
+<script>
+const CUKEY="cs_current_user", PFKEY="cs_profiles";
+function currentUid(){try{var s=JSON.parse(localStorage.getItem(CUKEY)||"null");return s&&s.uid?s.uid:null;}catch(e){return null;}}
+function me(){const id=currentUid();if(!id)return null;try{const arr=JSON.parse(localStorage.getItem(PFKEY)||"[]");return arr.find(p=>String(p.uid)===String(id))||null;}catch(e){return null;}}
+const user=me();
+const KEY=user?("cs_u_"+user.uid+"_m_1"):null;
+const reflKey=KEY||("cs_anon_m_01");
+const badge=document.getElementById("stateBadge"), nextLink=document.getElementById("nextLink"), nextStatus=document.getElementById("nextStatus"), who=document.getElementById("whoText");
+function showWho(){ if(user) who.textContent=user.name+(user.klass?(" · "+user.klass+" класс"):""); else who.textContent="Войди в профиль на «Списке модулей» курса C#, чтобы сохранять прогресс."; }
+function refreshState(){
+  const isDone=localStorage.getItem(reflKey)==="1";
+  badge.textContent=isDone?"Статус: модуль пройден ✓":"Статус: не пройдено";
+  badge.style.background=isDone?"var(--pr-soft)":"var(--def-soft)";
+  badge.style.color=isDone?"var(--pr)":"var(--def)";
+  if(nextLink){nextLink.style.setProperty("pointer-events",isDone?"auto":"none","important");nextLink.style.opacity=isDone?"1":".45";nextLink.setAttribute("aria-disabled",isDone?"false":"true");if(nextStatus)nextStatus.textContent=isDone?"Модуль пройден — следующий открыт. Удачи!":"Заполни ВСЕ поля рефлексии и нажми «Отметить занятие пройденным».";}
+}
+function completeLesson(){ if(!user){document.getElementById("saveMsg").textContent="Сначала войди в профиль на «Списке модулей» курса C#.";return;} const r1=((document.getElementById("r1")||{}).value||""), r2=((document.getElementById("r2")||{}).value||""), r3=((document.getElementById("r3")||{}).value||""); const missing=[]; if(!r1.trim())missing.push("«Что нового я узнал»"); if(!r2.trim())missing.push("«Что получилось»"); if(!r3.trim())missing.push("«Что было сложно»"); if(missing.length){const mbox=document.getElementById("saveMsg");if(mbox){mbox.textContent="Заполни все поля рефлексии: "+missing.join(", ")+".";mbox.style.color="var(--def)";mbox.style.fontWeight="700";}const rbl=document.getElementById("reflect");if(rbl)rbl.scrollIntoView({behavior:"smooth",block:"center"});return;} const done=document.getElementById("doneCheck").checked; if(!done){document.getElementById("saveMsg").textContent="Отметь «Я выполнил практику и домашнее задание».";return;} try{localStorage.setItem(reflKey+"_draft",JSON.stringify({r1:r1,r2:r2,r3:r3}));}catch(e){} localStorage.setItem(KEY,"1"); const msg=document.getElementById("saveMsg"); if(msg){msg.textContent="Модуль отмечен пройденным: "+user.name+".";msg.style.color="";msg.style.fontWeight="";} refreshState(); }
+function pdPersistDraft(){ if(!reflKey)return; try{var r={r1:"",r2:"",r3:""};["r1","r2","r3"].forEach(id=>{var el=document.getElementById(id);if(el)r[id]=el.value;});var rating=document.querySelector('input[name="rating"]:checked');var done=document.getElementById("doneCheck");localStorage.setItem(reflKey+"_draft",JSON.stringify({r1:r.r1,r2:r.r2,r3:r.r3,rating:rating?rating.value:"",done:done?done.checked:false}));if(typeof refreshState==="function")try{refreshState();}catch(e){}}catch(e){} }
+["r1","r2","r3"].forEach(id=>{var el=document.getElementById(id);if(el)el.addEventListener("input",pdPersistDraft);});var pdDone=document.getElementById("doneCheck");if(pdDone)pdDone.addEventListener("change",pdPersistDraft);
+try{var saved=reflKey?(JSON.parse(localStorage.getItem(reflKey+"_draft")||"null")||JSON.parse(localStorage.getItem(reflKey+"_answers")||"null")):null;if(saved){["r1","r2","r3"].forEach(id=>{var el=document.getElementById(id);if(el)el.value=saved[id]||"";});if(saved.rating){var el=document.querySelector('input[name="rating"][value="'+saved.rating+'"]');if(el)el.checked=true;}var has=!!(saved.r1||saved.r2||saved.r3);if(has||saved.done)document.getElementById("doneCheck").checked=saved.done||has;}}catch(e){}
+showWho(); refreshState();
+(function(){var nl=document.getElementById("nextLink");if(nl)nl.addEventListener("click",function(ev){if(localStorage.getItem(reflKey)!=="1"){ev.preventDefault();ev.stopPropagation();const box=document.getElementById("saveMsg");if(box){box.textContent="Этот модуль ещё не пройден. Заполни все поля рефлексии и нажми «Отметить занятие пройденным».";box.style.color="var(--def)";box.style.fontWeight="700";}const rbl=document.getElementById("reflect");if(rbl){rbl.scrollIntoView({behavior:"smooth",block:"center"});}}});})();
+</script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Методичка · AR-разработка · Плоскости и размещение объектов</title><style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--line:#D9E2EF;--yellow:#8a6d00;--yellow-soft:#FFF6DA;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:1rem 1.25rem 3rem}
+nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10}
+nav .inner{max-width:860px;margin:0 auto;padding:.5rem 1.25rem;display:flex;flex-wrap:wrap;gap:.3rem .9rem}
+nav a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:600}nav a:hover{color:var(--accent)}
+.backlink{display:inline-block;margin:1rem 0 -.2rem;color:var(--accent);text-decoration:none;font-size:.9rem;font-weight:600}.backlink:hover{text-decoration:underline}
+header.hero{padding:1.2rem 0 .2rem}
+header .kicker{color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em}
+header h1{font-size:1.65rem;line-height:1.25;margin:.2rem 0 .3rem}
+header .sub{font-size:1rem;color:var(--muted);margin:0 0 .4rem}
+.badges{margin:.6rem 0 1rem;display:flex;flex-wrap:wrap;gap:.4rem}.badge{font-size:.78rem;font-weight:700;padding:.22rem .6rem;border-radius:999px}
+.b-ac{background:var(--accent-soft);color:var(--accent)}.b-vr{background:var(--vr-soft);color:var(--vr)}.b-pr{background:var(--pr-soft);color:var(--pr)}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.9rem 1.15rem;border-radius:0 8px 8px 0;margin:1.2rem auto}.tldr b{color:var(--accent)}
+section{margin:2.2rem 0}
+h2{font-size:1.25rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;margin:0 0 1rem}h2 .n{color:var(--accent);margin-right:.45rem}
+h3{font-size:1.08rem;margin:1.4rem 0 .5rem}
+p{margin:.5rem 0}
+code{background:var(--accent-soft);padding:.12em .35em;border-radius:4px;font-size:.88em;color:#333a54}
+pre{background:#20263f;color:#e6e9f5;border-radius:10px;padding:1rem 1.1rem;overflow-x:auto;font-size:.84rem;line-height:1.6;margin:.6rem 0}
+pre .c{color:#8da0c8}
+kbd{background:var(--accent-soft);border:1px solid var(--line);border-radius:5px;padding:.08em .5em;font-size:.82em;font-family:inherit}
+.step{border:1px solid var(--line);border-radius:14px;padding:1rem 1.15rem;background:#fbfcfe;margin:.9rem 0}
+.step .st-head{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.02rem;color:var(--ink)}
+.step .st-n{display:inline-flex;align-items:center;justify-content:center;min-width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem}
+.step .why{color:var(--muted);font-size:.92rem;margin:.3rem 0 .6rem}
+.step .w{display:block;margin-top:.6rem;color:var(--pr);font-weight:600}
+.warn{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.warn b{color:var(--def)}
+.tipb{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.tipb b{color:var(--pr)}
+.gotcha{background:var(--yellow-soft);border-left:4px solid var(--yellow);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.gotcha b{color:var(--yellow)}
+.quiz{background:var(--vr-soft);border:1px solid var(--vr);border-radius:12px;padding:.95rem 1.1rem;margin:1.2rem 0}.quiz ol{margin:.4rem 0 0;padding-left:1.3rem}.quiz li{margin:.4rem 0}
+.screen{margin:.9rem 0}.screen .s-label{font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:.3rem}
+.screen .s-box{background:#eef2f8;border:1px dashed var(--line);border-radius:10px;padding:.8rem 1rem;font-family:Consolas,Menlo,monospace;font-size:.82rem;white-space:pre-line}
+.result{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.95rem;margin:1.2rem 0}.result b{color:var(--pr)}
+table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);color:var(--accent)}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.8rem}
+@media print{nav,.quiz{display:none}}
+</style></head>
+<body>
+<nav><div class="inner"><a href="#env">Что понадобится</a><a href="#steps">Пошагово</a><a href="#errors">Ошибки</a><a href="#quiz">Проверь себя</a></div></nav>
+<main class="wrap">
+  <p class="backlink"><a href="javascript:history.back()">← назад к модулю</a></p>
+  <header class="hero">
+    <p class="kicker">AR-разработка · методичка</p>
+    <h1>Плоскости и размещение объектов</h1>
+    <p class="sub">Подробное руководство для школьника: как делать, зачем и что должно получиться.</p>
+    <div class="badges"><span class="badge b-vr">Модуль 02</span><span class="badge b-ac">Начинающим</span><span class="badge b-pr">Подробно</span></div>
+  </header>
+  <div class="tldr"><b>Цель модуля.</b> Теперь главное: поставим 3D-куб на реальный стол! Научимся «стрелять лучом» по поверхности и закреплять объект в точке контакта.</div>
+  <section id="env"><h2><span class="n">0</span>Что понадобится</h2><ul><li><b>Проект из Модуля 1</b> — Там уже есть AR сцена и плоскости.</li><li><b>Куб-префаб</b> — Обычный Cube.</li><li><b>Запуск на телефоне</b> — Для проверки.</li></ul></section>
+  <section id="steps"><h2><span class="n">1</span>Пошагово — делай по порядку</h2><div class="step"><div class="st-head"><span class="st-n">1</span><span>Пойми принцип Raycast</span></div><p class="why">💡 Когда ты касаешься экрана, Unity пускает «луч» от камеры вглубь. Если луч попадает в распознанную плоскость — получаем точку, где ставить объект.</p><p><b>Что делать:</b> Прочитай схему: касание → луч → пересечение с плоскостью → точка установки.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Понял, зачем луч и плоскость.</div></div></div><div class="tipb"><b>Почему луч, а не просто точка экрана?</b> Экран — двумерный, а мир — трёхмерный. По одному касанию телефон не знает расстояния до поверхности, поэтому от камеры «выстреливается» луч, и движок смотрит, во что он врежется. Точка пересечения луча с распознанной плоскостью и есть место установки.</div><table><tr><th>Что происходит</th><th>Ты видишь</th></tr><tr><td>Коснулся экрана</td><td>Палец нажал на экран</td></tr><tr><td>Луч летит от камеры</td><td>Точка-«курсор» на плоскости (предпросмотр)</td></tr><tr><td>Луч попал в плоскость</td><td>Объект появился в точке касания</td></tr></table><div class="step"><div class="st-head"><span class="st-n">2</span><span>Настрой сцену под размещение</span></div><p class="why">💡 Нужен объект, который будет «управлять» касаниями.</p><p><b>Что делать:</b> На AR Session Origin добавь скрипт Placement (ниже). Он слушает касание и ставит объект.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Скрипт висит на AR Session Origin.</div></div></div><div class="step"><div class="st-head"><span class="st-n">3</span><span>Напиши код размещения</span></div><p class="why">💡 Скрипт обрабатывает касание экрана, пускает луч и ставит объект в найденную точку.</p><p><b>Что делать:</b> Создай скрипт Placement.cs и вставь код.</p><div class="screen"><div class="s-label">Код (копируй целиком)</div><pre>using UnityEngine;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
+
+public class Placement : MonoBehaviour {
+    public GameObject objPrefab;
+    private ARRaycastManager rayManager;
+    void Awake() { rayManager = GetComponent<ARRaycastManager>(); }
+    void Update() {
+        if (Input.touchCount <= 0) return;
+        var touch = Input.GetTouch(0);
+        if (touch.phase != TouchPhase.Began) return;
+        var hits = new System.Collections.Generic.List<ARRaycastHit>();
+        if (rayManager.Raycast(touch.position, hits, TrackableType.PlaneWithinPolygon)) {
+            var pose = hits[0].pose;
+            Instantiate(objPrefab, pose.position, pose.rotation);
+        }
+    }
+}</pre></div><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Коснулся стола — куб появился на столе.</div></div></div><div class="step"><div class="st-head"><span class="st-n">4</span><span>Закрепи объект якорем (Anchor)</span></div><p class="why">💡 Без якоря куб может «уплыть», когда двигается камера. Якорь (AR Anchor) фиксирует объект в реальной точке мира.</p><p><b>Что делать:</b> В коде после создания объекта добавь ему AR Anchor:</p><div class="screen"><div class="s-label">Код (копируй целиком)</div><pre>var g = Instantiate(objPrefab, pose.position, pose.rotation);
+g.AddComponent<UnityEngine.XR.ARFoundation.ARAnchor>();</pre></div><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Куб стоит неподвижно, даже когда крутишь телефон.</div></div></div><div class="step"><div class="st-head"><span class="st-n">5</span><span>Сделай «следование» за пальцем</span></div><p class="why">💡 Так удобнее: пока палец на экране, объект двигается, при отпускании закрепляется.</p><p><b>Что делать:</b> Добавь в Update обработку фазы Moved (объект двигается за точкой) и Ended (закрепить).</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Объект «едет» за пальцем и встаёт при отпускании.</div></div></div></section>
+  <section id="errors"><h2><span class="n">2</span>Типичные ошибки и как их исправить</h2><div class="gotcha"><b>Ошибка «Куб не появляется».</b> Коснулся — ничего.</div><div class="tipb"><b>Как исправить:</b> Проверь: Raycast manager (ARRaycastManager) есть на AR Session Origin, objPrefab привязан в Inspector, и на поверхности уже распознана плоскость.</div><div class="gotcha"><b>Ошибка «Куб «уплывает»».</b> Объект прыгает при движении камеры.</div><div class="tipb"><b>Как исправить:</b> Добавь AR Anchor к объекту (см. шаг 4).</div><div class="gotcha"><b>Ошибка «Объект падает/уходит вниз».</b> Разместил, а куб стоит криво или проваливается.</div><div class="tipb"><b>Как исправить:</b> Ставь объект только на горизонтальную плоскость и следи, чтобы его «низ» совпадал с точкой raycast. Разверни префаб так, чтобы основание объекта стояло на поверхности, а не центр.</div></section>
+  <section id="quiz"><div class="quiz"><b>Проверь себя (ответь устно или письменно):</b><ol><li>Как Raycast находит точку для объекта?</li><li>Зачем объекту якорь AR Anchor?</li><li>Чем отличается «размещение по касанию» от «авторазмещения на первую плоскость»? Когда каждого удобно?</li><li>Что произойдёт с объектом, если навести камеру туда, где ещё не распознана плоскость?</li></ol></div></section>
+  <div class="result"><b>Итог модуля.</b> Итог: ставишь 3D-объекты на реальные поверхности по касанию, с якорем и «следованием» за пальцем.</div>
+</main>
+<footer><p>Методичка · AR-разработка · Модуль 02 · Технологическая лаборатория</p></footer>
+</body>
+</html>

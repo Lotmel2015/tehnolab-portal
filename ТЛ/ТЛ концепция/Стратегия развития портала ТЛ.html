@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Стратегия развития портала ТЛ до уровня лидеров</title>
+<style>
+  :root {
+    --bg: #F4F6FA; --bg-card: #FFFFFF; --ink: #1B2A4A; --muted: #5A6B85;
+    --line: #D9E2EF; --accent: #2D7AFF; --accent-d: #1F63D0;
+    --ok: #167A4D; --ok-soft: #E7F4EE; --warn: #B45309; --warn-soft: #FDF1E1;
+    --bad: #B3261E; --bad-soft: #FBEAE9;
+    --c01: #E3550E; --c02: #0B8A4F; --c03: #C25E00; --c04: #6B6ECF; --c05: #0A6EB2; --c06: #8B2FC9; --c07: #E07B00;
+    --f-display: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.6 system-ui, -apple-system, "Segoe UI", Arial, sans-serif; padding: 28px 16px; }
+  .page { max-width: 1120px; margin: 0 auto; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 36px 44px 48px; }
+  h1 { font-size: 26px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13.5px; margin-bottom: 24px; }
+  h2 { font-size: 19px; margin: 32px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
+  h3 { font-size: 15.5px; margin: 18px 0 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; margin: 10px 0 16px; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; vertical-align: top; text-align: left; }
+  th { background: #EDF2FA; font-weight: 700; }
+  .pill { display: inline-block; border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+  .pill-p1 { background: var(--bad-soft); color: var(--bad); }
+  .pill-p2 { background: var(--warn-soft); color: var(--warn); }
+  .pill-p3 { background: var(--ok-soft); color: var(--ok); }
+  .card-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .tile { flex: 1 1 200px; border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; background: #FBFCFE; }
+  .tile b { display: block; font-size: 15px; margin-bottom: 4px; }
+  .tile span { color: var(--muted); font-size: 12.5px; }
+  .roadmap { list-style: none; padding-left: 0; margin: 8px 0 16px; }
+  .roadmap > li { position: relative; padding: 8px 0 8px 34px; border-left: 2px solid var(--line); margin-left: 10px; }
+  .roadmap > li::before { content: attr(data-n); position: absolute; left: -14px; top: 7px; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: 13px; display: grid; place-items: center; }
+  .roadmap .m { color: var(--muted); font-size: 13px; }
+  ul.tick { list-style: none; padding-left: 0; }
+  ul.tick li { position: relative; padding-left: 30px; margin: 6px 0; }
+  ul.tick li::before { content: "✓"; position: absolute; left: 0; color: var(--ok); font-weight: 700; border: 1px solid var(--line); border-radius: 4px; width: 20px; height: 20px; display: grid; place-items: center; font-size: 12px; }
+  .highlight { background: linear-gradient(90deg, rgba(45,122,255,.07), transparent 70%); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 14px 0; }
+  .highlight b { font-size: 16px; color: var(--accent); }
+  .idea { border: 1px dashed var(--c06); border-radius: 10px; padding: 16px 20px; background: #F8F4FF; }
+  .note { background: #FBFCFE; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 13px; color: var(--muted); margin: 12px 0; }
+  footer { margin-top: 28px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+  .chip { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 6px; padding: 3px 8px; margin: 2px; }
+  .chip.c1 { background: rgba(227,85,14,.12); color: var(--c01); }
+  .chip.c2 { background: rgba(11,138,79,.12); color: var(--c02); }
+  .chip.c3 { background: rgba(194,94,0,.12); color: var(--c03); }
+  .chip.c4 { background: rgba(107,110,207,.12); color: var(--c04); }
+  .chip.c5 { background: rgba(10,110,178,.12); color: var(--c05); }
+  .chip.c6 { background: rgba(139,47,201,.12); color: var(--c06); }
+  .chip.c7 { background: rgba(224,123,0,.12); color: var(--c07); }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Стратегия развития портала «Технологическая лаборатория»</h1>
+  <div class="sub">От устранения недочётов — к формату лидеров и собственной «фишке» · 09.10.2026</div>
+
+  <h2>1. Целевое состояние (формат лидеров)</h2>
+  <div class="card-row">
+    <div class="tile"><b>Витрина + инструмент</b><span>Не просто презентация, а работающий «хаб»: обычный посетитель и родитель сразу понимают, что можно сделать (записаться, смотреть курсы, узнать расписание).</span></div>
+    <div class="tile"><b>Живой контент</b><span>Новости, календарь, достижения, материалы — портал обновляется, а не «заморожен».</span></div>
+    <div class="tile"><b>Доверие</b><span>Прозрачность: цифры, команда, отчёты, политика ПДн, доступность, соцсети.</span></div>
+    <div class="tile"><b>Уникальность</b><span>Фишка, которой нет у лидеров: собственные полноценные цифровые курсы, доступные с портала.</span></div>
+  </div>
+
+  <h2>2. Ликвидация недочётов (дорожная карта по приоритетам)</h2>
+
+  <h3>Этап 1 — Базовый каркас (неделя 1-2) <span class="pill pill-p1">Приоритет 1</span></h3>
+  <ul class="tick">
+    <li><b>Структура:</b> добавить разделы — «Расписание», «Наставники», «Материалы», «Новости/События», «Запись»; оставить вкладки «Объединение / Программа / Лаборатории».</li>
+    <li><b>Форма заявки на портале</b> (ФИО, класс, школа, лаборатория, родитель, телефон) + дублирующая ссылка на навигатор Красноярского края и страницу «Спутник».</li>
+    <li><b>Расписание:</b> встроить таблицу реальных лабораторий (Школа космонавтики + «Спутник») из файла «Расписание-лабораторий-2026-2027».</li>
+    <li><b>Наставники:</b> сетка из 5 педагогов (Казакевич, Кириллов, Кондратьев, Мороз, Чистов) с фото, должностями, лабораториями и регалиями — по образцу карточки Казакевича.</li>
+    <li><b>Материалы:</b> собрать на портале ссылки на готовые курсы и методички.</li>
+  </ul>
+
+  <h3>Этап 2 — Контент и прозрачность (неделя 3-4) <span class="pill pill-p2">Приоритет 2</span></h3>
+  <ul class="tick">
+    <li><b>Новости/события:</b> простой блок с датами (набор 2026-27, отборы, хакатоны, ВсОШ этапы).</li>
+    <li><b>Истории успеха:</b> победители WRO/RoboFest/НТО/«Большие вызовы» — сильный контент для родителей.</li>
+    <li><b>Открытые цифры:</b> «7 лабораторий · 112 ч · 65% практики · N побед», годовой срез.</li>
+    <li><b>Применение брендбука:</b> использовать готовое демо-оформление как постоянную витрину (тёмная тема), со светлой версией для печати/документов.</li>
+  </ul>
+
+  <h3>Этап 3 — Цифровые сервисы (неделя 5-6) <span class="pill pill-p3">Приоритет 3</span></h3>
+  <ul class="tick">
+    <li><b>Версия для слабовидящих</b> (контраст, крупный шрифт) — стандарт гос. образовательных сайтов.</li>
+    <li><b>Виджеты соцсетей и мессенджеров</b> (VK, Telegram, Max — чаты ТЛ уже есть), политика ПДн.</li>
+    <li><b>Хостинг/домен:</b> зеркало на сайте школы или отдельный домен; статичный HTML уже самодостаточен для офлайн-демо.</li>
+  </ul>
+
+  <h2>3. «Фишка» портала — главное отличие от лидеров</h2>
+
+  <div class="highlight">
+    <b>Идея:</b> не «ещё один информационный портал о программе», а <b>«ТЛ — цифровой инжиниринговый хаб»</b>: у лидеров есть программы и набор, у ТЛ — есть <i>уникальный актив</i>, которого у лидеров нет: <b>полностью готовые, проработанные электронные курсы по каждому направлению с занятиями, методичками, прогрессом и практическими проектами</b>. Ни «Взлёт», ни «Вега», ни федеральные программы «Сириуса» не дают школьнику пройти <b>весь курс прямо на портале</b> с поурочным планом.
+  </div>
+
+  <p><b>Формулировка фишки (слоган для портала):</b></p>
+  <p style="font-size:18px;font-weight:700;color:var(--accent);">«Не просто запишись — начни заниматься прямо сейчас»</p>
+
+  <div class="idea">
+    <b>Что конкретно добавить (три «фишка-блока»):</b>
+    <ul>
+      <li><b>Банк курсов на портале:</b> «Материалы» → собрать все готовые курсы (VR, C#, Робототехника, Электроника, Blender, КОМПАС, БПЛА, Проектный навигатор) с карточками-обложками, количеством занятий и описанием модулей. Каждый курс — доступен с портала по клику (index.html курса).</li>
+      <li><b>«Попробуй занятие»:</b> вынести первое занятие каждого курса в открытый доступ — посетитель прямо с портала может начать проходить вводную практику (без регистрации). Это то, чего нет у лидеров: они дают информацию, а ТЛ даёт действие.</li>
+      <li><b>«Карта твоего трека»:</b> интерактивная «дорожная карта» школьника: выбрал лабораторию — видишь путь от первого занятия до соревнования/итогового проекта и готовых курсов по каждому шагу. По сути визуализация уже существующих ДООП/КТП, которую лидеры не предлагают.</li>
+    </ul>
+  </div>
+
+  <h3>3.1. Что востребовано целевой аудиторией ТЛ, но не реализовано у лидеров</h3>
+  <table>
+    <thead><tr><th>Потребность ЦА ТЛ (14–18, родители, педагоги)</th><th>Есть у лидеров?</th><th>Решение на портале ТЛ</th></tr></thead>
+    <tbody>
+      <tr><td>Увидеть и «пощупать» занятия ДО начала (не только описание)</td><td class="bad">Нет</td><td class="ok">Открытое первое занятие каждого курса</td></tr>
+      <tr><td>Понять, из чего состоит весь путь: от 1 занятия до соревнования</td><td class="warn">Частично (описания смен)</td><td class="ok">«Карта трека» по каждой лаборатории</td></tr>
+      <tr><td>Доступ к материалам и методичкам в одном месте</td><td class="bad">Разрозненно</td><td class="ok">Банк курсов/методичек на портале</td></tr>
+      <tr><td>Гибкое использование: повторять, догонять, заниматься очно+дистанционно</td><td class="warn">Частично</td><td class="ok">Курсы сами по себе — база для очно-заочного обучения (у ТЛ это уже прописано в ДООП)</td></tr>
+      <tr><td>Показать ребёнку реальные результаты ДО записи (портфолио учеников)</td><td class="warn">У части (олимпиады)</td><td class="ok">Раздел «Достижения» с проектами и победами</td></tr>
+      <tr><td>Локальное/региональное соответствие (Железногорск, предприятия ИСС, «Спутник»)</td><td class="bad">Федеральный уровень</td><td class="ok">Партнёры и профориентация с местными предприятиями</td></tr>
+      <tr><td>Инструмент для педагогов (готовые планы, материалы, ИОТ)</td><td class="bad">Нет</td><td class="ok">Раздел «Педагогам» с методичками/ИОТ (уже готовые файлы)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. Дорожная карта внедрения</h2>
+  <ol class="roadmap">
+    <li data-n="1"><b>Скелет портала-лидера</b><div class="m">Разделы, форма заявки, расписание, наставники, материалы (2 недели).</div></li>
+    <li data-n="2"><b>Банк курсов</b><div class="m">Подключить готовые index.html курсов как «Материалы»; карточки с обложками (1 неделя).</div></li>
+    <li data-n="3"><b>Фишка: «Попробуй занятие» + «Карта трека»</b><div class="m">Встраивание вступительных занятий и визуальной карты по лабораториям (1-2 недели).</div></li>
+    <li data-n="4"><b>Контент доверия</b><div class="m">Истории успеха, цифры, новости, партнёры-предприятия (две недели).</div></li>
+    <li data-n="5"><b>Доступность и регламент</b><div class="m">слабовидящие, соцсети, ПДн, хостинг/домен (неделя).</div></li>
+    <li data-n="6"><b>Обратная связь</b><div class="m">Тест на реальных школьниках/родителях, доработка по отзывам (постоянно).</div></li>
+  </ol>
+
+  <div class="note"><b>Индикаторы успеха:</b> количество заявок через форму, число переходов из «Попробуй занятие» в «Материалы», обращения родителей со словами «видели курс на портале», рост подписчиков в соцсетях, снижение вопросов «что это? / куда записаться?».</div>
+
+  <footer>Стратегия основана на аналитике лидеров (Сириус, Взлёт, Вега, Сириус.Лето, Уроки настоящего, Большие вызовы) и инвентаризации активов ТЛ (готовые курсы, методички, расписание, брендбук).</footer>
+</div>
+</body>
+</html>

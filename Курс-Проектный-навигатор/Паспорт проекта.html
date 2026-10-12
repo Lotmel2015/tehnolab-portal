@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Паспорт проекта · Проектный навигатор</title>
+<style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--line:#D9E2EF;}
+*{box-sizing:border-box}body{margin:0;background:#eef1f6;color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:1rem 1.25rem 3rem}
+nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10;padding:.5rem 1.25rem}
+nav .inner{max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;gap:.3rem .9rem}
+nav a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:600}nav a:hover{color:var(--accent)}
+header.hero{background:linear-gradient(135deg,#1B2A4A 0%,#1F6FE0 65%,#4D008C 130%);color:#fff;border-radius:0 0 18px 18px;padding:1.8rem 1.5rem;margin:0 -1.25rem 1.4rem}
+header.hero h1{font-size:1.5rem;line-height:1.25;margin:0 0 .3rem}header.hero .sub{opacity:.92;font-size:.98rem}
+.toolbar{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.btn{border:0;border-radius:10px;padding:.55rem 1.1rem;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer;background:var(--accent);color:#fff}
+.btn:hover{filter:brightness(1.06)}
+.btn2{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:.5rem 1rem;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer}
+.btn2:hover{border-color:var(--accent);color:var(--accent)}
+.note{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-size:.92rem;margin:1rem 0}.note b{color:var(--pr)}
+.warn{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-size:.92rem;margin:1rem 0}.warn b{color:var(--def)}
+.pcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.4rem 1.6rem;margin:1rem 0;box-shadow:0 6px 18px rgba(27,42,74,.06)}
+.pcard h2{font-size:1.1rem;margin:0 0 .8rem;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:.4rem}
+.field{margin:.7rem 0}
+.field label{display:block;font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:.2rem}
+.field .val{background:#f5f7fb;border:1px dashed var(--line);border-radius:8px;padding:.6rem .8rem;min-height:1.4em;white-space:pre-wrap;font-size:.95rem}
+.field .val.empty{color:#a9b2c2;font-style:italic}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+@media(max-width:640px){.row{grid-template-columns:1fr}}
+.tag{display:inline-block;background:var(--vr-soft);color:var(--vr);border-radius:999px;padding:.1rem .6rem;font-size:.74rem;font-weight:700;margin:.15rem}
+.print-hide{display:block}
+@media print{body{background:#fff}.toolbar,.print-hide,nav,header.hero{display:none!important}.pcard{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<nav><div class="inner"><a href="index.html">← к списку занятий</a><a href="Накопительное портфолио.html">📁 Накопительное портфолио</a></div></nav>
+<header class="hero"><h1>Паспорт проекта</h1><p class="sub">Единая карточка твоего проекта, собранная автоматически из пройденных занятий. Распечатай или сохрани в PDF.</p><p id="whoLine" style="opacity:.85;font-size:.85rem;margin:.6rem 0 0">Определяю профиль…</p></header>
+<div class="toolbar print-hide">
+  <button class="btn" onclick="window.print()">🖨 Печать / PDF</button>
+  <button class="btn2" onclick="refresh()">🔄 Обновить из занятий</button>
+  <button class="btn2" onclick="clearAll()">🗑 Очистить паспорт</button>
+</div>
+<div class="note print-hide" id="status">Паспорт собирается автоматически: поля подтягиваются из рабочих листов занятий 5, 7, 11, 16, 17, 20, 21, 24. Заполни эти листы — и всё появится здесь.</div>
+<div class="warn" id="needAuth" style="display:none"><b>Нужен вход.</b> Войди в профиль на странице «Список занятий» Проектного навигатора, чтобы собрать свой паспорт. Без входа данные не привяжутся.</div>
+
+<div class="pcard" id="titleCard">
+  <h2>Титульный лист</h2>
+  <div class="row">
+    <div class="field"><label>Название проекта</label><div class="val" id="p-topic"></div></div>
+    <div class="field"><label>Автор (фамилия, имя)</label><div class="val" id="p-author"></div></div>
+  </div>
+  <div class="row">
+    <div class="field"><label>Учитель / руководитель</label><div class="val" id="p-teacher"></div></div>
+    <div class="field"><label>Класс</label><div class="val" id="p-class"></div></div>
+  </div>
+  <div class="field"><label>Направление / тип проекта</label><div class="val" id="p-form"></div></div>
+</div>
+
+<div class="pcard">
+  <h2>Цель и продукт</h2>
+  <div class="field"><label>Цель (по SMART)</label><div class="val" id="p-goal"></div></div>
+  <div class="row">
+    <div class="field"><label>Форма / продукт</label><div class="val" id="p-product"></div></div>
+    <div class="field"><label>Минимальная версия (MVP)</label><div class="val" id="p-mvp"></div></div>
+  </div>
+</div>
+
+<div class="pcard">
+  <h2>Задачи</h2>
+  <div id="p-tasks"><div class="val empty">Заполни лист «Паспорт цели и задач» (занятие 7), чтобы здесь появились задачи.</div></div>
+</div>
+
+<div class="pcard">
+  <h2>План (этапы и сроки)</h2>
+  <div class="field"><label>Идея / общая картина</label><div class="val" id="p-plan-idea"></div></div>
+  <div class="field"><label>Команда / кто делает</label><div class="val" id="p-plan-team"></div></div>
+  <div class="note print-hide"><b>Подсказка.</b> Подробный план-график заполняется в занятии 11 (таблица с этапами). Здесь краткая справка.</div>
+</div>
+
+<div class="pcard">
+  <h2>Результат и итоги</h2>
+  <div class="field"><label>Что создано / готово</label><div class="val" id="p-result"></div></div>
+  <div class="field"><label>Тестирование (по чек-листу занятия 21)</label><div class="val" id="p-test"></div></div>
+  <div class="field"><label>Отзыв / самооценка</label><div class="val" id="p-review"></div></div>
+</div>
+
+<footer style="color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2rem;padding-top:.8rem">
+  <p>Паспорт проекта · Проектный навигатор · Технологическая лаборатория. Сформирован автоматически из твоих рабочих листов.</p>
+</footer>
+
+<script>
+(function(){
+  var CUKEY="pdn-course-active", PFKEY="pdn-course-users";
+  function me(){ try{ var s=JSON.parse(localStorage.getItem(CUKEY)||"null"); if(!s||!s.uid) return null; var a=JSON.parse(localStorage.getItem(PFKEY)||"[]"); return a.find(function(p){return String(p.uid)===String(s.uid);})||null; }catch(e){ return null; } }
+  function readJson(key){ try{ var raw=localStorage.getItem(key); return raw?JSON.parse(raw):null; }catch(e){ return null; } }
+  function val(o,key){ if(!o) return ""; var v=o[key]; if(v===undefined||v===null) return ""; return String(v); }
+  function set(id,text,emptyText){ var el=document.getElementById(id); if(!el) return; el.textContent = text ? text : (emptyText||"—"); el.classList.toggle("empty", !text); }
+  function joinVals(list){
+    return list.filter(function(s){return s && String(s).trim(); }).map(function(s){return String(s).trim();}).join("; ");
+  }
+  function esc(s){ return String(s==null?"":s); }
+
+  var user=me();
+  if(!user){ document.getElementById("needAuth").style.display="block"; }
+  document.getElementById("whoLine").textContent = user ? ("Профиль: "+user.name+(user.klass?" · "+user.klass:"")+(user.teacher?" · учитель: "+user.teacher:"")) : "Войди в профиль для привязки данных";
+
+  // Ключ с учётом пользователя: при входе рабочие листы пишут в STORE_KEY + "-u" + uid
+  function keyFor(base){ return user ? (base+"-u"+user.uid) : base; }
+
+  // Читаем все рабочие листы
+  var z5 = readJson(keyFor("pdn-z5-smart-v1"));
+  var z7 = readJson(keyFor("pdn-z7-goal-v1"));
+  var z11 = readJson(keyFor("pdn-z11-plangrafik-v1"));
+  var z16 = readJson(keyFor("pdn-z16-form-v1"));
+  var z17 = readJson(keyFor("pdn-z17-proto-v1"));
+  var z20 = readJson(keyFor("pdn-z20-intro-v1"));
+  var z21 = readJson(keyFor("pdn-z21-test-v1"));
+  var z24 = readJson(keyFor("pdn-z24-main-v1"));
+
+  // uDAT: если пользователь вошёл, рабочие листы могут иметь суффикс ключа, но по умолчанию нет суффикса.
+  // Поля
+  var topic = joinVals([val(z20,"f-topic"), val(z5,"f-topic"), val(z7,"f-topic"), val(z16,"f-idea"), veq(z7,"f-topic")]);
+  // упростим: тема из z20/z7/z5, текучее
+  topic = val(z20,"f-topic") || val(z7,"f-topic") || val(z5,"f-topic") || val(z16,"f-idea") || "";
+  var author = user ? user.name : (val(z7,"f-name")||val(z5,"f-name")||"");
+  var klass = user ? (user.klass||"") : (val(z7,"f-class") || val(z5,"f-class") || "");
+  var teacher = user ? (user.teacher||"") : "";
+  var goal = joinVals([val(z7,"b-goal"), val(z5,"b-goal"), val(z20,"b-goal")]);
+  var form = val(z16,"f-form") || val(z17,"f-form") || "";
+  var product = val(z24,"g-product") || val(z16,"f-mvp") || "";
+  var mvp = val(z16,"f-mvp") || "";
+  var result = val(z24,"g-results") || val(z7,"b-result") || "";
+  var test = val(z21,"f-plan") || "";
+  var review = val(z24,"f-review") || "";
+
+  set("p-topic", topic, "Название появится после занятий 5, 7 или 20");
+  set("p-author", author, "—");
+  set("p-teacher", teacher, "—");
+  set("p-class", klass, "—");
+  set("p-form", form, "Направление появится после занятия 16");
+  set("p-goal", goal, "Цель появится после занятий 5 или 7");
+  set("p-product", product, "Продукт появится после занятия 24");
+  set("p-mvp", mvp, "MVP появится после занятия 16");
+  set("p-plan-idea", val(z11,"f-idea")||val(z16,"f-idea"), "Идея появится после занятий 11 или 16");
+  set("p-plan-team", val(z11,"f-team"), "Команда появится после занятия 11");
+  set("p-result", result, "Результат появится после занятия 24");
+  set("p-test", test, "Тест появится после занятия 21");
+  set("p-review", review, "Отзыв появится после занятия 24");
+
+  // Задачи: из z7.tasks (массив) или z5.b-tasks
+  var tasks=[];
+  if(z7 && Array.isArray(z7.tasks) && z7.tasks.length){ tasks = z7.tasks.filter(function(t){return t && (t.name||t.res||t.term);}).map(function(t){ return {name:t.name||"", res:t.res||"", term:(t.term||"-")}; }); }
+  if(!tasks.length && z5 && val(z5,"b-tasks")){ tasks = [{name:val(z5,"b-tasks")}]; }
+  var tasksEl=document.getElementById("p-tasks");
+  if(tasks.length){
+    var ul=document.createElement("ul"); ul.style.cssText="margin:0;padding-left:1.2rem;";
+    tasks.forEach(function(t){ var li=document.createElement("li"); li.textContent = (t.name||"") + (t.res?(" — "+t.res):"") + (t.term?(" · срок: "+t.term):""); ul.appendChild(li); });
+    tasksEl.innerHTML=""; tasksEl.appendChild(ul);
+  } else {
+    tasksEl.innerHTML='<div class="val empty">Заполни лист «Паспорт цели и задач» (занятие 7), чтобы здесь появились задачи.</div>';
+  }
+
+  function refresh(){ location.reload(); }
+  window.refresh=refresh;
+  function clearAll(){
+    if(!confirm("Очистить паспорт на этом устройстве?")) return;
+    ["pdn-z5-smart-v1","pdn-z7-goal-v1","pdn-z11-plangrafik-v1","pdn-z16-form-v1","pdn-z17-proto-v1","pdn-z20-intro-v1","pdn-z21-test-v1","pdn-z24-main-v1"].forEach(function(k){ try{ localStorage.removeItem(keyFor(k)); }catch(e){} });
+    location.reload();
+  }
+  window.clearAll=clearAll;
+  // вспомогательная (защита от NaN)
+  function veq(){ return ""; }
+})();
+</script>
+</body>
+</html>

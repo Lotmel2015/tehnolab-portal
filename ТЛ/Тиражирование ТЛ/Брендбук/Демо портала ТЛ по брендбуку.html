@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Технологическая лаборатория — демо портала по брендбуку</title>
+<style>
+  :root {
+    --bg: #0D0F14;
+    --bg-card: #161921;
+    --bg-elev: #1B1F2A;
+    --ink: #EAECEF;
+    --muted: #8B8FA3;
+    --line: #2A2D35;
+    --accent: #2D7AFF;
+    --accent-d: #1A6AE0;
+    --ok: #00D68F;
+    --warn: #FFAA00;
+
+    --c01: #FF6B2C; --c01b: #FFD23F;
+    --c02: #00E676; --c02b: #D4883A;
+    --c03: #E87D0D; --c03b: #4FC3F7;
+    --c04: #1565C0; --c04b: #E0E0E0;
+    --c05: #00B0FF; --c05b: #FF1744;
+    --c06: #AA00FF; --c06b: #00E5FF;
+    --c07: #FF8F00; --c07b: #37474F;
+
+    --f-display: "Space Grotesk", "Unbounded", "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --f-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", "Consolas", monospace;
+    --max: 1180px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--f-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  ::selection { background: var(--accent); color: #fff; }
+
+  /* Фон: blueprint-сетка + трассы PCB (прозрачность 5–8%) */
+  .grid-bg {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(42,45,53,.16) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(42,45,53,.16) 1px, transparent 1px),
+      radial-gradient(circle at 18% 22%, rgba(45,122,255,.07) 0, transparent 30%),
+      radial-gradient(circle at 82% 70%, rgba(170,0,255,.06) 0, transparent 32%);
+    background-size: 96px 96px, 96px 96px, 100% 100%, 100% 100%;
+  }
+  .wrap { position: relative; z-index: 1; max-width: var(--max); margin: 0 auto; padding: 0 28px; }
+
+  /* НАВ */
+  .nav { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 28px; border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); background: rgba(13,15,20,.78); }
+  .nav.scrolled { background: rgba(13,15,20,.96); }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: var(--f-display); font-weight: 700; letter-spacing: .04em; text-decoration: none; color: var(--ink); }
+  .logo svg { flex: 0 0 auto; }
+  .logo .sub { font-family: var(--f-mono); font-size: 10px; color: var(--muted); letter-spacing: .1em; }
+  .nav-links { display: flex; gap: 2px; flex-wrap: wrap; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 13.5px; font-weight: 500; padding: 8px 12px; border-radius: 6px; transition: .2s; }
+  .nav-links a:hover { color: var(--ink); background: var(--bg-card); }
+  @media (max-width: 960px) { .nav-links { display: none; } }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font: 600 14.5px var(--f-body); text-decoration: none; cursor: pointer; border-radius: 6px; padding: 11px 20px; border: 1px solid transparent; transition: .2s; }
+  .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 16px rgba(45,122,255,.3); }
+  .btn-primary:hover { background: var(--accent-d); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn-ghost:hover { background: var(--bg-card); }
+  .btn-lg { padding: 14px 28px; font-size: 16px; }
+
+  /* Метки — JetBrains Mono, uppercase, tracking */
+  .tag { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; color: var(--ink); background: var(--bg-card); border: 1px solid var(--line); white-space: nowrap; }
+  .tech { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+
+  /* HERO */
+  .hero { padding: 88px 0 64px; border-bottom: 1px solid var(--line); position: relative; }
+  .hero .kicker { font-family: var(--f-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--warn); margin-bottom: 14px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .hero h1 { font: 700 clamp(42px, 6.4vw, 74px)/1.04 var(--f-display); letter-spacing: -.02em; margin: 0 0 20px; max-width: 14ch; }
+  .hero h1 .ac { color: var(--accent); }
+  .hero .sub { font-size: clamp(16px, 1.8vw, 19px); color: var(--muted); max-width: 58ch; margin: 0 0 34px; }
+  .hero .cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+  .lab-strip { display: flex; gap: 16px; flex-wrap: wrap; }
+  .lab-dot { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 86px; }
+  .lab-dot .ring { width: 54px; height: 54px; border-radius: 8px; display: grid; place-items: center; color: var(--acc); background: var(--bg-card); border: 1px solid var(--line); transition: .25s; }
+  .lab-dot:hover .ring { transform: translateY(-3px); border-color: var(--acc); box-shadow: 0 0 0 1px var(--acc), 0 0 24px color-mix(in srgb, var(--acc) 40%, transparent); }
+  .lab-dot svg { width: 25px; height: 25px; }
+  .lab-dot .lname { font-family: var(--f-mono); font-size: 10px; color: var(--muted); letter-spacing: .08em; }
+
+  /* Crosshair-уголки блоков (отсылка к CAD) */
+  .frame { position: relative; }
+  .frame::before, .frame::after { content: ""; position: absolute; width: 12px; height: 12px; pointer-events: none; }
+  .frame::before { top: -1px; left: -1px; border-top: 1px solid var(--accent); border-left: 1px solid var(--accent); }
+  .frame::after { bottom: -1px; right: -1px; border-bottom: 1px solid var(--accent); border-right: 1px solid var(--accent); }
+
+  section { padding: 72px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 80px; }
+  .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 40px; flex-wrap: wrap; }
+  .sec-head .k { font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 6px; }
+  h2 { font: 600 clamp(26px, 3.6vw, 40px)/1.1 var(--f-display); margin: 0; letter-spacing: -.01em; }
+  .sec-sub { color: var(--muted); max-width: 74ch; margin: 10px 0 0; font-size: 15.5px; }
+
+  /* KPI */
+  .kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  @media (max-width: 800px) { .kpis { grid-template-columns: repeat(2,1fr); } }
+  .kpi { background: var(--bg); padding: 30px 24px; }
+  .kpi b { display: block; font: 700 clamp(30px, 3.6vw, 46px)/1 var(--f-mono); color: var(--accent); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .kpi span { color: var(--muted); font-size: 13px; }
+
+  /* Лаборатории */
+  .labs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 18px; }
+  .lab-card { position: relative; overflow: hidden; border-radius: 8px; background: var(--bg-card); border: 1px solid var(--line); padding: 26px 24px; min-height: 240px; display: flex; flex-direction: column; transition: transform .28s, border-color .28s, box-shadow .28s; }
+  .lab-card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--acc); }
+  .lab-card:hover { transform: translateY(-5px); border-color: var(--acc); box-shadow: 0 16px 40px rgba(0,0,0,.45); }
+  .lab-card .num { font: 700 15px var(--f-mono); color: var(--acc); letter-spacing: .1em; margin-bottom: 14px; }
+  .lab-card h3 { font: 500 19px var(--f-display); margin: 0 0 8px; }
+  .lab-card .desc { color: var(--muted); font-size: 14.5px; margin: 0 0 16px; }
+  .lab-card .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+  .lab-card .tags .tag { border-color: rgba(255,255,255,.14); background: rgba(13,15,20,.4); }
+
+  /* Наставник */
+  .mentor { display: flex; gap: 22px; align-items: center; border: 1px solid var(--line); border-radius: 10px; padding: 24px 26px; background: var(--bg-card); }
+  .avatar { width: 76px; height: 76px; border-radius: 50%; flex: 0 0 auto; display: grid; place-items: center; font: 700 26px var(--f-mono); color: var(--c06); border: 1px solid var(--c06); background: var(--bg); }
+  .mentor .nm { font: 600 17px var(--f-display); }
+  .mentor .role { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+  .mentor .desc { font-size: 14px; color: var(--muted); margin-top: 6px; }
+
+  /* CTA */
+  .cta-final { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: radial-gradient(1000px 400px at 80% 0%, rgba(45,122,255,.16), transparent 60%), var(--bg-card); padding: 48px; text-align: center; }
+  .cta-final h2 { max-width: 24ch; margin: 0 auto 12px; }
+  .cta-final p { color: var(--muted); max-width: 52ch; margin: 0 auto 26px; }
+
+  footer { border-top: 1px solid var(--line); padding: 32px 0 48px; color: var(--muted); font-size: 13px; }
+  footer .frow { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<nav class="nav" id="topnav">
+  <a class="logo" href="#top">
+    <svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="#2D7AFF" stroke-width="1.8" aria-hidden="true"><path d="M14 2 25 8.3v11.4L14 26 3 19.7V8.3L14 2z"/><path d="M12.5 8.6h4l-2.2 4h2.2l-4 6.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    ТЕХЛАБ <span class="sub">/ ИНЖИНИРИНГОВЫЙ ХАБ</span>
+  </a>
+  <div class="nav-links">
+    <a href="#labs">Лаборатории</a>
+    <a href="#mentor">Наставник</a>
+    <a href="#about">О объединении</a>
+    <a href="#join">Запись</a>
+  </div>
+  <a class="btn btn-primary" href="#join" style="padding:9px 16px;">Записаться</a>
+</nav>
+
+<div class="wrap" id="top">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="kicker"><span>// 7 ЛАБОРАТОРИЙ</span><span>// 14–18 ЛЕТ</span><span>// НАБОР ОТКРЫТ</span></div>
+    <h1>Создавай.<br>Управляй.<br><span class="ac">Запускай.</span></h1>
+    <p class="sub">Инжиниринговый хаб для подростков: робототехника, электроника, 3D, БПЛА и VR. Не кружок — работа junior-инженера: реальный продукт в конце каждого модуля, 65% практики.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary btn-lg" href="#join">Записаться в лабораторию</a>
+      <a class="btn btn-ghost btn-lg" href="#labs">Смотреть лаборатории</a>
+    </div>
+    <div class="lab-strip">
+      <div class="lab-dot" style="--acc:var(--c01)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.2 5.2l1.7 1.7M17.1 17.1l1.7 1.7M18.8 5.2l-1.7 1.7M6.9 17.1l-1.7 1.7"/><circle cx="12" cy="12" r="5"/><path d="M10.7 9.6h2.5l-1.4 2.5h1.4l-2.5 3.1"/></svg></span><span class="lname">LAB.01</span></div>
+      <div class="lab-dot" style="--acc:var(--c02)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="7" width="10" height="10"/><path d="M7 4.2V1.5M7 22.5v-2.7M17 4.2V1.5M17 22.5v-2.7M4.2 7H1.5M4.2 17H1.5M22.5 7h-2.7M22.5 17h-2.7"/><path d="M11.2 9.3h2.6l-1.5 2.6h1.5l-2.6 3.5"/></svg></span><span class="lname">LAB.02</span></div>
+      <div class="lab-dot" style="--acc:var(--c03)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.5 21 7v10l-9 4.5L3 17V7l9-4.5z"/><path d="M3 7l9 4.5L21 7M12 11.5v10"/></svg></span><span class="lname">LAB.03</span></div>
+      <div class="lab-dot" style="--acc:var(--c04)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.5 20.5h17M12 4.5 21 20.5H3z"/><path d="M12 10l3.4 6H8.6zM9 14.5h6" stroke-dasharray="2 2"/></svg></span><span class="lname">LAB.04</span></div>
+      <div class="lab-dot" style="--acc:var(--c05)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="5" r="2.1"/><circle cx="19" cy="5" r="2.1"/><circle cx="5" cy="19" r="2.1"/><circle cx="19" cy="19" r="2.1"/><path d="M6.6 6.6 17.4 17.4M17.4 6.6 6.6 17.4"/><circle cx="12" cy="12" r="2.3"/></svg></span><span class="lname">LAB.05</span></div>
+      <div class="lab-dot" style="--acc:var(--c06)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 8.5h16v6.5a1.2 1.2 0 0 1-1.2 1.2h-3.9a1.4 1.4 0 0 1-1.3-.8L12 13.9l-1.6 1.5a1.4 1.4 0 0 1-1.3.8H5.2A1.2 1.2 0 0 1 4 15z"/><circle cx="8.3" cy="12.3" r="1.1"/><circle cx="15.7" cy="12.3" r="1.1"/><path d="M7.5 5.5v2M16.5 5.5v2"/></svg></span><span class="lname">LAB.06</span></div>
+      <div class="lab-dot" style="--acc:var(--c07)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8.6" stroke-dasharray="3.5 3"/><path d="M9.5 10.4a2.55 2.55 0 0 1 5 0c0 1.3-1 1.8-1 3h-3c0-1.2-1-1.7-1-3z"/><path d="M10.6 16.4h2.8M11.3 14.6h1.4M11.3 5.5V4"/></svg></span><span class="lname">LAB.07</span></div>
+    </div>
+  </header>
+
+  <!-- KPI -->
+  <section id="about" style="padding-top:56px;">
+    <div class="kpis">
+      <div class="kpi"><b>7</b><span>лабораторий</span></div>
+      <div class="kpi"><b>65%</b><span>практики</span></div>
+      <div class="kpi"><b>112 ч</b><span>каждый модуль</span></div>
+      <div class="kpi"><b>14–18</b><span>лет — возраст</span></div>
+    </div>
+  </section>
+
+  <!-- ЛАБОРАТОРИИ -->
+  <section id="labs">
+    <div class="sec-head">
+      <div><span class="k">MATRIX // LAB.01–07</span><h2>Семь лабораторий — одна экосистема</h2><p class="sec-sub">Каждая лаборатория — отдельная дисциплина с собственным визуальным акцентом. Вместе они образуют экосистему создания реальных продуктов.</p></div>
+      <span class="tech">ПРАКТИКА 65%+ // ПРОДУКТ // ТРЕК</span>
+    </div>
+    <div class="labs-grid">
+      <article class="lab-card frame" style="--acc:var(--c01)"><div class="num">LAB.01</div><h3>Робототехника</h3><p class="desc">LEGO MINDSTORMS EV3: шестерни, датчики, блочное программирование — до боевого робота на поле.</p><div class="tags"><span class="tag">WRO</span><span class="tag">RoboFest</span><span class="tag">соревнование</span></div></article>
+      <article class="lab-card frame" style="--acc:var(--c02)"><div class="num">LAB.02</div><h3>Электроника</h3><p class="desc">Arduino: схемы, пайка, сигналы на осциллографе — от макетной платы до работающего устройства.</p><div class="tags"><span class="tag">Arduino</span><span class="tag">пайка</span><span class="tag">защита</span></div></article>
+      <article class="lab-card frame" style="--acc:var(--c03)"><div class="num">LAB.03</div><h3>Blender 3D</h3><p class="desc">Полигональная сетка, материалы, рендер — и своя модель, напечатанная на FDM-принтере.</p><div class="tags"><span class="tag">3D-сцена</span><span class="tag">FDM</span></div></article>
+      <article class="lab-card frame" style="--acc:var(--c04)"><div class="num">LAB.04</div><h3>КОМПАС-3D</h3><p class="desc">Параметрические модели и чертежи по ГОСТ — язык, на котором говорят заводы.</p><div class="tags"><span class="tag">ЕСКД</span><span class="tag">ГОСТ</span></div></article>
+      <article class="lab-card frame" style="--acc:var(--c05)"><div class="num">LAB.05</div><h3>БПЛА</h3><p class="desc">Сборка, полётный контроллер, пилотаж и аэросъёмка. Телеметрия вместо теории.</p><div class="tags"><span class="tag">пилотаж</span><span class="tag">телеметрия</span></div></article>
+      <article class="lab-card frame" style="--acc:var(--c06)"><div class="num">LAB.06</div><h3>VR-разработка</h3><p class="desc">Unity + C#: сцена, взаимодействие, APK — и приложение, протестированное в шлеме.</p><div class="tags"><span class="tag">Unity</span><span class="tag">Pico 4 Ultra</span></div></article>
+      <article class="lab-card frame" style="--acc:var(--c07)"><div class="num">LAB.07</div><h3>Проектная деятельность</h3><p class="desc">SMART-цель, Гант, канбан, питч. От идеи до защиты проекта перед аудиторией.</p><div class="tags"><span class="tag">PBL</span><span class="tag">питч</span></div></article>
+    </div>
+  </section>
+
+  <!-- НАСТАВНИК -->
+  <section id="mentor">
+    <div class="sec-head"><div><span class="k">MENTOR</span><h2>Кто ведёт лаборатории</h2></div></div>
+    <div class="mentor frame">
+      <div class="avatar">КК</div>
+      <div>
+        <div class="nm">Казакевич Константин Михайлович</div>
+        <div class="role">Заведующий сектором технологических лабораторий · педагог дополнительного образования</div>
+        <div class="desc">Более 20 лет в техническом образовании и IT. Автор программы «Технологическая лаборатория», тренер Ассоциации молодых педагогов, наставник команд WRO, RoboFest, НТО и «Технолидеров будущего».</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="join" style="border-bottom:none;">
+    <div class="cta-final frame">
+      <span class="k" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);">STATUS: НАБОР ОТКРЫТ // 2026–2027</span>
+      <h2>Выбери лабораторию — собери реальный продукт</h2>
+      <p>Группы 10–16 человек, набор свободный. Педагог поможет выбрать направление и ответит на вопросы.</p>
+      <a class="btn btn-primary btn-lg" href="https://sputnik.cosmoschool.ru/events/459" target="_blank" rel="noopener">Оставить заявку</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="frow">
+      <div><b style="color:var(--ink);">Технологическая лаборатория</b> · демо-образец портала по брендбуку</div>
+      <div class="tech">СОЗДАВАЙ. УПРАВЛЯЙ. ЗАПУСКАЙ.</div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  var nav = document.getElementById('topnav');
+  window.addEventListener('scroll', function () { nav.classList.toggle('scrolled', window.scrollY > 40); });
+</script>
+</body>
+</html>

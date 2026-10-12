@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Методичка · Без гарнитуры · Имитация поворота головы</title><style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--line:#D9E2EF;--yellow:#8a6d00;--yellow-soft:#FFF6DA;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:1rem 1.25rem 3rem}
+nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10}
+nav .inner{max-width:860px;margin:0 auto;padding:.5rem 1.25rem;display:flex;flex-wrap:wrap;gap:.3rem .9rem}
+nav a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:600}nav a:hover{color:var(--accent)}
+.backlink{display:inline-block;margin:1rem 0 -.2rem;color:var(--accent);text-decoration:none;font-size:.9rem;font-weight:600}.backlink:hover{text-decoration:underline}
+header.hero{padding:1.2rem 0 .2rem}
+header .kicker{color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em}
+header h1{font-size:1.65rem;line-height:1.25;margin:.2rem 0 .3rem}
+header .sub{font-size:1rem;color:var(--muted);margin:0 0 .4rem}
+.badges{margin:.6rem 0 1rem;display:flex;flex-wrap:wrap;gap:.4rem}.badge{font-size:.78rem;font-weight:700;padding:.22rem .6rem;border-radius:999px}
+.b-ac{background:var(--accent-soft);color:var(--accent)}.b-vr{background:var(--vr-soft);color:var(--vr)}.b-pr{background:var(--pr-soft);color:var(--pr)}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.9rem 1.15rem;border-radius:0 8px 8px 0;margin:1.2rem auto}.tldr b{color:var(--accent)}
+section{margin:2.2rem 0}
+h2{font-size:1.25rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;margin:0 0 1rem}h2 .n{color:var(--accent);margin-right:.45rem}
+h3{font-size:1.08rem;margin:1.4rem 0 .5rem}
+p{margin:.5rem 0}
+code{background:var(--accent-soft);padding:.12em .35em;border-radius:4px;font-size:.88em;color:#333a54}
+pre{background:#20263f;color:#e6e9f5;border-radius:10px;padding:1rem 1.1rem;overflow-x:auto;font-size:.84rem;line-height:1.6;margin:.6rem 0}
+pre .c{color:#8da0c8}
+kbd{background:var(--accent-soft);border:1px solid var(--line);border-radius:5px;padding:.08em .5em;font-size:.82em;font-family:inherit}
+.step{border:1px solid var(--line);border-radius:14px;padding:1rem 1.15rem;background:#fbfcfe;margin:.9rem 0}
+.step .st-head{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.02rem;color:var(--ink)}
+.step .st-n{display:inline-flex;align-items:center;justify-content:center;min-width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem}
+.step .why{color:var(--muted);font-size:.92rem;margin:.3rem 0 .6rem}
+.step .w{display:block;margin-top:.6rem;color:var(--pr);font-weight:600}
+.warn{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.warn b{color:var(--def)}
+.tipb{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.tipb b{color:var(--pr)}
+.gotcha{background:var(--yellow-soft);border-left:4px solid var(--yellow);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.gotcha b{color:var(--yellow)}
+.quiz{background:var(--vr-soft);border:1px solid var(--vr);border-radius:12px;padding:.95rem 1.1rem;margin:1.2rem 0}.quiz ol{margin:.4rem 0 0;padding-left:1.3rem}.quiz li{margin:.4rem 0}
+.screen{margin:.9rem 0}.screen .s-label{font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:.3rem}
+.screen .s-box{background:#eef2f8;border:1px dashed var(--line);border-radius:10px;padding:.8rem 1rem;font-family:Consolas,Menlo,monospace;font-size:.82rem;white-space:pre-line}
+.result{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.95rem;margin:1.2rem 0}.result b{color:var(--pr)}
+table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);color:var(--accent)}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.8rem}
+@media print{nav,.quiz{display:none}}
+</style></head>
+<body>
+<nav><div class="inner"><a href="#env">Что понадобится</a><a href="#steps">Пошагово</a><a href="#errors">Ошибки</a><a href="#quiz">Проверь себя</a></div></nav>
+<main class="wrap">
+  <p class="backlink"><a href="javascript:history.back()">← назад к модулю</a></p>
+  <header class="hero">
+    <p class="kicker">Без гарнитуры · методичка</p>
+    <h1>Имитация поворота головы</h1>
+    <p class="sub">Подробное руководство для школьника: как делать, зачем и что должно получиться.</p>
+    <div class="badges"><span class="badge b-vr">Модуль 01</span><span class="badge b-ac">Начинающим</span><span class="badge b-pr">Подробно</span></div>
+  </header>
+  <div class="tldr"><b>Цель модуля.</b> Хочешь делать VR-игры, но шлема под рукой нет? Не беда! Научимся «обходиться без шлема»: управлять камерой мышью, чтобы осматривать сцену, как будто поворачиваешь голову.</div>
+  <section id="env"><h2><span class="n">0</span>Что понадобится</h2><ul><li><b>Unity</b> — Любая версия.</li><li><b>Мышь и клавиатура</b> — Имитация головы и движения.</li><li><b>Проект</b> — Создадим новый.</li></ul></section>
+  <section id="steps"><h2><span class="n">1</span>Пошагово — делай по порядку</h2><div class="step"><div class="st-head"><span class="st-n">1</span><span>Почему можно без шлема</span></div><p class="why">💡 Разработка VR начинается на компьютере. Шлем нужен только в конце, для финальной проверки. Весь «скелет» игры можно собрать и проверить на экране.</p><p><b>Что делать:</b> Прочитай и запомни: редактор = быстро, шлем = финал.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Понял, зачем имитация.</div></div></div><div class="step"><div class="st-head"><span class="st-n">2</span><span>Создай сцену для осмотра</span></div><p class="why">💡 Нужно, что осматривать — соберём комнату из примитивов.</p><p><b>Что делать:</b> Создай сцену: плоское основание (Plane) + 3-4 куба/цилиндра разных цветов, расставь по комнате.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Есть «комната» с предметами.</div></div></div><div class="step"><div class="st-head"><span class="st-n">3</span><span>Напиши скрипт камеры (мышь = голова)</span></div><p class="why">💡 Поворот мышью имитирует поворот головы в VR — так осматриваемся по сторонам.</p><p><b>Что делать:</b> Создай скрипт MouseLook.cs и повесь на камеру.</p><div class="screen"><div class="s-label">Код (копируй целиком)</div><pre>using UnityEngine;
+
+public class MouseLook : MonoBehaviour {
+    public float sens = 3f;
+    void Update() {
+        float mx = Input.GetAxis("Mouse X") * sens;
+        float my = -Input.GetAxis("Mouse Y") * sens;
+        transform.Rotate(Vector3.up, mx);
+        transform.Rotate(Vector3.right, my);
+    }
+}</pre></div><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Двигаешь мышью — камера осматривается (как голова).</div></div><div class="warn"><b>Осторожно:</b> Зажми правую кнопку мыши в Game-окне, иначе курсор уходит за край.</div></div><div class="step"><div class="st-head"><span class="st-n">4</span><span>Добавь ходьбу (WASD)</span></div><p class="why">💡 В VR есть движение — имитируем его клавиатурой.</p><p><b>Что делать:</b> В тот же скрипт добавь движение.</p><div class="screen"><div class="s-label">Код (копируй целиком)</div><pre>void Update() {
+    float h = Input.GetAxis("Horizontal");
+    float v = Input.GetAxis("Vertical");
+    transform.Translate(transform.right * h * 3f * Time.deltaTime, Space.World);
+    transform.Translate(transform.forward * v * 3f * Time.deltaTime, Space.World);
+}</pre></div><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">WASD/стрелки двигают камеру по комнате.</div></div></div><div class="step"><div class="st-head"><span class="st-n">5</span><span>Проверь сцену со всех сторон</span></div><p class="why">💡 В VR важно, чтобы всё было видно и ничего не падало сквозь пол.</p><p><b>Что делать:</b> Обойди комнату мышью+клавишами, посмотри, всё ли на месте.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Осмотрел сцену, предметы на полу.</div></div></div><h3>Шпаргалка: чем что управляем</h3><table><tr><th>Действие</th><th>Кнопка / жест</th><th>Что имитирует</th></tr><tr><td>Осматриваться</td><td>Мышь (правой кнопкой в Game-окне)</td><td>Поворот головы</td></tr><tr><td>Идти вперёд / назад</td><td>W / S или стрелки ↑ / ↓</td><td>Движение тела</td></tr><tr><td>Сдвиг влево / вправо</td><td>A / D или стрелки ← / →</td><td>Шаг в сторону</td></tr><tr><td>Взять / отпустить предмет</td><td>Пример: клавиша F</td><td>Действие рукой (в шлеме — контроллер)</td></tr></table><div class="tipb"><b>Почему это удобно.</b> Одна схема клавиш подходит и для проверки сцены, и для отладки механики — не нужно переучиваться, когда перейдёшь к шлему.</div></section>
+  <section id="errors"><h2><span class="n">2</span>Типичные ошибки и как их исправить</h2><div class="gotcha"><b>Ошибка «Курсор улетает».</b> Мышь выходит за границы окна.</div><div class="tipb"><b>Как исправить:</b> Зажми правую кнопку мыши в окне Game или используй Editor: окно Game → Lock Cursor / Screen Capture.</div><div class="gotcha"><b>Ошибка «Камера «вертится» бесконтрольно».</b> Дёргается.</div><div class="tipb"><b>Как исправить:</b> Снизь sens до 1-2. И проверь, что скрипт на камере, а не на другом объекте.</div><div class="gotcha"><b>Ошибка «Кувыркается при повороте налево».</b> Камера переворачивается вверх ногами.</div><div class="tipb"><b>Как исправить:</b> Скорее всего, ты заодно наклоняешь камеру по оси Z. Для осмотра достаточно поворота по осям X (вверх-вниз) и Y (вправо-влево); ось Z оставь в 0.</div><div class="gotcha"><b>Ошибка «Не виден пол, хотя сцена собрана».</b> Камера стоит «внутри» пола.</div><div class="tipb"><b>Как исправить:</b> Подвинь камеру чуть выше (например, 1.6 по оси Y) и убедись, что она смотрит на комнату, а не сквозь неё.</div></section>
+  <section id="quiz"><div class="quiz"><b>Проверь себя (ответь устно или письменно):</b><ol><li>Чем имитируем поворот головы?</li><li>Зачем нужна эта имитация?</li><li>Какая ось отвечает за поворот «влево-вправо», а какая — «вверх-вниз»?</li><li>Почему перед Mouse Y в коде стоит минус?</li><li>Что ты сможешь проверить дома, а что — только в шлеме?</li></ol></div></section>
+  <div class="result"><b>Итог модуля.</b> Итог: умеешь собирать и осматривать VR-сцену на экране без шлема — мышь имитирует голову, клавиши — движение.</div>
+</main>
+<footer><p>Методичка · Без гарнитуры · Модуль 01 · Технологическая лаборатория</p></footer>
+</body>
+</html>

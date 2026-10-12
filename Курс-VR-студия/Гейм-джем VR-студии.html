@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Бонус · Гейм-джем в VR · VR-студия</title>
+<style> :root { --bg: #ffffff; --ink: #1B2A4A; --muted: #5A6B85; --accent: #1F6FE0; --accent-soft: #EAF2FD; --vr: #4D008C; --vr-soft: #F0EBF5; --def: #B45309; --def-soft: #FDF1E1; --pr: #167A4D; --pr-soft: #E7F4EE; --line: #D9E2EF; --up: #167A4D; } * { box-sizing: border-box; } body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; } .wrap { max-width: 900px; margin: 0 auto; padding: 2.2rem 1.25rem 3rem; } nav { position: sticky; top: 0; background: rgba(255,255,255,.94); border-bottom: 1px solid var(--line); backdrop-filter: blur(6px); z-index: 10; } nav .inner { max-width: 900px; margin: 0 auto; padding: .55rem 1.25rem; display: flex; flex-wrap: wrap; gap: .4rem .9rem; } nav a { color: var(--muted); text-decoration: none; font-size: .86rem; font-weight: 600; } nav a:hover { color: var(--accent); } header .kicker { color: var(--accent); font-weight: 700; font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; } header h1 { font-size: 2rem; line-height: 1.2; margin: .2rem 0 .3rem; } header .sub { font-size: 1.02rem; color: var(--muted); margin: 0 0 .5rem; } .meta { color: var(--muted); font-size: .85rem; } .badges { margin-top: .9rem; display: flex; flex-wrap: wrap; gap: .4rem; } .badge { font-size: .78rem; font-weight: 700; padding: .22rem .6rem; border-radius: 999px; } .b-vr { background: var(--vr-soft); color: var(--vr); } .b-def { background: var(--def-soft); color: var(--def); } .b-pr { background: var(--pr-soft); color: var(--pr); } .b-ac { background: var(--accent-soft); color: var(--accent); } .tldr { background: var(--accent-soft); border-left: 4px solid var(--accent); padding: .95rem 1.15rem; border-radius: 0 8px 8px 0; margin: 1.6rem 0; } .tldr b { color: var(--accent); } .donecheck { background: var(--pr-soft); border-left: 4px solid var(--pr); border-radius: 0 8px 8px 0; padding: .8rem 1rem; margin: 1rem 0 .4rem; } .donecheck b { color: var(--pr); } .donecheck ul { margin: .4rem 0 0; padding-left: 1.2rem; } .donecheck li { margin: .2rem 0; font-size: .94rem; } .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .6rem; margin: .7rem 0 .3rem; } .tier { border: 1px solid var(--line); border-radius: 12px; padding: .7rem .85rem; background: #fbfcfe; } .tier .tier-tag { display: inline-block; font-size: .78rem; font-weight: 800; border-radius: 999px; padding: .12rem .55rem; margin-bottom: .3rem; } .tier.tier-base .tier-tag { background: var(--accent-soft); color: var(--accent); } .tier.tier-mid .tier-tag { background: var(--vr-soft); color: var(--vr); } .tier.tier-pro .tier-tag { background: #FDE9D9; color: var(--def); } .tier p { margin: 0; font-size: .9rem; line-height: 1.5; } .entrybox { background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; padding: .75rem 1rem; margin: .9rem 0 .3rem; } .entrybox .e-title { font-weight: 700; color: var(--accent); margin-bottom: .3rem; } .entrybox textarea { width: 100%; box-sizing: border-box; border: 1px solid var(--line); border-radius: 8px; padding: .4rem .6rem; font: 14px/1.4 system-ui, sans-serif; resize: vertical; min-height: 34px; } .entrybox .e-row { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; } .entrybox .e-btn { border: none; border-radius: 8px; padding: .35rem .8rem; cursor: pointer; background: var(--accent); color: #fff; font-weight: 600; font-size: .86rem; } .entrybox .e-save { color: var(--pr); font-size: .85rem; font-weight: 600; margin-left: .3rem; } .plan { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: .75rem; margin: 1.4rem 0; } .step-card { border: 1px solid var(--line); border-radius: 12px; padding: .85rem 1rem; background: #fbfcfe; } .step-card .num { display: inline-flex; align-items: center; justify-content: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: .9rem; margin-bottom: .5rem; } .step-card b { display: block; margin-bottom: .2rem; } .step-card span { color: var(--muted); font-size: .86rem; } section { margin: 2.4rem 0; scroll-margin-top: 60px; } h2 { font-size: 1.3rem; border-bottom: 1px solid var(--line); padding-bottom: .4rem; margin: 0 0 .9rem; } h2 .n { color: var(--accent); margin-right: .45rem; } h3 { font-size: 1.08rem; margin: 1.5rem 0 .4rem; color: var(--ink); } p { margin: .5rem 0; } .theory-body { border: 1px solid var(--line); border-radius: 14px; padding: 1.2rem 1.3rem; background: #fbfcfe; } .theory-body p { font-size: 1rem; line-height: 1.75; } .remember { background: var(--pr-soft); border-left: 4px solid var(--pr); border-radius: 0 8px 8px 0; padding: .75rem .95rem; margin: 1.1rem 0 0; font-size: .95rem; } .remember b { color: var(--pr); } .quiz { background: var(--vr-soft); border: 1px solid var(--vr); border-radius: 12px; padding: .95rem 1.1rem; margin: 1.1rem 0 0; } .quiz h4 { margin: 0 0 .4rem; color: var(--vr); font-size: 1rem; } .quiz ol { margin: .3rem 0 0; padding-left: 1.3rem; } .quiz li { margin: .35rem 0; font-size: .95rem; } .quiz .show-answers { margin-top: .5rem; } .quiz .show-answers button { font: inherit; border: none; border-radius: 8px; padding: .35rem .8rem; cursor: pointer; background: var(--vr); color: #fff; font-weight: 600; } .quiz .answers { display: none; margin-top: .6rem; background: #F7F5FF; border: 1px dashed var(--vr); border-radius: 8px; padding: .7rem .9rem; font-size: .92rem; } .quiz .answers.show { display: block; } .quiz .answers ol { margin: 0; padding-left: 1.2rem; } .quiz .answers li { margin: .3rem 0; } code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; } code { background: var(--accent-soft); padding: .12em .35em; border-radius: 4px; font-size: .88em; color: #333a54; } pre { background: #20263f; color: #e6e9f5; border-radius: 10px; padding: 1rem 1.1rem; margin: .8rem 0; overflow-x: auto; font-size: .85rem; line-height: 1.55; } .note { background: var(--def-soft); border-left: 4px solid var(--def); border-radius: 0 8px 8px 0; padding: .7rem .9rem; font-size: .9rem; margin: .9rem 0; } .note b { color: var(--def); } .tip { background: var(--pr-soft); border-left: 4px solid var(--pr); border-radius: 0 8px 8px 0; padding: .7rem .9rem; font-size: .9rem; margin: .9rem 0; } .tip b { color: var(--pr); } .flow { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; } .chip { border: 1px solid var(--line); border-radius: 999px; padding: .3rem .8rem; font-size: .84rem; background: #fbfcfe; } .chip b { color: var(--accent); } .links { display: grid; gap: .55rem; margin: .9rem 0; } .link-row { border: 1px solid var(--line); border-radius: 10px; padding: .55rem .75rem; font-size: .9rem; background: #fbfcfe; display: flex; justify-content: space-between; align-items: center; gap: .6rem; flex-wrap: wrap; } .link-row a { color: var(--accent); font-weight: 600; text-decoration: none; word-break: break-all; } .link-row a:hover { text-decoration: underline; } .reflection { background: var(--vr-soft); border: 1px solid var(--vr); border-radius: 14px; padding: 1.1rem 1.2rem; margin: 1rem 0; } .reflection h3 { margin-top: 0; color: var(--vr); } .reflection label { display: block; margin: .5rem 0 .2rem; font-weight: 600; font-size: .92rem; } .reflection textarea { width: 100%; min-height: 56px; border: 1px solid var(--line); border-radius: 8px; padding: .45rem .6rem; font: 14px/1.5 system-ui, sans-serif; resize: vertical; } .reflection .ratings { display: flex; flex-wrap: wrap; gap: .6rem; } .reflection .ratings label { display: inline-flex; align-items: center; gap: .25rem; font-weight: 500; margin: 0; } .reflection .check { display: flex; align-items: center; gap: .5rem; margin: 1rem 0 .6rem; font-weight: 600; } .btn { display: inline-block; border: 0; border-radius: 10px; padding: .6rem 1.1rem; font: 700 15px/1.2 system-ui, sans-serif; background: var(--vr); color: #fff; cursor: pointer; } .btn:hover { filter: brightness(1.08); } .btn.btn-outline { background: transparent; color: var(--vr); border: 2px solid var(--vr); } .btn.done { background: var(--pr); } .nextcard { border: 2px dashed var(--vr); border-radius: 14px; padding: 1rem 1.2rem; text-align: center; margin: 1.5rem 0 0; } .nextcard a { color: var(--vr); font-weight: 700; text-decoration: none; } .nextcard a:hover { text-decoration: underline; } .nextcard .locked { color: var(--muted); font-weight: 600; } .progress { color: var(--muted); font-size: .9rem; margin: .6rem 0 0; } footer { color: var(--muted); font-size: .8rem; border-top: 1px solid var(--line); margin-top: 3rem; padding-top: .8rem; } @media print { nav, .toolbar, .auth, .entrybox, .whoami, .nextcard { display: none !important; } .wrap { max-width: none; padding: 0; } .plan, .grid2, .card, .step-card, table, .tiers, .donecheck, .quiz { break-inside: avoid; } .show-answers, .btn, .btn2, .e-btn, #saveBtn, #saveReflBtn { display: none !important; } .answers { display: block !important; } section { margin: 1.2rem 0; } } /* Инфографика занятия */ .lesson-ig { display: block; margin: .4rem 0 1.4rem; } .ig-card { border: 1px solid var(--line); border-radius: 12px; background: #fff; padding: .8rem .95rem; margin-bottom: .6rem; } .ig-card h3 { margin: 0 0 .4rem; font-size: .92rem; color: var(--vr); } .ig-steps { display: flex; flex-wrap: wrap; gap: .45rem; align-items: stretch; } .ig-step { flex: 1 1 130px; min-width: 115px; background: var(--vr-soft); border: 1px solid rgba(108,77,240,.25); border-radius: 10px; padding: .5rem .6rem; position: relative; } .ig-step b { display: block; font-size: .85rem; margin: .15rem 0 .05rem; color: var(--ink); } .ig-step span { font-size: .74rem; color: var(--muted); line-height: 1.3; display: block; } .ig-step .step-n { position: absolute; top: -7px; left: 6px; background: var(--vr); color: #fff; font-size: .68rem; font-weight: 800; border-radius: 999px; padding: 0 .4rem; } .ig-layer-stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: .35rem; } .ig-layer { border: 1px solid var(--line); border-radius: 10px; padding: .45rem .6rem; text-align: center; background: var(--accent-soft); } .ig-layer b { display: block; font-size: .82rem; color: var(--accent); } .ig-layer span { font-size: .72rem; color: var(--muted); display: block; line-height: 1.3; } .ig-layer.key { background: var(--vr); color: #fff; border-color: var(--vr); } .ig-layer.key b, .ig-layer.key span { color: #fff; } /* Единый стиль · Технологическая лаборатория 2026–2027 */ :root { --shadow-card: 0 1px 2px rgba(27,42,74,.05), 0 6px 18px rgba(27,42,74,.06); --vr: #4D008C; --vr-soft: #F0EBF5;} body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; } section { margin-top: 2.2rem; } h2 { letter-spacing: -.01em; } img { max-width: 100%; height: auto; } a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; } .card, .step-card, .tier, .link-row, .ig-card, .lesson-card, .sm, .pair, .info-box { box-shadow: var(--shadow-card); } @media (max-width: 640px) { header h1 { font-size: 1.6rem; } }
+
+.game-jam{background:linear-gradient(135deg,#1B2A4A,#4D008C);color:#fff;border-radius:14px;padding:1.2rem 1.4rem;margin:1.5rem 0}
+.game-jam h3{margin:0 0 .5rem;color:#fff;font-size:1.15rem}
+.game-jam p{margin:.3rem 0;opacity:.95}
+.team-role{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem;margin:.9rem 0}
+.role{border:1px solid var(--line);border-radius:10px;background:#fbfcfe;padding:.6rem .8rem}
+.role b{color:var(--accent);display:block}
+.role span{font-size:.85rem;color:var(--muted)}
+.timer{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.7rem .9rem;margin:1rem 0;font-size:.95rem}
+.timer b{color:var(--def)}
+.jam-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+.jam-table th,.jam-table td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left}
+.jam-table th{background:var(--accent-soft);color:var(--accent)}
+.criteria{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.7rem .9rem;margin:.9rem 0}
+.criteria b{color:var(--pr)}
+</style>
+</head>
+<body>
+<nav><div class="inner"><a href="%D0%A1%D0%BF%D0%B8%D1%81%D0%BE%D0%BA%20%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D0%B8%D0%B9%20VR%20%D1%81%D1%82%D1%83%D0%B4%D0%B8%D0%B8.html">← список занятий</a><a href="#rules">Правила</a><a href="#teams">Команды</a><a href="#schedule">Регламент</a><a href="#criteria">Критерии</a><a href="#reflect">Рефлексия</a></div></nav>
+<main class="wrap">
+  <div class="whoami" id="whoami" style="background:var(--vr-soft);border:1px solid var(--vr);border-radius:12px;padding:.6rem 1rem;margin-bottom:1.2rem;font-size:.9rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+    <span id="whoText" style="font-weight:700;color:var(--vr)">Загружаю профиль…</span>
+    <a href="%D0%A1%D0%BF%D0%B8%D1%81%D0%BE%D0%BA%20%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D0%B8%D0%B9%20VR%20%D1%81%D1%82%D1%83%D0%B4%D0%B8%D0%B8.html" style="color:var(--muted);font-size:.85rem;text-decoration:none">← список занятий / смена ученика</a>
+  </div>
+  <header>
+    <p class="kicker">VR-студия · бонусная активность</p>
+    <h1>🎮 Гейм-джем: мини-VR-игра за один заход</h1>
+    <p class="sub">Командная активность · 4–6 часов · в конце Модуля 6</p>
+    <div class="badges"><span class="badge b-vr">Модуль 6 → 7</span><span class="badge b-ac">Соревнование</span><span class="badge b-pr">Unity · Pico</span></div>
+  </header>
+  <div class="game-jam"><h3>Что такое гейм-джем</h3><p>Гейм-джем — это игра-марафон, где команды за ограниченное время создают готовую мини-игру по теме. Как в настоящем хакатоне. Сначала ограничения — потом креатив и результат.</p></div>
+  <div class="tldr"><b>Суть.</b> Разбейтесь на команды 3–5 человек. Получите случайную тему и жанр. За 4–6 часов соберите на Unity рабочую мини-VR-игру для Pico 4 Ultra и презентуйте её. Побеждает самый играбельный и продуманный проект.</div>
+
+  <section id="rules"><h2><span class="n">01</span>Правила</h2>
+    <ul>
+      <li>Команды 3–5 человек (у каждой: лид, программист, художник, звук/дизайнер).</li>
+      <li>Тема и жанр — из шляпы (см. ниже). Замена — только с согласия педагога при форс-мажоре.</li>
+      <li>Только свободные/имеющиеся ассеты: примитивы Unity, свои модели Blender, бесплатные ассеты без лицензионных ограничений.</li>
+      <li>Игра должна запускаться на Pico 4 Ultra (сборка APK) или в редакторе с XR Origin.</li>
+      <li>Финальная презентация — 3 минуты на команду + 2 минуты игра в шлеме.</li>
+    </ul>
+  </section>
+
+  <section id="teams"><h2><span class="n">02</span>Команды и роли</h2>
+    <div class="team-role">
+      <div class="role"><b>Лид / продюсер</b><span>координирует, следит за временем, готовит презентацию</span></div>
+      <div class="role"><b>Программист</b><span>пишет скрипты C#, собирает механику</span></div>
+      <div class="role"><b>Художник</b><span>модели, материалы, оформление сцены</span></div>
+      <div class="role"><b>Звук/дизайнер</b><span>звук, баланс, UX, подсказки</span></div>
+    </div>
+    <div class="timer"><b>Идеи тем (из шляпы):</b> Космос · Подводный мир · Заброшенная лаборатория · Ферма · Город будущего · Древний храм · Кухня · Спортзал. <b>Жанры:</b> головоломка, квест, симулятор, аркада, стрелялка-луком, паркур.</div>
+  </section>
+
+  <section id="schedule"><h2><span class="n">03</span>Регламент (4–6 часов)</h2>
+    <table class="jam-table"><tr><th>Время</th><th>Этап</th><th>Результат</th></tr>
+    <tr><td>0:00–0:20</td><td>Жеребьёвка тем, деление на команды, бриф</td><td>У команд тема и жанр</td></tr>
+    <tr><td>0:20–1:00</td><td>Концепт: идея, сцена, механика</td><td>Одностраничный план</td></tr>
+    <tr><td>1:00–3:30</td><td>Разработка в Unity</td><td>Рабочий прототип в редакторе</td></tr>
+    <tr><td>3:30–4:30</td><td>Полировка, сборка APK, тест в шлеме</td><td>Сборка на Pico 4 Ultra</td></tr>
+    <tr><td>4:30–5:00</td><td>Презентация и игра в шлеме</td><td>3 мин речь + 2 мин демо</td></tr>
+    <tr><td>5:00–6:00</td><td>Голосование, награждение</td><td>Победители</td></tr></table>
+  </section>
+
+  <section id="criteria"><h2><span class="n">04</span>Критерии оценки (шкала 1–5)</h2>
+    <div class="criteria"><b>Оценка жюри:</b> Играбельность (насколько легко и интересно играть) · Соответствие теме · Качество исполнения (графика/звук/UI) · Работает на Pico · Оригинальность идеи. Добавьте бонус за командную работу и за финальную презентацию.</div>
+  </section>
+
+  <section id="reflect"><h2><span class="n">05</span>Рефлексия после джема</h2>
+    <div class="reflection">
+      <label>Что далось легко в команде?</label><textarea id="r1" placeholder="Напиши 1–2 предложения"></textarea>
+      <label>Что было сложным и как решили?</label><textarea id="r2" placeholder="Напиши 1–2 предложения"></textarea>
+      <label>Что возьмёшь в следующий командный проект?</label><textarea id="r3" placeholder="Напиши 1–2 предложения"></textarea>
+      <label>Оцени себя</label>
+      <div class="ratings"><label><input type="radio" name="rating" value="1"> 1</label><label><input type="radio" name="rating" value="2"> 2</label><label><input type="radio" name="rating" value="3"> 3</label><label><input type="radio" name="rating" value="4"> 4</label><label><input type="radio" name="rating" value="5"> 5</label></div>
+      <button class="btn" onclick="alert('Заполни и сохрани рефлексию в файл (кнопкой ниже), а затем отметь наставника.')">Отметить участие</button>
+    </div>
+  </section>
+
+  <div class="nextcard" id="nextcard"><p style="margin:.2rem 0 .5rem"><b>Дальше — командный проект (Модуль 7).</b></p><p class="progress">Ты готов(а) к разработке собственного VR-проекта в команде.</p></div>
+  <footer><p>Активность «Гейм-джем» · VR-студия · Технологическая лаборатория · для школьников 8–11 классов.</p></footer>
+</main>
+<script>
+const CUKEY="vr_current_user", PFKEY="vr_profiles";
+function gid(x){return document.getElementById(x);}
+function me(){ try{ var s=JSON.parse(localStorage.getItem(CUKEY)||"null"); if(!s||!s.uid) return null; var a=JSON.parse(localStorage.getItem(PFKEY)||"[]"); return a.find(function(p){return String(p.uid)===String(s.uid);})||null; }catch(e){return null;} }
+(function(){ var u=me(); var who=gid("whoText"); if(who){ who.textContent = u ? (u.name+(u.klass?" · "+u.klass+" класс":"")) : "Войди в профиль на «Списке занятий»."; } })();
+</script>
+</body>
+</html>

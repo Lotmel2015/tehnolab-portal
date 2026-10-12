@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Диаграмма Ганта · Рабочий лист · Занятие 10 · Проектный навигатор</title>
+<style> :root { --bg: #FFFFFF; --ink: #1B2A4A; --muted: #5A6B85; --accent: #1F6FE0; --accent-soft: #EAF2FD; --good: #167A4D; --good-soft: #E7F4EE; --line: #D9E2EF; --warn: #B45309; --warn-soft: #FDF1E1; --vr: #4D008C; --vr-soft: #F0EBF5;} * { box-sizing: border-box; } body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; } .wrap { max-width: 980px; margin: 0 auto; padding: 1.6rem 1.25rem 3rem; } header { text-align: center; margin-bottom: 1.1rem; } .kicker { color: var(--accent); font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; } header h1 { font-size: 1.8rem; line-height: 1.25; margin: .3rem 0 .2rem; } header .sub { color: var(--muted); margin: 0; font-size: 1rem; } .toolbar { display: flex; flex-wrap: wrap; gap: .55rem; justify-content: center; margin: 1rem 0 1.2rem; } .toolbar button { font: inherit; cursor: pointer; border-radius: 10px; padding: .6rem 1.1rem; font-weight: 700; font-size: .95rem; border: 2px solid var(--line); background: #fff; color: var(--ink); } .toolbar button.primary { background: var(--accent); border-color: var(--accent); color: #fff; } .toolbar button:hover { transform: translateY(-1px); } .save-note { text-align: center; font-size: .8rem; color: var(--muted); margin-top: .5rem; } .sheet { background: #fff; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 10px 30px rgba(20,33,61,.08); padding: 1.5rem 1.6rem; } .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin: .6rem 0 .2rem; } @media (max-width: 560px) { .meta-grid { grid-template-columns: 1fr; } } .field label { display: block; font-size: .8rem; font-weight: 700; color: var(--muted); margin-bottom: .2rem; } .field input, .field textarea { width: 100%; font: inherit; color: var(--ink); border: 1.5px solid var(--line); border-radius: 10px; padding: .55rem .7rem; background: #fbfcfe; } .field input:focus, .field textarea:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); } .field textarea { min-height: 60px; resize: vertical; } .block { border: 2px solid var(--line); border-radius: 14px; padding: 1rem 1.1rem; margin: 1.1rem 0; background: #fbfcfe; } .block .label { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin-bottom: .35rem; } .block .q { font-weight: 700; color: var(--accent); font-size: 1rem; margin-bottom: .5rem; } .block.warn { border-color: var(--warn); } .block.warn .label { color: var(--warn); } .rowhead { display: grid; grid-template-columns: 1.6fr 0.5fr 1.2fr; gap: .5rem; align-items: center; margin: .5rem 0; } @media (max-width: 560px) { .rowhead { grid-template-columns: 1fr; } } .rowhead input { width: 100%; font: inherit; border: 1.5px solid var(--line); border-radius: 8px; padding: .45rem .6rem; } .rowhead .rid { font-weight: 700; color: var(--accent); text-align: center; } .gwrap { overflow-x: auto; margin: 1rem 0; } .gantt { border-collapse: collapse; min-width: 720px; } .gantt th, .gantt td { border: 1px solid var(--line); } .gantt th { background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: .8rem; padding: .3rem .2rem; text-align: center; } .gantt .gname { width: 150px; text-align: left; } .gantt .gname input { width: 100%; border: none; background: transparent; padding: .35rem .5rem; font: inherit; color: var(--ink); } .gantt .cellbar { min-width: 54px; position: relative; padding: 4px; } .bar { display: block; height: 22px; border-radius: 4px; cursor: pointer; border: none; width: 6px; background: var(--accent); } .bar.on0 { background: #4D008C; } .bar.on1 { background: #B45309; } .bar.on2 { background: #167A4D; } .bar.on3 { background: #5B21B6; } .bar active-color-note { display: none; } .ktrow { display: flex; gap: .4rem; align-items: center; flex-wrap: wrap; margin: .4rem 0; } .ktrow input.kt { min-width: 120px; border: 1.5px solid var(--warn); border-radius: 8px; padding: .4rem .6rem; font: inherit; } .legend { display: flex; gap: .9rem; flex-wrap: wrap; font-size: .8rem; color: var(--muted); margin: .6rem 0; } .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 3px; margin-right: .3rem; vertical-align: middle; } .check { border: 1px solid var(--line); border-radius: 12px; padding: .8rem 1rem; margin: 1.1rem 0; background: #fbfcfe; } .check b { color: var(--warn); } .check label { display: flex; align-items: flex-start; gap: .5rem; font-size: .94rem; margin: .4rem 0; cursor: pointer; } .check input { margin-top: .3rem; accent-color: var(--accent); transform: scale(1.1); } .foot { border: 1px solid var(--line); border-radius: 12px; padding: .8rem 1rem; background: #fbfcfe; } .foot .field { margin: .5rem 0; } footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 1.4rem; } @media print { body { background: #fff; } .wrap { max-width: none; padding: 0; } .toolbar, .save-note, .no-print { display: none !important; } .sheet { border: none; box-shadow: none; padding: 0; } .block, .check, .foot { break-inside: avoid; } } /* Единый стиль · Технологическая лаборатория 2026–2027 */ :root { --shadow-card: 0 1px 2px rgba(27,42,74,.05), 0 6px 18px rgba(27,42,74,.06); --vr: #4D008C; --vr-soft: #F0EBF5;} body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; } section { margin-top: 2.2rem; } h2 { letter-spacing: -.01em; } img { max-width: 100%; height: auto; } a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; } .card, .step-card, .tier, .link-row, .ig-card, .lesson-card, .sm, .pair, .info-box { box-shadow: var(--shadow-card); } @media (max-width: 640px) { header h1 { font-size: 1.6rem; } }
+</style>
+</head>
+<body>
+<div class="wrap"> <header> <p class="kicker">Проектный навигатор · стартовый уровень · занятие 10</p> <h1>Диаграмма Ганта</h1> <p class="sub">Рабочий лист: задачи на оси времени с контрольными точками</p> </header> <div class="toolbar no-print"> <button class="primary" id="btn-save">Сохранить</button> <button id="btn-print" type="button" onclick="window.print(); return false;">Печать / PDF</button> <button id="btn-clear">Очистить лист</button> </div> <div class="save-note no-print" id="save-note">Твои записи сохраняются в этом браузере автоматически. Открой лист позже — всё будет на месте.</div> <div class="sheet"> <div class="meta-grid"> <div class="field"><label for="f-name">Моё имя и фамилия</label><input id="f-name" placeholder="Например: Иван Петров"></div> <div class="field"><label for="f-date">Дата</label><input id="f-date" placeholder="Например: 26.10.2026"></div> </div> <div class="field"><label for="f-idea">Моя проектная идея</label><input id="f-idea" placeholder="Коротко: что создаю"></div> <div class="block"> <div class="label">1 · Задачи на линии времени</div> <div class="q">Кликни по месяцу, чтобы включить/выключить полосу задачи. Длина полосы = срок.</div> <div class="rowhead"> <div><label>Задача</label></div> <div><label>Ресурс</label></div> <div><label>Срок (примерно)</label></div> </div> <div id="rows"></div> <p class="no-print" style="margin:.8rem 0 0"><button id="add-row" style="font:inherit;font-weight:700;color:var(--accent);background:#fff;border:1.5px dashed var(--accent);border-radius:10px;padding:.5rem 1rem;cursor:pointer">+ Добавить задачу</button></p> <div class="legend"> <span><i></i>Материальные/продукт</span> <span><i class="l-tim"></i>Временные</span> <span><i class="l-hum"></i>Человеческие</span> <span><i class="l-inf"></i>Информационные</span> </div> </div> <div class="block warn"> <div class="label">2 · Контрольные точки</div> <div class="q">Отметь 3–4 момента, где проверяешь, успеваешь ли по плану.</div> <div id="kts"></div> <p class="no-print" style="margin:.8rem 0 0"><button id="add-kt" style="font:inherit;font-weight:700;color:var(--warn);background:#fff;border:1.5px dashed var(--warn);border-radius:10px;padding:.5rem 1rem;cursor:pointer">+ Контрольная точка</button></p> </div> <div class="check"> <b>Проверь себя — отметь, что сделал(а):</b> <label><input type="checkbox" id="c1"> У меня 4–6 задач проекта на линии времени</label> <label><input type="checkbox" id="c2"> Полосы отражают реальный срок задачи (не всю диаграмму подряд)</label> <label><input type="checkbox" id="c3"> Стоят 3–4 контрольные точки после крупных этапов</label> <label><input type="checkbox" id="c4"> У каждой задачи видно, какой ресурс она использует</label> </div> <div class="foot"> <div class="field"><label for="f-ai">ИИ-помощь (<a href="https://chat.deepseek.com" target="_blank">DeepSeek</a> / GigaChat): что подсказал ИИ и моё решение</label><textarea id="f-ai" placeholder="Например: DeepSeek предложил поставить КТ после прототипа, а не только в конце. Я согласился и добавил отметку на декабрь."></textarea></div> </div> </div> <footer>Проектный навигатор · «ИИ — помощник, а не автор»</footer>
+</div> <script>
+(function () {
+  var STORE_KEY = "pdn-z10-gantt-v1";
+  var __uid = (window.location && location.search.indexOf("uid=") >= 0) ? (new URLSearchParams(location.search).get("uid") || "") : "";
+  if (__uid) { STORE_KEY = STORE_KEY + "-u" + __uid; }
+  /* uid-accessor */
+  var META = ["f-name", "f-date", "f-idea", "c1", "c2", "c3", "c4", "f-ai"];
+  var rowsBox = document.getElementById("rows");
+  var ktsBox = document.getElementById("kts");
+  var note = document.getElementById("save-note");
+  var MONTHS = ["Окт", "Нояб", "Дек", "Янв", "Фев", "Мар", "Апр", "Май"];
+  var NCOLORS = ["#4D008C", "#B45309", "#167A4D", "#5B21B6"];
+
+  function addRow(data) {
+    data = data || {};
+    var d = document.createElement("div");
+    d.className = "rowhead";
+    var g = document.createElement("div");
+    var n = document.createElement("input");
+    n.className = "r-name";
+    n.placeholder = "Например: изучить 5 игр";
+    n.value = data.name || "";
+    g.appendChild(n);
+    var rcol = document.createElement("div");
+    var res = document.createElement("input");
+    res.className = "r-res";
+    res.placeholder = "И / В / Ч / Ин";
+    res.value = data.res || "";
+    res.maxLength = 2;
+    rcol.appendChild(res);
+    var tcol = document.createElement("div");
+    var term = document.createElement("input");
+    term.className = "r-term";
+    term.placeholder = "Октябрь—ноябрь";
+    term.value = data.term || "";
+    tcol.appendChild(term);
+    d.appendChild(g);
+    d.appendChild(rcol);
+    d.appendChild(tcol);
+    var gw = document.createElement("div");
+    gw.className = "gwrap";
+    var tbl = document.createElement("table");
+    tbl.className = "gantt";
+    var thead = document.createElement("tr");
+    var th1 = document.createElement("th");
+    th1.className = "gname";
+    th1.textContent = "Задача";
+    thead.appendChild(th1);
+    MONTHS.forEach(function (monthName) {
+      var t = document.createElement("th");
+      t.textContent = monthName;
+      thead.appendChild(t);
+    });
+    var th2 = document.createElement("th");
+    th2.textContent = "Ресурс";
+    thead.appendChild(th2);
+    tbl.appendChild(thead);
+    var tbody = document.createElement("tr");
+    var tdg = document.createElement("td");
+    tdg.className = "gname";
+    var nameCell = document.createElement("input");
+    nameCell.className = "r-name2";
+    nameCell.value = data.name || "";
+    tdg.appendChild(nameCell);
+    tbody.appendChild(tdg);
+    var cellBars = [];
+    var colorIdx = data.color !== undefined ? data.color : 0;
+    MONTHS.forEach(function (monthName, mi) {
+      var td = document.createElement("td");
+      td.className = "cellbar";
+      var b = document.createElement("button");
+      b.className = "bar on" + colorIdx;
+      b.type = "button";
+      b.dataset.on = "0";
+      if (data.bars && data.bars[mi]) {
+        b.dataset.on = "1";
+        b.style.width = "90%";
+      }
+      b.addEventListener("click", function () {
+        var on = b.dataset.on === "1" ? "0" : "1";
+        b.dataset.on = on;
+        if (on === "1") b.style.width = "90%"; else b.style.width = "6px";
+        if (b.dataset.on === "0") b.style.background = "#E0D8EE"; else b.style.background = NCOLORS[colorIdx];
+        save();
+      });
+      if (data.bars && data.bars[mi]) b.style.background = NCOLORS[colorIdx];
+      td.appendChild(b);
+      tbody.appendChild(td);
+      cellBars.push(b);
+    });
+    var tdr = document.createElement("td");
+    tdr.className = "gname";
+    var resCell = document.createElement("input");
+    resCell.className = "r-res2";
+    resCell.value = data.res || "";
+    resCell.maxLength = 2;
+    tdr.appendChild(resCell);
+    tbody.appendChild(tdr);
+    tbl.appendChild(tbody);
+    gw.appendChild(tbl);
+    d.appendChild(gw);
+    [n, nameCell, res, resCell, term].forEach(function (el) { el.addEventListener("input", save); });
+
+    // color switch из поля res
+    function applyColor() {
+      var v = (res.value || "").toLowerCase();
+      var idx = { "в": 1, "ч": 2, "ин": 3, "и": 0 }[v] || 0;
+      colorIdx = idx;
+      cellBars.forEach(function (b) {
+        if (b.dataset.on === "1") b.style.background = NCOLORS[colorIdx];
+        b.className = "bar on" + colorIdx;
+      });
+    }
+    res.addEventListener("input", function () { applyColor(); save(); });
+    resCell.addEventListener("input", function () { res.value = resCell.value; applyColor(); save(); });
+    d.dataset.color = String(colorIdx);
+    d.dataset.rows = "1";
+    [n, nameCell, res, resCell, term].forEach(function (el) { el.addEventListener("input", save); });
+    rowsBox.appendChild(d);
+    syncRes();
+  }
+
+  function syncRes() {
+    rowsBox.querySelectorAll(".rowhead").forEach(function (d) {
+      var r = d.querySelector(".r-res");
+      var c = d.querySelector(".r-res2");
+      if (r && c && r.value && !c.value) c.value = r.value;
+      if (r && c && c.value && !r.value) r.value = c.value;
+    });
+  }
+
+  function getBars(d) {
+    var bars = [];
+    d.querySelectorAll(".cellbar .bar").forEach(function (b) { bars.push(b.dataset.on === "1" ? 1 : 0); });
+    return bars;
+  }
+
+  function addKt(data) {
+    data = data || {};
+    var d = document.createElement("div");
+    d.className = "ktrow";
+    var inp = document.createElement("input");
+    inp.className = "kt";
+    inp.placeholder = "КТ: " + (ktsBox.children.length + 1) + " (+ этап)";
+    inp.value = data.t || "";
+    var del = document.createElement("button");
+    del.className = "del no-print";
+    del.textContent = "✕";
+    del.type = "button";
+    del.style.cssText = "border:none;background:transparent;color:var(--muted);font-size:1.1rem;cursor:pointer;";
+    inp.addEventListener("input", save);
+    del.addEventListener("click", function () { d.remove(); save(); });
+    d.appendChild(inp);
+    d.appendChild(del);
+    ktsBox.appendChild(d);
+  }
+
+  function getRows() {
+    var out = [];
+    rowsBox.querySelectorAll(".rowhead").forEach(function (d) {
+      var n = d.querySelector(".r-name").value.trim();
+      var r = d.querySelector(".r-res").value.trim();
+      var t = d.querySelector(".r-term").value.trim();
+      if (!n && !r && !t) return;
+      var name2 = d.querySelector(".r-name2");
+      var color = parseInt(d.dataset.color || "0", 10);
+      out.push({ name: n, name2: name2 ? name2.value : n, res: r, term: t, bars: getBars(d), color: color });
+    });
+    return out;
+  }
+
+  function getKts() {
+    var out = [];
+    ktsBox.querySelectorAll(".kt").forEach(function (k) { if (k.value.trim()) out.push({ t: k.value.trim() }); });
+    return out;
+  }
+
+  function collect() {
+    var o = {};
+    META.forEach(function (k) {
+      var el = document.getElementById(k);
+      o[k] = el.type === "checkbox" ? el.checked : el.value;
+    });
+    o.rows = getRows();
+    o.kts = getKts();
+    return o;
+  }
+
+  function restore(o) {
+    META.forEach(function (k) {
+      var el = document.getElementById(k);
+      if (o[k] !== undefined) {
+        if (el.type === "checkbox") el.checked = !!o[k]; else el.value = o[k];
+      }
+    });
+    rowsBox.innerHTML = "";
+    (o.rows || []).forEach(function (r) { addRow(r); });
+    if ((o.rows || []).length === 0) { addRow(); addRow(); addRow(); addRow(); }
+    ktsBox.innerHTML = "";
+    (o.kts || []).forEach(function (k) { addKt(k); });
+    if ((o.kts || []).length === 0) { addKt(); addKt(); addKt(); addKt(); }
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify(collect()));
+      note.textContent = "Сохранено " + new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" }) + " · записи хранятся в этом браузере";
+    } catch (e) {
+      note.textContent = "Автосохранение недоступно — можно распечатать лист";
+    }
+  }
+
+  function clearAll() {
+    if (!confirm("Очистить весь лист?")) return;
+    META.forEach(function (k) {
+      var el = document.getElementById(k);
+      if (el.type === "checkbox") el.checked = false; else el.value = "";
+    });
+    rowsBox.innerHTML = "";
+    addRow(); addRow(); addRow(); addRow();
+    ktsBox.innerHTML = "";
+    addKt(); addKt(); addKt(); addKt();
+    try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+    note.textContent = "Лист очищен";
+  }
+
+  document.getElementById("add-row").addEventListener("click", function () { addRow(); save(); });
+  document.getElementById("add-kt").addEventListener("click", function () { addKt(); save(); });
+  META.forEach(function (k) {
+    var el = document.getElementById(k);
+    ["input", "change"].forEach(function (ev) { el.addEventListener(ev, save); });
+  });
+  document.getElementById("btn-save").addEventListener("click", save);
+  document.getElementById("btn-clear").addEventListener("click", clearAll);
+  try {
+    var raw = localStorage.getItem(STORE_KEY);
+    if (raw) restore(JSON.parse(raw));
+    else { addRow(); addRow(); addRow(); addRow(); addKt(); addKt(); addKt(); addKt(); }
+  } catch (e) {
+    addRow(); addRow(); addRow(); addRow(); addKt(); addKt(); addKt(); addKt();
+  }
+})();
+</script>
+<script src="../Вспомогательные материалы/helper.js"> // Скрываем технический футер (для педагога), когда ученик открыл занятие из своего профиля try { if (window.location.search.indexOf("uid") !== -1) { var _pdF = document.querySelector("footer"); if (_pdF) _pdF.style.display = "none"; } } catch (e) {}
+</script>
+</body>
+</html>

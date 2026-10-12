@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Командный проект: бриф и концепция · Инструкция · VR-студия</title>
+<!-- Сквозная система ТЛ (общий кабинет с порталом) -->
+<script src="../tl-portal-core.js"></script>
+<script src="../tl-bridge.js"></script>
+<script>try { if (window.TLCore) TLCore.init(); if (window.TLBridge) TLBridge.init({ total: 36 }); } catch (e) { console.error("tl-bridge init error", e); }</script>
+<style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--line:#D9E2EF;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:900px;margin:0 auto;padding:0 1.25rem 3rem}
+header.hero{background:linear-gradient(135deg,#1B2A4A 0%,#1F6FE0 60%,#4D008C 130%);color:#fff;border-radius:0 0 18px 18px;padding:2.2rem 1.5rem 1.8rem;margin:0 -1.25rem 1.5rem}
+header.hero h1{font-size:1.7rem;line-height:1.25;margin:0 0 .4rem}header.hero .sub{font-size:1rem;opacity:.92;max-width:64ch;margin:0}header.hero .meta{margin-top:1rem;font-size:.8rem;opacity:.75}
+.backlink{display:inline-block;margin:1rem 0 -.4rem;color:var(--accent);text-decoration:none;font-size:.9rem;font-weight:600}.backlink:hover{text-decoration:underline}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.9rem 1.1rem;border-radius:0 8px 8px 0;margin:1.4rem 0}.tldr b{color:var(--accent)}
+.steps-band{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin:1.4rem 0}.kpi{background:var(--card,#fff);border:1px solid var(--line);border-radius:10px;padding:.85rem 1rem}.kpi b{display:block;font-size:1.2rem;color:var(--accent)}.kpi span{color:var(--muted);font-size:.8rem}
+.toc{background:#fbfcfe;border:1px solid var(--line);border-radius:12px;padding:.9rem 1.2rem;margin:1.2rem 0}.toc ol{margin:.4rem 0 0;padding-left:1.3rem}.toc a{color:var(--accent);text-decoration:none}
+section{margin:2.2rem 0}h2{font-size:1.28rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;color:var(--ink)}h3{font-size:1.05rem;margin:1.2rem 0 .4rem}
+.mstep{background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:.8rem 1rem;margin:.7rem 0}.mstep b{color:var(--accent);display:block;margin:.2rem 0 .3rem}.mstep .w{color:var(--pr);font-weight:600}.mstep p{margin:.3rem 0}
+.result{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.95rem;margin:1rem 0}.result b{color:var(--pr)}
+.resources{margin:1rem 0}.resources a{color:var(--accent);font-weight:600;text-decoration:none;background:var(--accent-soft);border-radius:6px;padding:.25rem .6rem;margin:.2rem .3rem .2rem 0;display:inline-block}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.8rem}
+@media print{header.hero{border-radius:0}}
+</style>
+</head>
+<body>
+<main>
+<p class="backlink"><a href="./Занятие-25-командный-проект-бриф-и-концепция.html">← занятие 25 · Командный проект: бриф и концепция</a></p>
+<header class="hero">
+  <h1>Командный проект: бриф и концепция</h1>
+  <p class="sub">Пошагово: что нужно сделать на занятии, как действовать и какой результат ты увидишь.</p>
+  <p class="meta">Занятие 25 · VR-студия · для 8–11 классов</p>
+</header>
+<div class="tldr"><b>Главное.</b> Запускаем командный VR-проект: формируем команду, пишем бриф (что, для кого, зачем) и концепцию.</div>
+<div class="steps-band"><div class="kpi"><b>3-5 чел</b><span>размер команды</span></div><div class="kpi"><b>Бриф</b><span>документ + концепция</span></div><div class="kpi"><b>1 стр.</b><span>хватит на концепцию</span></div><div class="kpi"><b>Единая идея</b><span>у всей команды</span></div></div>
+<div class="toc"><ol><li><a href="#s1">Собери команду 3-5 человек</a></li><li><a href="#s2">Придумай идею VR-приложения</a></li><li><a href="#s3">Заполни бриф</a></li><li><a href="#s4">Напиши концепцию (1 стр.)</a></li><li><a href="#s5">Согласуй с педагогом</a></li></ol></div>
+<section id="s1"><h2>1. Собери команду 3-5 человек</h2><div class="mstep"><p>Распредели роли: продюсер/лид, геймдизайнер, программист, художник, звукорежиссёр (можно совмещать).</p><span class="w">✓ Должно получиться: У команды есть продюсер-координатор и понятные роли.</span></div></section><section id="s2"><h2>2. Придумай идею VR-приложения</h2><div class="mstep"><p>Используй приём: «это VR-симулятор ... для ... , потому что ...». Брейншторм 10 идей, выбери лучшую голосованием.</p><span class="w">✓ Должно получиться: Выбрана одна идея с чёткой целью.</span></div></section><section id="s3"><h2>3. Заполни бриф</h2><div class="mstep"><p>Бриф: заказчик/аудитория, задача, VR-платформа (Pico 4 Ultra), срок, критерии успеха, риски.</p><span class="w">✓ Должно получиться: Заполненный бриф — основа для дальнейшей работы.</span></div></section><section id="s4"><h2>4. Напиши концепцию (1 стр.)</h2><div class="mstep"><p>Коротко: genre, жанр/механика, что игрок делает, сцена, настроение, опора на слойную карту.</p><span class="w">✓ Должно получиться: Концепция понятна любому члену команды и педагогу.</span></div></section><section id="s5"><h2>5. Согласуй с педагогом</h2><div class="mstep"><p>Покажи бриф+концепцию. Получи обратную связь и при необходимости скорректируй идею.</p><span class="w">✓ Должно получиться: Проект одобрен к следующему этапу (ТЗ/ГДД).</span></div></section>
+<section><h2>Результат занятия</h2><div class="result"><b>Что должно получиться:</b> Есть команда с ролями, согласованная идея VR-проекта, бриф и одностраничная концепция — готово к разработке.</div></section>
+<section><h2>Полезные материалы</h2><div class="resources"><a href="https://stepik.org/course/90762/promo" target="_blank" rel="noopener">Stepik · Управление проектами</a><a href="https://ntcontest.ru/vr" target="_blank" rel="noopener">НТО · Профиль VR</a></div></section>
+<footer><p>Инструкция занятия 25 · VR-студия · дополняет материалы занятия.</p></footer>
+</main>
+</body>
+</html>

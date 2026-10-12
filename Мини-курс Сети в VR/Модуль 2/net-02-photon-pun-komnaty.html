@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Модуль 2 · Photon PUN: комнаты и подключение игроков · Сети в VR</title>
+<style>:root{--bg:#ffffff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--def:#B45309;--def-soft:#FDF1E1;--pr:#167A4D;--pr-soft:#E7F4EE;--line:#D9E2EF;}
+*{box-sizing:border-box;}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;}
+.wrap{max-width:900px;margin:0 auto;padding:2.2rem 1.25rem 3rem;}
+nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10;}
+nav .inner{max-width:900px;margin:0 auto;padding:.5rem 1.25rem;display:flex;flex-wrap:wrap;gap:.3rem .9rem;}
+nav a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:600;}nav a:hover{color:var(--accent);}
+header .kicker{color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;}
+header h1{font-size:1.8rem;line-height:1.2;margin:.2rem 0 .3rem;}header .sub{font-size:1.02rem;color:var(--muted);margin:0 0 .5rem;}
+.meta{color:var(--muted);font-size:.85rem;}
+.badges{margin-top:.9rem;display:flex;flex-wrap:wrap;gap:.4rem;}.badge{font-size:.78rem;font-weight:700;padding:.22rem .6rem;border-radius:999px;}
+.b-vr{background:var(--vr-soft);color:var(--vr);}.b-ac{background:var(--accent-soft);color:var(--accent);}.b-pr{background:var(--pr-soft);color:var(--pr);}.b-def{background:var(--def-soft);color:var(--def);}
+.goalwrap{background:linear-gradient(90deg,var(--pr-soft),var(--accent-soft));border:1px solid var(--line);border-radius:14px;padding:.9rem 1.15rem;margin:1.3rem 0;}.goalwrap b{color:var(--pr);}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.9rem 1.15rem;border-radius:0 8px 8px 0;margin:1.4rem 0;}.tldr b{color:var(--accent);}
+section{margin:2.4rem 0;}h2{font-size:1.28rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;margin:0 0 .8rem;}h2 .n{color:var(--accent);margin-right:.45rem;}
+h3{font-size:1.06rem;margin:0 0 .3rem;color:var(--ink);}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.7rem;margin:1.2rem 0;}
+.step-card{border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;background:#fbfcfe;}
+.step-card .num{display:inline-flex;align-items:center;justify-content:center;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.9rem;margin-bottom:.4rem;}
+.step-card b{display:block;margin-bottom:.2rem;}.step-card span{color:var(--muted);font-size:.88rem;}
+.microwrap{display:flex;flex-direction:column;gap:.9rem;margin-top:.4rem;}
+.micro{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fbfcfe;}
+.micro .m-head{background:var(--accent-soft);padding:.7rem 1.1rem;display:flex;align-items:center;gap:.55rem;}
+.micro .m-n{display:inline-flex;align-items:center;justify-content:center;min-width:1.6rem;height:1.6rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.9rem;padding:0 .1rem;}
+.micro .m-head h3{margin:0;color:var(--accent);}
+.micro .m-body{padding:.8rem 1.1rem 1rem;}
+.micro .m-text{margin:.2rem 0 .6rem;line-height:1.7;}
+.micro .m-label{font-size:.76rem;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);margin:1rem 0 .25rem;}
+pre{background:#20263f;color:#e6e9f5;border-radius:10px;padding:.85rem 1rem;overflow-x:auto;font-size:.86rem;line-height:1.55;margin:.3rem 0;}
+.outbox{background:#F4F7FF;border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-family:Consolas,Menlo,monospace;font-size:.86rem;color:#223;margin:.3rem 0;white-space:pre-line;}
+.rem{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-size:.92rem;margin:.7rem 0 0;}.rem b{color:var(--pr);}
+.pracwrap{display:flex;flex-direction:column;gap:.7rem;margin-top:.4rem;}
+.pstep{border:1px solid var(--line);border-radius:12px;padding:.85rem 1.05rem;background:#fbfcfe;}
+.pstep .p-top{display:flex;gap:.55rem;align-items:flex-start;}
+.pstep .p-n{display:inline-flex;align-items:center;justify-content:center;min-width:1.5rem;height:1.5rem;border-radius:50%;background:var(--def);color:#fff;font-weight:700;font-size:.85rem;flex:none;margin-top:.1rem;}
+.pstep b{color:var(--ink);}
+.pstep .p-see{display:block;margin-top:.5rem;padding-left:2.05rem;font-size:.92rem;color:var(--pr);}.pstep .p-see b{color:var(--pr);}
+.donecheck{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin:1.2rem 0 .4rem;}.donecheck b{color:var(--pr);}
+.donecheck ul{margin:.4rem 0 0;padding-left:1.2rem;}
+.note{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.9rem;margin:.9rem 0;}.note b{color:var(--def);}
+.tip{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.9rem;margin:.9rem 0;}.tip b{color:var(--pr);}
+.homebox{border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;background:#fbfcfe;}
+.homebox .h-task{font-size:1.02rem;font-weight:700;color:var(--ink);margin:0 0 .5rem;}
+.homebox ol{margin:.4rem 0 .6rem;padding-left:1.3rem;}.homebox li{margin:.3rem 0;}
+.homebox .h-res{background:var(--pr-soft);border-radius:8px;padding:.6rem .9rem;font-size:.92rem;margin-top:.4rem;}.homebox .h-res b{color:var(--pr);}
+.metmini{background:var(--vr-soft);border:1px solid var(--vr);border-radius:14px;padding:1rem 1.2rem;margin:1rem 0;}
+.metmini h3{color:var(--vr);}
+.metmini .ms{border:1px solid var(--line);border-radius:10px;background:#fff;padding:.6rem .8rem;margin:.5rem 0;}
+.metmini .ms b{color:var(--ink);display:block;font-size:.92rem;}
+.metmini .ms p{margin:.25rem 0 0;font-size:.9rem;}
+.metmini .ms .w{display:block;color:var(--pr);font-size:.86rem;margin-top:.1rem;}
+.reflection{background:var(--vr-soft);border:1px solid var(--vr);border-radius:14px;padding:1.1rem 1.2rem;margin:1rem 0;}
+.reflection textarea{width:100%;min-height:52px;border:1px solid var(--line);border-radius:8px;padding:.45rem .6rem;font:14px/1.5 system-ui,sans-serif;resize:vertical;}
+.reflection .ratings{display:flex;flex-wrap:wrap;gap:.6rem;}.reflection .ratings label{display:inline-flex;align-items:center;gap:.25rem;font-weight:500;margin:0;}
+.reflection .check{display:flex;align-items:center;gap:.5rem;margin:1rem 0 .6rem;font-weight:600;}
+.btn{display:inline-block;border:0;border-radius:10px;padding:.6rem 1.1rem;font:700 15px/1.2 system-ui,sans-serif;background:var(--vr);color:#fff;cursor:pointer;margin-right:.5rem;}
+.btn:hover{filter:brightness(1.08);}.btn.btn-outline{background:transparent;color:var(--vr);border:2px solid var(--vr);}
+.nextcard{border:2px dashed var(--vr);border-radius:14px;padding:1rem 1.2rem;text-align:center;margin:1.5rem 0 0;}
+.nextcard a{color:var(--vr);font-weight:700;text-decoration:none;}.nextcard a:hover{text-decoration:underline;}
+.progress{color:var(--muted);font-size:.9rem;margin:.6rem 0 0;}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:3rem;padding-top:.8rem;}
+@media print{nav,.metmini,.reflection,.nextcard,.whoami{display:none!important;}}</style>
+</head>
+<body>
+<nav><div class="inner"><a href="#plan">План</a><a href="#theory">Теория</a><a href="#practice">Практика</a><a href="#home">Домашнее задание</a><a href="#metodichka">Методичка</a><a href="#links">Ссылки</a><a href="#reflect">Рефлексия</a><a href="#nextcard">Дальше</a></div></nav>
+<main class="wrap">
+  <div class="whoami" id="whoami" style="background:var(--vr-soft);border:1px solid var(--vr);border-radius:12px;padding:.6rem 1rem;margin-bottom:1.2rem;font-size:.9rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+    <span id="whoText" style="font-weight:700;color:var(--vr)">Загружаю профиль…</span>
+    <a href="../%D0%A1%D0%BF%D0%B8%D1%81%D0%BE%D0%BA%20%D0%BC%D0%BE%D0%B4%D1%83%D0%BB%D0%B5%D0%B9%20%D0%A1%D0%B5%D1%82%D0%B8%20%D0%B2%20VR.html" style="color:var(--muted);font-size:.85rem;text-decoration:none">← список модулей Сети в VR</a>
+  </div>
+  <header>
+    <p class="kicker">Сети в VR · Модуль 2</p>
+    <h1>Photon PUN: комнаты и подключение игроков</h1>
+    <p class="sub">Теория + практика · Unity</p>
+    <p class="meta">Курс для школьников</p>
+    <div class="badges"><span class="badge b-vr">Модуль 2</span><span class="badge b-ac">Теория + практика</span><span class="badge b-pr">Сети в VR</span><span class="badge b-def" id="stateBadge">Статус: не пройдено</span></div>
+  </header>
+  <div class="tldr"><b>Про что модуль.</b> Настроишь вход игроков в общую комнату, выдачу ролей и увидишь, как игроки появляются в общей сцене.</div>
+  <div class="goalwrap"><b>Цель модуля.</b> Соберёшь сцены меню и игры: из меню игрок выбирает комнату и входит — и в игре появляются все участники.</div>
+  <section id="plan"><h2><span class="n">02</span>План модуля</h2><div class="plan"><div class="step-card"><span class="num">1</span><b>Онлайн-меню и список комнат</b></div><div class="step-card"><span class="num">2</span><b>Вход в комнату и создание игрока</b></div><div class="step-card"><span class="num">3</span><b>Имя игрока и роли</b></div><div class="step-card"><span class="num">4</span><b>Проверка на двух устройствах</b></div></div></section>
+  <section id="theory"><h2><span class="n">02·A</span>Теория по шагам</h2><div class="microwrap"><div class="micro"><div class="m-head"><span class="m-n">1</span><h3>Меню и комната</h3></div><div class="m-body"><p class="m-text">У игры есть сцены: меню (выбор комнаты) и игровая (где играют). Photon позволяет получать список открытых комнат и создавать новую.</p><p class="m-text">Главное различие между сценами — в их назначении. Меню — это «прихожая»: здесь игрок вводит имя и выбирает, куда зайти. Игровая сцена — «комната встреч»: сюда попадают все подключённые игроки. Photon умеет искать уже открытые комнаты (метод GetCustomRoomList) и создавать новые (CreateRoom / JoinOrCreateRoom). Комнату можно ограничить числом игроков, закрыть паролем или сделать невидимой в списке — всё это параметры RoomOptions. Такое разделение и настройки есть в любой онлайн-игре: от «Соберись с друзьями» до «поиск матча по региону».</p><div class="m-label">Пример</div><pre>using Photon.Pun;
+using Photon.Realtime;
+public class RoomMaker : MonoBehaviourPunCallbacks {
+    void Join(){
+        // войти в комнату, если её нет — создать
+        PhotonNetwork.JoinOrCreateRoom("ComNya",
+            new RoomOptions{ MaxPlayers = 4, IsOpen = true }, null);
+    }
+}</pre><div class="m-label">Что ты увидишь</div><div class="outbox">Игрок попадает в комнату «ComNya»; если её ещё нет — она создаётся автоматически.</div><table style="width:100%;border-collapse:collapse;margin:.7rem 0;font-size:.9rem"><tr><th style="border:1px solid #D9E2EF;background:#EAF2FD;padding:.5rem .6rem;text-align:left;color:#1B2A4A">Опция RoomOptions</th><th style="border:1px solid #D9E2EF;background:#EAF2FD;padding:.5rem .6rem;text-align:left;color:#1B2A4A">Что делает</th></tr><tr><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top"><b>MaxPlayers</b></td><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top">Сколько игроков максимум в комнате (например 4)</td></tr><tr><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top"><b>IsOpen</b></td><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top">true — комната открыта, false — закрыта для новых</td></tr><tr><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top"><b>IsVisible</b></td><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top">видна ли комната в общем списке (для «скрытых» игр)</td></tr></table><div class="rem"><b>Запомни.</b> Room — комната. JoinOrCreateRoom входит или создаёт. RoomOptions — настройки: лимит игроков, открытость, видимость.</div></div></div><div class="micro"><div class="m-head"><span class="m-n">2</span><h3>Как игрок появляется</h3></div><div class="m-body"><p class="m-text">Когда игрок вошёл в комнату, ему нужно создать своего персонажа в игровой сцене. Для этого при переходе в игровую сцену вызываем PhotonNetwork.Instantiate.</p><p class="m-text">Тонкий момент: персонаж у каждого игрока «свой», но тот же самый для всех. PhotonNetwork.Instantiate создаёт экземпляр префаба у каждого в комнате, присваивая одинаковый ViewID. За счёт этого у всех на экранах появляется один общий персонаж, а не несколько копий. Этот вызов лучше делать при входе в игровую сцену (например, в OnJoinedRoom или Start у спавнера), и обязательно передавать имя префаба, лежащего в папке Resources. Так в реальных играх работают «точки появления» (spawn points): сервер решает, где должен родиться каждый игрок, и рассылает всем одинаковую команду.</p><div class="m-label">Код</div><pre>using UnityEngine;
+using Photon.Pun;
+public class Spawner : MonoBehaviourPunCallbacks {
+    void Start(){
+        if (PhotonNetwork.IsConnectedAndReady)
+            PhotonNetwork.Instantiate("Player",
+                Random.insideUnitSphere * 2f, Quaternion.identity);
+    }
+}</pre><div class="m-label">Что ты увидишь</div><div class="outbox">У каждого игрока появился свой персонаж «Player»; у всех он один и тот же общий куб-аватар.</div><div class="rem"><b>Запомни.</b> Вход в комнату — у всех наступает событие; каждый создаёт своего персонажа через PhotonNetwork.Instantiate (префаб — в Resources).</div></div></div><div class="micro"><div class="m-head"><span class="m-n">3</span><h3>Имя и роли</h3></div><div class="m-body"><p class="m-text">Храни имя игрока в PhotonNetwork.NickName — другие увидят его. Роль (например, охотник/убегающий) можно разыграть через случайно назначить при входе.</p><p class="m-text">NickName — это маленькая «визитка», которая летит вместе с тобой в комнату: когда другой игрок смотрит твой объект или табло, он читает именно это имя. Роль же задаёт поведение: охотник догоняет, убегающий прячется. Способов распределения ролей несколько — можно назначить случайно при входе, выбрать по очереди или отдать право выбора первому (хосту). Имя и роль важно собрать ДО спавна персонажа, чтобы другие сразу знали, кто ты и как себя вести с тобой. Это основа любой командной игры: без имён и ролей игроки не поймут, кто друг, а кто соперник.</p><div class="m-label">Пример</div><pre>using Photon.Pun;
+public class RoleAssign : MonoBehaviourPunCallbacks {
+    public void SetRole(){
+        PhotonNetwork.NickName = "Хантер"; // имя видно всем
+        // роль: случайная каждому входу
+        viewer.GetComponent<...>();
+    }
+}</pre><div class="m-label">Что ты увидишь</div><div class="outbox">На табло появляется имя «Хантер», и у этого игрока — роль охотника.</div><table style="width:100%;border-collapse:collapse;margin:.7rem 0;font-size:.9rem"><tr><th style="border:1px solid #D9E2EF;background:#EAF2FD;padding:.5rem .6rem;text-align:left;color:#1B2A4A">Способ выдачи роли</th><th style="border:1px solid #D9E2EF;background:#EAF2FD;padding:.5rem .6rem;text-align:left;color:#1B2A4A">Плюсы</th><th style="border:1px solid #D9E2EF;background:#EAF2FD;padding:.5rem .6rem;text-align:left;color:#1B2A4A">Когда удобно</th></tr><tr><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top"><b>Случайно при входе</b></td><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top">Быстро, никого не ждём</td><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top">Короткие матчи, все равны</td></tr><tr><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top"><b>По очереди</b></td><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top">Честное распределение</td><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top">Командные сессии</td></tr><tr><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top"><b>Решает хост</b></td><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top">Управление у «главного»</td><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top">Когда нужен «капитан»</td></tr></table><div class="rem"><b>Запомни.</b> NickName — имя игрока для всех. Роль назначают до спавна, чтобы все знали, кто кем играет. Задай имя и роль до появления персонажа.</div></div></div><div class="micro"><div class="m-head"><span class="m-n">4</span><h3>Список игроков</h3></div><div class="m-body"><p class="m-text">У комнаты есть свойство PlayerList — список всех, кто внутри. По нему можно выводить табло и определять, кто первый.</p><p class="m-text">PlayerList — это массив объектов Player, у каждого из которых есть NickName и ActorNumber (порядковый номер игрока в комнате). ActorNumber помогает отслеживать «кто первый вошёл»: у первого будет наименьший номер. Чтобы табло обновлялось само, его значение перечитывают каждый кадр в Update() или при событии PlayerEnteredRoom. Так работают списки игроков в любой онлайн-игре: показывают имена, число игроков, «готов ли» каждый, а ещё используют для генерации логики — например, когда собралось минимум 2 игрока, игра начинает отсчёт.</p><div class="m-label">Пример</div><pre>using UnityEngine;
+using UnityEngine.UI;
+using Photon.Pun;
+public class PlayerListUI : MonoBehaviour {
+    public Text txt;
+    void Update(){
+        if (!PhotonNetwork.InRoom) return;
+        string s = "В комнате: " + PhotonNetwork.CurrentRoom.PlayerCount + "\n";
+        foreach (var p in PhotonNetwork.CurrentRoom.PlayerList)
+            s += p.ActorNumber + ". " + p.NickName + "\n";
+        txt.text = s;
+    }
+}</pre><div class="m-label">Что ты увидишь</div><div class="outbox">На экране список вида «В комнате: 2» затем «1. Аня», «2. Боря» — с номерами игроков.</div><table style="width:100%;border-collapse:collapse;margin:.7rem 0;font-size:.9rem"><tr><th style="border:1px solid #D9E2EF;background:#EAF2FD;padding:.5rem .6rem;text-align:left;color:#1B2A4A">Свойство Player</th><th style="border:1px solid #D9E2EF;background:#EAF2FD;padding:.5rem .6rem;text-align:left;color:#1B2A4A">Что хранит</th></tr><tr><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top"><b>NickName</b></td><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top">Имя игрока, которое видно всем</td></tr><tr><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top"><b>ActorNumber</b></td><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top">Порядковый номер в комнате (кто первый вошёл)</td></tr><tr><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top"><b>IsMasterClient</b></td><td style="border:1px solid #D9E2EF;padding:.5rem .6rem;vertical-align:top">Правда ли этот игрок — хост комнаты</td></tr></table><div class="rem"><b>Запомни.</b> PhotonNetwork.CurrentRoom.PlayerList — все игроки комнаты. ActorNumber показывает, кто первый. Обновляй табло в Update() или по событию PlayerEnteredRoom.</div></div></div><div class="note"><b>📚 Источники.</b> Подробнее про комнаты и игроков: <a href="https://doc.photonengine.com/en-us/pun/current/gameplay/roomsandauth" target="_blank" rel="noopener">документация Photon PUN · Комнаты и авторизация</a>, <a href="https://doc.photonengine.com/en-us/pun/v2/gameplay/instantiation" target="_blank" rel="noopener">Instantiation · как создать персонажа у всех</a>, <a href="https://docs.unity3d.com/ru/current/Manual/SceneManagement.html" target="_blank" rel="noopener">Unity · переключение сцен LoadScene</a>. Это официальные сайты Unity и Photon — открываются в браузере без VPN.</div></div></section>
+  <section id="practice"><h2><span class="n">02·Б</span>Практика</h2><p>Выполняй по порядку. У каждого шага — что должно получиться.</p><div class="pracwrap"><div class="pstep"><div class="p-top"><span class="p-n">1</span><b>Создай две сцены: Menu и Game, добавь обе в Build Settings</b></div><span class="p-see"><b>Должно получиться:</b> Сцены можно переключать кнопкой.</span></div><div class="pstep"><div class="p-top"><span class="p-n">2</span><b>В Menu сделай поле ввода имени и кнопку «Играть»</b></div><span class="p-see"><b>Должно получиться:</b> Имя сохраняется в PhotonNetwork.NickName.</span></div><div class="pstep"><div class="p-top"><span class="p-n">3</span><b>При нажатии кнопки — JoinOrCreateRoom</b></div><span class="p-see"><b>Должно получиться:</b> Статус «в комнате», переход в сцену Game.</span></div><div class="pstep"><div class="p-top"><span class="p-n">4</span><b>В Game при входе создай персонажа через PhotonNetwork.Instantiate</b></div><span class="p-see"><b>Должно получиться:</b> У каждого игрока появляется свой персонаж.</span></div><div class="pstep"><div class="p-top"><span class="p-n">5</span><b>Выведи на табло список игроков из PlayerList</b></div><span class="p-see"><b>Должно получиться:</b> При заходе второго игрока он появляется в списке и в сцене.</span></div></div><div class="donecheck"><b>✓ Чек-лист.</b><ul><li>Выполнил все шаги практики и увидел результат.</li><li>Выполнил домашнее задание.</li><li>Заполнил рефлексию.</li></ul></div></section>
+  <section id="home"><h2><span class="n">02·В</span>Домашнее задание</h2><div class="homebox"><p class="h-task">📋 Добавь условие старта игры (минимум 2 игрока).</p><ol><li>Пока игроков < 2, показывай «Ждём игрока…».</li><li>Когда набралось 2 — выведи «Старт» и разреши движение.</li><li>Добавь счётчик «Кто первый вошёл».</li></ol><div class="h-res"><b>Что должно получиться:</b> Игра начинает работать, когда в комнате минимум 2 игрока.</div></div></section>
+  <section id="metodichka"><h2><span class="n">02·Г</span>Методичка</h2><div class="metmini"><h3>Пошагово: действие → что появится</h3><div class="ms"><b>Шаг 1. Сделай сцены</b><p>Создай Menu и Game, добавь в Build Settings</p><span class="w">✔ Сцены есть в сборке.</span></div><div class="ms"><b>Шаг 2. Подключи меню</b><p>Поле имени + кнопка JoinOrCreateRoom</p><span class="w">✔ Игрок входит в комнату и попадает в Game.</span></div><div class="ms"><b>Шаг 3. Спавн персонажа</b><p>PhotonNetwork.Instantiate в игровой сцене</p><span class="w">✔ Персонаж появляется у всех.</span></div><div class="ms"><b>Шаг 4. Добавь табло</b><p>Выведи PlayerList</p><span class="w">✔ Все игроки видны в списке.</span></div><div class="ms"><b>Шаг 5. Проверь на двух устройствах</b><p>Запусти Editor и APK</p><span class="w">✔ Оба в комнате, оба на табло.</span></div><div class="note" style="margin-top:.7rem"><b>Если не работает:</b> Не забудь добавить обе сцены в Build Settings, иначе переход по кнопке не сработает.</div></div><div class="tip"><b>Полная версия.</b> <a href="Методичка-net-02-photon-pun-komnaty.html" style="color:var(--pr);font-weight:700">Методичка Модуль 2</a></div></section>
+  <section id="links"><h2><span class="n">02·Д</span>Ссылки и материалы</h2><div style="border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;background:#fbfcfe"><p style="margin:.35rem 0"><a href="https://doc.photonengine.com/en-us/pun/current/gameplay/roomsandoauth" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">→ Photon · Комнаты</a></p><p style="margin:.35rem 0"><a href="https://docs.unity3d.com/ru/current/Manual/SceneManagement.html" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">→ Unity · LoadScene</a></p></div></section>
+  <section id="reflect"><h2><span class="n">02·Е</span>Рефлексия модуля</h2><div class="reflection">
+    <label>Что нового я узнал?</label><textarea id="r1" placeholder="Напиши 1–2 предложения"></textarea>
+    <label>Что получилось лучше всего?</label><textarea id="r2" placeholder="Напиши 1–2 предложения"></textarea>
+    <label>Что было сложно и как решил?</label><textarea id="r3" placeholder="Напиши 1–2 предложения"></textarea>
+    <label>Оцени себя</label><div class="ratings"><label><input type="radio" name="rating" value="1"> 1</label><label><input type="radio" name="rating" value="2"> 2</label><label><input type="radio" name="rating" value="3"> 3</label><label><input type="radio" name="rating" value="4"> 4</label><label><input type="radio" name="rating" value="5"> 5</label></div>
+    <div class="check"><input type="checkbox" id="doneCheck"> Я выполнил практику и домашнее задание</div>
+    <button class="btn" onclick="completeLesson()">Отметить модуль пройденным</button>
+    <p class="progress" id="reflMsg"></p><p class="progress" id="saveMsg"></p>
+  </div></section>
+  <div class="nextcard" id="nextcard">
+    <p style="margin:.2rem 0 .5rem"><b>Следующий модуль:</b> Синхронизация, сборка multiplayer-игры</p><a href="../Модуль 3/net-03-sinhrivizaciya-multiplayer.html" id="nextLink">Перейти к модулю Синхронизация, сборка multiplayer-игры →</a><p class="progress" id="nextStatus">Ссылка откроется после прохождения этого модуля.</p>
+  </div>
+  <footer><p>Сети в VR · дополняет VR-студию · для школьников 8–11 классов.</p></footer>
+</main>
+<script>
+const CUKEY="vr_current_user", PFKEY="vr_profiles";
+function me(){try{var s=JSON.parse(localStorage.getItem(CUKEY)||"null");if(!s||!s.uid)return null;var a=JSON.parse(localStorage.getItem(PFKEY)||"[]");return a.find(function(p){return String(p.uid)===String(s.uid);})||null;}catch(e){return null;}}
+const user=me();
+const reflKey=user?("net_u_"+user.uid+"_m_2"):("net_anon_m_02");
+const badge=document.getElementById("stateBadge"), nextLink=document.getElementById("nextLink"), nextStatus=document.getElementById("nextStatus"), who=document.getElementById("whoText");
+function refreshState(){ const isDone=localStorage.getItem(reflKey)==="1"; if(isDone){badge.textContent="Статус: пройдено ✓";badge.style.background="var(--pr-soft)";badge.style.color="var(--pr)";} if(nextLink){nextLink.style.setProperty("pointer-events",isDone?"auto":"none","important");nextLink.style.opacity=isDone?"1":".45";if(nextStatus)nextStatus.textContent=isDone?"Модуль пройден — следующий открыт.":"Пройти модуль, чтобы открыть следующий.";} }
+function completeLesson(){ const r1=(document.getElementById("r1")||{}).value||""; const r2=(document.getElementById("r2")||{}).value||""; const r3=(document.getElementById("r3")||{}).value||""; var missing=[]; if(!r1.trim())missing.push("«Что нового»"); if(!r2.trim())missing.push("«Что получилось»"); if(!r3.trim())missing.push("«Что было сложно»"); if(missing.length){ var msg=document.getElementById("reflMsg"); if(msg) msg.textContent="Заполни все поля: "+missing.join(", "); return; } try{localStorage.setItem(reflKey,"1");}catch(e){} refreshState(); var msg=document.getElementById("reflMsg"); if(msg) msg.textContent="✓ Модуль отмечен пройденным."; }
+if(who){ showWho(); } function showWho(){ who.textContent = user ? (user.name+(user.klass?" · "+user.klass+" класс":"")) : "Войди в профиль на «Списке занятий» VR-студии."; }
+["r1","r2","r3"].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener("input",function(){try{var v1=(document.getElementById("r1")||{}).value||"";var v2=(document.getElementById("r2")||{}).value||"";var v3=(document.getElementById("r3")||{}).value||"";localStorage.setItem(reflKey+"_draft",JSON.stringify({r1:v1,r2:v2,r3:v3}));}catch(e){}});});
+if(nextLink){ nextLink.addEventListener("click",function(ev){ if(localStorage.getItem(reflKey)!=="1"){ ev.preventDefault(); ev.stopPropagation(); var box=document.getElementById("reflMsg"); if(box){box.textContent="Модуль ещё не пройден. Заполни рефлексию и нажми «Отметить модуль пройденным».";box.style.color="var(--def)";box.style.fontWeight="700";} var rb=document.getElementById("reflect"); if(rb) rb.scrollIntoView({behavior:"smooth",block:"center"}); } }); }
+showWho(); refreshState();
+</script>
+</body>
+</html>

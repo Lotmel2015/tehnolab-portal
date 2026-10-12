@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Проект: интеграция, сборка и тестирование · Инструкция · VR-студия</title>
+<!-- Сквозная система ТЛ (общий кабинет с порталом) -->
+<script src="../tl-portal-core.js"></script>
+<script src="../tl-bridge.js"></script>
+<script>try { if (window.TLCore) TLCore.init(); if (window.TLBridge) TLBridge.init({ total: 36 }); } catch (e) { console.error("tl-bridge init error", e); }</script>
+<style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--line:#D9E2EF;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:900px;margin:0 auto;padding:0 1.25rem 3rem}
+header.hero{background:linear-gradient(135deg,#1B2A4A 0%,#1F6FE0 60%,#4D008C 130%);color:#fff;border-radius:0 0 18px 18px;padding:2.2rem 1.5rem 1.8rem;margin:0 -1.25rem 1.5rem}
+header.hero h1{font-size:1.7rem;line-height:1.25;margin:0 0 .4rem}header.hero .sub{font-size:1rem;opacity:.92;max-width:64ch;margin:0}header.hero .meta{margin-top:1rem;font-size:.8rem;opacity:.75}
+.backlink{display:inline-block;margin:1rem 0 -.4rem;color:var(--accent);text-decoration:none;font-size:.9rem;font-weight:600}.backlink:hover{text-decoration:underline}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.9rem 1.1rem;border-radius:0 8px 8px 0;margin:1.4rem 0}.tldr b{color:var(--accent)}
+.steps-band{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin:1.4rem 0}.kpi{background:var(--card,#fff);border:1px solid var(--line);border-radius:10px;padding:.85rem 1rem}.kpi b{display:block;font-size:1.2rem;color:var(--accent)}.kpi span{color:var(--muted);font-size:.8rem}
+.toc{background:#fbfcfe;border:1px solid var(--line);border-radius:12px;padding:.9rem 1.2rem;margin:1.2rem 0}.toc ol{margin:.4rem 0 0;padding-left:1.3rem}.toc a{color:var(--accent);text-decoration:none}
+section{margin:2.2rem 0}h2{font-size:1.28rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;color:var(--ink)}h3{font-size:1.05rem;margin:1.2rem 0 .4rem}
+.mstep{background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:.8rem 1rem;margin:.7rem 0}.mstep b{color:var(--accent);display:block;margin:.2rem 0 .3rem}.mstep .w{color:var(--pr);font-weight:600}.mstep p{margin:.3rem 0}
+.result{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.95rem;margin:1rem 0}.result b{color:var(--pr)}
+.resources{margin:1rem 0}.resources a{color:var(--accent);font-weight:600;text-decoration:none;background:var(--accent-soft);border-radius:6px;padding:.25rem .6rem;margin:.2rem .3rem .2rem 0;display:inline-block}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.8rem}
+@media print{header.hero{border-radius:0}}
+</style>
+</head>
+<body>
+<main>
+<p class="backlink"><a href="./Занятие-29-проект-интеграция-сборка-и-тестирование.html">← занятие 29 · Проект: интеграция, сборка и тестирование</a></p>
+<header class="hero">
+  <h1>Проект: интеграция, сборка и тестирование</h1>
+  <p class="sub">Пошагово: что нужно сделать на занятии, как действовать и какой результат ты увидишь.</p>
+  <p class="meta">Занятие 29 · VR-студия · для 8–11 классов</p>
+</header>
+<div class="tldr"><b>Главное.</b> Собираем всё вместе в рабочий билд: интеграция модулей, сборка APK, тестирование на гарнитуре.</div>
+<div class="steps-band"><div class="kpi"><b>Интеграция</b><span>сборка модулей</span></div><div class="kpi"><b>APK</b><span>установщик</span></div><div class="kpi"><b>Тест</b><span>25 мин на шлеме</span></div><div class="kpi"><b>Баги</b><span>журнал</span></div></div>
+<div class="toc"><ol><li><a href="#s1">Слей версии</a></li><li><a href="#s2">Построй APK</a></li><li><a href="#s3">Проведи тест-сессию</a></li><li><a href="#s4">Исправь критичные баги</a></li><li><a href="#s5">Обнови APK</a></li></ol></div>
+<section id="s1"><h2>1. Слей версии</h2><div class="mstep"><p>Объедини все выполненные задачи в одну сцену/проект. Убери конфликты (Git merge при необходимости).</p><span class="w">✓ Должно получиться: Весь функционал в одной сборке без потерь.</span></div></section><section id="s2"><h2>2. Построй APK</h2><div class="mstep"><p>Настрой Build Settings под Android, собери APK, установи на Pico 4 Ultra.</p><span class="w">✓ Должно получиться: Приложение запускается на шлеме.</span></div></section><section id="s3"><h2>3. Проведи тест-сессию</h2><div class="mstep"><p>Дай поиграть 2-3 людям. Пусть пройдут ключевые сценарии. Зафиксируй все баги в журнал.</p><span class="w">✓ Должно получиться: Журнал из 5+ найденных проблем с описанием шагов.</span></div></section><section id="s4"><h2>4. Исправь критичные баги</h2><div class="mstep"><p>Почини баги, мешающие игре: невозможность продолжить, сломанные объекты, вылеты.</p><span class="w">✓ Должно получиться: Критичных багов в основном сценарии больше нет.</span></div></section><section id="s5"><h2>5. Обнови APK</h2><div class="mstep"><p>Собери финальный APK с исправлениями и установи на все тестовые шлемы.</p><span class="w">✓ Должно получиться: Рабочая версия готова к следующему этапу (полировка).</span></div></section>
+<section><h2>Результат занятия</h2><div class="result"><b>Что должно получиться:</b> Интегрированный и протестированный на гарнитуре VR-проект с журналом багов и исправленной критичной логикой.</div></section>
+<section><h2>Полезные материалы</h2><div class="resources"><a href="../Занятие 16/Инструкция занятия 16 — сборка-apk-и-запуск-на-pico-4-ultra.html" target="_blank" rel="noopener">Урок 16 · Сборка APK</a><a href="https://git-scm.com" target="_blank" rel="noopener">git-scm.com</a></div></section>
+<footer><p>Инструкция занятия 29 · VR-студия · дополняет материалы занятия.</p></footer>
+</main>
+</body>
+</html>

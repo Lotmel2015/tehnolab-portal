@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Канонический шаблон нового курса · Технологическая лаборатория</title>
+<style>
+  :root {
+    --bg: #ffffff; --ink: #1B2A4A; --muted: #5A6B85;
+    --accent: #1F6FE0; --accent-soft: #EAF2FD;
+    --vr: #4D008C; --vr-soft: #F0EBF5;
+    --def: #B45309; --def-soft: #FDF1E1;
+    --pr: #167A4D; --pr-soft: #E7F4EE;
+    --line: #D9E2EF; --code-bg: #F5F7FB;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+  header .kicker { color: var(--accent); font-weight: 700; font-size: .8rem;
+                   text-transform: uppercase; letter-spacing: .05em; }
+  header h1 { font-size: 1.9rem; line-height: 1.2; margin: .2rem 0 .3rem; }
+  header .sub { color: var(--muted); margin: 0 0 .4rem; font-size: 1.02rem; }
+  .meta { color: var(--muted); font-size: .85rem; }
+  .tldr { background: var(--accent-soft); border-left: 4px solid var(--accent);
+          padding: .9rem 1.1rem; border-radius: 0 6px 6px 0; margin: 1.5rem 0; }
+  .tldr b { color: var(--accent); }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+          gap: .75rem; margin: 1.5rem 0; }
+  .kpi { border: 1px solid var(--line); border-radius: 10px; padding: .8rem 1rem;
+         background: #fff; }
+  .kpi b { display: block; font-size: 1.4rem; font-variant-numeric: tabular-nums; color: var(--vr); }
+  .kpi span { color: var(--muted); font-size: .78rem; }
+  section { margin: 2rem 0; }
+  h2 { font-size: 1.2rem; border-bottom: 1px solid var(--line);
+       padding-bottom: .35rem; margin: 0 0 .75rem; color: var(--ink); }
+  h3 { font-size: 1.02rem; margin: 1.2rem 0 .5rem; color: var(--vr); }
+  p { margin: .4rem 0 .8rem; }
+  ul, ol { margin: .3rem 0 .8rem; padding-left: 1.4rem; }
+  li { margin: .25rem 0; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; margin: .6rem 0 1rem; }
+  th, td { padding: .45rem .6rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+         font-size: .85em; background: var(--code-bg); padding: .1rem .35rem;
+         border-radius: 4px; }
+  pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 10px;
+        padding: .9rem 1rem; overflow-x: auto; font-size: .82rem; line-height: 1.5; }
+  pre code { background: none; padding: 0; }
+  .steps { counter-reset: step; list-style: none; padding-left: 0; }
+  .steps > li { counter-increment: step; position: relative; padding: .7rem .9rem .7rem 3rem;
+                background: #fff; border: 1px solid var(--line); border-radius: 10px;
+                margin-bottom: .6rem; }
+  .steps > li::before { content: counter(step); position: absolute; left: .8rem; top: .75rem;
+                        width: 1.5rem; height: 1.5rem; border-radius: 50%;
+                        background: var(--accent); color: #fff; font-weight: 700;
+                        display: flex; align-items: center; justify-content: center;
+                        font-size: .85rem; }
+  .steps b { color: var(--ink); }
+  .checklist { list-style: none; padding-left: 0; }
+  .checklist li { padding: .45rem .6rem .45rem 2rem; border: 1px solid var(--line);
+                  border-radius: 8px; margin-bottom: .4rem; position: relative; }
+  .checklist li::before { content: "☐"; position: absolute; left: .7rem; top: .45rem;
+                          color: var(--accent); font-weight: 700; }
+  .warn { background: var(--def-soft); border-left: 4px solid var(--def);
+          padding: .7rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+  .warn b { color: var(--def); }
+  .ok { background: var(--pr-soft); border-left: 4px solid var(--pr);
+        padding: .7rem 1rem; border-radius: 0 8px 8px 0; margin: 1rem 0; }
+  .ok b { color: var(--pr); }
+  .badge { display: inline-block; font-size: .72rem; font-weight: 700;
+           padding: .15rem .55rem; border-radius: 999px; }
+  .b-vr { background: var(--vr-soft); color: var(--vr); }
+  .b-ac { background: var(--accent-soft); color: var(--accent); }
+  .b-pr { background: var(--pr-soft); color: var(--pr); }
+  .b-def { background: var(--def-soft); color: var(--def); }
+  .tabs { display: flex; flex-wrap: wrap; gap: .4rem; margin: .8rem 0; }
+  .tabs button { border: 1px solid var(--line); background: #fff; color: var(--muted);
+                 border-radius: 999px; padding: .35rem .85rem; font: 600 .8rem/1.2 system-ui, sans-serif;
+                 cursor: pointer; }
+  .tabs button.active { background: var(--vr); border-color: var(--vr); color: #fff; }
+  .tabpane { display: none; } .tabpane.active { display: block; }
+  footer { color: var(--muted); font-size: .8rem; border-top: 1px solid var(--line);
+           margin-top: 3rem; padding-top: .75rem; }
+  @media print {
+    main { max-width: none; padding: 0; }
+    .steps > li, .checklist li, .kpi, table, pre { break-inside: avoid; }
+    .tabs { display: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="kicker">Технологическая лаборатория · Методический стандарт</p>
+    <h1>Как собрать новый курс по образцу VR-студии</h1>
+    <p class="sub">Канонический чек-лист и шаблон для тиражирования: конфиг → хаб → уроки → шкала → проверки.</p>
+    <p class="meta">Версия 1.0 · 09.10.2026 · Источник образца: «Курс-VR-студия», «Курс C#», «Курс-Blender-3D»</p>
+  </header>
+
+  <div class="tldr"><b>Главное.</b> Каждый новый курс — это автономная папка с хабом («Список занятий / модулей») и набором уроков. Вся логика — на localStorage, без сервера и интернета. Чтобы курс заработал, достаточно заполнить один JSON-конфиг и прогнать генератор; чтобы он не сломался — соблюдать 4 жёстких правила: один префикс ключей, один &lt;script&gt;, никаких однострочных «//»-комментариев в минифицированном JS и строгая блокировка следующего шага через рефлексию.</div>
+
+  <div class="kpis">
+    <div class="kpi"><b>7</b><span>лагерей-курсов в ТЛ</span></div>
+    <div class="kpi"><b>1</b><span>JSON-конфиг на курс</span></div>
+    <div class="kpi"><b>14</b><span>шагов сборки</span></div>
+    <div class="kpi"><b>4</b><span>жёстких правила</span></div>
+  </div>
+
+  <section id="config">
+    <h2>Шаг 0. JSON-конфиг курса</h2>
+    <p>Единственный источник данных для генератора. Ниже — каноническая схема (значения — пример для вымышленного курса «Курс-Робототехника»). Поля с <code>*</code> обязательны.</p>
+<pre><code>{
+  "prefix": "rt",                    // * префикс ключей: rt_profiles, rt_current_user, rt_u_, rt_progress_
+  "title": "Робототехника",          // * название курса
+  "kicker": "Технологическая лаборатория · Робототехника",
+  "subtitle": "36 занятий по программе ...",
+  "brandColor": "#1F6FE0",           // акцент курса
+  "brandSoft": "#EAF2FD",
+  "teachers": ["Казакевич Константин Михайлович"],  // * основные педагоги
+  "teacherCode": "012345678",        // код входа учителем
+  "total": 36,                       // * число занятий/модулей
+  "units": "занятие",                // слово для карточек: занятие/модуль
+  "lessons": [                        // * массив: по одному на занятие
+    { "week": 1, "title": "Введение и техника безопасности",
+      "module": "Модуль 1", "type": "Теория + практика",
+      "href": "Занятие 1/Занятие-01-vvedenie.html",
+      "why": "Почему это важно: ..." },
+    // ... всего total элементов
+  ],
+  "scaleMetals": [                    // мотивационная шкала, 10 уровней
+    { "name": "Железо", "icon": "⚙", "need": 5 },
+    { "name": "Медь", "icon": "◎", "need": 15 },
+    // ... до Иридий (need: 93)
+  ],
+  "bonusLessons": [20, 29, 33, 34, 35, 36],  // бонусные за качество
+  "resetScope": ["rt_profiles", "rt_current_user", "rt_progress_", "rt_u_", "rt_anon_", "rt_pf_"]
+}</code></pre>
+    <p>Готовые конфиги реальных курсов: <code>build-csharp-index.cjs</code>, <code>build-blender-index.cjs</code> (см. раздел «Инструменты» внизу).</p>
+  </section>
+
+  <section id="labs">
+    <h2>Шаг 0.1. Конфиги каждой лаборатории (актуальные, из файлов 09.10.2026)</h2>
+    <p>Ниже — готовые JSON-конфиги всех 8 курсов ТЛ, извлечённые из реальных хабов. Префикс в колонке — это <code>{prefix}</code> из схемы Шага 0. Для новых курсов копируй ближайший по типу и меняй только значения.</p>
+    <div class="tabs" id="labTabs">
+      <button class="active" data-tab="csharp">C#</button>
+      <button data-tab="blender">Blender</button>
+      <button data-tab="vr">VR-студия</button>
+      <button data-tab="bpla">БПЛА</button>
+      <button data-tab="kompas">КОМПАС-3D</button>
+      <button data-tab="pn">Проектный навигатор</button>
+      <button data-tab="roboto">Робототехника</button>
+      <button data-tab="electron">Электроника</button>
+    </div>
+    <div class="tabpane active" id="pane-csharp">
+<pre><code>{
+  "prefix": "cs",                          // * ключи: cs_profiles, cs_current_user, cs_progress_, cs_u_, cs_anon_
+  "title": "C#",
+  "kicker": "Технологическая лаборатория · Углублённый трек C#",
+  "subtitle": "6 модулей: от типов данных до Unity",
+  "brandColor": "#1F6FE0", "brandSoft": "#EAF2FD",
+  "teachers": ["Казакевич Константин Михайлович"],
+  "teacherCode": "012345678",
+  "total": 6, "units": "модуль",
+  "modules": [
+    { "num": 1, "title": "Типы данных и операторы", "fileId": "csharp-01-tipy-i-operatory", "type": "Теория + практика", "why": "Научишься выбирать тип данных..." },
+    { "num": 2, "title": "Условия, ветвления и тернарный оператор", "fileId": "csharp-02-usloviya-i-vetvleniya", "type": "Теория + практика", "why": "..." },
+    { "num": 3, "title": "Циклы: for, while, do-while и foreach", "fileId": "csharp-03-cikly-i-iteratsii", "type": "Теория + практика", "why": "..." },
+    { "num": 4, "title": "Массивы, списки и методы", "fileId": "csharp-04-massivy-metody", "type": "Теория + практика", "why": "..." },
+    { "num": 5, "title": "ООП: классы, свойства, инкапсуляция", "fileId": "csharp-05-oop-klassy", "type": "Теория + практика", "why": "..." },
+    { "num": 6, "title": "C# в Unity: компоненты, механики и мини-проект", "fileId": "csharp-06-unity-skripty", "type": "Теория + практика", "why": "..." }
+  ],
+  "bonusLessons": [6],
+  "resetScope": ["cs_profiles", "cs_current_user", "cs_progress_", "cs_u_", "cs_anon_", "cs_pf_"]
+}</code></pre>
+    </div>
+    <div class="tabpane" id="pane-blender">
+<pre><code>{
+  "prefix": "blender",                     // * ключи: blender_profiles, blender_current_user, blender_u_, blender_progress_
+  "title": "Blender 3D",
+  "kicker": "Технологическая лаборатория · Инициативное моделирование (Blender 3D)",
+  "subtitle": "28 занятий: моделирование для космической отрасли",
+  "brandColor": "#B45309", "brandSoft": "#FDF1E1",
+  "teachers": ["Казакевич Константин Михайлович"],
+  "teacherCode": "012345678",
+  "total": 28, "units": "занятие",
+  "lessons": [
+    { "week": 1, "title": "Что такое 3D: вершины, рёбра, полигоны", "module": "Модуль 1", "type": "Теория + практика",
+      "href": "Занятие 1/Занятие-01-что-такое-3d-вершины-рёбра-полигоны.html",
+      "why": "Разбираемся, из чего состоит любая 3D-модель." },
+    { "week": 2, "title": "Интерфейс Blender 4.x и горячие клавиши", "module": "Модуль 1", "type": "Практика",
+      "href": "Занятие 2/Занятие-02-интерфейс-blender-навигация-и-клавиши.html", "why": "..." },
+    // ... ещё 26 занятий, total = 28
+  ],
+  "bonusLessons": [20, 29, 33, 34, 35, 36],   // если меньше занятий — уменьшить
+  "resetScope": ["blender_profiles", "blender_current_user", "blender_progress_", "blender_u_", "blender_anon_"]
+}</code></pre>
+    </div>
+    <div class="tabpane" id="pane-vr">
+<pre><code>{
+  "prefix": "vr",                          // * ключи: vr_profiles, vr_current_user, vr_progress_, vr_u_, vr_anon_
+  "title": "VR-студия",
+  "kicker": "Технологическая лаборатория · VR-студия",
+  "subtitle": "36 занятий: разработка VR-приложений на Unity",
+  "brandColor": "#4D008C", "brandSoft": "#F0EBF5",
+  "teachers": ["Казакевич Константин Михайлович"],
+  "teacherCode": "012345678",
+  "total": 36, "units": "занятие",
+  "lessons": [
+    { "week": 1, "title": "Введение в VR/AR и техника безопасности", "module": "Модуль 1", "type": "Теория + практика",
+      "href": "Занятие 1/Занятие-01-введение-в-vrar-и-техника-безопасности.html", "why": "..." },
+    // ... всего 36 занятий
+  ],
+  "bonusLessons": [20, 29, 33, 34, 35, 36],
+  "resetScope": ["vr_profiles", "vr_current_user", "vr_progress_", "vr_u_", "vr_anon_", "vr_pf_", "mt_teacher_mode"]
+}</code></pre>
+    </div>
+    <div class="tabpane" id="pane-bpla">
+<pre><code>{
+  "prefix": "bpla",                        // * ключи: bpla-course-users, bpla-course-progress, bpla_u_
+  "title": "БПЛА",
+  "kicker": "Технологическая лаборатория · Беспилотные авиационные системы (БАС)",
+  "subtitle": "28 занятий по программе (КТП)",
+  "brandColor": "#0E7490", "brandSoft": "#E6F7FA",
+  "teachers": [],                          // заполнить: "BASE_TEACHERS" в хабе
+  "teacherCode": "012345678",
+  "total": 28, "units": "занятие",
+  "lessons": [
+    { "week": 1, "title": "Классификация БПЛА по массе и назначению. Законодательство РФ", "module": "Модуль 1", "type": "занятие по КТП",
+      "href": "Занятие 1/Занятие-01-классификация-бпла-по-массе-и-назначению-законодательство-рф-воздушный-кодекс-постановление-658.html", "why": "..." },
+    // ... всего 28 занятий
+  ],
+  "bonusLessons": [],
+  "resetScope": ["bpla-course-users", "bpla-course-progress", "bpla_u_", "bpla_anon_"]
+}</code></pre>
+    </div>
+    <div class="tabpane" id="pane-kompas">
+<pre><code>{
+  "prefix": "kompas",                      // * ключи: kompas-course-users, kompas-course-progress, kompas_u_
+  "title": "КОМПАС-3D",
+  "kicker": "Технологическая лаборатория · Инженерное 3D-моделирование (КОМПАС-3D)",
+  "subtitle": "28 занятий по программе (КТП): черчение и 3D-моделирование",
+  "brandColor": "#4D008C", "brandSoft": "#F0EBF5",
+  "teachers": [],                          // заполнить: "BASE_TEACHERS" в хабе
+  "teacherCode": "012345678",
+  "total": 28, "units": "занятие",
+  "lessons": [
+    { "week": 1, "title": "История инженерного черчения. Стандарты ЕСКД (ГОСТ 2 серия)", "module": "Модуль 1", "type": "занятие по КТП",
+      "href": "Занятие 1/Занятие-01-история-инженерного-черчения-стандарты-ескд-гост-2-серия-форматы-рамки-основная-надпись.html", "why": "..." },
+    // ... всего 28 занятий
+  ],
+  "bonusLessons": [],
+  "resetScope": ["kompas-course-users", "kompas-course-progress", "kompas_u_", "kompas_anon_"]
+}</code></pre>
+    </div>
+    <div class="tabpane" id="pane-pn">
+<pre><code>{
+  "prefix": "pdn",                         // * ключи: pdn-course-users, pdn-course-progress, pd_refl_
+  "title": "Проектный навигатор",
+  "kicker": "Технологическая лаборатория · Проектный навигатор",
+  "subtitle": "36 занятий: от идеи до защиты проекта",
+  "brandColor": "#1F6FE0", "brandSoft": "#EAF2FD",
+  "teachers": [],                          // заполнить: "BASE_TEACHERS" в хабе
+  "teacherCode": "012345678",
+  "total": 36, "units": "занятие",
+  "lessons": [
+    { "week": 1, "title": "Входное тестирование", "module": "Модуль 1", "type": "Диагностика",
+      "href": "Занятие 1/Занятие-1-входное-тестирование.html", "why": "..." },
+    { "week": 2, "title": "Что такое проект. Карта интересов", "module": "Модуль 1", "type": "Теория + практика",
+      "href": "Занятие 2/Занятие-2-признаки-проекта.html", "why": "..." },
+    // ... всего 36 занятий
+  ],
+  "bonusLessons": [],
+  "resetScope": ["pdn-course-users", "pdn-course-progress", "pd_refl_"]
+}</code></pre>
+    </div>
+    <div class="tabpane" id="pane-roboto">
+<pre><code>{
+  "prefix": "roboto",                      // * ключи: roboto-course-users, roboto-course-progress, roboto_u_
+  "title": "Робототехника",
+  "kicker": "Технологическая лаборатория · Робототехника (LEGO EV3)",
+  "subtitle": "28 занятий по программе (КТП)",
+  "brandColor": "#1F6FE0", "brandSoft": "#EAF2FD",
+  "teachers": [],                          // заполнить: "BASE_TEACHERS" в хабе
+  "teacherCode": "012345678",
+  "total": 28, "units": "занятие",
+  "lessons": [
+    { "week": 1, "title": "Вводное занятие. История робототехники. Техника безопасности", "module": "Модуль 1", "type": "занятие по КТП",
+      "href": "Занятие 1/Занятие-01-вводное-занятие-история-робототехники-техника-безопасности-знакомство-со-структурой-курса.html", "why": "..." },
+    // ... всего 28 занятий
+  ],
+  "bonusLessons": [],
+  "resetScope": ["roboto-course-users", "roboto-course-progress", "roboto_u_", "roboto_anon_"]
+}</code></pre>
+    </div>
+    <div class="tabpane" id="pane-electron">
+<pre><code>{
+  "prefix": "electron",                    // * ключи: electron-course-users, electron-course-progress, electron_u_
+  "title": "Электроника",
+  "kicker": "Технологическая лаборатория · Электроника и схемотехника",
+  "subtitle": "28 занятий по программе (КТП)",
+  "brandColor": "#167A4D", "brandSoft": "#E7F4EE",
+  "teachers": [],                          // заполнить: "BASE_TEACHERS" в хабе
+  "teacherCode": "012345678",
+  "total": 28, "units": "занятие",
+  "lessons": [
+    { "week": 1, "title": "Вводное занятие. Электрический ток, напряжение, сопротивление. Закон Ома", "module": "Модуль 1", "type": "занятие по КТП",
+      "href": "Занятие 1/Занятие-01-вводное-занятие-электрический-ток-напряжение-сопротивление-закон-ома-мощность-техника-безопасности.html", "why": "..." },
+    // ... всего 28 занятий
+  ],
+  "bonusLessons": [],
+  "resetScope": ["electron-course-users", "electron-course-progress", "electron_u_", "electron_anon_"]
+}</code></pre>
+    </div>
+  </section>
+
+  <section id="rules">
+    <h2>4 жёстких правила (нарушение = сломанный курс)</h2>
+    <div class="warn"><b>1. Один префикс ключей на курс.</b> Все ключи localStorage начинаются с префикса курса (<code>vr_u_…</code>, <code>cs_u_…</code>, <code>bl_u_…</code>). Никогда не используй чужие ключи и не расширяй <code>?reset=1</code> на чужие префиксы.</div>
+    <div class="warn"><b>2. Один &lt;script&gt; на страницу.</b> <code>const</code> из одного script-блока не виден в другом. Если скрипт большой — пиши его в одном &lt;script&gt;, весь код в нём.</div>
+    <div class="warn"><b>3. Никаких «//»-комментариев в минифицированном JS.</b> Однострочный комментарий «съедает» остаток строки и обрезает код (это уже ломало регистрацию). Используй только <code>/* ... */</code>.</div>
+    <div class="warn"><b>4. Строгая блокировка следующего шага.</b> Ссылка на следующее занятие открывается ТОЛЬКО если в localStorage записан <code>reflKey === "1"</code>, а это происходит только через <code>completeLesson()</code> при заполненных всех 3 полях рефлексии + галочке «практика и ДЗ выполнены». Клик по ссылке без этого блокируется (<code>preventDefault</code>).</div>
+  </section>
+
+  <section id="files">
+    <h2>Структура папки курса</h2>
+    <pre><code>Курс-XXX/                      # имя на русском, без "-" и "_" между словами
+├── Список занятий XXX.html     # хаб: вход, карточки, шкала, reset
+├── Входное тестирование XXX.html
+├── Вспомогательные материалы/
+├── Занятие 1/
+│   ├── Занятие-01-....html      # урок (ниже — его структура)
+│   └── Методичка-занятия-01.html
+├── Занятие 2/ ...               # и т.д. до total
+└── _build/ (опционально)        # генератор build-xxx.cjs + конфиг JSON</code></pre>
+    <h3>Структура одного урока (обязательные секции)</h3>
+    <table>
+      <tr><th>Секция</th><th>ID/якорь</th><th>Содержимое</th></tr>
+      <tr><td>Шапка: профиль + «← список»</td><td><code>#whoami, #whoText</code></td><td>виджет текущего ученика, ссылка на хаб</td></tr>
+      <tr><td>Kicker + заголовок + бейджи</td><td>—</td><td>курс/модуль, тип, оборудование, <code>#stateBadge</code></td></tr>
+      <tr><td>Карта занятия</td><td><code>.lesson-ig</code></td><td>3–5 шагов «что будет» (инфографика)</td></tr>
+      <tr><td>Входное тестирование</td><td><code>#entrance</code></td><td>мини-анкета, сохраняется <code>_entry</code></td></tr>
+      <tr><td>Теория</td><td><code>#theory</code></td><td>просто, для 8–11 класса</td></tr>
+      <tr><td>Практика</td><td><code>#practice</code></td><td>конкретное действие (инструмент/оборудование)</td></tr>
+      <tr><td>Домашнее задание</td><td><code>#home</code></td><td>—</td></tr>
+      <tr><td>Дистанционные курсы</td><td><code>#links</code></td><td>ссылки, открывающиеся без VPN</td></tr>
+      <tr><td>Рефлексия</td><td><code>#reflect</code></td><td>r1/r2/r3 + rating 1–5 + doneCheck + кнопка</td></tr>
+      <tr><td>Дальше</td><td><code>#nextcard, #nextLink, #nextStatus</code></td><td>карточка со ссылкой на следующий урок</td></tr>
+    </table>
+  </section>
+
+  <section id="keys">
+    <h2>Таблица ключей localStorage (канон)</h2>
+    <table>
+      <tr><th>Ключ</th><th>Формат</th><th>Назначение</th></tr>
+      <tr><td><code>{p}_profiles</code></td><td>JSON-массив</td><td>все профили: <code>{uid, role, name, klass, teacher, code}</code></td></tr>
+      <tr><td><code>{p}_current_user</code></td><td>JSON</td><td>текущая сессия <code>{uid, role}</code></td></tr>
+      <tr><td><code>{p}_progress_&lt;uid&gt;</code></td><td>JSON-массив булевых</td><td>прогресс по занятиям (total элементов)</td></tr>
+      <tr><td><code>{p}_u_&lt;uid&gt;_l_&lt;N&gt;</code></td><td><code>"1"</code> / <code>""</code></td><td>отметка прохождения N-го занятия</td></tr>
+      <tr><td><code>{p}_u_&lt;uid&gt;_l_&lt;N&gt;_draft</code></td><td>JSON</td><td>черновик рефлексии (автосохранение)</td></tr>
+      <tr><td><code>{p}_u_&lt;uid&gt;_l_&lt;N&gt;_answers</code></td><td>JSON</td><td>подписанные ответы рефлексии</td></tr>
+      <tr><td><code>{p}_u_&lt;uid&gt;_l_&lt;N&gt;_entry</code></td><td>JSON</td><td>входное тестирование урока</td></tr>
+      <tr><td><code>{p}_anon_l_&lt;NN&gt;</code></td><td>—</td><td>анонимный ключ до входа</td></tr>
+      <tr><td><code>mt_teacher_mode</code></td><td><code>"1"</code> / <code>""</code></td><td>секретный режим педагога (5 кликов по заголовку)</td></tr>
+      <tr><td><code>{p}_pf_&lt;uid&gt;</code> + IndexedDB</td><td>handle</td><td>личная папка ученика (File System Access API)</td></tr>
+    </table>
+    <p>Замена префикса <code>{p}</code> на <code>vr</code>, <code>cs</code>, <code>bl</code>, <code>rt</code>, … — единственное, что отличает курсы внутри JS.</p>
+  </section>
+
+  <section id="checklist">
+    <h2>Чек-лист сборки (14 шагов)</h2>
+    <ol class="steps">
+      <li><b>Создай папку курса</b> по именованию «Курс-Название» и вложенные папки «Занятие 1» … скопируй образец <code>Список занятий VR студии.html</code> как основу хаба.</li>
+      <li><b>Заполни JSON-конфиг</b> (см. Шаг 0): prefix, title, teachers, total, lessons, scaleMetals, bonusLessons, resetScope.</li>
+      <li><b>Пересобери хаб генератором</b>: подставь конфиг в шаблон (один &lt;script&gt;!). Проверь, что рендерятся <code>total</code> карточек.</li>
+      <li><b>Собери первый урок по скелету</b> (секции из таблицы выше): копия и подмена текста, ссылка на хаб, <code>reflKey = "{p}_u_" + uid + "_l_1"</code>.</li>
+      <li><b>Подключи строгую блокировку</b>: функции <code>refreshState()</code>, <code>completeLesson()</code>, click-guard на <code>#nextLink</code> — скопируй работающую реализацию из «Занятие 1» C#/Blender, не пиши заново.</li>
+      <li><b>Добавь автосохранение черновика</b> (<code>_draft</code>) и восстановление при загрузке — готовые функции <code>pdPersistDraft</code> + init-блок.</li>
+      <li><b>Экспорт рефлексии</b>: в личную папку (File System Access API) — скопируй <code>reflSaveToFolder</code>/<code>buildReflection</code> из VR; рефлексия подписывается ФИО ученика из профиля.</li>
+      <li><b>Дублируй урок на все занятия</b>: подмени <code>l_1</code> → <code>l_N</code>, номер в заголовке, карту занятия, контент секций, ссылку «следующее».</li>
+      <li><b>Добавь методичку</b> к каждому уроку (формат «Что нажать / Что получится»).</li>
+      <li><b>Собери мотивационную шкалу</b>: в хаб вторым скриптом или тем же — <code>__scaleRender</code>, 10 металлов, таблица лидеров, звёзды качества.</li>
+      <li><b>Проверь обратные ссылки</b>: урок → хаб, «назад», хаб → урок №N; замени URL-кодировку пробелов/символов (например <code>%D0%97...%20C%23.html</code>).</li>
+      <li><b>Настрой ?reset=1</b>: чистить ТОЛЬКО ключи своего префикса. Никогда не добавляй чужие (<code>cs_u_</code>, <code>pd_*</code>, ...).</li>
+      <li><b>Проверь последовательную блокировку</b>: занятие N доступно только после N-1; у учителя открыто всё; заблокированная карточка — «locked» с пояснением.</li>
+      <li><b>Прогони автотест</b> (раздел «Проверки перед выдачей»): синтаксис, ссылки, регистрация, блокировка, шкала.</li>
+    </ol>
+  </section>
+
+  <section id="verify">
+    <h2>Проверки перед выдачей (обязательный минимум)</h2>
+    <ul class="checklist">
+      <li><b>Синтаксис:</b> каждый <code>&lt;script&gt;</code> проходит <code>node --check</code> / <code>new vm.Script()</code> без ошибок.</li>
+      <li><b>Ссылки:</b> все href существуют (нет битых); ссылки на внешние ресурсы открываются без VPN.</li>
+      <li><b>Регистрация:</b> новый ученик получает код; вход «Я уже есть» по коду работает; учитель входит по <code>teacherCode</code>; при повторной регистрации с тем же именем — предупреждение.</li>
+      <li><b>Роли:</b> ученику видны только его занятия (заблокированные — «locked»), учителю — все; список учеников у учителя фильтруется по его имени.</li>
+      <li><b>Строгая блокировка:</b> пустая рефлексия → отказ; 1-2 поля → отказ; все поля без галочки → отказ; только после всего — <code>reflKey="1"</code> и ссылка активна.</li>
+      <li><b>Click-guard:</b> клик по «следующему» без прохождения не открывает ссылку (preventDefault + сообщение).</li>
+      <li><b>Рендер хаба:</b> после входа появляется userBar, скрывается authPanel; число карточек = total; прогресс сохраняется после перезагрузки.</li>
+      <li><b>Шкала:</b> <code>__scaleRender</code> рисует 10 уровней и таблицу лидеров; балл = 40% прогресс + 60% качество.</li>
+      <li><b>Один префикс:</b> в localStorage курса нет ключей с чужим префиксом (<code>cs_</code>, <code>pd_</code>, <code>bl_</code>...).</li>
+      <li><b>Офлайн:</b> страница полностью открывается из файла без интернета; печать из браузера даёт аккуратный вид.</li>
+    </ul>
+    <div class="ok"><b>Готово, когда:</b> все галочки выше — «закрыты», автотест зелёный, и любой ученик с первого раза без подсказки регистрируется и доходит до занятия 2 только честно пройдя занятие 1.</div>
+  </section>
+
+  <section id="tools">
+    <h2>Инструменты (в Temp\gigatool)</h2>
+    <table>
+      <tr><th>Файл</th><th>Назначение</th></tr>
+      <tr><td><code>build-csharp-index.cjs</code><br><code>build-blender-index.cjs</code></td><td>эталонные генераторы хаба из JSON-конфига (один &lt;script&gt;, блокировка, шкала)</td></tr>
+      <tr><td><code>fix-*.cjs</code></td><td>массовые правки ключей/блокировки по всем урокам курса</td></tr>
+      <tr><td><code>scan-*-courses.cjs</code></td><td>сканер опасных «//»-комментариев и целостности</td></tr>
+      <tr><td><code>verify-transitions2.cjs</code>, <code>universal-test.cjs</code></td><td>проверка переходов и универсальный vm-тест (табы, регистрация, рендер)</td></tr>
+    </table>
+    <p>Новый курс = новый файл <code>build-&lt;prefix&gt;-index.cjs</code> по образцу <code>build-csharp-index.cjs</code>: тот же шаблон, другие константы и <code>lessons[]</code>.</p>
+  </section>
+
+  <footer>
+    Источник: каталог «Курс-VR-студия», «Курс C#», «Курс-Blender-3D» (фактические файлы, 2026). Методический стандарт ТЛ, обновлён 09.10.2026.
+  </footer>
+</main>
+<script>
+(function(){
+  var tabs = document.getElementById('labTabs');
+  if (!tabs) return;
+  var btns = tabs.querySelectorAll('button');
+  function show(name) {
+    btns.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-tab') === name); });
+    var panes = document.querySelectorAll('.tabpane');
+    panes.forEach(function(p){ p.classList.toggle('active', p.id === 'pane-' + name); });
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){ show(b.getAttribute('data-tab')); });
+  });
+})();
+</script>
+</body>
+</html>

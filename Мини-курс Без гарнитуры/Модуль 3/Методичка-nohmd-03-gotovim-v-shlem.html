@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Методичка · Без гарнитуры · Готовим проект к запуску в шлеме</title><style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--line:#D9E2EF;--yellow:#8a6d00;--yellow-soft:#FFF6DA;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:1rem 1.25rem 3rem}
+nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10}
+nav .inner{max-width:860px;margin:0 auto;padding:.5rem 1.25rem;display:flex;flex-wrap:wrap;gap:.3rem .9rem}
+nav a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:600}nav a:hover{color:var(--accent)}
+.backlink{display:inline-block;margin:1rem 0 -.2rem;color:var(--accent);text-decoration:none;font-size:.9rem;font-weight:600}.backlink:hover{text-decoration:underline}
+header.hero{padding:1.2rem 0 .2rem}
+header .kicker{color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em}
+header h1{font-size:1.65rem;line-height:1.25;margin:.2rem 0 .3rem}
+header .sub{font-size:1rem;color:var(--muted);margin:0 0 .4rem}
+.badges{margin:.6rem 0 1rem;display:flex;flex-wrap:wrap;gap:.4rem}.badge{font-size:.78rem;font-weight:700;padding:.22rem .6rem;border-radius:999px}
+.b-ac{background:var(--accent-soft);color:var(--accent)}.b-vr{background:var(--vr-soft);color:var(--vr)}.b-pr{background:var(--pr-soft);color:var(--pr)}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.9rem 1.15rem;border-radius:0 8px 8px 0;margin:1.2rem auto}.tldr b{color:var(--accent)}
+section{margin:2.2rem 0}
+h2{font-size:1.25rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;margin:0 0 1rem}h2 .n{color:var(--accent);margin-right:.45rem}
+h3{font-size:1.08rem;margin:1.4rem 0 .5rem}
+p{margin:.5rem 0}
+code{background:var(--accent-soft);padding:.12em .35em;border-radius:4px;font-size:.88em;color:#333a54}
+pre{background:#20263f;color:#e6e9f5;border-radius:10px;padding:1rem 1.1rem;overflow-x:auto;font-size:.84rem;line-height:1.6;margin:.6rem 0}
+pre .c{color:#8da0c8}
+kbd{background:var(--accent-soft);border:1px solid var(--line);border-radius:5px;padding:.08em .5em;font-size:.82em;font-family:inherit}
+.step{border:1px solid var(--line);border-radius:14px;padding:1rem 1.15rem;background:#fbfcfe;margin:.9rem 0}
+.step .st-head{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.02rem;color:var(--ink)}
+.step .st-n{display:inline-flex;align-items:center;justify-content:center;min-width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem}
+.step .why{color:var(--muted);font-size:.92rem;margin:.3rem 0 .6rem}
+.step .w{display:block;margin-top:.6rem;color:var(--pr);font-weight:600}
+.warn{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.warn b{color:var(--def)}
+.tipb{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.tipb b{color:var(--pr)}
+.gotcha{background:var(--yellow-soft);border-left:4px solid var(--yellow);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.gotcha b{color:var(--yellow)}
+.quiz{background:var(--vr-soft);border:1px solid var(--vr);border-radius:12px;padding:.95rem 1.1rem;margin:1.2rem 0}.quiz ol{margin:.4rem 0 0;padding-left:1.3rem}.quiz li{margin:.4rem 0}
+.screen{margin:.9rem 0}.screen .s-label{font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:.3rem}
+.screen .s-box{background:#eef2f8;border:1px dashed var(--line);border-radius:10px;padding:.8rem 1rem;font-family:Consolas,Menlo,monospace;font-size:.82rem;white-space:pre-line}
+.result{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.95rem;margin:1.2rem 0}.result b{color:var(--pr)}
+table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);color:var(--accent)}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.8rem}
+@media print{nav,.quiz{display:none}}
+</style></head>
+<body>
+<nav><div class="inner"><a href="#env">Что понадобится</a><a href="#steps">Пошагово</a><a href="#errors">Ошибки</a><a href="#quiz">Проверь себя</a></div></nav>
+<main class="wrap">
+  <p class="backlink"><a href="javascript:history.back()">← назад к модулю</a></p>
+  <header class="hero">
+    <p class="kicker">Без гарнитуры · методичка</p>
+    <h1>Готовим проект к запуску в шлеме</h1>
+    <p class="sub">Подробное руководство для школьника: как делать, зачем и что должно получиться.</p>
+    <div class="badges"><span class="badge b-vr">Модуль 03</span><span class="badge b-ac">Начинающим</span><span class="badge b-pr">Подробно</span></div>
+  </header>
+  <div class="tldr"><b>Цель модуля.</b> Финальный шаг: подготовить проект так, чтобы он корректно запускался на Pico 4 Ultra. Соберём APK и составим чек-лист, что проверить, когда окажешься в лаборатории.</div>
+  <section id="env"><h2><span class="n">0</span>Что понадобится</h2><ul><li><b>Проект из Модуля 2</b> — Комната готова.</li><li><b>Unity Android Build Support</b> — Нужен для сборки APK.</li><li><b>Позже — шлем Pico 4 Ultra</b> — Для финальной проверки.</li></ul></section>
+  <section id="steps"><h2><span class="n">1</span>Пошагово — делай по порядку</h2><div class="step"><div class="st-head"><span class="st-n">1</span><span>Добавь OpenXR и настрой под Pico</span></div><p class="why">💡 Pico 4 Ultra работает через OpenXR — стандарт VR. Без него игра не станет «трёхмерной» в шлеме.</p><p><b>Что делать:</b> Package Manager → добавь com.unity.xr.openxr. Затем Project Settings → XR Plug-in Management → включи OpenXR и добавь Pico (интерфейс PicoXR).</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">В XR Settings активен OpenXR, есть Pico-модуль.</div></div></div><div class="step"><div class="st-head"><span class="st-n">2</span><span>Добавь XR Origin (точку появления)</span></div><p class="why">💡 В шлеме нужна точка появления игрока — XR Origin с камерой и руками. Без него сборка не станет VR.</p><p><b>Что делать:</b> Создай GameObject → XR → XR Origin (XR Rig). Внутри камера и контроллеры-руки.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">В сцене есть XR Origin (XR Rig).</div></div><div class="warn"><b>Осторожно:</b> Без XR Origin игра откроется на экране, но не «в шлеме» с руками.</div></div><div class="step"><div class="st-head"><span class="st-n">3</span><span>Настрой Android и собери APK</span></div><p class="why">💡 APK — установочный файл для шлема (Android). Собираем дома, запускаем на шлеме в лаборатории.</p><p><b>Что делать:</b> File → Build Settings → платформа Android → Player Settings (мин. API под Pico) → Build — веди путь к папке, куда сохранить APK.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Появился файл .apk.</div></div><div class="warn"><b>Осторожно:</b> Если кнопка Build неактивна — установи Android Build Support через Unity Hub и Android SDK.</div></div><div class="step"><div class="st-head"><span class="st-n">4</span><span>Составь чек-лист проверки в шлеме</span></div><p class="why">💡 Когда окажешься в лаборатории со шлемом, заранее знай, что проверять. Это сэкономит время и поможет найти баги.</p><p><b>Что делать:</b> Напиши 5 пунктов для проверки в шлеме.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Список: 1) обзор на 360°, 2) движение/телепорт, 3) захват объектов, 4) кнопки/меню, 5) звук и FPS.</div></div></div><div class="step"><div class="st-head"><span class="st-n">5</span><span>Перенеси проект в лабораторию</span></div><p class="why">💡 Финальная проверка всегда на реальном шлеме.</p><p><b>Что делать:</b> Запиши на флешку папку проекта (или APK) и открой её на компьютере лаборатории. Установи APK на Pico.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">APK установлен на Pico, игра запускается в шлеме.</div></div></div><h3>План «дома → в шлем»</h3><table><tr><th>Где</th><th>Что делаешь</th><th>Результат</th></tr><tr><td>Дома</td><td>Настраиваешь OpenXR под Pico, добавляешь XR Origin, собираешь APK</td><td>Готовый установочный файл + чек-лист</td></tr><tr><td>По пути</td><td>Переносишь APK на флешку (или через облако)</td><td>Файл с собой</td></tr><tr><td>В шлеме</td><td>Устанавливаешь APK и проходишь чек-лист: обзор, движение, захват, кнопки, звук, FPS</td><td>Понятно, что работает, а что — нет</td></tr></table><div class="tipb"><b>Почему так.</b> Чем больше сделано дома, тем спокойнее и полезнее лаборатория: ты приходишь не «пробовать впервые», а проверять и чинить конкретные мелочи.</div></section>
+  <section id="errors"><h2><span class="n">2</span>Типичные ошибки и как их исправить</h2><div class="gotcha"><b>Ошибка «APK без VR (просто окно)».</b> Собирается, но не «трёхмерный».</div><div class="tipb"><b>Как исправить:</b> Добавь OpenXR в XR Plug-in Management и XR Origin в сцену — пересобери.</div><div class="gotcha"><b>Ошибка «Кнопка Build неактивна».</b> Нельзя собрать.</div><div class="tipb"><b>Как исправить:</b> Через Unity Hub → Add modules добавь Android Build Support (включая SDK и NDK).</div><div class="gotcha"><b>Ошибка «Шлем не видит приложение».</b> APK установлен, но его нет в меню шлема.</div><div class="tipb"><b>Как исправить:</b> Убедись, что установил APK именно на Pico (а не на телефон), и что включён режим для разработчика; найди приложение в «Библиотеке / Все приложения».</div><div class="gotcha"><b>Ошибка «Только экран, руки не двигаются».</b> В шлеме видно картинку, но нет захвата.</div><div class="tipb"><b>Как исправить:</b> Внутри XR Origin должны быть и камера, и контроллеры-руки. Плюс в XR Interaction Toolkit нужен интерфейс для хвата — иначе руки «пустые».</div></section>
+  <section id="quiz"><div class="quiz"><b>Проверь себя (ответь устно или письменно):</b><ol><li>Для чего OpenXR?</li><li>Что такое XR Origin и зачем он в шлеме?</li><li>Что проверишь в первую очередь в шлеме?</li><li>Зачем нужен чек-лист, если можно просто «посмотреть» игру?</li><li>Почему шлем рисует картинку для двух глаз и что это значит для оптимизации?</li></ol></div></section>
+  <div class="result"><b>Итог модуля.</b> Итог: проект настроен под Pico 4 Ultra, собран APK, есть чек-лист — ты полностью готов к запуску в шлеме.</div>
+</main>
+<footer><p>Методичка · Без гарнитуры · Модуль 03 · Технологическая лаборатория</p></footer>
+</body>
+</html>

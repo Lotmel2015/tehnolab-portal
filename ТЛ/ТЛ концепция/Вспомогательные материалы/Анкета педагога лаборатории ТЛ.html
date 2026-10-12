@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Анкета педагога лаборатории — Технологическая лаборатория</title>
+<style>
+  :root {
+    --bg: #F4F6FA; --bg-card: #FFFFFF; --bg-elev: #FFFFFF;
+    --ink: #1B2A4A; --muted: #5A6B85; --line: #D9E2EF;
+    --accent: #2D7AFF; --accent-d: #1F63D0; --warn: #B45309;
+    --c01: #E3550E; --c02: #0B8A4F; --c03: #C25E00; --c04: #1565C0;
+    --c05: #0077B6; --c06: #8B2FC9; --c07: #E07B00;
+    --f-display: "Space Grotesk", "Unbounded", "Montserrat", system-ui, sans-serif;
+    --f-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --f-mono: "JetBrains Mono", ui-monospace, "Consolas", monospace;
+    --max: 860px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--f-body); -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--accent); color: #fff; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 28px; }
+
+  .nav { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 28px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.92); backdrop-filter: blur(10px); }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: var(--f-display); font-weight: 700; letter-spacing: .04em; text-decoration: none; color: var(--ink); }
+  .logo .sub { font-family: var(--f-mono); font-size: 10px; color: var(--muted); letter-spacing: .1em; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font: 600 14px var(--f-body); text-decoration: none; cursor: pointer; border-radius: 6px; padding: 9px 16px; border: 1px solid transparent; transition: .2s; background: transparent; color: var(--ink); }
+  .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 4px 14px rgba(45,122,255,.28); }
+  .btn-primary:hover { background: var(--accent-d); }
+  .btn-ghost { border-color: var(--line); background: #fff; }
+  .btn-ghost:hover { background: #EDF2FA; }
+
+  .hero { padding: 34px 0 22px; border-bottom: 1px solid var(--line); }
+  .hero h1 { font: 700 clamp(26px, 3.6vw, 38px)/1.1 var(--f-display); letter-spacing: -.015em; margin: 0 0 6px; }
+  .hero h1 .ac { color: var(--accent); }
+  .hero .org { color: var(--muted); font-size: 13.5px; margin: 0; }
+
+  section { padding: 34px 0; border-bottom: 1px solid var(--line); }
+  .sec-head { margin-bottom: 22px; }
+  .sec-head .k { font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 6px; }
+  .sec-head h2 { font: 600 clamp(21px, 2.8vw, 28px)/1.12 var(--f-display); margin: 0; }
+
+  .field { margin-bottom: 20px; }
+  .field label, .field .lbl { display: block; font-weight: 600; font-size: 15px; margin-bottom: 8px; }
+  .field .req { color: var(--warn); }
+  .field .sub { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+  input[type=text], input[type=tel], input[type=email], textarea {
+    width: 100%; background: #fff; color: var(--ink); border: 1px solid var(--line);
+    border-radius: 6px; padding: 12px 14px; font: 15px/1.5 var(--f-body); transition: border-color .2s;
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,122,255,.14); }
+  textarea { resize: vertical; min-height: 90px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .photo { display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap; }
+  .photo-box { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; width: 180px; height: 210px; border: 1.5px dashed var(--line); border-radius: 10px; background: #fff; cursor: pointer; transition: .2s; color: var(--muted); text-align: center; padding: 10px; }
+  .photo-box:hover { border-color: var(--accent); color: var(--accent); }
+  .photo-box svg { width: 36px; height: 36px; flex: 0 0 auto; }
+  .photo-box .pb { max-width: 150px; overflow: hidden; text-overflow: ellipsis; font-size: 12px; }
+  .photo-box img { display: none; max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 6px; flex: 1 1 auto; min-height: 0; }
+  .photo-box.has-photo svg, .photo-box.has-photo .pb { display: none; }
+  .photo-box.has-photo img { display: block; }
+  .photo-side { flex: 1; min-width: 240px; }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; font: 600 13.5px var(--f-body); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; cursor: pointer; background: #fff; transition: .18s; }
+  .chip:hover { border-color: var(--accent); color: var(--ink); }
+  .chip svg { width: 17px; height: 17px; }
+  .chip .ck { color: transparent; }
+  .chip.on { color: var(--ink); border-color: var(----c, var(--accent)); box-shadow: 0 0 0 1px var(--c, var(--accent)); }
+  .chip.on .ck { color: var(--c, var(--accent)); }
+
+  .skill-add { display: flex; gap: 8px; margin-top: 12px; }
+  .skill-add input { flex: 1; }
+  .skill-add .btn { flex: 0 0 auto; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .skill-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--f-mono); font-size: 12px; color: var(--ink); background: #EDF2FA; border: 1px solid var(--line); border-radius: 4px; padding: 5px 10px; }
+  .skill-tag .x { cursor: pointer; color: var(--muted); font-size: 14px; line-height: 1; }
+  .skill-tag .x:hover { color: var(--warn); }
+
+  .final-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 18px; }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); z-index: 100; background: var(--ink); color: #fff; font: 600 14px var(--f-body); padding: 12px 20px; border-radius: 8px; opacity: 0; transition: .3s; pointer-events: none; box-shadow: 0 8px 30px rgba(0,0,0,.2); }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  footer { padding: 24px 0 40px; color: var(--muted); font-size: 12.5px; }
+  .mono { font-family: var(--f-mono); }
+
+  @media print {
+    .nav, .actions, .btn, .toast { display: none !important; }
+    body { background: #fff; color: #111; }
+    .hero, section, footer { border-color: #ccc; }
+    input, textarea { background: #fff; color: #111; border-color: #999; }
+    .chip.on, .photo-box { background: #eee; border-color: #111; }
+    .photo-box { border-style: solid; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="#top">
+    <svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="#2D7AFF" stroke-width="1.8" aria-hidden="true"><path d="M14 2 25 8.3v11.4L14 26 3 19.7V8.3L14 2z"/><path d="M12.5 8.6h4l-2.2 4h2.2l-4 6.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    ТЕХЛАБ <span class="sub">/ АНКЕТА ПЕДАГОГА</span>
+  </a>
+  <div class="actions">
+    <button class="btn btn-ghost" type="button" onclick="copyResult()">Скопировать ответы</button>
+    <button class="btn btn-ghost" type="button" onclick="downloadHtml()">Скачать HTML</button>
+    <button class="btn btn-primary" type="button" onclick="window.print()">Скачать PDF</button>
+  </div>
+</nav>
+
+<div class="wrap" id="top">
+
+<header class="hero">
+  <h1>Анкета <span class="ac">педагога лаборатории</span></h1>
+</header>
+
+<!-- ============ 1. О вас ============ -->
+<section id="s-who">
+  <div class="sec-head"><span class="k">Раздел 1</span><h2>О вас</h2></div>
+
+  <div class="field">
+    <label>Фотография для страницы на портале <span class="req">*</span></label>
+    <div class="photo">
+      <div class="photo-box" id="photoBox">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.8" cy="9.5" r="1.6"/><path d="m5 18 5-5 3 3 3-3 3 3"/></svg>
+        <span class="pb" id="photoName">Нажмите, чтобы выбрать фото</span>
+        <img id="photoPreview" alt="Предпросмотр фото">
+      </div>
+      <div class="photo-side">
+        <div class="sub">Портрет в хорошем качестве (JPG/PNG, до 10 МБ). Фото публикуется на портале только с вашего согласия; также его можно отправить отдельным файлом вместе с анкетой.</div>
+      </div>
+      <input type="file" id="photo" accept="image/*" style="display:none">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>ФИО <span class="req">*</span></label>
+    <input type="text" id="fio" data-q="ФИО" placeholder="Фамилия Имя Отчество">
+  </div>
+  <div class="grid2">
+    <div class="field">
+      <label>Должность в объединении ТЛ <span class="req">*</span></label>
+      <input type="text" id="post" data-q="Должность" placeholder="Например: педагог дополнительного образования">
+    </div>
+    <div class="field">
+      <label>Телефон <span class="sub">только для связи, на портале не публикуется</span></label>
+      <input type="tel" id="phone" data-q="Телефон" placeholder="+7 (___) ___-__-__">
+    </div>
+  </div>
+  <div class="field">
+    <label>Электронная почта <span class="sub">только для связи, на портале не публикуется</span></label>
+    <input type="email" id="email" data-q="E-mail" placeholder="name@example.com">
+  </div>
+  <div class="field">
+    <label>Образование <span class="sub">вуз, специальность, год окончания; переподготовка — при наличии</span></label>
+    <textarea id="edu" data-q="Образование" placeholder="Например: КГПУ им. Астафьева, учитель информатики, 2012; переподготовка — педагог доп. образования, 2021"></textarea>
+  </div>
+  <div class="field">
+    <label>Педагогический стаж <span class="sub">общий и по техническим направлениям — раздельно, если есть</span></label>
+    <input type="text" id="stazh" data-q="Стаж" placeholder="Например: общий 12 лет, технические направления 5 лет">
+  </div>
+</section>
+
+<!-- ============ 2. Лаборатории ============ -->
+<section id="s-labs">
+  <div class="sec-head"><span class="k">Раздел 2</span><h2>Лаборатории, которые вы ведёте</h2></div>
+
+  <div class="chip-row" id="labsRow"></div>
+
+  <div class="field" style="margin-top:24px;">
+    <label>Ключевые навыки, которые вы преподаёте <span class="sub">выберите из подсказок (появятся после выбора лабораторий) или добавьте свои</span></label>
+    <div class="chip-row" id="skillsPreset"></div>
+    <div class="skill-add">
+      <input type="text" id="skillInput" placeholder="Добавить свой навык…">
+      <button class="btn btn-ghost" type="button" onclick="addSkill()">+</button>
+    </div>
+    <div class="skill-tags" id="skillTags"></div>
+  </div>
+</section>
+
+<!-- ============ 3. Опыт и достижения ============ -->
+<section id="s-exp">
+  <div class="sec-head"><span class="k">Раздел 3</span><h2>Опыт, достижения, регалии</h2></div>
+
+  <div class="field">
+    <label>Опыт работы в техническом образовании и на производстве <span class="sub">где работали, с каким оборудованием/технологиями, производственный опыт</span></label>
+    <textarea id="exp" data-q="Опыт" placeholder="Например: 6 лет веду кружки робототехники; до этого 4 года инженер-конструктор на предприятии"></textarea>
+  </div>
+  <div class="field">
+    <label>Регалии, награды, звания <span class="sub">звания, грамоты, благодарности, победы в профессиональных конкурсах</span></label>
+    <textarea id="regalia" data-q="Регалии" placeholder="Например: Почётная грамота Министерства образования края (2023); лауреат конкурса «Сердце отдаю детям»"></textarea>
+  </div>
+  <div class="field">
+    <label>Подготовка учеников к соревнованиям <span class="sub">конкурсы и лучшие результаты команд (WRO, RoboFest, НТО, «Большие вызовы» и др.)</span></label>
+    <textarea id="comp" data-q="Соревнования" placeholder="Например: WRO 2024 — 2 место регионального этапа (команда 9 класса)"></textarea>
+  </div>
+  <div class="field">
+    <label>Повышение квалификации за последние 3 года <span class="sub">курсы, стажировки, вебинары по профилю</span></label>
+    <textarea id="qual" data-q="Повышение квалификации" placeholder="Например: курс «Основы VR-разработки» (2025, 72 ч); стажировка"></textarea>
+  </div>
+  <div class="field">
+    <label>Что ещё стоит о вас рассказать <span class="sub">хобби, наставничество, публикации — живой штрих для вашей страницы</span></label>
+    <textarea id="extra" data-q="Дополнительно"></textarea>
+  </div>
+</section>
+
+<section id="s-send" style="border-bottom:none;">
+  <div class="final-cta">
+    <button class="btn btn-primary" type="button" onclick="copyResult()">Скопировать ответы для отправки</button>
+    <button class="btn btn-ghost" type="button" onclick="downloadHtml()">Скачать HTML</button>
+    <button class="btn btn-ghost" type="button" onclick="window.print()">Скачать PDF формы</button>
+  </div>
+  <p style="color:var(--muted);font-size:13px;margin-top:14px;">Скопируйте ответы и пришлите сообщением или на e-mail Lotmel@mail.ru. Фотографию — отдельным файлом.</p>
+</section>
+
+<footer>
+  <div class="mono">Анкета v1.2</div>
+</footer>
+
+</div>
+
+<div class="toast" id="toast">Ответы скопированы</div>
+
+<script>
+  var LABS = [
+    {id:"LAB.01", name:"Робототехника", color:"var(--c01)", skills:["LEGO MINDSTORMS EV3","EV3 Classroom","робототехника","алгоритмы","подготовка к WRO","конструирование"]},
+    {id:"LAB.02", name:"Электроника", color:"var(--c02)", skills:["Arduino","схемотехника","пайка","мультиметр","C/C++","embedded-разработка"]},
+    {id:"LAB.03", name:"Blender 3D", color:"var(--c03)", skills:["Blender 4.x","3D-моделирование","материалы и рендер","3D-печать","Cura","ArtStation"]},
+    {id:"LAB.04", name:"КОМПАС-3D", color:"var(--c04)", skills:["КОМПАС-3D","ЕСКД и ГОСТ","черчение","параметрическое моделирование","конструкторская документация"]},
+    {id:"LAB.05", name:"БПЛА", color:"var(--c05)", skills:["управление БПЛА","пилотирование","Betaflight","аэросъёмка","законодательство о БПЛА","сборка дрона"]},
+    {id:"LAB.06", name:"VR-разработка", color:"var(--c06)", skills:["Unity","C#","XR Interaction Toolkit","VR-разработка","Pico 4 Ultra","APK"]},
+    {id:"LAB.07", name:"Проектная деятельность", color:"var(--c07)", skills:["SMART-цели","диаграмма Ганта","управление проектами","питч","паспорт проекта","командная работа"]}
+  ];
+  var selectedLabs = [];
+  var skills = [];
+  var presetSkills = [];
+  var photoName = "";
+  var photoDataUrl = "";
+
+  function el(id){ return document.getElementById(id); }
+
+  /* Лаборатории — кнопки-чипы */
+  function buildLabs(){
+    var row = el("labsRow");
+    row.innerHTML = "";
+    LABS.forEach(function(l){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.style.setProperty("--c", l.color);
+      b.setAttribute("data-lab", l.id);
+      b.innerHTML = "<span>" + l.id + " " + l.name + '</span><span class="ck">✓</span>';
+      b.onclick = function(){ toggleLab(l.id, b); };
+      if (selectedLabs.indexOf(l.id) !== -1) b.classList.add("on");
+      row.appendChild(b);
+    });
+  }
+
+  function toggleLab(id, btn){
+    var i = selectedLabs.indexOf(id);
+    if (i === -1) { selectedLabs.push(id); btn.classList.add("on"); }
+    else { selectedLabs.splice(i,1); btn.classList.remove("on"); }
+    pickPresets(); save();
+  }
+
+  /* Навыки */
+  function buildPresets(){
+    var box = el("skillsPreset");
+    box.innerHTML = "";
+    presetSkills.forEach(function(s){
+      var ch = document.createElement("button");
+      ch.type = "button";
+      ch.className = "chip";
+      ch.style.setProperty("--c", "var(--accent)");
+      ch.innerHTML = "<span>" + s + '</span><span class="ck">✓</span>';
+      ch.onclick = function(){ toggleSkill(s, ch); };
+      if (skills.indexOf(s) !== -1) ch.classList.add("on");
+      box.appendChild(ch);
+    });
+  }
+
+  function pickPresets(){
+    presetSkills = [];
+    selectedLabs.forEach(function(id){
+      var l = null;
+      for (var i=0;i<LABS.length;i++) if (LABS[i].id === id) l = LABS[i];
+      if (l) l.skills.forEach(function(s){ if (presetSkills.indexOf(s) === -1) presetSkills.push(s); });
+    });
+    buildPresets();
+  }
+
+  function renderSkillTags(){
+    var box = el("skillTags");
+    box.innerHTML = "";
+    skills.forEach(function(s, idx){
+      var t = document.createElement("span");
+      t.className = "skill-tag";
+      t.innerHTML = s + ' <span class="x" onclick="removeSkill(' + idx + ')">✕</span>';
+      box.appendChild(t);
+    });
+  }
+
+  function toggleSkill(s, chip){
+    var i = skills.indexOf(s);
+    if (i === -1) { skills.push(s); chip.classList.add("on"); }
+    else { skills.splice(i,1); chip.classList.remove("on"); }
+    renderSkillTags(); save();
+  }
+
+  function addSkill(){
+    var v = el("skillInput").value.trim();
+    if (!v) return;
+    if (skills.indexOf(v) === -1) skills.push(v);
+    el("skillInput").value = "";
+    renderSkillTags();
+    var chips = el("skillsPreset").querySelectorAll(".chip");
+    for (var i=0;i<chips.length;i++){
+      if (chips[i].textContent.indexOf(v) !== -1) chips[i].classList.add("on");
+    }
+    save();
+  }
+
+  function removeSkill(i){ skills.splice(i,1); renderSkillTags(); buildPresets(); save(); }
+
+  /* Фото */
+  function showPhoto(src, name){
+    photoName = name || "";
+    var box = el("photoBox");
+    var pv = el("photoPreview");
+    if (src) {
+      photoDataUrl = src;
+      pv.src = src;
+      box.classList.add("has-photo");
+      el("photoName").textContent = name;
+    } else {
+      photoDataUrl = "";
+      pv.removeAttribute("src");
+      box.classList.remove("has-photo");
+      el("photoName").textContent = "Нажмите, чтобы выбрать фото";
+    }
+    save();
+  }
+
+  function handlePhoto(file){
+    if (!file) return;
+    if (file.size > 10*1024*1024) { toast("Файл больше 10 МБ"); return; }
+    if (file.type.indexOf("image") !== 0) { toast("Выберите изображение (JPG/PNG)"); return; }
+    var rd = new FileReader();
+    rd.onload = function(){ showPhoto(rd.result, file.name); };
+    rd.readAsDataURL(file);
+  }
+
+  /* Сбор и сохранение */
+  function collect(){
+    function v(id){ var x = el(id); return x ? x.value.trim() : ""; }
+    return {
+      fio: v("fio"), post: v("post"), phone: v("phone"), email: v("email"),
+      edu: v("edu"), stazh: v("stazh"), labs: selectedLabs.slice(),
+      skills: skills.slice(), photoName: photoName, photoDataUrl: photoDataUrl,
+      exp: v("exp"), regalia: v("regalia"), comp: v("comp"), qual: v("qual"), extra: v("extra")
+    };
+  }
+
+  function save(){
+    var d = collect();
+    try { localStorage.setItem("tl-teacher-profile", JSON.stringify(d)); } catch(e){}
+  }
+
+  function restore(){
+    var raw = null;
+    try { raw = localStorage.getItem("tl-teacher-profile"); } catch(e){}
+    if (!raw) return;
+    try {
+      var d = JSON.parse(raw);
+      function set(id, v){ if (el(id)) el(id).value = v || ""; }
+      set("fio", d.fio); set("post", d.post); set("phone", d.phone); set("email", d.email);
+      set("edu", d.edu); set("stazh", d.stazh); set("exp", d.exp); set("regalia", d.regalia);
+      set("comp", d.comp); set("qual", d.qual); set("extra", d.extra);
+      if (d.labs) selectedLabs = d.labs.filter(function(x){ return typeof x === "string"; });
+      if (d.skills) skills = d.skills.filter(function(x){ return typeof x === "string"; });
+      if (d.photoDataUrl && d.photoDataUrl.indexOf("blob:") !== 0 && d.photoDataUrl.indexOf("data:") === 0) showPhoto(d.photoDataUrl, d.photoName || "фото приложено");
+      else if (d.photoName) { photoName = d.photoName; el("photoName").textContent = d.photoName; }
+    } catch(e){}
+  }
+
+  function toast(msg){
+    var t = el("toast"); t.textContent = msg || "Ответы скопированы"; t.classList.add("show");
+    setTimeout(function(){ t.classList.remove("show"); }, 2200);
+  }
+
+  function downloadHtml(){
+    var d = collect();
+    var esc = function(s){ return (s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); };
+    var nl2br = function(s){ return esc(s).replace(/\n/g,"<br>"); };
+    var labNames = d.labs.map(function(id){
+      for (var i=0;i<LABS.length;i++) if (LABS[i].id === id) return id + " " + LABS[i].name;
+      return id;
+    });
+    var h = [];
+    h.push("<!DOCTYPE html>");
+    h.push('<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">');
+    h.push("<title>Анкета педагога — " + esc(d.fio || "без ФИО") + "</title>");
+    h.push("<style>");
+    h.push("body{font:15px/1.6 system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1B2A4A;background:#F4F6FA;margin:0;padding:32px 16px;}");
+    h.push(".page{max-width:820px;margin:0 auto;background:#fff;border:1px solid #D9E2EF;border-radius:12px;padding:36px 40px 44px;}");
+    h.push("h1{font-size:24px;margin:0 0 4px;} .sub{color:#5A6B85;font-size:13px;margin-bottom:24px;}");
+    h.push("h2{font-size:17px;color:#2D7AFF;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #D9E2EF;padding-bottom:6px;margin:26px 0 14px;}");
+    h.push(".f{margin:0 0 14px;} .f b{display:block;font-size:13.5px;color:#5A6B85;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;} .f div{white-space:pre-wrap;}");
+    h.push(".tags{display:flex;flex-wrap:wrap;gap:6px;} .t{background:#EDF2FA;border:1px solid #D9E2EF;border-radius:6px;padding:4px 10px;font-size:13px;}");
+    h.push(".photo{max-width:220px;border:1px solid #D9E2EF;border-radius:8px;overflow:hidden;} .photo img{display:block;width:100%;}");
+    h.push("@media print{body{background:#fff;padding:0}.page{border:none;padding:0}}");
+    h.push("</style></head><body><div class=\"page\">");
+    h.push('<h1>Анкета педагога</h1><div class="sub">Заполнено: ' + new Date().toLocaleString("ru-RU") + "</div>");
+    h.push("<h2>О вас</h2>");
+    h.push('<div class="f"><b>ФИО</b><div>' + nl2br(d.fio) + "</div></div>");
+    h.push('<div class="f"><b>Должность</b><div>' + nl2br(d.post) + "</div></div>");
+    h.push('<div class="f"><b>Телефон (не публикуется)</b><div>' + esc(d.phone) + "</div></div>");
+    h.push('<div class="f"><b>E-mail (не публикуется)</b><div>' + esc(d.email) + "</div></div>");
+    h.push('<div class="f"><b>Образование</b><div>' + nl2br(d.edu) + "</div></div>");
+    h.push('<div class="f"><b>Педагогический стаж</b><div>' + nl2br(d.stazh) + "</div></div>");
+    h.push('<div class="f"><b>Фотография</b><div>' + (d.photoDataUrl ? '<div class="photo"><img src="' + d.photoDataUrl + '" alt="Фото"></div><div>' + esc(d.photoName) + "</div>" : "Не приложена") + "</div></div>");
+    h.push("<h2>Лаборатории, которые вы ведёте</h2>");
+    h.push('<div class="tags">' + (labNames.length ? labNames.map(function(n){ return '<span class="t">' + esc(n) + "</span>"; }).join("") : '<span class="t">—</span>') + "</div>");
+    h.push('<div class="f" style="margin-top:14px;"><b>Ключевые навыки</b><div class="tags">' + (d.skills.length ? d.skills.map(function(s){ return '<span class="t">' + esc(s) + "</span>"; }).join("") : "—") + "</div></div>");
+    h.push("<h2>Опыт, достижения, регалии</h2>");
+    h.push('<div class="f"><b>Опыт работы</b><div>' + nl2br(d.exp) + "</div></div>");
+    h.push('<div class="f"><b>Регалии, награды, звания</b><div>' + nl2br(d.regalia) + "</div></div>");
+    h.push('<div class="f"><b>Подготовка учеников к соревнованиям</b><div>' + nl2br(d.comp) + "</div></div>");
+    h.push('<div class="f"><b>Повышение квалификации</b><div>' + nl2br(d.qual) + "</div></div>");
+    h.push('<div class="f"><b>Дополнительно</b><div>' + nl2br(d.extra) + "</div></div>");
+    h.push("</div></body></html>");
+    var blob = new Blob([h.join("\n")], {type:"text/html;charset=utf-8"});
+    var a = document.createElement("a");
+    var name = (d.fio ? d.fio.replace(/\s+/g, " ") : "анкета") + ".html";
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+    toast("HTML сохранён");
+  }
+
+  function copyResult(){
+    var d = collect();
+    var parts = [];
+    parts.push("АНКЕТА ПЕДАГОГА — Технологическая лаборатория");
+    parts.push("==============================");
+    parts.push("Фотография: " + (d.photoName ? "приложена — " + d.photoName : "не приложена"));
+    function line(k,v){ if (v) parts.push(k + ": " + v); }
+    line("ФИО", d.fio); line("Должность", d.post);
+    line("Телефон (не публикуется)", d.phone); line("E-mail (не публикуется)", d.email);
+    line("Образование", d.edu); line("Стаж", d.stazh);
+    parts.push("Лаборатории: " + (d.labs.length ? d.labs.join(", ") : "—"));
+    parts.push("Навыки: " + (d.skills.length ? d.skills.join(", ") : "—"));
+    line("Опыт", d.exp); line("Регалии", d.regalia); line("Соревнования", d.comp);
+    line("Повышение квалификации", d.qual); line("Дополнительно", d.extra);
+    var text = parts.join("\n");
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ toast("Ответы скопированы"); }).catch(function(){ fallbackCopy(text); });
+    } else fallbackCopy(text);
+    save();
+  }
+
+  function fallbackCopy(text){
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); toast("Ответы скопированы"); } catch(e){ toast("Скопируйте вручную (выделите текст)"); }
+    document.body.removeChild(ta);
+  }
+
+  /* Инициализация */
+  el("photoBox").onclick = function(){ el("photo").click(); };
+  el("photo").addEventListener("change", function(e){
+    handlePhoto(e.target.files && e.target.files[0]);
+    e.target.value = "";
+  });
+
+  restore();
+  buildLabs();
+  pickPresets();
+  renderSkillTags();
+
+  var inputs = document.querySelectorAll("input[data-q], textarea[data-q]");
+  for (var i=0;i<inputs.length;i++){
+    inputs[i].addEventListener("input", function(){ save(); });
+  }
+</script>
+</body>
+</html>

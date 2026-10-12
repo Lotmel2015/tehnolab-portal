@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Инициативное моделирование (Blender 3D) · Курс для учеников</title>
+<!-- Сквозная система ТЛ (общий кабинет с порталом) -->
+<script src="tl-portal-core.js"></script>
+<script src="tl-bridge.js"></script>
+<script>try { if (window.TLCore) TLCore.init(); if (window.TLBridge) TLBridge.init({ total: 28 }); } catch (e) { console.error("tl-bridge init error", e); }</script>
+<style>
+  :root { --bg:#fff; --ink:#1B2A4A; --muted:#5A6B85; --accent:#B45309; --accent-soft:#FDF1E1; --vr:#4D008C; --vr-soft:#F0EBF5; --pr:#167A4D; --pr-soft:#E7F4EE; --line:#D9E2EF; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  .wrap { max-width:980px; margin:0 auto; padding:2rem 1.25rem 3rem; }
+  header .kicker { color:var(--accent); font-weight:700; font-size:.85rem; text-transform:uppercase; letter-spacing:.04em; }
+  header h1 { font-size:2rem; line-height:1.2; margin:.2rem 0 .3rem; }
+  header .sub { font-size:1.02rem; color:var(--muted); margin:0 0 .6rem; }
+  .tldr { background:var(--accent-soft); border-left:4px solid var(--accent); padding:.95rem 1.15rem; border-radius:0 8px 8px 0; margin:1.5rem 0; }
+  .tldr b { color:var(--accent); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:.8rem; }
+  .lesson-card { border:1px solid var(--line); border-radius:14px; padding:.9rem 1rem; background:#fbfcfe; position:relative; }
+  .lesson-card .lw { display:inline-flex; align-items:center; justify-content:center; font-size:.8rem; font-weight:800; color:#fff; background:var(--accent); border-radius:8px; padding:.12rem .45rem; }
+  .lesson-card .module { display:block; font-size:.75rem; color:var(--muted); margin:.3rem 0 .05rem; }
+  .lesson-card h3 { margin:.15rem 0 .2rem; font-size:1rem; line-height:1.25; }
+  .lesson-card .type { font-size:.8rem; color:var(--muted); }
+  .lesson-card .why { font-size:.8rem; color:var(--muted); margin:.15rem 0 .35rem; }
+  .lesson-card .status { position:absolute; top:.9rem; right:1rem; font-size:.78rem; font-weight:700; }
+  .lesson-card.done { border-color:var(--pr); } .lesson-card.done .status { color:var(--pr); }
+  .lesson-card.locked { opacity:.55; background:#f2f3f6; border-color:#d5d8e0; }
+  .lesson-card.locked h3 { color:var(--muted); }
+  .lesson-card.locked .module, .lesson-card.locked .type { color:#9aa3b5; }
+  .lock-msg { color:var(--def,#B45309); font-size:.85rem; text-align:center; background:#fdf1e1; border-radius:10px; padding:.5rem .8rem; margin:.6rem 0; }
+
+  .auth { max-width:460px; margin:1.4rem auto; border:1px solid var(--line); border-radius:20px; background:#fff; box-shadow:0 12px 40px rgba(27,42,74,.10); padding:1.4rem 1.4rem .9rem; }
+  .auth-head { margin-bottom:.5rem; }
+  .auth-title { font-size:1.25rem; font-weight:800; color:var(--ink); }
+  .auth-sub { font-size:.86rem; color:var(--muted); margin:.1rem 0 .6rem; }
+  .role-tabs { display:flex; gap:.4rem; margin:.4rem 0 .9rem; background:var(--accent-soft); border-radius:12px; padding:.25rem; }
+  .role-tabs .rtab { flex:1; border:0; background:transparent; border-radius:9px; padding:.5rem; font:700 14px/1.2 system-ui,sans-serif; cursor:pointer; color:var(--ink); }
+  .role-tabs .rtab.active { background:#fff; box-shadow:0 1px 4px rgba(27,42,74,.12); color:var(--accent); }
+  .rtab-body .field { margin-bottom:.8rem; }
+  .rtab-body .field label { display:block; font-size:.8rem; font-weight:700; color:var(--muted); margin-bottom:.3rem; }
+  .rtab-body input, .rtab-body select { width:100%; border:1px solid var(--line); border-radius:10px; padding:.6rem .7rem; font:14px/1.4 system-ui,sans-serif; }
+  .btn { display:inline-block; border:0; border-radius:10px; padding:.6rem 1.1rem; font:700 15px/1.2 system-ui,sans-serif; background:var(--vr); color:#fff; cursor:pointer; text-decoration:none; }
+  .btn:hover { filter:brightness(1.08); }
+  .btn-enter { width:100%; justify-content:center; }
+  .mode-tabs { display:flex; gap:.4rem; margin:0 0 .9rem; }
+  .mode-tabs .mtab { flex:1; border:1px solid var(--line); background:#fff; border-radius:9px; padding:.45rem .5rem; font:700 13px/1.2 system-ui,sans-serif; cursor:pointer; color:var(--muted); }
+  .mode-tabs .mtab.active { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); }
+  .authmsg { color:var(--def,#B45309); font-size:.85rem; margin-top:.3rem; }
+  .profiles { display:flex; flex-wrap:wrap; gap:.4rem; margin:.3rem 0 .6rem; }
+  .profiles button { border:1px solid var(--vr); background:#fff; color:var(--vr); border-radius:999px; padding:.3rem .7rem; font:600 13px/1.2 system-ui,sans-serif; cursor:pointer; }
+  .reg-done { margin:.9rem 0 .2rem; border:2px solid var(--pr); border-radius:12px; background:var(--pr-soft); padding:.8rem .9rem; }
+  .reg-done-title { font-weight:800; color:var(--pr); margin-bottom:.5rem; }
+  .reg-row { display:flex; justify-content:space-between; gap:.6rem; padding:.28rem 0; border-bottom:1px dashed var(--line); font-size:.9rem; }
+  .reg-row:last-of-type { border-bottom:0; }
+  .reg-row span { color:var(--muted); } .reg-row b { color:var(--ink); }
+  .stud-code { font-size:1.3rem; font-weight:800; letter-spacing:.06em; color:var(--vr); font-family:ui-monospace,Consolas,monospace; }
+  .reg-hint { font-size:.76rem; color:var(--muted); margin:.5rem 0 0; }
+  .userbar { background:var(--vr-soft); border:1px solid var(--vr); border-radius:12px; padding:.7rem 1rem; margin:1rem 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.6rem; }
+  .userbar b { color:var(--vr); } .userbar .small { color:var(--muted); font-size:.85rem; }
+  .userbar .btn { padding:.35rem .8rem; font-size:13px; background:#fff; color:var(--vr); border:1px solid var(--vr); }
+  .students-panel { background:#fff; border:1px solid var(--line); border-radius:14px; padding:.8rem 1rem; margin:1rem 0; }
+  .stp-head { font-weight:800; font-size:1rem; margin-bottom:.4rem; }
+  .stp-list { display:flex; flex-direction:column; gap:.4rem; }
+  .stp-row { display:flex; align-items:center; justify-content:space-between; gap:.8rem; border:1px solid var(--line); border-radius:10px; padding:.5rem .7rem; background:#fbfcfe; flex-wrap:wrap; }
+  .stp-info b { font-size:.92rem; } .stp-info span { font-size:.8rem; color:var(--muted); } .stp-info i { font-style:normal; font-weight:700; color:var(--vr); font-family:ui-monospace,Consolas,monospace; }
+  .stp-reset { border:1px solid var(--def,#B45309); background:#fff; color:var(--def); border-radius:8px; padding:.35rem .7rem; font:700 13px/1.2 system-ui,sans-serif; cursor:pointer; }
+  .stp-empty { color:var(--muted); font-size:.9rem; padding:.3rem 0; }
+
+  .progressbar { background:var(--line); border-radius:999px; height:14px; overflow:hidden; margin:.5rem 0 1.2rem; }
+  .progressbar .fill { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--accent),var(--vr)); width:0%; }
+  .progress-text { color:var(--muted); font-size:.9rem; margin:.2rem 0 1.4rem; }
+  .toolbar { display:flex; gap:.6rem; flex-wrap:wrap; margin:1rem 0 1.4rem; }
+  .btn2 { border:1px solid var(--line); border-radius:10px; padding:.5rem 1rem; font:700 14px/1.2 system-ui,sans-serif; background:#fbfcfe; color:var(--ink); cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; }
+
+  .infographic { display:none; margin:1.2rem 0 1.6rem; border:1px solid var(--line); border-radius:14px; background:linear-gradient(135deg,#FFF,#F6F8FD); padding:1rem 1.1rem; }
+  .infographic.revealed { display:block; }
+  .infographic h3 { margin:0 0 .3rem; font-size:1rem; color:var(--vr); } .infographic .ig-sub { color:var(--muted); font-size:.85rem; margin:0 0 .7rem; }
+  .ig-flow { display:flex; flex-wrap:wrap; align-items:stretch; gap:.4rem; }
+  .ig-step { flex:1 1 150px; min-width:130px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:.55rem .65rem; position:relative; }
+  .ig-step .ig-num { position:absolute; top:-8px; left:8px; background:var(--vr); color:#fff; font-size:.72rem; font-weight:800; border-radius:999px; padding:0 .45rem; }
+  .ig-step b { display:block; font-size:.9rem; margin:.2rem 0 .1rem; } .ig-step span { font-size:.78rem; color:var(--muted); line-height:1.35; display:block; }
+  .ig-step.hi { border-color:var(--vr); box-shadow:0 2px 8px rgba(108,77,240,.12); }
+  .ig-legend { display:flex; flex-wrap:wrap; gap:.7rem; margin-top:.6rem; font-size:.8rem; color:var(--muted); } .ig-legend b { color:var(--vr); }
+
+  .layer-map { margin:1.4rem 0; }
+  .lm-wrap { border:1px solid var(--line); border-radius:14px; background:#fff; overflow:hidden; box-shadow:0 2px 10px rgba(27,42,74,.05); }
+  .lm-summary { cursor:pointer; list-style:none; display:flex; align-items:center; justify-content:space-between; padding:.85rem 1.1rem; font-weight:800; font-size:1rem; color:var(--ink); background:var(--accent-soft); }
+  .lm-summary::-webkit-details-marker { display:none; } .lm-summary:hover { background:var(--vr-soft); }
+  .lm-wrap[open] .lm-summary { border-bottom:1px solid var(--line); }
+  .lm-chev { transition:transform .2s; color:var(--accent); } .lm-wrap[open] .lm-chev { transform:rotate(180deg); }
+  .lm-body { padding:.9rem 1.1rem 1rem; } .lm-list { display:flex; flex-direction:column; gap:.5rem; }
+  .lm-slot { border:1px solid var(--line); border-radius:12px; padding:.6rem .8rem; background:#fbfcfe; }
+  .lm-slot .lm-name { display:block; font-weight:800; color:var(--vr); font-size:.95rem; }
+  .lm-slot .lm-learn { display:block; font-size:.82rem; color:var(--muted); margin:.1rem 0 .3rem; }
+  .lm-slot .lm-detail { font-size:.88rem; color:var(--ink); line-height:1.5; }
+  .lm-slot .lm-result { font-size:.82rem; color:var(--pr); font-weight:600; margin-top:.3rem; }
+
+  .scale-wrap { margin:1.4rem 0; border:1px solid var(--line); border-radius:16px; background:#fff; overflow:hidden; }
+  .scale-wrap summary { cursor:pointer; list-style:none; padding:.9rem 1.2rem; font-weight:800; font-size:1.02rem; display:flex; align-items:center; justify-content:space-between; }
+  .scale-wrap summary::-webkit-details-marker { display:none; } .scale-wrap summary .sc-chev { transition:transform .2s; color:var(--accent); }
+  .scale-wrap[open] summary .sc-chev { transform:rotate(180deg); }
+  .scale-body { padding:.4rem 1.2rem 1.2rem; }
+  .scale-body .units { display:flex; flex-wrap:wrap; gap:.6rem 1.4rem; font-size:.82rem; color:var(--muted); border-bottom:1px solid var(--line); padding-bottom:.6rem; margin-bottom:.8rem; }
+  .metal-scale { display:flex; align-items:stretch; gap:1rem; margin:.4rem 0 1.4rem; }
+  .metal-column { flex:0 0 168px; display:flex; flex-direction:column; gap:.3rem; }
+  .metal-step { border-radius:11px; padding:.5rem .55rem; text-align:center; flex:1 1 0; min-height:40px; display:flex; align-items:center; justify-content:center; gap:.3rem; font-weight:800; }
+  .metal-step .ms-icon { font-size:1rem; } .metal-step .ms-name { font-size:.85rem; line-height:1.05; } .metal-step .ms-need { display:block; font-size:.62rem; font-weight:600; opacity:.85; }
+  .metal-rows { flex:1 1 auto; display:flex; flex-direction:column; gap:.5rem; }
+  .medal-card { display:flex; align-items:center; gap:.8rem; padding:.65rem .85rem; border:1px solid var(--line); border-radius:14px; background:#fbfcfe; }
+  .medal-round { flex:0 0 48px; width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.35rem; border:3px solid; }
+  .m-info { flex:0 0 185px; } .m-info b { display:block; font-size:.95rem; } .m-info .m-rank { font-weight:800; font-size:.78rem; text-transform:uppercase; letter-spacing:.02em; }
+  .m-bar { flex:1 1 auto; } .m-bar .bar-head { display:flex; justify-content:space-between; font-size:.78rem; color:var(--muted); margin-bottom:.25rem; }
+  .bar-track { background:var(--line); border-radius:999px; height:11px; overflow:hidden; } .bar-fill { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--accent),var(--vr)); width:0%; }
+  .m-q { flex:0 0 auto; text-align:left; } .m-q .q-num { font-size:1.05rem; font-weight:800; color:var(--vr); } .m-q .q-detail, .m-q .q-lab { font-size:.7rem; color:var(--muted); } .m-q .stars { font-size:.82rem; color:#e0a800; letter-spacing:.08em; }
+  .scale-empty { color:var(--muted); font-size:.9rem; padding:.3rem 0; }
+  .scale-body .method-note { font-size:.82rem; color:var(--muted); background:#fbfcfe; border:1px dashed var(--line); border-radius:10px; padding:.6rem .8rem; margin:.6rem 0 0; }
+
+  .classes-wrap { border:1px solid var(--line); border-radius:14px; background:#fff; overflow:hidden; }
+  .classes-summary { cursor:pointer; list-style:none; display:flex; align-items:center; justify-content:space-between; padding:.85rem 1.1rem; font-weight:800; font-size:1rem; background:var(--vr-soft); }
+  .classes-summary::-webkit-details-marker { display:none; } .classes-chev { transition:transform .2s; color:var(--vr); } .classes-wrap[open] .classes-chev { transform:rotate(180deg); }
+  .classes-body { padding:.9rem 1.1rem 1rem; }
+
+  footer { color:var(--muted); font-size:.8rem; border-top:1px solid var(--line); margin-top:2.6rem; padding-top:.8rem; }
+  @media (max-width:760px){ .metal-scale{flex-direction:column;} .metal-column{flex-direction:row;overflow-x:auto;order:2;} .metal-step{min-width:84px;min-height:auto;} .medal-card{flex-wrap:wrap;} .m-info{flex:1 1 140px;} }
+  @media (max-width:640px){ header h1{font-size:1.5rem;} .grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <p class="kicker">Технологическая лаборатория · Blender 3D · стартовый уровень</p>
+    <h1>Инициативное моделирование (Blender 3D)</h1>
+    <p class="sub">28 занятий по субботам · 4 академических часа · учебный год 2026–2027</p>
+  </header>
+
+  <div class="tldr"><b>Как пользоваться.</b> Сначала зарегистрируйся под своим именем — прогресс запомнится лично для тебя, даже если за этим же компьютером занимаются другие ребята. Проходи занятия по порядку: изучи теорию, выполни практику по методичке и рефлексию — и следующее занятие откроется.</div>
+
+  <div class="auth" id="authPanel" style="background:var(--vr-soft);border:1px solid var(--vr);border-radius:14px;padding:1.1rem 1.3rem;margin:1.2rem 0;"> <div class="auth-head"><div class="auth-title">🔗 Вход через портал Технологической лаборатории</div><p class="auth-sub">Чтобы войти в свой профиль и начать занятия, открой портал ТЛ и войди под своим именем — курс подключится автоматически.</p></div> <p style="margin:.8rem 0 0"><a class="btn btn-enter" href="../ТЛ/ТЛ концепция/Портал Технологическая лаборатория.html" style="display:inline-block;border:0;border-radius:10px;padding:.6rem 1.2rem;font:700 15px/1.2 system-ui,sans-serif;background:var(--vr);color:#fff;text-decoration:none;cursor:pointer;">Открыть портал и войти →</a></p> </div>id="userBar" style="display:none">
+    <div><b id="ubName"></b> <span class="small" id="ubRole"></span> <span class="small" id="ubStudCode" style="display:none"></span></div>
+    <button class="btn" onclick="doLogout()">Выйти / сменить</button>
+  </div>
+
+  <div class="students-panel" id="studentsPanel" style="display:none">
+    <div class="stp-head">Обучающиеся курса (твои ученики)</div>
+    <div class="stp-list" id="studentsList"></div>
+  </div>
+
+  <div class="infographic" id="infographic">
+    <h3>🧩 Как рождается 3D-модель</h3>
+    <p class="ig-sub">Держи в голове весь путь — от идеи до напечатанной детали.</p>
+    <div class="ig-flow">
+      <div class="ig-step"><span class="ig-num">1</span><b>Идея</b><span>Что и зачем моделируем</span></div>
+      <div class="ig-step"><span class="ig-num">2</span><b>Примитивы</b><span>Собираем из базовых фигур</span></div>
+      <div class="ig-step"><span class="ig-num">3</span><b>Материалы</b><span>Дерево, металл, керамика</span></div>
+      <div class="ig-step hi"><span class="ig-num">4</span><b>Свет и камера</b><span>Делаем картинку объёмной</span></div>
+      <div class="ig-step"><span class="ig-num">5</span><b>Рендер</b><span>Готовая картинка 1920×1080</span></div>
+      <div class="ig-step hi"><span class="ig-num">6</span><b>STL и печать</b><span>Готовим и печатаем деталь</span></div>
+      <div class="ig-step"><span class="ig-num">7</span><b>Портфолио</b><span>Показываем результат</span></div>
+    </div>
+    <div class="ig-legend"><b>2 ключевые точки:</b> свет с камерой (кадр становится «дорогим») и печать (модель становится вещью).</div>
+  </div>
+
+  <div class="layer-map" id="layerMap">
+    <details class="lm-wrap">
+      <summary class="lm-summary"><span class="lm-title">🗺 Слойная карта курса Blender</span><span class="lm-chev">▾</span></summary>
+      <div class="lm-body">
+        <p class="ig-sub">Каждый слой — уровень мастерства. Идёшь снизу вверх: понял Базу — открываешь путь к Профессии.</p>
+        <div class="lm-list"><div class="lm-slot"><b class="lm-name">6 · Профессия</b><span class="lm-learn">Портфолио, аттестация, выбор пути</span><div class="lm-detail">Собираешь портфолио из лучших работ, готовишься и защищаешь свой проект перед комиссией. Выбираешь, куда расти: художник, конструктор или визуализатор.</div><div class="lm-result">Сможешь: показать портфолио и защитить проект на аттестации.</div></div><div class="lm-slot"><b class="lm-name">5 · Сцена и свет</b><span class="lm-learn">Тематическая сцена, свет, композиция</span><div class="lm-detail">Создаёшь свою сцену из 8+ объектов: композиция, свет, камера, финальный рендер 1920×1080.</div><div class="lm-result">Сможешь: создать законченную 3D-сцену с настроением.</div></div><div class="lm-slot"><b class="lm-name">4 · Печать</b><span class="lm-learn">STL, Cura, FDM-принтер</span><div class="lm-detail">Готовишь модель к печати: проверка инструментом, слайсер Cura, печать настоящей детали.</div><div class="lm-result">Сможешь: напечатать свою модель на 3D-принтере.</div></div><div class="lm-slot"><b class="lm-name">3 · Материалы и рендер</b><span class="lm-learn">Principled BSDF, свет, Cycles</span><div class="lm-detail">Назначаешь материалы, ставишь трёхточечный свет, рендеришь в EEVEE и Cycles.</div><div class="lm-result">Сможешь: сделать реалистичную картинку своей сцены.</div></div><div class="lm-slot"><b class="lm-name">2 · Сборка сцены</b><span class="lm-learn">Точный ввод, дублирование, иерархия</span><div class="lm-detail">Собираешь предметы из примитивов с точными размерами: стол, стул, кружку, «кухонный уголок».</div><div class="lm-result">Сможешь: собрать интерьер из 10+ объектов.</div></div><div class="lm-slot"><b class="lm-name">1 · Основы Blender</b><span class="lm-learn">Интерфейс, примитивы, клавиши G/R/S</span><div class="lm-detail">Интерфейс Blender, навигация мышью, горячие клавиши, точное движение, вращение, масштаб.</div><div class="lm-result">Сможешь: создать сцену из примитивов с точными размерами.</div></div><div class="lm-slot"><b class="lm-name">0 · База</b><span class="lm-learn">3D-графика, безопасность, Blender</span><div class="lm-detail">Что такое вершины, рёбра, полигоны; где применяется 3D; техника безопасности и рабочее место.</div><div class="lm-result">Сможешь: безопасно работать с Blender и понимать основы 3D.</div></div></div>
+        <div class="ig-legend">Двигайся от <b>Базы</b> к <b>Профессии</b> — как по лестнице.</div>
+      </div>
+    </details>
+  </div>
+
+  <div class="progressbar" style="display:none"><div class="fill" id="fill"></div></div>
+  <div class="progress-text" id="progressText" style="display:none">Войди, чтобы увидеть свой прогресс</div>
+
+  <div class="toolbar" id="teacherToolbar" style="display:none">
+    <button class="btn2" onclick="resetProgress()">Сбросить мой прогресс</button>
+    <button class="btn2" onclick="openAll()">Открыть все (режим педагога)</button>
+  </div>
+
+  <details class="scale-wrap" id="scaleWrap" open>
+    <summary><span>🏅 Мотивационная шкала · Blender 3D</span><span class="sc-chev">▾</span></summary>
+    <div class="scale-body">
+      <div class="units"><span><b>Итоговый балл</b> — 0–100 баллов (прогресс + качество)</span><span><b>Прогресс</b> — % пройденных занятий из 28</span><span><b>Качество</b> — 0–100 баллов (см. ниже)</span></div>
+      <div class="metal-scale"><div class="metal-column" id="scaleSteps"></div><div class="metal-rows" id="scaleRows"></div></div>
+      <div class="method-note"><b>Как считается итог.</b> Итог 0–100 = прогресс (до 40) + качество (до 60). Качество = средняя самооценка в рефлексии (до 40) + доля выполненных заданий и ДЗ (до 30) + бонусы за защиты и конкурсы (до 30).</div>
+      <div class="method-note"><b>Принцип «от железа к иридию».</b> Металл — по итогу: Железо 5 · Медь 15 · Бронза 25 · Олово 35 · Серебро 45 · Золото 55 · Платина 65 · Палладий 75 · Родий 85 · Иридий 93.</div>
+    </div>
+  </details>
+
+  <details class="classes-wrap" id="classesWrap">
+    <summary class="classes-summary"><span>📚 Занятия Blender (28) · раскрой список</span><span class="classes-chev">▾</span></summary>
+    <div class="classes-body"><div class="grid" id="grid"></div></div>
+  </details>
+
+  <footer>
+    <p>«Инициативное моделирование (Blender 3D)» · Дополнительная общеобразовательная программа «Технологическая лаборатория» · Региональный центр «Спутник» · 2026–2027 учебный год.</p>
+    <p>Совет: если открываешь файлы с компьютера и профиль не сохраняется между страницами — размести папку на учебном сервере или открой этот список занятий как главную страницу.</p>
+  </footer>
+</main>
+
+<script>
+/* Главный скрипт курса Blender: регистрация, прогресс, блокировка, слойная карта, мотивационная шкала — в одном блоке */
+const lessons = [ {"week":1,"padded":"01","href":"Занятие 1/Занятие-01-что-такое-3d-вершины-рёбра-полигоны.html","title":"Что такое 3D: вершины, рёбра, полигоны","module":"Модуль 1","type":"Теория + практика","why":"Разбираемся, из чего состоит любая 3D-модель, где применяется 3D-графика и почему Blender — главный бесплатный инструмент индустрии"},{"week":2,"padded":"02","href":"Занятие 2/Занятие-02-интерфейс-blender-навигация-и-клавиши.html","title":"Интерфейс Blender 4.x и горячие клавиши","module":"Модуль 1","type":"Практика","why":"Учимся ориентироваться в интерфейсе Blender: окна Viewport, Timeline, Properties, способы навигации и первые горячие клавиши G, R, S для перемещения, вращения и масштабирования"},{"week":3,"padded":"03","href":"Занятие 3/Занятие-03-примитивы-трансформации-числовой-ввод.html","title":"Примитивы и трансформации с точным вводом","module":"Модуль 1","type":"Теория + практика","why":"Знакомимся с базовыми 3D-телами Blender — Cube, Sphere, Cylinder, Cone, Torus — и учимся задавать точные размеры через число на клавиатуре"},{"week":4,"padded":"04","href":"Занятие 4/Занятие-04-дублирование-привязка-иерархия-origin.html","title":"Дублирование, привязка и иерархия","module":"Модуль 1","type":"Теория + практика","why":"Учимся быстро размножать объекты (Shift+D, Alt+D), ставить их точно по сетке через привязку (Snap) и связывать в иерархию (Ctrl+P)"},{"week":5,"padded":"05","href":"Занятие 5/Занятие-05-сборка-сцены-стол-стул-кружка.html","title":"Сборка сцены: стол, стул, кружка","module":"Модуль 1","type":"Практика","why":"Применяем навыки на практике: создаём по точным размерам три предмета интерьера — стол, стул и кружку — и расставляем их в сцене"},{"week":6,"padded":"06","href":"Занятие 6/Занятие-06-кухонный-уголок-иерархия.html","title":"Кухонный уголок: 10+ объектов с иерархией","module":"Модуль 1","type":"Практика","why":"Итоговая работа модуля 1: собираем сцену «Кухонный уголок» из 10+ примитивов с правильной иерархией, используя всё изученное: точные размеры, дублирование, привязку, парентинг"},{"week":7,"padded":"07","href":"Занятие 7/Занятие-07-материалы-principled-bsdf-свет.html","title":"Материалы и Principled BSDF","module":"Модуль 2","type":"Теория + практика","why":"Знакомимся с материалами: разбираем узел Principled BSDF (Base Color, Metallic, Roughness) и первые источники света в Blender"},{"week":8,"padded":"08","href":"Занятие 8/Занятие-08-камера-рендер-eevee-cycles.html","title":"Камера, рендеры EEVEE и Cycles","module":"Модуль 2","type":"Теория + практика","why":"Учимся ставить камеру, настраивать её (Focal Length, Depth of Field) и делать первые рендеры в EEVEE и Cycles"},{"week":9,"padded":"09","href":"Занятие 9/Занятие-09-материалы-дерево-металл-керамика-свет.html","title":"Материалы кухни и трёхточечный свет","module":"Модуль 2","type":"Практика","why":"Настраиваем реалистичные материалы для кухонного уголка — дерево, металл, керамику — и строим классическую схему трёхточечного освещения"},{"week":10,"padded":"10","href":"Занятие 10/Занятие-10-рендер-сравнение-eevee-cycles.html","title":"Сравниваем EEVEE и Cycles","module":"Модуль 2","type":"Практика","why":"Запускаем контрольные рендеры: EEVEE 300×300 и Cycles 512 сэмплов, сравниваем качество и время — и учимся выбирать движок под задачу"},{"week":11,"padded":"11","href":"Занятие 11/Занятие-11-композиция-hdri-коллекции.html","title":"Композиция, HDRI и коллекции","module":"Модуль 2","type":"Теория + практика","why":"Учимся компоновать кадр (правило третей), использовать HDRI-освещение для реалистичного света и наводить порядок в сцене с помощью коллекций"},{"week":12,"padded":"12","href":"Занятие 12/Занятие-12-тематическая-сцена-старт.html","title":"Тематическая сцена: старт (8+ объектов)","module":"Модуль 3","type":"Практика","why":"Начинаем главный творческий проект курса — самостоятельную тематическую сцену"},{"week":13,"padded":"13","href":"Занятие 13/Занятие-13-тематическая-сцена-моделирование.html","title":"Сцена: моделирование и материалы","module":"Модуль 3","type":"Практика","why":"Продолжаем тематическую сцену: детализируем объекты, правим геометрию, донастраиваем материалы — доводим до состояния «сцена готова к свету»"},{"week":14,"padded":"14","href":"Занятие 14/Занятие-14-тематическая-сцена-свет-камера.html","title":"Сцена: свет, камера, композиция","module":"Модуль 3","type":"Практика","why":"Настраиваем свет и камеру для тематической сцены: выбираем главный источник, ставим камеру по правилу третей, проверяем композицию"},{"week":15,"padded":"15","href":"Занятие 15/Занятие-15-итоговый-рендер-compositor.html","title":"Итоговый рендер 1920×1080 и Compositor","module":"Модуль 3","type":"Практика","why":"Делаем финальный рендер тематической сцены в Cycles 512 сэмплов в разрешении 1920×1080 и обрабатываем его в Compositor: Bloom и Color Grading"},{"week":16,"padded":"16","href":"Занятие 16/Занятие-16-экспорт-форматы-3d-печать.html","title":"Экспорт: OBJ, STL, FBX, GLTF и 3D-печать","module":"Модуль 4","type":"Теория + практика","why":"Разбираемся в форматах 3D-файлов: для чего нужны OBJ, STL, FBX, GLTF — и изучаем требования модели для 3D-печати + аддон 3D Print Toolbox"},{"week":17,"padded":"17","href":"Занятие 17/Занятие-17-слайсер-cura-настройка.html","title":"Слайсер Cura: подготовка к печати","module":"Модуль 4","type":"Теория + практика","why":"Знакомимся со слайсером Cura: импортируем STL, настраиваем параметры печати (высота слоя, заполнение, поддержки) и разбираем типы пластика PLA и PETG"},{"week":18,"padded":"18","href":"Занятие 18/Занятие-18-экспорт-брелок-stl-cura.html","title":"Брелок/фигурка: от модели до STL и Cura","module":"Модуль 4","type":"Практика","why":"Практика полного цикла: моделируем простую фигурку или брелок, исправляем её через 3D Print Toolbox и импортируем в Cura для печати"},{"week":19,"padded":"19","href":"Занятие 19/Занятие-19-печать-fdm-принтер-постобработка.html","title":"Печать на FDM-принтере","module":"Модуль 4","type":"Практика","why":"Запускаем настоящую печать: загружаем пластик, запускаем печать брелока на FDM-принтере и разбираем постобработку: поддержки, шлифовку"},{"week":20,"padded":"20","href":"Занятие 20/Занятие-20-профессии-3d-портфолио.html","title":"Профессии в 3D и портфолио","module":"Модуль 5","type":"Профориентация","why":"Знакомимся с профессиями, где нужен Blender: 3D-аниматор, архитектурный визуализатор, специалист по 3D-печати"},{"week":21,"padded":"21","href":"Занятие 21/Занятие-21-портфолио-рендеры-рефлексия.html","title":"Оформляем портфолио из лучших рендеров","module":"Модуль 5","type":"Практика","why":"Собираем личное портфолио: отбираем лучшие рендеры курса, оформляем их в едином стиле и делаем рефлексию: что я уже умею в 3D"},{"week":22,"padded":"22","href":"Занятие 22/Занятие-22-доработка-сцены-презентация.html","title":"Доработка сцены и презентация","module":"Модуль 5","type":"Практика","why":"Готовимся к итоговой аттестации: дорабатываем финальную сцену и создаём презентацию — описание инструментов, иерархии и материалов"},{"week":23,"padded":"23","href":"Занятие 23/Занятие-23-подготовка-аттестации-демонстрация.html","title":"Подготовка к аттестации","module":"Модуль 5","type":"Практика","why":"Тренируемся к итоговой аттестации: пробная демонстрация своей сцены, разбор критериев и подготовка ответов на вопросы"},{"week":24,"padded":"24","href":"Занятие 24/Занятие-24-итоговая-аттестация.html","title":"Итоговая аттестация: защита проекта","module":"Модуль 5","type":"Аттестация","why":"Главное событие курса: представляем финальную сцену (рендер + напечатанная модель), отвечаем на вопросы комиссии и получаем оценку"},{"week":25,"padded":"25","href":"Занятие 25/Занятие-25-итоги-портфолио-цели.html","title":"Итоги года и цели роста","module":"Модуль 6","type":"Итог","why":"Подводим итоги: разбираем портфолио, обсуждаем достижения и ставим цели на следующий уровень 3D-моделирования"},{"week":26,"padded":"26","href":"Занятие 26/Занятие-26-резерв-анимация-shader.html","title":"Резерв: анимация и Shader Editor","module":"Модуль 6","type":"Практика","why":"Резервное занятие для любопытных: пробуем простую анимацию (ключевые кадры) и создаём свой материал в Shader Editor"},{"week":27,"padded":"27","href":"Занятие 27/Занятие-27-выставка-работ.html","title":"Выставка работ","module":"Модуль 6","type":"Показ","why":"Публичный показ: выставляем лучшие рендеры и напечатанные модели, рассказываем о своих проектах и голосуем за лучшие работы года"},{"week":28,"padded":"28","href":"Занятие 28/Занятие-28-закрытие-года-сертификаты.html","title":"Закрытие года: сертификаты и перспективы","module":"Модуль 6","type":"Итог","why":"Финал курса: вручаем сертификаты, собираем итоговое портфолио года и смотрим перспективы — куда расти дальше в 3D и кто уже ждёт таких специалистов"} ];
+const PFKEY="blender_profiles";
+const CUKEY="blender_current_user";
+const PROGKEY="blender_progress_";
+// обратная совместимость со старыми ключами bl_*
+const OLDPFKEY="bl_profiles"; const OLDCUKEY="bl_current_user"; const OLDPROGKEY="bl_progress_";
+function getUsers(){ try{ let a=JSON.parse(localStorage.getItem(PFKEY)||"[]"); if(!Array.isArray(a)) a=[]; // перенос старых данных
+  if(a.length===0){ try{ const old=JSON.parse(localStorage.getItem(OLDPFKEY)||"[]"); if(Array.isArray(old)&&old.length){ a=old; localStorage.setItem(PFKEY,JSON.stringify(a)); } }catch(e){} }
+  return a; }catch(e){ return []; } }
+function saveUsers(a){ try{ localStorage.setItem(PFKEY,JSON.stringify(a)); }catch(e){} }
+function sessionUser(){ try{ let s=JSON.parse(localStorage.getItem(CUKEY)||"null"); if(!s||!s.uid){ s=JSON.parse(localStorage.getItem(OLDCUKEY)||"null"); if(s&&s.uid) localStorage.setItem(CUKEY,JSON.stringify(s)); } return s; }catch(e){ return null; } }
+function setSession(s){ try{ if(s){ localStorage.setItem(CUKEY,JSON.stringify(s)); }else{ localStorage.removeItem(CUKEY); } }catch(e){} }
+function me(){ var s=sessionUser(); if(!s||!s.uid) return null; return getUsers().find(function(p){ return String(p.uid)===String(s.uid); })||null; }
+const TEACHER_KEY="mt_teacher_mode";
+const TEACHER_CODE="012345678";
+const MODE="bl";
+const COURSE_TOTAL=28;
+const BASE_TEACHERS=["Казакевич Константин Михайлович"];
+const METALS=[{"name":"Железо","icon":"⚙","need":5,"bg":"linear-gradient(160deg,#6b7a8c,#39434f)","fg":"#fff"},{"name":"Медь","icon":"◎","need":15,"bg":"linear-gradient(160deg,#ee7a4b,#b23c1f)","fg":"#fff"},{"name":"Бронза","icon":"⑂","need":25,"bg":"linear-gradient(160deg,#c98a3d,#7c4e18)","fg":"#fff"},{"name":"Олово","icon":"❆","need":35,"bg":"linear-gradient(160deg,#9fc2da,#56748e)","fg":"#0f1c28"},{"name":"Серебро","icon":"◐","need":45,"bg":"linear-gradient(160deg,#eef1f5,#aab4c0)","fg":"#232a36"},{"name":"Золото","icon":"☀","need":55,"bg":"linear-gradient(160deg,#ffd75e,#c3940f)","fg":"#3a2c00"},{"name":"Платина","icon":"✧","need":65,"bg":"linear-gradient(160deg,#9aa6b3,#616e7d)","fg":"#fff"},{"name":"Палладий","icon":"❖","need":75,"bg":"linear-gradient(160deg,#e0c69a,#976f34)","fg":"#2b2006"},{"name":"Родий","icon":"✪","need":85,"bg":"linear-gradient(160deg,#fbfdff,#c6cdd6)","fg":"#1a2430"},{"name":"Иридий","icon":"✦","need":93,"bg":"linear-gradient(160deg,#4a5561,#232b34)","fg":"#fff"}];
+
+function getTeachers(){ var names=BASE_TEACHERS.slice(); try{ var users=getUsers(); users.forEach(function(p){ if(p.role==="teacher"){ var n=p.name||""; if(names.indexOf(n)<0) names.push(n); } }); }catch(e){} return names; }
+function isTeacherMode(){ try{ return localStorage.getItem(TEACHER_KEY)==="1"; }catch(e){ return false; } }
+function setTeacherMode(v){ try{ localStorage.setItem(TEACHER_KEY, v?"1":""); }catch(e){} }
+function updateTeacherToolbar(){ var tb=document.getElementById("teacherToolbar"); if(tb) tb.style.display=isTeacherMode()?"flex":"none"; }
+(function(){ var clicks=0,timer=null; var h1=document.querySelector("header h1"); if(h1)h1.style.cursor="pointer"; document.addEventListener("click",function(e){ if(e.target===h1||(h1&&h1.contains(e.target))){ clicks++; if(timer)clearTimeout(timer); timer=setTimeout(function(){clicks=0;},1500); if(clicks>=5){ clicks=0; setTeacherMode(!isTeacherMode()); updateTeacherToolbar(); render(); } } }); })();
+
+function getProgress(uid){ var a=[]; try{ a=JSON.parse(localStorage.getItem(PROGKEY+uid)||"[]"); }catch(e){ a=[]; } if(Array.isArray(a)){ while(a.length<COURSE_TOTAL)a.push(false); return a; } return a; }
+function setProgress(uid,lesson,done){ var a=getProgress(uid); if(Array.isArray(a)){ a[lesson-1]=!!done; try{ localStorage.setItem(PROGKEY+uid,JSON.stringify(a)); }catch(e){} } else { a["w"+lesson]=!!done; try{ localStorage.setItem(PROGKEY+uid,JSON.stringify(a)); }catch(e){} } if(uid){ try{ localStorage.setItem("blender_u_"+uid+"_l_"+lesson, done?"1":""); }catch(e){} } }
+function isDone(uid,n){ if(uid){ try{ if(localStorage.getItem("blender_u_"+uid+"_l_"+n)==="1") return true; }catch(e){} } var p=getProgress(uid); if(Array.isArray(p)) return !!p[n-1]; return !!(p && p["w"+n]); }
+
+window.__roleTab=function(r){ document.querySelectorAll(".rtab").forEach(function(b){ b.classList.remove("active"); }); var el=document.querySelector('.rtab[data-r="'+r+'"]'); if(el) el.classList.add("active"); document.getElementById("tab-student").style.display=r==="student"?"":"none"; document.getElementById("tab-teacher").style.display=r==="teacher"?"":"none"; };
+window.__studMode=function(m){ var tabs=document.querySelectorAll(".mtab"); tabs.forEach(function(b){ b.classList.remove("active"); }); document.getElementById("stud-new").style.display=m==="new"?"":"none"; document.getElementById("stud-exist").style.display=m==="exist"?"":"none"; if(tabs.length){ tabs[m==="new"?0:1].classList.add("active"); } };
+
+function genCode(){ return String(Math.floor(1000+Math.random()*9000))+"/"+Math.random().toString(36).slice(2,6).toUpperCase(); }
+function initTeacherSelect(){ var sel=document.getElementById("inpTeacher"); if(!sel)return; var t=getTeachers(); sel.innerHTML='<option value="">— выбери учителя —</option>'+t.map(function(x){ return '<option value="'+x+'">'+x+'</option>'; }).join(""); }
+function doRegisterStudent(){
+  var name=document.getElementById("inpName").value.trim();
+  var klass=document.getElementById("inpKlass").value.trim();
+  var sel=document.getElementById("inpTeacher"); var teacher=sel?(sel.value||"").trim():"";
+  var msg=document.getElementById("authMsg");
+  if(!name){ msg.textContent="Укажи фамилию и имя."; return; }
+  if(!teacher){ msg.textContent="Выбери своего учителя."; return; }
+  var users=getUsers();
+  if(users.some(function(p){ return p.role==="student" && p.name.toLowerCase()===name.toLowerCase() && (p.klass||"")===klass; })){ msg.textContent="Такой ученик уже есть. Переключись на «Я уже есть» и войди по коду."; return; }
+  var code=genCode();
+  var found={ uid:"u"+Date.now().toString(36)+Math.random().toString(36).slice(2,7), role:"student", name:name, klass:klass, teacher:teacher, code:code, created:new Date().toISOString() };
+  users.push(found); saveUsers(users);
+  setSession({ uid:found.uid, role:"student" });
+  var ip1=document.getElementById("inpName"); if(ip1)ip1.style.display="none";
+  var ip2=document.getElementById("inpKlass"); if(ip2)ip2.style.display="none";
+  var br=document.getElementById("btnRegStud"); if(br)br.style.display="none";
+  if(sel) sel.style.display="none";
+  var fd=document.getElementById("regDone"); if(fd)fd.style.display="";
+  document.getElementById("regName").textContent=found.name;
+  document.getElementById("regKlass").textContent=found.klass||"—";
+  document.getElementById("regTeacher").textContent=found.teacher;
+  document.getElementById("regCode").textContent=found.code;
+  msg.textContent="Готово. Это твой профиль на этом компьютере.";
+  renderAuth();
+}
+function doStudentLogin(){
+  var name=document.getElementById("inpName2").value.trim();
+  var code=document.getElementById("inpCode2").value.trim();
+  var msg=document.getElementById("authMsg2");
+  if(!name||!code){ msg.textContent="Укажи имя и код ученика."; return; }
+  var users=getUsers();
+  var found=users.find(function(p){ return p.role==="student" && p.name.toLowerCase()===name.toLowerCase() && String(p.code).toUpperCase()===code.toUpperCase(); });
+  if(!found){ msg.textContent="Неверно имя или код. Если забыл — зарегистрируйся заново."; return; }
+  setSession({ uid:found.uid, role:"student" });
+  msg.textContent="";
+  renderAuth();
+}
+function doTeacherLogin(){
+  var name=document.getElementById("inpTeacherName").value.trim();
+  var code=document.getElementById("inpTeacherCode").value.trim();
+  var msg=document.getElementById("authMsgT");
+  if(!name){ msg.textContent="Укажи ФИО."; return; }
+  if(code!==TEACHER_CODE){ msg.textContent="Неверный код учителя."; return; }
+  var users=getUsers();
+  var found=users.find(function(p){ return p.role==="teacher" && p.name.toLowerCase()===name.toLowerCase(); });
+  if(!found){ found={ uid:"t"+Date.now().toString(36)+Math.random().toString(36).slice(2,7), role:"teacher", name:name, created:new Date().toISOString() }; users.push(found); saveUsers(users); }
+  setSession({ uid:found.uid, role:"teacher" });
+  msg.textContent="";
+  renderAuth();
+}
+function doLogout(){ try{ setSession(null); localStorage.removeItem(OLDCUKEY); }catch(e){} if(typeof renderAuth==="function"){ renderAuth(); } else { location.reload(); } }
+
+function renderStudents(){
+  var listEl=document.getElementById("studentsList"); if(!listEl) return;
+  var users=getUsers(); var teacher=me();
+  var students=users.filter(function(p){ return p.role==="student"; });
+  if(teacher&&teacher.role==="teacher") students=students.filter(function(p){ return p.teacher===teacher.name; });
+  if(!students.length){ listEl.innerHTML='<div class="stp-empty">Пока нет учеников, привязанных к тебе как к учителю.</div>'; return; }
+  listEl.innerHTML=students.map(function(s){ return '<div class="stp-row"><div class="stp-info"><b>'+s.name+'</b><span>'+(s.klass||"—")+' · учитель: '+s.teacher+' · код: <i>'+s.code+'</i></span></div><button type="button" class="stp-reset" data-uid="'+s.uid+'" onclick="resetStudentCode(this.dataset.uid)">Сбросить код</button></div>'; }).join("");
+}
+function resetStudentCode(uid){ var users=getUsers(); var s=users.find(function(p){ return p.uid===uid; }); if(!s||s.role!=="student")return; s.code=genCode(); saveUsers(users); renderStudents(); alert("Новый код ученика ("+s.name+"): "+s.code); }
+
+function renderAuth(){ var panel=document.getElementById("authPanel"), ubar=document.getElementById("userBar"); var u=me(); if(u){ if(panel) panel.style.display="none"; if(ubar){ ubar.style.display="flex"; var un=document.getElementById("ubName"); if(un) un.textContent=u.name; var uk=document.getElementById("ubKlass"); if(uk) uk.textContent=u.klass||""; var us=document.getElementById("ubSchool"); if(us) us.textContent=(u.role==="teacher"?"Учитель":(u.school||"")); } var sp=document.getElementById("studentsPanel"); if(sp) sp.style.display=(u.role==="teacher")?"":"none"; if(u.role==="teacher") renderStudents(); render(); return; } if(panel) panel.style.display="block"; if(ubar) ubar.style.display="none"; render(); }
+
+function render(){
+  var u=me(); var grid=document.getElementById("grid"); if(!grid) return;
+  grid.innerHTML="";
+  var isTeacher=!!u&&u.role==="teacher";
+  var lockMsg=null;
+  lessons.forEach(function(l,i){
+    var num=i+1;
+    var isPassed=!!u&&(isTeacher||isDone(u.uid,num));
+    var avail=isTeacher?true:(!!u&&(num===1||isDone(u.uid,num-1)));
+    var w=String(l.week||num).padStart(2,"0");
+    var card=document.createElement("div");
+    card.className="lesson-card"+(isPassed?" done":"")+(avail?"":" locked");
+    var inner='<span class="lw">Занятие '+w+'</span><span class="module">'+(l.module||"")+'</span><h3>'+(l.title||"")+'</h3><span class="type">'+(l.type||"")+'</span>';
+    if(avail){
+      var a=document.createElement("a");
+      a.href=l.href;
+      a.style.cssText="display:block;color:inherit;text-decoration:none;";
+      a.innerHTML=inner+(u&&u.role==="student"&&l.why?'<div class="why">'+l.why+'</div>':"");
+      card.appendChild(a);
+    } else {
+      card.style.cursor="not-allowed"; card.title="Сначала пройди предыдущее занятие";
+      card.innerHTML=inner;
+      card.addEventListener("click",function(ev){ ev.preventDefault(); if(!lockMsg){ lockMsg=document.createElement("div"); lockMsg.className="lock-msg"; lockMsg.textContent="Занятие откроется после того, как ты пройдёшь предыдущее."; grid.insertBefore(lockMsg,grid.firstChild); setTimeout(function(){ if(lockMsg){ lockMsg.remove(); lockMsg=null; } },3000); } });
+    }
+    var st=document.createElement("span"); st.className="status"; st.textContent=isPassed?"✓":"•";
+    card.appendChild(st);
+    grid.appendChild(card);
+  });
+  if(u){
+    var progEl=document.querySelector(".progressbar"), pt=document.getElementById("progressText"), fill=document.getElementById("fill");
+    var doneCount=0; for(var i=0;i<lessons.length;i++){ if(isDone(u.uid,i+1)) doneCount++; }
+    var prog=Math.round(100*doneCount/lessons.length);
+    if(progEl)progEl.style.display="block"; if(pt)pt.style.display="block";
+    if(pt)pt.textContent="Пройдено занятий: "+doneCount+" из "+lessons.length+" ("+prog+"%)";
+    if(fill)fill.style.width=prog+"%";
+  }
+  if(window.__scaleRender){ try{ window.__scaleRender(); }catch(e){} }
+}
+function resetProgress(){ var u=me(); if(!u)return; try{ localStorage.removeItem(PROGKEY+u.uid); }catch(e){} render(); }
+function openAll(){ var u=me(); if(!u)return; var a=getProgress(u.uid); for(var i=0;i<COURSE_TOTAL;i++)a[i]=true; try{ localStorage.setItem(PROGKEY+u.uid,JSON.stringify(a)); }catch(e){} render(); }
+
+/* Модуль «Мотивационная шкала» — в этой же области видимости */
+function reflOf(uid,n){ try{ return JSON.parse(localStorage.getItem(SLUG+"_u_"+uid+"_l_"+n+"_draft")||"null"); }catch(e){ return null; } }
+function scaleCompute(uid){
+  var dc=0,sr=0,wr=0,dd=0,dt=0,bn=0,bl=[24,25,27,28];
+  for(var n=1;n<=COURSE_TOTAL;n++){
+    if(isDone(uid,n))dc++;
+    var r=reflOf(uid,n);
+    if(r){ wr++; var rt=parseFloat(r.rating); if(!isNaN(rt))sr+=rt; if(r.done===true||r.done==="true")dd++; dt++; }
+    if(bl.indexOf(n)>=0&&isDone(uid,n))bn++;
+  }
+  var prog=Math.round(dc/COURSE_TOTAL*100);
+  var avg=wr?sr/wr:0;
+  var q=Math.min(100,Math.round(Math.min(1,avg/5)*40+(wr?Math.min(1,dd/Math.max(1,dt))*30:0)+Math.min(1,bn/bl.length)*30));
+  var total=Math.min(100,Math.round(prog*0.4)+Math.round(q*0.6));
+  return {prog:prog,quality:q,total:total};
+}
+function metalOf(t){ var m=METALS[0]; for(var i=0;i<METALS.length;i++){ if(t>=METALS[i].need)m=METALS[i]; } return m; }
+function stars(q){ var n=Math.max(1,Math.min(5,Math.round(q/20))); return Array(n+1).join("★")+Array(6-n).join("☆"); }
+function scaleBuildSteps(){ var el=document.getElementById("scaleSteps"); if(!el)return; el.innerHTML=METALS.slice().reverse().map(function(m){ return '<div class="metal-step" style="background:'+m.bg+';color:'+m.fg+'"><span class="ms-icon">'+m.icon+'</span><span class="ms-name">'+m.name+'<span class="ms-need">итог ≥ '+m.need+' б.</span></span></div>'; }).join(""); }
+function scaleBuildCards(){
+  var el=document.getElementById("scaleRows"); if(!el)return;
+  var all=getUsers(); var list=all.filter(function(q){ return q.role!=="teacher"; });
+  if(!list.length){ el.innerHTML='<div class="scale-empty">В этом курсе пока нет зарегистрированных учеников. Войди в профиль под своим именем.</div>'; return; }
+  var rows=list.map(function(p){ var c=scaleCompute(p.uid); return {name:p.name,klass:p.klass||"",prog:c.prog,quality:c.quality,total:c.total}; });
+  rows.sort(function(a,b){ return b.total-a.total; });
+  el.innerHTML=rows.map(function(r){ var m=metalOf(r.total); return '<div class="medal-card"><div class="medal-round" style="background:'+m.bg+';border-color:'+(m.fg==="#fff"?"#444":m.fg)+'">'+m.icon+'</div><div class="m-info"><b>'+r.name+'</b><span class="m-rank" style="color:#7a5c00">'+m.name+'</span></div><div class="m-bar"><div class="bar-head"><span>прогресс по курсу</span><b>'+r.prog+'% занятий</b></div><div class="bar-track"><div class="bar-fill" style="width:'+r.prog+'%"></div></div></div><div class="m-q"><div><span class="q-num">'+r.total+'</span> <span class="q-lab">баллов</span></div><div class="q-detail">качество '+r.quality+' б.</div><div class="stars">'+stars(r.quality)+'</div></div></div>'; }).join("");
+}
+function scaleRender(){ scaleBuildSteps(); scaleBuildCards(); }
+window.__scaleRender=scaleRender;
+
+(function handleReturn(){
+  try{
+    var sp=new URLSearchParams(window.location.search);
+    var uid=sp.get("uid"); var lesson=parseInt(sp.get("lesson"),10); var done=sp.get("done")==="1";
+    if(uid&&lesson&&done){ setProgress(uid,lesson,true); }
+    history.replaceState(null,"",window.location.pathname);
+  }catch(e){}
+  renderAuth();
+  updateTeacherToolbar();
+})();
+// Полное обнуление профилей и прогресса (служебное). Открой страницу с ?reset=1
+(function(){ try{ var sp=new URLSearchParams(window.location.search); if(sp.get("reset")==="1"){ var keys=[]; for(var i=0;i<localStorage.length;i++){ keys.push(localStorage.key(i)); } keys.forEach(function(k){ if(k==="blender_profiles"||k==="blender_current_user"||k==="blender_progress_"||k.indexOf("blender_progress_")===0||k.indexOf("blender_u_")===0||k.indexOf("blender_anon_")===0||k.indexOf("blender_pf_")===0||k==="mt_teacher_mode"){ localStorage.removeItem(k); } }); renderAuth(); render(); var a=document.createElement("div"); a.style.cssText="position:fixed;top:12px;left:50%;transform:translateX(-50%);background:var(--vr);color:#fff;padding:.6rem 1.2rem;border-radius:10px;font-weight:700;z-index:99;box-shadow:0 6px 20px rgba(0,0,0,.2);"; a.textContent="Все профили и прогресс курса Blender обнулены."; document.body.appendChild(a); setTimeout(function(){ a.remove(); }, 4000); } }catch(e){}
+})();
+</script>
+</body>
+</html>

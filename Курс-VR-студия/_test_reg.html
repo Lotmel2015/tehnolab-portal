@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Тест</title></head>
+<body>
+<div id="result">pending</div>
+<script>
+/* Тестовая обёртка: загружает реальный index в iframe, кликает и пишет результат */
+window.addEventListener('DOMContentLoaded', function(){
+  var ifr = document.createElement('iframe');
+  ifr.style.cssText = 'width:1px;height:1px;position:absolute;opacity:0';
+  ifr.src = 'Список занятий VR студии.html';
+  document.body.appendChild(ifr);
+  var res = document.getElementById('result');
+  var attempts = 0;
+  var timer = setInterval(function(){
+    attempts++;
+    try {
+      var doc = ifr.contentDocument || ifr.contentWindow.document;
+      var btn = doc.getElementById('btnRegStud');
+      var inp = doc.getElementById('inpName');
+      if (!btn || !inp) { if (attempts > 30) { clearInterval(timer); res.textContent = 'ТАЙМАУТ: элементы не найдены'; } return; }
+      // Клик по табу «Учитель»
+      var tabs = doc.querySelectorAll('.rtab');
+      var teacherTab = null; for (var i = 0; i < tabs.length; i++) if (tabs[i].getAttribute('data-r') === 'teacher') teacherTab = tabs[i];
+      if (teacherTab) teacherTab.click();
+      var teacherVisible = doc.getElementById('tab-teacher').style.display !== 'none';
+      // Регистрация ученика
+      doc.getElementById('inpName').value = 'Тест Ученик';
+      doc.getElementById('inpKlass').value = '8А';
+      var sel = doc.getElementById('inpTeacher');
+      sel.value = sel.options.length > 1 ? sel.options[1].value : '';
+      btn.click();
+      var code = doc.getElementById('regCode').textContent;
+      var authHidden = doc.getElementById('authPanel').style.display === 'none';
+      var userVisible = doc.getElementById('userBar').style.display === 'flex';
+      var cards = doc.querySelectorAll('#grid .lesson-card').length;
+      clearInterval(timer);
+      res.textContent = 'teacherVisible=' + teacherVisible + '; code=' + code + '; authHidden=' + authHidden + '; userVisible=' + userVisible + '; cards=' + cards;
+    } catch (e) {
+      if (attempts > 30) { clearInterval(timer); res.textContent = 'ОШИБКА: ' + e.message; }
+    }
+  }, 300);
+});
+</script>
+</body>
+</html>

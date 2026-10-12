@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Методичка · Сети в VR · Основы сетей в Unity</title><style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--line:#D9E2EF;--yellow:#8a6d00;--yellow-soft:#FFF6DA;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:1rem 1.25rem 3rem}
+nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10}
+nav .inner{max-width:860px;margin:0 auto;padding:.5rem 1.25rem;display:flex;flex-wrap:wrap;gap:.3rem .9rem}
+nav a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:600}nav a:hover{color:var(--accent)}
+.backlink{display:inline-block;margin:1rem 0 -.2rem;color:var(--accent);text-decoration:none;font-size:.9rem;font-weight:600}.backlink:hover{text-decoration:underline}
+header.hero{padding:1.2rem 0 .2rem}
+header .kicker{color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em}
+header h1{font-size:1.65rem;line-height:1.25;margin:.2rem 0 .3rem}
+header .sub{font-size:1rem;color:var(--muted);margin:0 0 .4rem}
+.badges{margin:.6rem 0 1rem;display:flex;flex-wrap:wrap;gap:.4rem}.badge{font-size:.78rem;font-weight:700;padding:.22rem .6rem;border-radius:999px}
+.b-ac{background:var(--accent-soft);color:var(--accent)}.b-vr{background:var(--vr-soft);color:var(--vr)}.b-pr{background:var(--pr-soft);color:var(--pr)}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.9rem 1.15rem;border-radius:0 8px 8px 0;margin:1.2rem auto}.tldr b{color:var(--accent)}
+section{margin:2.2rem 0}
+h2{font-size:1.25rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;margin:0 0 1rem}h2 .n{color:var(--accent);margin-right:.45rem}
+h3{font-size:1.08rem;margin:1.4rem 0 .5rem}
+p{margin:.5rem 0}
+code{background:var(--accent-soft);padding:.12em .35em;border-radius:4px;font-size:.88em;color:#333a54}
+pre{background:#20263f;color:#e6e9f5;border-radius:10px;padding:1rem 1.1rem;overflow-x:auto;font-size:.84rem;line-height:1.6;margin:.6rem 0}
+pre .c{color:#8da0c8}
+kbd{background:var(--accent-soft);border:1px solid var(--line);border-radius:5px;padding:.08em .5em;font-size:.82em;font-family:inherit}
+.step{border:1px solid var(--line);border-radius:14px;padding:1rem 1.15rem;background:#fbfcfe;margin:.9rem 0}
+.step .st-head{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.02rem;color:var(--ink)}
+.step .st-n{display:inline-flex;align-items:center;justify-content:center;min-width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem}
+.step .why{color:var(--muted);font-size:.92rem;margin:.3rem 0 .6rem}
+.step .w{display:block;margin-top:.6rem;color:var(--pr);font-weight:600}
+.warn{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.warn b{color:var(--def)}
+.tipb{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.tipb b{color:var(--pr)}
+.gotcha{background:var(--yellow-soft);border-left:4px solid var(--yellow);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.gotcha b{color:var(--yellow)}
+.quiz{background:var(--vr-soft);border:1px solid var(--vr);border-radius:12px;padding:.95rem 1.1rem;margin:1.2rem 0}.quiz ol{margin:.4rem 0 0;padding-left:1.3rem}.quiz li{margin:.4rem 0}
+.screen{margin:.9rem 0}.screen .s-label{font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:.3rem}
+.screen .s-box{background:#eef2f8;border:1px dashed var(--line);border-radius:10px;padding:.8rem 1rem;font-family:Consolas,Menlo,monospace;font-size:.82rem;white-space:pre-line}
+.result{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.95rem;margin:1.2rem 0}.result b{color:var(--pr)}
+table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);color:var(--accent)}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.8rem}
+@media print{nav,.quiz{display:none}}
+</style></head>
+<body>
+<nav><div class="inner"><a href="#env">Что понадобится</a><a href="#steps">Пошагово</a><a href="#errors">Ошибки</a><a href="#quiz">Проверь себя</a></div></nav>
+<main class="wrap">
+  <p class="backlink"><a href="javascript:history.back()">← назад к модулю</a></p>
+  <header class="hero">
+    <p class="kicker">Сети в VR · методичка</p>
+    <h1>Основы сетей в Unity</h1>
+    <p class="sub">Подробное руководство для школьника: как делать, зачем и что должно получиться.</p>
+    <div class="badges"><span class="badge b-vr">Модуль 01</span><span class="badge b-ac">Начинающим</span><span class="badge b-pr">Подробно</span></div>
+  </header>
+  <div class="tldr"><b>Цель модуля.</b> В этом модуле ты поймёшь, как компьютеры и шлемы «общаются» между собой в одной игре. Мы подключим Unity к сервису Photon — это как «мост», по которому будут летать данные между игроками.</div>
+  <section id="env"><h2><span class="n">0</span>Что понадобится</h2><ul><li><b>Unity любой версии</b> — Подойдёт Unity 2021+; скачай с unity.com если ещё нет.</li><li><b>Аккаунт Photon (бесплатно)</b> — Зарегистрируйся на dashboard.photonengine.com — это бесплатно, App ID получишь сразу.</li><li><b>Интернет</b> — Нужен, чтобы сервер Photon соединил игроков.</li></ul></section>
+  <section id="steps"><h2><span class="n">1</span>Пошагово — делай по порядку</h2><div class="step"><div class="st-head"><span class="st-n">1</span><span>Установи PUN 2 (Photon Unity Networking)</span></div><p class="why">💡 PUN 2 — это готовая библиотека, которая добавляет в Unity сетевую логику: подключение, комнаты, синхронизацию объектов. Без неё пришлось бы писать сеть с нуля — это очень сложно.</p><p><b>Что делать:</b> Открой Unity → меню Window → Asset Store. Найди «Photon PUN 2 - Free» и нажми Import. Или через Package Manager добавь пакет PUN.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">В окне Project появится папка Photon с настройками.</div></div><div class="warn"><b>Осторожно:</b> Если Asset Store не открывается, введи в Package Manager имя пакета PhotonPun2.</div></div><div class="step"><div class="st-head"><span class="st-n">2</span><span>Создай приложение в Photon и получи App ID</span></div><p class="why">💡 Photon выделяет каждой игре свой «канал» — App ID. Чтобы твои игроки попали в ОДНУ и ту же «комнату», у всех должен быть один и тот же App ID.</p><p><b>Что делать:</b> Открой dashboard.photonengine.com → Create A New Application → тип Realtime → скопируй App ID. В Unity: Window → Photon Unity Networking → PUN Wizard → подставь App ID → Setup.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">В Photon Server Settings появится App ID, а рядом — ✓ признак готовности.</div></div><div class="warn"><b>Осторожно:</b> Скопируй ID целиком, без пробелов. Одна лишняя буква — и игроки не встретятся.</div></div><div class="step"><div class="st-head"><span class="st-n">3</span><span>Пойми главную схему: клиент, сервер, хост</span></div><p class="why">💡 Чтобы двигаться дальше, нужно понимать роли. Клиент — устройство игрока. Сервер — «главный судья» мира. Хост — это сервер, на котором тоже играют. В PUN 2 каждый, кто создаёт комнату, становится хостом.</p><p><b>Что делать:</b> Прочитай и запомни схему. Сверься с таблицей ролей.</p><table><tr><th>Роль</th><th>Кто это</th><th>Что делает</th></tr><tr><td><b>Клиент</b></td><td>Устройство игрока</td><td>Шлёт серверу, что ты нажал, и рисует ответ</td></tr><tr><td><b>Сервер</b></td><td>«Хозяин» мира</td><td>Хранит правду о мире, защищает от читеров</td></tr><tr><td><b>Хост</b></td><td>Сервер + игрок</td><td>Создал комнату и сам в ней играет (так в PUN 2)</td></tr></table><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Ты можешь объяснить, чем клиент отличается от хоста, и назвать, кто становится хостом в PUN 2 (тот, кто создал комнату).</div></div></div><div class="step"><div class="st-head"><span class="st-n">4</span><span>Сделай сетевой объект (Photon View)</span></div><p class="why">💡 Обычный объект в сцене «видит» только один игрок. Чтобы объект был общим для всех, ему добавляют компонент Photon View — «табличка с номером» в сети.</p><p><b>Что делать:</b> Создай в сцене Cube. Выдели его и в Inspector нажми Add Component → Photon View. Добавь также Photon Transform View (чтобы позиция передавалась другим).</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">У куба в Inspector появились Photon View и Photon Transform View.</div></div><div class="warn"><b>Осторожно:</b> Объект без Photon View НЕ будет виден другим игрокам — это самая частая ошибка новичков.</div></div><div class="step"><div class="st-head"><span class="st-n">5</span><span>Напиши скрипт для подключения</span></div><p class="why">💡 Скрипт говорит Unity: «подключись к Photon и войди в комнату». Так два устройства встретятся в одном игровом мире.</p><p><b>Что делать:</b> Создай скрипт Connection.cs, удали всё и вставь код ниже.</p><div class="screen"><div class="s-label">Код (копируй целиком)</div><pre>using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
+
+public class Connection : MonoBehaviourPunCallbacks {
+    void Start() {
+        PhotonNetwork.ConnectUsingSettings();
+    }
+    override public void OnConnectedToMaster() {
+        PhotonNetwork.JoinOrCreateRoom("room1", new RoomOptions{MaxPlayers=4}, null);
+    }
+    override public void OnJoinedRoom() {
+        Debug.Log("Я в комнате! Игроков: " + PhotonNetwork.CurrentRoom.PlayerCount);
+    }
+}</pre></div><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">При запуске (▶) в консоли появится «Я в комнате! Игроков: 1.»</div></div></div><div class="step"><div class="st-head"><span class="st-n">6</span><span>Проверь на двух устройствах</span></div><p class="why">💡 Чтобы увидеть сеть в действии, запусти игру дважды: один раз в редакторе (Window → Play), второй — на собранном APK в шлеме. Оба попадут в комнату room1.</p><p><b>Что делать:</b> Открой сразу два проигрывателя (режим Game параллельно) или собери APK и запусти на шлеме параллельно с редактором.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">В обоих запусках в консоли «Игроков: 2.» — значит, они видят друг друга.</div></div></div></section>
+  <section id="errors"><h2><span class="n">2</span>Типичные ошибки и как их исправить</h2><div class="gotcha"><b>Ошибка ««Failed to connect (0)»».</b> Не получается подключиться к Photon.</div><div class="tipb"><b>Как исправить:</b> Проверь App ID в Photon Server Settings, интернет и что ты не в «офлайн-режиме» Unity.</div><div class="gotcha"><b>Ошибка «Игроки не видят друг друга».</b> Вошли в комнату, но кубов друг друга нет.</div><div class="tipb"><b>Как исправить:</b> У объекта, который должен быть общим, обязательно добавлен Photon View + Photon Transform View, и он создаётся через PhotonNetwork.Instantiate (не Instantiate).</div><div class="gotcha"><b>Ошибка «Каждый видит свой персонаж, но их двое у одного игрока».</b> Спавнится два одинаковых куба.</div><div class="tipb"><b>Как исправить:</b> PhotonNetwork.Instantiate вызывается в Start() у каждого игрока — это нормально (у каждого свой куб). Двойники появляются, если скрипт стоит сразу на нескольких объектах сцены. Оставь один объект-спавнер в сцене.</div><div class="gotcha"><b>Ошибка «Не получается удержать объект в руках в VR».</b> Предмет «выпадает» на землю у других.</div><div class="tipb"><b>Как исправить:</b> Управлять физикой объекта может только владелец. Передавай владение через OwnershipTransfer, когда игрок берёт предмет в руки.</div></section>
+  <section id="quiz"><div class="quiz"><b>Проверь себя (ответь устно или письменно):</b><ol><li>Объясни своими словами: кто такой «хост»?</li><li>Зачем объекту Photon View?</li><li>Что такое App ID и зачем он нужен?</li><li>Почему персонажа создаём через PhotonNetwork.Instantiate, а не Instantiate?</li><li>Как узнать, твой ли это сетевой объект, внутри скрипта?</li></ol></div></section>
+  <div class="result"><b>Итог модуля.</b> Итог: ты установил PUN 2, подключил проект к Photon, создал сетевой объект и встретил двух игроков в одной комнате. Это фундамент любого multiplayer-VR.</div>
+</main>
+<footer><p>Методичка · Сети в VR · Модуль 01 · Технологическая лаборатория</p></footer>
+</body>
+</html>

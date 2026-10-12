@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Проектный навигатор · Курс для учеников</title>
+<style>
+  :root {
+    --bg: #ffffff; --ink: #1B2A4A; --muted: #5A6B85;
+    --accent: #1F6FE0; --accent-soft: #EAF2FD;
+    --vr: #4D008C; --vr-soft: #F0EBF5;
+    --def: #B45309; --def-soft: #FDF1E1;
+    --pr: #167A4D; --pr-soft: #E7F4EE;
+    --line: #D9E2EF;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+  header .kicker { color: var(--accent); font-weight: 700; font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; }
+  header h1 { font-size: 2rem; line-height: 1.2; margin: .2rem 0 .3rem; }
+  header .sub { font-size: 1.02rem; color: var(--muted); margin: 0 0 .6rem; }
+  .tldr { background: var(--accent-soft); border-left: 4px solid var(--accent);
+          padding: .95rem 1.15rem; border-radius: 0 8px 8px 0; margin: 1.5rem 0; }
+  .tldr b { color: var(--accent); }
+
+  .auth { background: var(--vr-soft); border: 1px solid var(--vr); border-radius: 14px;
+          padding: 1rem 1.2rem; margin: 1.2rem 0; }
+  .auth h2 { margin: 0 0 .3rem; font-size: 1.1rem; color: var(--vr); }
+  .auth p { margin: .2rem 0 .8rem; color: var(--muted); font-size: .9rem; }
+  .auth .fields { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .6rem; margin: .6rem 0; }
+  .auth input { width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: .5rem .6rem; font: 14px/1.4 system-ui, sans-serif; }
+  .auth input:focus { outline: 2px solid var(--vr); }
+  .auth .btn { display: inline-block; border: 0; border-radius: 10px; padding: .55rem 1.1rem; font: 700 14px/1.2 system-ui, sans-serif;
+               background: var(--vr); color: #fff; cursor: pointer; }
+  .auth .btn:hover { filter: brightness(1.08); }
+  .profiles { display: flex; flex-wrap: wrap; gap: .5rem; margin: .7rem 0 .2rem; }
+  .profiles button { border: 1px solid var(--vr); background: #fff; color: var(--vr); border-radius: 999px;
+                     padding: .35rem .8rem; font: 600 13px/1.2 system-ui, sans-serif; cursor: pointer; }
+  .profiles button:hover { background: var(--vr-soft); }
+  .authmsg { color: var(--def); font-size: .85rem; margin-top: .3rem; }
+  .userbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .6rem;
+             background: var(--vr-soft); border: 1px solid var(--vr); border-radius: 12px; padding: .7rem 1rem; margin: 1rem 0; }
+  .userbar b { color: var(--vr); }
+  .userbar .small { color: var(--muted); font-size: .85rem; }
+  .userbar .btn { border: 1px solid var(--vr); background: #fff; color: var(--vr); border-radius: 8px;
+                  padding: .35rem .8rem; font: 700 13px/1.2 system-ui, sans-serif; cursor: pointer; }
+  .userbar .btn:hover { background: var(--vr-soft); }
+
+  .progressbar { background: var(--line); border-radius: 999px; height: 14px; overflow: hidden; margin: .5rem 0 1.2rem; }
+  .progressbar .fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--vr)); width: 0%; }
+  .progress-text { color: var(--muted); font-size: .9rem; margin: .2rem 0 1.4rem; }
+  .toolbar { display: flex; gap: .6rem; flex-wrap: wrap; margin: 1rem 0 1.4rem; }
+  .btn2 { border: 1px solid var(--line); border-radius: 10px; padding: .5rem 1rem; font: 700 14px/1.2 system-ui, sans-serif;
+          background: #fbfcfe; color: var(--ink); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
+  .btn2:hover { border-color: var(--accent); color: var(--accent); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: .8rem; }
+  .lesson-card { border: 1px solid var(--line); border-radius: 14px; padding: .9rem 1rem; background: #fbfcfe;
+                 position: relative; }
+  .lesson-card .lw { display: inline-flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 800;
+                     color: #fff; background: var(--accent); border-radius: 8px; padding: .12rem .45rem; }
+  .lesson-card .module { display: block; font-size: .75rem; color: var(--muted); margin: .3rem 0 .05rem; }
+  .lesson-card h3 { margin: .15rem 0 .2rem; font-size: 1rem; line-height: 1.25; }
+  .lesson-card .why { font-size: .8rem; color: var(--muted); margin: .15rem 0 .35rem; }
+  .lesson-card .type { font-size: .8rem; color: var(--muted); }
+  .lesson-card a { text-decoration: none; color: inherit; }
+  .lesson-card a:hover h3 { color: var(--accent); }
+  .status { position: absolute; top: .9rem; right: 1rem; font-size: .78rem; font-weight: 700; }
+  .status.done { color: var(--pr); }
+  .status.open { color: var(--muted); }
+  .status.locked { color: var(--muted); }
+  .card-open { border-color: var(--pr); }
+  .card-locked { opacity: .75; }
+  .card-locked h3 { color: var(--muted); }
+  footer { color: var(--muted); font-size: .8rem; border-top: 1px solid var(--line); margin-top: 2.6rem; padding-top: .8rem; }
+  @media (max-width: 640px) {
+    header h1 { font-size: 1.5rem; }
+    .auth .fields { grid-template-columns: 1fr; }
+    .grid { grid-template-columns: 1fr; }
+  }
+  @media print { .toolbar, .auth, .userbar { display: none; } }
+
+  /* Инфографика для профиля ученика */
+  .infographic { display: none; margin: 1.2rem 0 1.6rem; border: 1px solid var(--line); border-radius: 14px;
+                 background: linear-gradient(135deg, #FFF, #F8F5FD); padding: 1rem 1.1rem; }
+  .infographic.revealed { display: block; }
+  .infographic h3 { margin: 0 0 .3rem; font-size: 1rem; color: var(--vr); }
+  .infographic .ig-sub { color: var(--muted); font-size: .85rem; margin: 0 0 .7rem; }
+  .ig-flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: .4rem; }
+  .ig-step { flex: 1 1 140px; min-width: 120px; background: #fff; border: 1px solid var(--line); border-radius: 10px;
+             padding: .55rem .65rem; position: relative; }
+  .ig-step .ig-num { position: absolute; top: -8px; left: 8px; background: var(--vr); color: #fff; font-size: .72rem;
+                     font-weight: 800; border-radius: 999px; padding: 0 .45rem; }
+  .ig-step b { display: block; font-size: .9rem; margin: .2rem 0 .1rem; }
+  .ig-step span { font-size: .78rem; color: var(--muted); line-height: 1.35; display: block; }
+  .ig-step.hi { border-color: var(--vr); box-shadow: 0 2px 8px rgba(77,0,140,.12); }
+  .ig-legend { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: .6rem; font-size: .8rem; color: var(--muted); }
+  .ig-legend b { color: var(--vr); }
+
+  /* Слойная инфографика (пирамида/лестница) */
+  .ig-layer-stack { display: grid; gap: .35rem; margin-top: .4rem; }
+  .ig-layer { border: 1px solid var(--line); border-radius: 10px; padding: .5rem .7rem;
+              display: flex; align-items: center; gap: .5rem; background: #fff; }
+  .ig-layer b { font-size: .88rem; color: var(--ink); min-width: 110px; }
+  .ig-layer span { font-size: .8rem; color: var(--muted); }
+  .ig-layer::before { content: ""; width: 10px; height: 10px; border-radius: 50%;
+                      background: var(--accent); opacity: .35; }
+  .ig-layer:nth-child(1)::before { background: #4D008C; opacity: 1; }
+  .ig-layer:nth-child(2)::before { background: #5B21B6; opacity: .9; }
+  .ig-layer:nth-child(3)::before { background: #7C3AED; opacity: .85; }
+  .ig-layer:nth-child(4)::before { background: #A855F7; opacity: .8; }
+  .ig-layer:nth-child(5)::before { background: #C084FC; opacity: .75; }
+  .ig-layer:nth-child(6)::before { background: #B45309; opacity: .7; }
+  .ig-layer:nth-child(7)::before { background: #9A90AB; opacity: .6; }
+  .ig-layer:nth-child(8)::before { background: #9A90AB; opacity: .5; }
+
+
+  /* Единый стиль · Технологическая лаборатория 2026–2027 */
+  :root { --shadow-card: 0 1px 2px rgba(27,42,74,.05), 0 6px 18px rgba(27,42,74,.06); 
+    --vr: #4D008C;
+    --vr-soft: #F0EBF5;}
+  body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  section { margin-top: 2.2rem; }
+  h2 { letter-spacing: -.01em; }
+  img { max-width: 100%; height: auto; }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  .card, .step-card, .tier, .link-row, .ig-card, .lesson-card, .sm, .pair, .info-box { box-shadow: var(--shadow-card); }
+  @media (max-width: 640px) { header h1 { font-size: 1.6rem; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <p class="kicker">Технологическая лаборатория · Проектный навигатор · региональный центр «Спутник»</p>
+    <h1>Проектный навигатор</h1>
+    <p class="sub">36 занятий по курсу «Проектная деятельность с применением технологий ИИ».</p>
+  </header>
+
+  <div class="tldr"><b>Как пользоваться.</b> Сначала войди под своим именем — прогресс запомнится лично для тебя, даже если за этим же компьютером занимаются другие ребята. Проходи занятия по порядку: изучи материал, выполни практику и рефлексию — и следующее занятие откроется.</div>
+
+  <div class="auth" id="authPanel">
+    <h2>Вход в курс</h2>
+    <p>Выбери себя из списка или добавь новый профиль (имя + класс). Прогресс сохраняется отдельно для каждого ученика.</p>
+    <div class="profiles" id="profilesList"></div>
+    <div class="fields">
+      <input id="inpName" placeholder="Фамилия и имя" autocomplete="off">
+      <input id="inpKlass" placeholder="Класс, например 8А" autocomplete="off">
+      <input id="inpGroup" placeholder="Группа / модуль (необязательно)" autocomplete="off">
+    </div>
+    <button class="btn" onclick="doLogin()">Войти / начать обучение</button>
+    <p class="authmsg" id="authMsg"></p>
+  </div>
+
+  <div class="userbar" id="userBar" style="display:none">
+    <div><b id="ubName"></b> <span class="small" id="ubKlass"></span></div>
+    <button class="btn" onclick="doLogout()">Сменить ученика</button>
+  </div>
+
+  <div class="infographic" id="infographic">
+    <h3> Жизненный цикл проекта</h3>
+    <p class="ig-sub">Куда бы ни шёл проект — он проходит эти 8 шагов. Помни о них на каждом занятии.</p>
+    <div class="ig-flow">
+      <div class="ig-step"><span class="ig-num">1</span><b>Интерес</b><span>Что тебе по-настоящему интересно</span></div>
+      <div class="ig-step hi"><span class="ig-num">2</span><b>Проблема</b><span>Что не так? Кому мешает?</span></div>
+      <div class="ig-step"><span class="ig-num">3</span><b>Цель SMART</b><span>Измеримо и к сроку</span></div>
+      <div class="ig-step"><span class="ig-num">4</span><b>План и ресурсы</b><span>Этапы, сроки, что нужно</span></div>
+      <div class="ig-step"><span class="ig-num">5</span><b>Прототип / MVP</b><span>Первая рабочая версия</span></div>
+      <div class="ig-step"><span class="ig-num">6</span><b>Тест и доработка</b><span>Проверка на людях, правки</span></div>
+      <div class="ig-step hi"><span class="ig-num">7</span><b>Защита</b><span>5 минут, 5–7 слайдов</span></div>
+      <div class="ig-step"><span class="ig-num">8</span><b>Рефлексия</b><span>Что получилось, что дальше</span></div>
+    </div>
+    <div class="ig-legend"><b>3 ключевые точки:</b> проблема (задание направления), прототип (материализация идеи) и защита (точка отсчёта для роста).</div>
+  </div>
+
+  <div class="infographic" id="infographicLayers">
+    <h3> Слойная карта проекта</h3>
+    <p class="ig-sub">Проект растёт слоями: сначала фундамент, потом надстройка. Нижний слой нужен, чтобы работал верхний.</p>
+    <div class="ig-layer-stack">
+      <div class="ig-layer"><b>Презентация</b><span>слайды и речь защиты</span></div>
+      <div class="ig-layer"><b>Защита</b><span>школьная конференция / конкурс</span></div>
+      <div class="ig-layer"><b>Текст работы</b><span>введение, основная часть, выводы</span></div>
+      <div class="ig-layer"><b>Прототип / MVP</b><span>первая рабочая версия</span></div>
+      <div class="ig-layer"><b>План и ресурсы</b><span>этапы, сроки, что нужно</span></div>
+      <div class="ig-layer"><b>Цель SMART</b><span>куда идём и как проверим</span></div>
+      <div class="ig-layer"><b>Проблема</b><span>что не так и для кого важно</span></div>
+      <div class="ig-layer"><b>Интерес</b><span>фундамент — личная мотивация</span></div>
+    </div>
+    <div class="ig-legend"> Строй проект снизу вверх: интерес → проблема → … → защита.</div>
+  </div>
+
+  <div class="progressbar"><div class="fill" id="fill"></div></div>
+  <div class="progress-text" id="progressText">Войди, чтобы увидеть свой прогресс</div>
+
+  <div class="toolbar" id="teacherToolbar" style="display:none">
+    <button class="btn2" onclick="resetProgress()">Сбросить мой прогресс</button>
+    <button class="btn2" onclick="openAll()">Открыть все (режим педагога)</button>
+    <a class="btn2" href="Вспомогательные материалы/Панель педагога ПД.html"> Панель педагога (экспорт)</a>
+    <a class="btn2" href="Вспомогательные материалы/Памятки конкурсов.html"> Памятки конкурсов</a>
+  </div>
+
+  <p class="hint" id="teachHint" style="display:none;margin:-.4rem 0 1rem">Режим педагога: доступны сброс прогресса, открытие всех занятий, панель педагога и памятки конкурсов.</p>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    <p>«Проектный навигатор: от идеи до внедрения с применением технологий ИИ» · ДОП социально-педагогической направленности · Региональный центр «Спутник» · 2026–2027 учебный год.</p>
+    <p>Совет: если открываешь файлы с компьютера и профиль не сохраняется между страницами — размести папку на учебном сервере или открой список занятий как главную страницу.</p>
+  </footer>
+</main>
+<script>
+  const lessons = [
+    {"week":1,"href":"Занятие 1/Занятие-1-входное-тестирование.html","title":"Входное тестирование","module":"Модуль 1","type":"Диагностика","why":"Узнаём свой уровень, группу и понимаем, с чего начать"},
+    {"week":2,"href":"Занятие 2/Занятие-2-признаки-проекта.html","title":"Что такое проект. Карта интересов","module":"Модуль 1","type":"Теория + практика","why":"Разбираемся, что делает дело проектом, а не рефератом"},
+    {"week":3,"href":"Занятие 3/Занятие-3-Пять-почему.html","title":"Проблема. «Пять почему»","module":"Модуль 1","type":"Теория + практика","why":"Учимся находить настоящую проблему"},
+    {"week":4,"href":"Занятие 4/Занятие-4-проектная-задача.html","title":"Проектная задача","module":"Модуль 1","type":"Теория + практика","why":"Понятно описываем проблему и тех, для кого она важна"},
+    {"week":5,"href":"Занятие 5/Занятие-5-цель-SMART.html","title":"Цель по SMART","module":"Модуль 1","type":"Теория + практика","why":"Ставим цель, которую можно проверить"},
+    {"week":6,"href":"Занятие 6/Занятие-6-ИИ-промпт.html","title":"ИИ: первый промпт","module":"Модуль 1","type":"ИИ-блок","why":"Учимся давать ИИ понятные задания"},
+    {"week":7,"href":"Занятие 7/Занятие-7-цель-и-задачи.html","title":"Цель и задачи","module":"Модуль 1","type":"Практика","why":"Превращаем цель в задачи и проверяем их"},
+    {"week":8,"href":"Занятие 8/Занятие-8-защита-проектной-идеи.html","title":"Защита проектной идеи","module":"Модуль 1","type":"Защита","why":"Тренируемся за 1 минуту объяснить свою идею"},
+    {"week":9,"href":"Занятие 9/Занятие-9-ресурсы-проекта.html","title":"Ресурсы проекта","module":"Модуль 2","type":"Теория + практика","why":"Считаем, что нужно проекту"},
+    {"week":10,"href":"Занятие 10/Занятие-10-диаграмма-Ганта.html","title":"Диаграмма Ганта","module":"Модуль 2","type":"Практика","why":"Рисуем план на время"},
+    {"week":11,"href":"Занятие 11/Занятие-11-составление-план-графика.html","title":"План-график","module":"Модуль 2","type":"Практика","why":"Собираем всё в план-график с этапами и сроками"},
+    {"week":12,"href":"Занятие 12/Занятие-12-риски-проекта.html","title":"Риски проекта","module":"Модуль 2","type":"Практика","why":"Заранее думаем, что может пойти не так"},
+    {"week":13,"href":"Занятие 13/Занятие-13-команда-и-роли.html","title":"Команда и роли","module":"Модуль 2","type":"Практика","why":"Распределяем роли в команде"},
+    {"week":14,"href":"Занятие 14/Занятие-14-источники-информации.html","title":"Источники информации","module":"Модуль 2","type":"Практика","why":"Ищем 3–5 надёжных источников"},
+    {"week":15,"href":"Занятие 15/Занятие-15-защита-плана.html","title":"Защита плана","module":"Модуль 2","type":"Защита","why":"Защищаем план перед группой"},
+    {"week":16,"href":"Занятие 16/Занятие-16-что-такое-прототип.html","title":"Что такое прототип","module":"Модуль 3","type":"Теория + практика","why":"Выбираем форму продукта, понимаем MVP"},
+    {"week":17,"href":"Занятие 17/Занятие-17-первая-версия-прототипа.html","title":"Первая версия прототипа","module":"Модуль 3","type":"Практика","why":"Собираем первую рабочую версию своими руками"},
+    {"week":18,"href":"Занятие 18/Занятие-18-ИИ-иллюстрация.html","title":"ИИ: иллюстрация","module":"Модуль 3","type":"ИИ-блок","why":"Создаём ИИ-иллюстрацию для постера"},
+    {"week":19,"href":"Занятие 19/Занятие-19-сбор-материалов-тезисный-план.html","title":"Сбор материалов. Тезисный план","module":"Модуль 3","type":"Практика","why":"Группируем материалы, составляем план работы"},
+    {"week":20,"href":"Занятие 20/Занятие-20-написание-введения.html","title":"Введение","module":"Модуль 3","type":"Практика","why":"Пишем введение: актуальность, цель, задачи"},
+    {"week":21,"href":"Занятие 21/Занятие-21-тестирование-прототипа.html","title":"Тестирование прототипа","module":"Модуль 3","type":"Практика","why":"Тестируем прототип и собираем замечания"},
+    {"week":22,"href":"Занятие 22/Занятие-22-доработка-по-обратной-связи.html","title":"Доработка","module":"Модуль 3","type":"Практика","why":"Исправляем прототип по обратной связи"},
+    {"week":23,"href":"Занятие 23/Занятие-23-промежуточная-презентация.html","title":"Промежуточная презентация","module":"Модуль 3","type":"Защита","why":"Показываем первые результаты за 3 минуты"},
+    {"week":24,"href":"Занятие 24/Занятие-24-написание-основной-части.html","title":"Основная часть","module":"Модуль 3","type":"Практика","why":"Пишем основную часть работы"},
+    {"week":25,"href":"Занятие 25/Занятие-25-оформление-по-ГОСТ.html","title":"Оформление по ГОСТ","module":"Модуль 3","type":"Практика","why":"Оформляем текст по ГОСТ"},
+    {"week":26,"href":"Занятие 26/Занятие-26-создание-презентации.html","title":"Презентация 5–7 слайдов","module":"Модуль 3","type":"Практика","why":"Собираем презентацию с минимумом текста"},
+    {"week":27,"href":"Занятие 27/Занятие-27-подготовка-защиты.html","title":"Подготовка защиты","module":"Модуль 3","type":"Практика","why":"Готовим сценарий защиты на 5 минут"},
+    {"week":28,"href":"Занятие 28/Занятие-28-репетиция-защиты.html","title":"Репетиция защиты","module":"Модуль 3","type":"Практика","why":"Репетируем выступление, боремся со страхом сцены"},
+    {"week":29,"href":"Занятие 29/Занятие-29-пробная-защита.html","title":"Пробная защита","module":"Модуль 3","type":"Защита","why":"Выступаем перед группой до настоящей защиты"},
+    {"week":30,"href":"Занятие 30/Занятие-30-промежуточная-аттестация.html","title":"Промежуточная аттестация","module":"Модуль 3","type":"Аттестация","why":"Сверяем итоги за полугодие"},
+    {"week":31,"href":"Занятие 31/Занятие-31-подготовка-к-конкурсу-НТО-Junior.html","title":"Подготовка к НТО Junior","module":"Модуль 4","type":"Практика","why":"Решаем задания НТО Junior"},
+    {"week":32,"href":"Занятие 32/Занятие-32-оформление-портфолио-для-конкурса.html","title":"Портфолио для конкурса","module":"Модуль 4","type":"Практика","why":"Собираем портфолио для конкурса"},
+    {"week":33,"href":"Занятие 33/Занятие-33-школьная-конференция.html","title":"Школьная конференция","module":"Модуль 4","type":"Защита","why":"Защищаем проект перед комиссией"},
+    {"week":34,"href":"Занятие 34/Занятие-34-Рефлексия-Плюс-Минус.html","title":"Рефлексия «Плюс/Минус»","module":"Модуль 4","type":"Рефлексия","why":"Подводим итоги года"},
+    {"week":35,"href":"Занятие 35/Занятие-35-ИИ-рефлексия.html","title":"ИИ-рефлексия","module":"Модуль 4","type":"ИИ-блок","why":"Анализируем, как помог ИИ, и разбираем плагиат"},
+    {"week":36,"href":"Занятие 36/Занятие-36-Итоговое-занятие.html","title":"Итоговое занятие","module":"Модуль 4","type":"Итог","why":"Получаем сертификаты и ставим цели на следующий уровень"}
+  ];
+
+  const PFKEY = "pdn-course-users";
+  const CUKEY = "pdn-course-active";
+  const PROGKEY = "pdn-course-progress-";
+  const TEACHER_KEY = "pd_teacher_mode";
+  function isTeacherMode() { try { return localStorage.getItem(TEACHER_KEY) === "1"; } catch (e) { return false; } }
+  function setTeacherMode(v) { try { localStorage.setItem(TEACHER_KEY, v ? "1" : ""); } catch (e) {} }
+  function updateTeacherToolbar() {
+    const tb = document.getElementById("teacherToolbar");
+    const th = document.getElementById("teachHint");
+    const on = isTeacherMode();
+    if (tb) tb.style.display = on ? "flex" : "none";
+    if (th) th.style.display = on ? "block" : "none";
+  }
+  // Секретный вход в режим педагога: 5 кликов по заголовку
+  (function () {
+    var clicks = 0, timer = null;
+    var h1 = document.querySelector("header h1");
+    if (h1) h1.style.cursor = "pointer";
+    document.addEventListener("click", function (e) {
+      if (e.target === h1 || (h1 && h1.contains(e.target))) {
+        clicks++;
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(function () { clicks = 0; }, 1500);
+        if (clicks >= 5) {
+          clicks = 0;
+          setTeacherMode(!isTeacherMode());
+          updateTeacherToolbar();
+          alert(isTeacherMode() ? "Режим педагога включён." : "Режим педагога выключен.");
+        }
+      }
+    });
+  })();
+
+  function getProfiles() { try { return JSON.parse(localStorage.getItem(PFKEY) || "[]"); } catch (e) { return []; } }
+  function saveProfiles(a) { try { localStorage.setItem(PFKEY, JSON.stringify(a)); } catch (e) {} }
+  function currentUid() { try { return localStorage.getItem(CUKEY); } catch (e) { return null; } }
+  function me() {
+    const id = currentUid();
+    if (!id) return null;
+    try {
+      const arr = getProfiles();
+      return arr.find((p) => String(p.uid) === String(id)) || null;
+    } catch (e) { return null; }
+  }
+  function getProgress(uid) {
+    let a = [];
+    try { a = JSON.parse(localStorage.getItem(PROGKEY + uid) || "[]"); } catch (e) { a = []; }
+    if (!Array.isArray(a)) a = [];
+    while (a.length < 36) a.push(false);
+    return a;
+  }
+  function setProgress(uid, lesson, done) {
+    const a = getProgress(uid);
+    a[lesson - 1] = !!done;
+    try { localStorage.setItem(PROGKEY + uid, JSON.stringify(a)); } catch (e) {}
+  }
+
+  function renderAuth() {
+    const panel = document.getElementById("authPanel");
+    const bar = document.getElementById("userBar");
+    const list = document.getElementById("profilesList");
+    const ig = document.getElementById("infographic");
+    const u = me();
+    if (u) {
+      panel.style.display = "none";
+      bar.style.display = "flex";
+      if (ig) ig.classList.add("revealed");
+      const ig2 = document.getElementById("infographicLayers");
+      if (ig2) ig2.classList.add("revealed");
+      document.getElementById("ubName").textContent = u.name;
+      document.getElementById("ubKlass").textContent = u.klass ? (u.klass + " класс" + (u.group ? " · " + u.group : "")) : "";
+      render();
+      return;
+    }
+    panel.style.display = "block";
+    bar.style.display = "none";
+    if (ig) ig.classList.remove("revealed");
+    const ig2 = document.getElementById("infographicLayers");
+    if (ig2) ig2.classList.remove("revealed");
+    list.innerHTML = "";
+    getProfiles().forEach((p) => {
+      const b = document.createElement("button");
+      b.textContent = p.name + (p.klass ? " (" + p.klass + ")" : "");
+      b.onclick = () => { try { localStorage.setItem(CUKEY, p.uid); } catch (e) {} renderAuth(); };
+      list.appendChild(b);
+    });
+  }
+
+  function doLogin() {
+    const name = document.getElementById("inpName").value.trim();
+    const klass = document.getElementById("inpKlass").value.trim();
+    const group = document.getElementById("inpGroup").value.trim();
+    if (!name) { document.getElementById("authMsg").textContent = "Введи фамилию и имя."; return; }
+    const parts = name.split(/\s+/);
+    const first = parts.slice(1).join(" ") || "";
+    const last = parts[0] || name;
+    const profs = getProfiles();
+    let found = profs.find((p) => (p.name || "").toLowerCase() === name.toLowerCase() && (p.klass || "") === klass);
+    if (!found) {
+      found = { uid: "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7), name, first, last, klass, group };
+      profs.push(found);
+      saveProfiles(profs);
+    }
+    try { localStorage.setItem(CUKEY, found.uid); } catch (e) {}
+    document.getElementById("inpName").value = "";
+    document.getElementById("inpKlass").value = "";
+    document.getElementById("inpGroup").value = "";
+    document.getElementById("authMsg").textContent = "";
+    renderAuth();
+  }
+
+  function doLogout() { try { localStorage.removeItem(CUKEY); } catch (e) {} renderAuth(); }
+
+  function render() {
+    const u = me();
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    if (!u) {
+      document.getElementById("fill").style.width = "0%";
+      document.getElementById("progressText").textContent = "Войди, чтобы увидеть свой прогресс";
+      lessons.forEach((l) => {
+        const w = String(l.week).padStart(2, "0");
+        const card = document.createElement("div");
+        card.className = "lesson-card card-locked";
+        card.innerHTML = '<span class="lw">Занятие ' + w + '</span>' +
+          '<span class="module">' + l.module + '</span><h3>' + l.title + '</h3>' +
+          '<span class="type">' + l.type + '</span>' +
+          '<div class="why">' + l.why + '</div>';
+        const st = document.createElement("span");
+        st.className = "status locked"; st.textContent = "ждать входа";
+        card.appendChild(st);
+        grid.appendChild(card);
+      });
+      return;
+    }
+    let doneCount = 0;
+    lessons.forEach((l, i) => {
+      const w = String(l.week).padStart(2, "0");
+      const thisDone = !!getProgress(u.uid)[l.week - 1];
+      if (thisDone) doneCount++;
+      const available = i === 0 || !!getProgress(u.uid)[lessons[i - 1].week - 1];
+      const card = document.createElement("div");
+      card.className = "lesson-card" + (thisDone ? " card-open" : "") + (available ? "" : " card-locked");
+      let statusHtml;
+      if (thisDone) statusHtml = "✓ пройдено";
+      else if (available) statusHtml = "доступно";
+      else statusHtml = "закрыто";
+      const linkInner = '<span class="lw">Занятие ' + w + '</span>' +
+        '<span class="module">' + l.module + '</span><h3>' + l.title + '</h3>' +
+        '<span class="type">' + l.type + '</span>' +
+        '<div class="why">' + l.why + '</div>';
+      if (available) {
+        const a = document.createElement("a");
+        const q = "?uid=" + encodeURIComponent(u.uid) +
+          "&first=" + encodeURIComponent(u.first || "") +
+          "&last=" + encodeURIComponent(u.last || "") +
+          "&cls=" + encodeURIComponent(u.klass || "") +
+          "&school=" + encodeURIComponent(u.group || "");
+        a.href = l.href + q;
+        a.innerHTML = linkInner;
+        card.appendChild(a);
+      } else {
+        card.insertAdjacentHTML("beforeend", linkInner + '<div style="color:var(--muted);font-size:.85rem;margin-top:.1rem">Пройди предыдущее занятие, чтобы открыть это</div>');
+      }
+      const st = document.createElement("span");
+      st.className = "status " + (thisDone ? "done" : (available ? "open" : "locked"));
+      st.textContent = statusHtml;
+      card.appendChild(st);
+      grid.appendChild(card);
+    });
+    const total = lessons.length;
+    document.getElementById("fill").style.width = Math.round(doneCount / total * 100) + "%";
+    document.getElementById("progressText").textContent = (u.name || "Ученик") + ": пройдено " + doneCount + " из " + total + " занятий";
+  }
+
+  function resetProgress() {
+    if (!confirm("Сбросить прогресс текущего ученика в этом браузере?")) return;
+    const u = me();
+    if (u) {
+      lessons.forEach((l) => {
+        try { localStorage.removeItem(PROGKEY + u.uid); } catch (e) {}
+      });
+    }
+    render();
+  }
+
+  function openAll() {
+    const u = me();
+    if (!u) { document.getElementById("authMsg").textContent = "Сначала войди в профиль."; return; }
+    lessons.forEach((l) => setProgress(u.uid, l.week, true));
+    render();
+  }
+
+  // Обработка возврата из занятия (?uid=...&lesson=...&done=1)
+  (function handleReturn() {
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      const uid = sp.get("uid");
+      const lesson = parseInt(sp.get("lesson"), 10);
+      const done = sp.get("done") === "1";
+      if (uid && lesson && done) {
+        setProgress(uid, lesson, true);
+        try { localStorage.setItem(CUKEY, uid); } catch (e) {}
+        history.replaceState(null, "", window.location.pathname);
+      } else if (uid) {
+        try { localStorage.setItem(CUKEY, uid); } catch (e) {}
+        history.replaceState(null, "", window.location.pathname);
+      }
+    } catch (e) {}
+    renderAuth();
+    updateTeacherToolbar();
+  })();
+
+  // Скрываем технический футер (для педагога), когда ученик открыл занятие из своего профиля
+  try {
+    if (window.location.search.indexOf("uid") !== -1) {
+      var _pdF = document.querySelector("footer");
+      if (_pdF) _pdF.style.display = "none";
+    }
+  } catch (e) {}
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Методичка · Без гарнитуры · Сборка сцены и предпросмотр в редакторе</title><style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--line:#D9E2EF;--yellow:#8a6d00;--yellow-soft:#FFF6DA;}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:1rem 1.25rem 3rem}
+nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10}
+nav .inner{max-width:860px;margin:0 auto;padding:.5rem 1.25rem;display:flex;flex-wrap:wrap;gap:.3rem .9rem}
+nav a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:600}nav a:hover{color:var(--accent)}
+.backlink{display:inline-block;margin:1rem 0 -.2rem;color:var(--accent);text-decoration:none;font-size:.9rem;font-weight:600}.backlink:hover{text-decoration:underline}
+header.hero{padding:1.2rem 0 .2rem}
+header .kicker{color:var(--accent);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em}
+header h1{font-size:1.65rem;line-height:1.25;margin:.2rem 0 .3rem}
+header .sub{font-size:1rem;color:var(--muted);margin:0 0 .4rem}
+.badges{margin:.6rem 0 1rem;display:flex;flex-wrap:wrap;gap:.4rem}.badge{font-size:.78rem;font-weight:700;padding:.22rem .6rem;border-radius:999px}
+.b-ac{background:var(--accent-soft);color:var(--accent)}.b-vr{background:var(--vr-soft);color:var(--vr)}.b-pr{background:var(--pr-soft);color:var(--pr)}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);padding:.9rem 1.15rem;border-radius:0 8px 8px 0;margin:1.2rem auto}.tldr b{color:var(--accent)}
+section{margin:2.2rem 0}
+h2{font-size:1.25rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;margin:0 0 1rem}h2 .n{color:var(--accent);margin-right:.45rem}
+h3{font-size:1.08rem;margin:1.4rem 0 .5rem}
+p{margin:.5rem 0}
+code{background:var(--accent-soft);padding:.12em .35em;border-radius:4px;font-size:.88em;color:#333a54}
+pre{background:#20263f;color:#e6e9f5;border-radius:10px;padding:1rem 1.1rem;overflow-x:auto;font-size:.84rem;line-height:1.6;margin:.6rem 0}
+pre .c{color:#8da0c8}
+kbd{background:var(--accent-soft);border:1px solid var(--line);border-radius:5px;padding:.08em .5em;font-size:.82em;font-family:inherit}
+.step{border:1px solid var(--line);border-radius:14px;padding:1rem 1.15rem;background:#fbfcfe;margin:.9rem 0}
+.step .st-head{display:flex;align-items:center;gap:.6rem;font-weight:800;font-size:1.02rem;color:var(--ink)}
+.step .st-n{display:inline-flex;align-items:center;justify-content:center;min-width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem}
+.step .why{color:var(--muted);font-size:.92rem;margin:.3rem 0 .6rem}
+.step .w{display:block;margin-top:.6rem;color:var(--pr);font-weight:600}
+.warn{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.warn b{color:var(--def)}
+.tipb{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.tipb b{color:var(--pr)}
+.gotcha{background:var(--yellow-soft);border-left:4px solid var(--yellow);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}.gotcha b{color:var(--yellow)}
+.quiz{background:var(--vr-soft);border:1px solid var(--vr);border-radius:12px;padding:.95rem 1.1rem;margin:1.2rem 0}.quiz ol{margin:.4rem 0 0;padding-left:1.3rem}.quiz li{margin:.4rem 0}
+.screen{margin:.9rem 0}.screen .s-label{font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-bottom:.3rem}
+.screen .s-box{background:#eef2f8;border:1px dashed var(--line);border-radius:10px;padding:.8rem 1rem;font-family:Consolas,Menlo,monospace;font-size:.82rem;white-space:pre-line}
+.result{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.8rem 1rem;font-size:.95rem;margin:1.2rem 0}.result b{color:var(--pr)}
+table{width:100%;border-collapse:collapse;margin:.8rem 0;font-size:.9rem}
+th,td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--accent-soft);color:var(--accent)}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.8rem}
+@media print{nav,.quiz{display:none}}
+</style></head>
+<body>
+<nav><div class="inner"><a href="#env">Что понадобится</a><a href="#steps">Пошагово</a><a href="#errors">Ошибки</a><a href="#quiz">Проверь себя</a></div></nav>
+<main class="wrap">
+  <p class="backlink"><a href="javascript:history.back()">← назад к модулю</a></p>
+  <header class="hero">
+    <p class="kicker">Без гарнитуры · методичка</p>
+    <h1>Сборка сцены и предпросмотр в редакторе</h1>
+    <p class="sub">Подробное руководство для школьника: как делать, зачем и что должно получиться.</p>
+    <div class="badges"><span class="badge b-vr">Модуль 02</span><span class="badge b-ac">Начинающим</span><span class="badge b-pr">Подробно</span></div>
+  </header>
+  <div class="tldr"><b>Цель модуля.</b> Соберём полноценную комнату с интерактивными предметами и научимся проверять её в редакторе без шлема: включать свет, двигать предметы, следить за производительностью.</div>
+  <section id="env"><h2><span class="n">0</span>Что понадобится</h2><ul><li><b>Проект из Модуля 1</b> — Там уже есть движение и осмотр.</li><li><b>Примитивы Unity</b> — Куб, цилиндр, плоскость.</li></ul></section>
+  <section id="steps"><h2><span class="n">1</span>Пошагово — делай по порядку</h2><div class="step"><div class="st-head"><span class="st-n">1</span><span>Собери комнату (пол, стены, предметы)</span></div><p class="why">💡 Как в настоящей VR: комната с полом, стенами и мебелью. Обрати внимание, чтобы было удобно обходить.</p><p><b>Что делать:</b> Собери из Plane и 4 Cube-стен комнату, внутри поставь стол/стул/шкаф из кубов.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Комната с полом, стенами и предметами.</div></div></div><div class="step"><div class="st-head"><span class="st-n">2</span><span>Добавь интерактивный предмет (лампа)</span></div><p class="why">💡 Интерактив — это когда на действие есть реакция. Дома без шлема проверяем то же, что и в шлеме.</p><p><b>Что делать:</b> Добавь лампу (цилиндр + сфера жёлтая наверху) с источником света и скрипт включения по клавише.</p><div class="screen"><div class="s-label">Код (копируй целиком)</div><pre>public class Lamp : MonoBehaviour {
+    public Light lt;
+    void Update() { if (Input.GetKeyDown(KeyCode.F)) lt.enabled = !lt.enabled; }
+}</pre></div><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Нажал F — лампа включилась/выключилась.</div></div></div><div class="step"><div class="st-head"><span class="st-n">3</span><span>Проверь, что не проваливаешься сквозь пол</span></div><p class="why">💡 В VR, если камера «падает» сквозь пол — это баг. Дома ловим его сразу.</p><p><b>Что делать:</b> Добавь камере/персонажу Rigidbody + Collider или держи камеру на фиксированной высоте.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Камера «ходит» по полу, не падает.</div></div><div class="warn"><b>Осторожно:</b> Высоту камеры для VR ставь около 1.6 м над полом.</div></div><div class="step"><div class="st-head"><span class="st-n">4</span><span>Запеки свет для плавности</span></div><p class="why">💡 В шлеме важна плавность. Запечённый свет считается заранее и не грузит — без шлема проверяем, что сцена лёгкая.</p><p><b>Что делать:</b> Открой Window → Lighting → Settings → включи Baked GI и нажми Generate Lighting.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Свет «запёкся» (Progress 100%), сцена стала быстрее.</div></div></div><div class="step"><div class="st-head"><span class="st-n">5</span><span>Следи за производительностью</span></div><p class="why">💡 Дома поддерживаем FPS высоким, чтобы на шлеме не тормозило.</p><p><b>Что делать:</b> Открой Window → Profile → CPU Usage и посмотри на показатели при движении.</p><div class="screen"><div class="s-label">Что должно получиться</div><div class="s-box">Видно, что нагружает сцену (Render, Scripts).</div></div></div><h3>Шпаргалка: «кто за что отвечает» в комнате</h3><table><tr><th>Элемент</th><th>Компонент Unity</th><th>Что даёт</th></tr><tr><td>Пол</td><td>Plane + Mesh Collider</td><td>Поверхность, по которой ходит игрок</td></tr><tr><td>Стены</td><td>Cube + Mesh Collider</td><td>Границы комнаты, за них нельзя выйти</td></tr><tr><td>Предметы-мебель</td><td>Cube / Cylinder</td><td>Обстановка, которую видно и можно обойти</td></tr><tr><td>Лампа</td><td>Light + скрипт Lamp</td><td>Свет, включается по клавише</td></tr><tr><td>Камера-персонаж</td><td>Camera + Collider</td><td>«Глаза» игрока, не проваливаются в пол</td></tr></table><div class="tipb"><b>Почему это полезно.</b> Понимая, из чего состоит комната и какой компонент за что отвечает, легче искать баги: пол провалился — проверь Collider; свет не включился — проверь Script и Light.</div></section>
+  <section id="errors"><h2><span class="n">2</span>Типичные ошибки и как их исправить</h2><div class="gotcha"><b>Ошибка «Камера проваливается».</b> Падает сквозь пол.</div><div class="tipb"><b>Как исправить:</b> Добавь полам Collider, а камере держи фиксированную высоту (она должна стоять НА полу).</div><div class="gotcha"><b>Ошибка «Свет не запекается».</b> Progress дольше минуты или ошибка.</div><div class="tipb"><b>Как исправить:</b> Убедись, что в Lighting enabled = Baked, и закрой Editor Editor (не Play mode) при генерации.</div><div class="gotcha"><b>Ошибка «Лампа не реагирует на клавишу».</b> Нажимаешь F — ничего не происходит.</div><div class="tipb"><b>Как исправить:</b> Проверь, что скрипт Lamp висит на объекте лампы, а поле Light в скрипте перетащено на настоящий источник света. Раскладка клавиатуры тоже влияет: в русской раскладке клавиша F — та же физическая кнопка, проверь её место.</div><div class="gotcha"><b>Ошибка «Всё красное / слишком темно».</b> Свет странный после запекания.</div><div class="tipb"><b>Как исправить:</b> Проверь настройки Exposure и интенсивность источников в Lighting Settings; запечённый свет требует, чтобы у объектов были UV-развёртки — для примитивов Unity делает их сам.</div></section>
+  <section id="quiz"><div class="quiz"><b>Проверь себя (ответь устно или письменно):</b><ol><li>Зачем запекать свет?</li><li>Как проверить пол в редакторе?</li><li>Из каких частей состоит комната и какой компонент отвечает за «не провалиться»?</li><li>Почему важно ходить по сцене на 360°?</li><li>Какие два приёма снижают нагрузку на видеокарту при двух «глазах» шлема?</li></ol></div></section>
+  <div class="result"><b>Итог модуля.</b> Итог: комната с интерактивной лампой, проверкой пола и запечённым светом — готова к запуску в шлеме.</div>
+</main>
+<footer><p>Методичка · Без гарнитуры · Модуль 02 · Технологическая лаборатория</p></footer>
+</body>
+</html>
