@@ -140,5 +140,26 @@ var nav = document.getElementById('topnav'); window.addEventListener('scroll', f
     setTimeout(update, 100);
   })();
 </script>
-</body>
+
+<script>
+  // При клике на карточку курса передаём email вошедшего пользователя в URL (для сквозного входа через file://)
+  (function () {
+    function attach() {
+      if (typeof TLCore === 'undefined') return;
+      var u = TLCore.currentUser();
+      document.querySelectorAll('a.lab-card[href]').forEach(function (a) {
+        if (a.dataset.tlAttached === '1' || !u) return;
+        a.dataset.tlAttached = '1';
+        a.addEventListener('click', function (ev) {
+          var email = u.email || '';
+          if (!email) return;
+          var sep = a.href.indexOf('?') >= 0 ? '&' : '?';
+          a.href = a.href + sep + 'tl_email=' + encodeURIComponent(email);
+        });
+      });
+    }
+    if (document.readyState !== 'loading') attach(); else document.addEventListener('DOMContentLoaded', attach);
+    document.addEventListener('tl:auth-change', attach);
+  })();
+</script></body>
 </html>

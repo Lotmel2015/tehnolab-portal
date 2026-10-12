@@ -1,3 +1,5 @@
+var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"profilesKey":"vr_profiles","mode":"lesson_l","lessonPrefix":"vr_u_","progressSuffix":"_l_","href":"../../Курс-VR-студия/Список занятий VR студии.html"},{"id":"blender_3d","label":"Blender 3D","total":28,"profilesKey":"blender_profiles","mode":"lesson_l","lessonPrefix":"blender_u_","progressSuffix":"_l_","href":"../../Курс-Blender-3D/index.html"},{"id":"csharp_course","label":"Основы C# (Unity)","total":6,"profilesKey":"cs_profiles","mode":"lesson_l","lessonPrefix":"cs_u_","progressSuffix":"_l_","href":"../../Курс C#/Список модулей C#.html"},{"id":"pn_navigator","label":"Проектный навигатор","total":36,"profilesKey":"pdn-course-users","idField":"id","mode":"week_obj","progressPrefix":"pdn-course-progress-","href":"../../Курс-Проектный-навигатор/index.html"},{"id":"bpla_course","label":"БПЛА","total":28,"profilesKey":"bpla-course-users","idField":"id","mode":"week_obj","progressPrefix":"bpla-course-progress-","href":"../../Курс-БПЛА/index.html"},{"id":"kompas_3d","label":"КОМПАС-3D","total":28,"profilesKey":"kompas-course-users","idField":"id","mode":"week_obj","progressPrefix":"kompas-course-progress-","href":"../../Курс-КОМПАС-3D/index.html"},{"id":"roboto_course","label":"Робототехника (EV3)","total":28,"profilesKey":"roboto-course-users","idField":"id","mode":"week_obj","progressPrefix":"roboto-course-progress-","href":"../../Курс-Робототехника/index.html"},{"id":"electron_course","label":"Электроника","total":28,"profilesKey":"electron-course-users","idField":"id","mode":"week_obj","progressPrefix":"electron-course-progress-","href":"../../Курс-Электроника/index.html"}];
+
 /* ============================================================
    ТЕХНОЛОГИЧЕСКАЯ ЛАБОРАТОРИЯ — сквозная система ЛК и прогресса
    tl-portal-core.js  ·  version 0.1.0 (фундамент)
@@ -429,32 +431,33 @@
     p.classList.add('open');
   }
   function closeCabinet() { var p = document.getElementById(cabinetId); if (p) p.classList.remove('open'); }
-  function getVrAchievements() {
-    // Агрегация из курса VR-студии (ключи vr_u_<uid>_l_<N> и vr_u_<uid>_l_<N>_answers)
-    var result = { done: 0, answered: 0, total: 36, lessons: {}, reflections: {} };
-    var u = currentUser();
-    if (!u) return result;
-    // пробуем сопоставить uid: у ученика портала email; у курса — vr_profiles
-    var uid = u.id;
-    try {
-      var profiles = JSON.parse(localStorage.getItem('vr_profiles') || '[]');
-      var p = profiles.find(function (x) { return x && (x.uid === u.id || x.email === u.email || (x.name || '').toLowerCase() === (u.name || '').toLowerCase()); });
-      if (p) uid = p.uid;
-    } catch (e) {}
-    if (!uid) return result;
-    for (var i = 1; i <= result.total; i++) {
+  
+  function courseProgressOf(cfg, user) {
+    var uid = user && (user.id || user.email);
+    var res = { done: 0, total: cfg.total };
+    if (!uid) return res;
+    var profiles = [];
+    try { profiles = JSON.parse(localStorage.getItem(cfg.profilesKey) || '[]') || []; } catch (e) {}
+    var p = profiles.find(function (x) { return x && (String(x.uid) === String(user.id) || String(x.id) === String(user.id) || x.email === user.email || (x.name || '').toLowerCase() === (user.name || '').toLowerCase()); });
+    var courseUid = p ? (p.uid || p.id) : null;
+    if (!courseUid) return res;
+    for (var i = 1; i <= cfg.total; i++) {
+      var done = false;
       try {
-        if (localStorage.getItem('vr_u_' + uid + '_l_' + i) === '1') {
-          result.done++;
-          result.lessons[i] = true;
-        }
-        var ans = localStorage.getItem('vr_u_' + uid + '_l_' + i + '_answers');
-        if (ans) { result.answered++; result.reflections[i] = JSON.parse(ans); }
+        if (cfg.mode === 'lesson_l') { done = localStorage.getItem(cfg.lessonPrefix + courseUid + cfg.progressSuffix + i) === '1'; }
+        else if (cfg.mode === 'week_obj') { var obj = JSON.parse(localStorage.getItem(cfg.progressPrefix + courseUid) || '{}') || {}; done = !!obj['w' + i]; }
       } catch (e) {}
+      if (done) res.done++;
     }
+    return res;
+  }
+  function getAllAchievements() {
+    var u = currentUser();
+    var result = { courses: {}, doneTotal: 0, totalAll: 0 };
+    if (!u) return result;
+    COURSE_CONFIG.forEach(function (cfg) { var pr = courseProgressOf(cfg, u); result.courses[cfg.id] = pr; result.doneTotal += pr.done; result.totalAll += pr.total; });
     return result;
   }
-
   function renderCabinet() {
     var u = currentUser();
     if (!u) return;
@@ -463,112 +466,72 @@
     var elBody = document.getElementById('tlCabBody');
     if (elName) elName.textContent = u.name || u.email;
     if (elRole) elRole.textContent = u.role === 'admin' ? 'Администратор' : (u.role === 'teacher' ? 'Педагог / наставник' : 'Обучающийся');
-    if (elBody) {
-      var labs = (u.labs || []).map(labLabel).join(', ') || '—';
-      var vr = getVrAchievements();
-      var doneCount = vr.done;
-      var pct = vr.total ? Math.round(doneCount / vr.total * 100) : 0;
-      var achievementsHtml = '<div class="tl-cab-row"><span>VR-курс: занятий</span><b>' + doneCount + ' из ' + vr.total + '</b></div>' +
-        '<div class="tl-cab-row"><span>Рефлексий заполнено</span><b>' + vr.answered + '</b></div>' +
-        '<div style="margin-top:8px;"><div style="background:#2A2D35;border-radius:999px;height:8px;overflow:hidden;"><div style="width:' + pct + '%;height:100%;background:#2D7AFF;border-radius:999px;"></div></div><div style="color:#8B8FA3;font-size:11px;margin-top:4px;">VR-курс · ' + pct + '% пройдено</div></div>';
-      elBody.innerHTML = '' +
-        '<div class="tl-cab-row"><span>E-mail</span><b>' + escapeHtml(u.email) + '</b></div>' +
-        '<div class="tl-cab-row"><span>Класс</span><b>' + escapeHtml(u.cls || '—') + '</b></div>' +
-        '<div class="tl-cab-row"><span>Школа</span><b>' + escapeHtml(u.school || '—') + '</b></div>' +
-        '<div class="tl-cab-row"><span>Лаборатории</span><b>' + escapeHtml(labs) + '</b></div>' +
-        '<div style="margin-top:10px;padding:8px 10px;border:1px solid #2A2D35;border-radius:8px;"><span style="font-weight:700;display:block;margin-bottom:4px;">Мои достижения</span>' + achievementsHtml + '</div>' +
-        '<div style="margin-top:8px;text-align:right;"><a href="../../Курс-VR-студия/Список занятий VR студии.html" style="font-size:12px;">Перейти к VR-курсу →</a></div>';
-      // Панель администратора
-      var ap = document.getElementById('tlAdminPanel');
-      if (ap) {
-        var show = (u.role === 'admin');
-        ap.style.display = show ? 'block' : 'none';
-        if (show) renderAdminPanel();
+    if (!elBody) return;
+    var labs = (u.labs || []).map(labLabel).join(', ') || '—';
+    var ach = getAllAchievements();
+    var totalPct = ach.totalAll ? Math.round(ach.doneTotal / ach.totalAll * 100) : 0;
+    var html = '';
+    html += '<div class="tl-cab-row"><span>E-mail</span><b>' + escapeHtml(u.email) + '</b></div>';
+    html += '<div class="tl-cab-row"><span>Класс</span><b>' + escapeHtml(u.cls || '—') + '</b></div>';
+    html += '<div class="tl-cab-row"><span>Школа</span><b>' + escapeHtml(u.school || '—') + '</b></div>';
+    html += '<div class="tl-cab-row"><span>Лаборатории</span><b>' + escapeHtml(labs) + '</b></div>';
+    html += '<div style="margin-top:10px;padding:8px 10px;border:1px solid #2A2D35;border-radius:8px;"><span style="font-weight:700;display:block;margin-bottom:4px;">Мои достижения</span>';
+    html += '<div class="tl-cab-row"><span>Всего пройдено занятий</span><b>' + ach.doneTotal + ' из ' + ach.totalAll + '</b></div>';
+    html += '<div style="margin-top:8px;"><div style="background:#2A2D35;border-radius:999px;height:8px;overflow:hidden;"><div style="width:' + totalPct + '%;height:100%;background:#2D7AFF;border-radius:999px;"></div></div><div style="color:#8B8FA3;font-size:11px;margin-top:4px;">Общий прогресс по всем курсам · ' + totalPct + '%</div></div></div>';
+    COURSE_CONFIG.forEach(function (cfg) {
+      var pr = ach.courses[cfg.id] || { done: 0, total: cfg.total };
+      var pct = pr.total ? Math.round(pr.done / pr.total * 100) : 0;
+      html += '<a href="' + cfg.href + '" style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:8px 10px;border:1px solid #2A2D35;border-radius:8px;text-decoration:none;color:#EAECEF;"><span style="font-weight:600;">' + escapeHtml(cfg.label) + '</span><span style="font-size:12px;color:#8B8FA3;">' + pr.done + ' / ' + pr.total + ' · ' + pct + '%</span></a>';
+    });
+    html += '<div style="margin-top:10px;text-align:right;"><button class="tl-logout" onclick="TLCore.logout();TLCore.refreshUI();" style="background:transparent;border:1px solid #3A3E47;color:#8B8FA3;font-size:12px;border-radius:6px;padding:4px 10px;cursor:pointer;">Выйти из кабинета</button></div>';
+    elBody.innerHTML = html;
+    var ap = document.getElementById('tlAdminPanel');
+    if (ap) {
+      var isAdmin = (u.role === 'admin');
+      ap.style.display = isAdmin ? 'block' : 'none';
+      if (isAdmin) {
+        var users = getUsers();
+        var rows = Object.keys(users).map(function (email) {
+          var p = users[email];
+          return '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #24272E;"><span>' + escapeHtml(p.name || email) + ' <span style="color:#8B8FA3;font-size:11px;">(' + escapeHtml(p.role || '') + ')</span></span><button class="tl-adm-edit" data-email="' + email + '" style="background:transparent;border:1px solid #3A3E47;color:#8B8FA3;font-size:12px;border-radius:6px;padding:2px 8px;cursor:pointer;">Ред.</button></div>';
+        }).join('');
+        ap.innerHTML = '<div style="padding:6px 0;font-weight:700;">Пользователи</div>' + (rows || '<div style="color:#8B8FA3;font-size:12px;">Нет пользователей.</div>');
+        var admlist = ap.querySelectorAll('.tl-adm-edit');
+        admlist.forEach(function (b) { b.onclick = function () { adminEdit(b.getAttribute('data-email')); }; });
       }
     }
   }
 
-  /* ---------- Админ-панель ---------- */
-  function renderAdminPanel() {
+  function adminEdit(uid) {
+    var u = currentUser();
     var ap = document.getElementById('tlAdminPanel');
-    if (!ap) return;
-    var res = listUsers();
-    if (!res.ok) { ap.innerHTML = '<div class="tl-cab-row"><span>Ошибка</span><b>' + escapeHtml(res.error) + '</b></div>'; return; }
-    var users = res.users.filter(function (u) { return u.email !== ADMIN_EMAIL; });
-    var rows = users.map(function (u) {
-      var roleName = u.role === 'teacher' ? 'Педагог' : (u.role === 'admin' ? 'Админ' : 'Ученик');
-      var labs = (u.labs || []).join(', ') || '—';
-      return '<div class="tl-cab-row" style="align-items:center;">' +
-        '<span style="flex:1;">' + escapeHtml(u.name || u.email) + '<br><span style="font-size:11px;color:#5A6B85;">' + escapeHtml(u.email) + ' · ' + roleName + '</span></span>' +
-        '<button type="button" class="tl-logout" style="width:auto;margin:0;padding:4px 10px;" onclick="TLCore.adminEdit(\'' + escapeHtml(u.email).replace(/'/g, "\\'") + '\')">Редактировать</button>' +
-        '</div>';
-    }).join('');
-    ap.innerHTML = '<div style="margin-top:12px;padding-top:8px;border-top:1px solid #2A2D35;">' +
-      '<span style="font-weight:700;display:block;margin-bottom:6px;">Панель администратора</span>' +
-      '<span style="color:#8B8FA3;font-size:12px;display:block;margin-bottom:6px;">Зарегистрировано пользователей: ' + users.length + '</span>' +
-      (rows || '<div class="tl-cab-row"><span>Нет пользователей</span></div>') +
-      '</div>';
+    if (!ap || !u || u.role !== 'admin') return;
+    var users = getUsers();
+    var target = users[uid];
+    if (!target) return;
+    ap.innerHTML = '<div style="padding:8px 0;"><b>Редактирование: ' + escapeHtml(target.name || target.email) + '</b></div>' +
+      '<div><label style="font-size:12px;color:#8B8FA3;">Имя</label><input id="tlAdmName" value="' + escapeHtml(target.name || '') + '" style="width:100%;background:#1B1E26;border:1px solid #2A2D35;color:#EAECEF;padding:6px 8px;border-radius:6px;"></div>' +
+      '<div style="margin-top:6px;"><label style="font-size:12px;color:#8B8FA3;">Класс</label><input id="tlAdmCls" value="' + escapeHtml(target.cls || '') + '" style="width:100%;background:#1B1E26;border:1px solid #2A2D35;color:#EAECEF;padding:6px 8px;border-radius:6px;"></div>' +
+      '<div style="margin-top:6px;"><label style="font-size:12px;color:#8B8FA3;">Школа</label><input id="tlAdmSchool" value="' + escapeHtml(target.school || '') + '" style="width:100%;background:#1B1E26;border:1px solid #2A2D35;color:#EAECEF;padding:6px 8px;border-radius:6px;"></div>' +
+      '<div style="margin-top:10px;"><button class="tl-adm-save" style="background:#2D7AFF;border:0;color:#fff;font-size:13px;border-radius:6px;padding:6px 14px;cursor:pointer;">Сохранить</button></div>';
+    var sb = ap.querySelector('.tl-adm-save');
+    if (sb) sb.onclick = function () { adminSave(uid); };
   }
-
-  function adminEdit(email) {
-    var res = listUsers();
-    if (!res.ok) { toast(res.error, false); return; }
-    var u = res.users.filter(function (x) { return x.email === email; })[0];
-    if (!u) { toast('Пользователь не найден', false); return; }
-    // Модальное окно редактирования
-    var m = document.getElementById('tlAdminEditModal');
-    if (!m) {
-      m = document.createElement('div');
-      m.id = 'tlAdminEditModal';
-      m.style.cssText = 'position:fixed;inset:0;z-index:99991;display:none;align-items:center;justify-content:center;background:rgba(5,7,10,.72);padding:16px;';
-      m.innerHTML =
-        '<div class="tl-box">' +
-        '<button class="tl-close" type="button" onclick="document.getElementById(\'tlAdminEditModal\').style.display=\'none\'">&times;</button>' +
-        '<h2>Редактирование профиля</h2>' +
-        '<div class="tl-field"><label>ФИО</label><input type="text" id="aeName"></div>' +
-        '<div class="tl-field"><label>E-mail</label><input type="email" id="aeEmail"></div>' +
-        '<div class="tl-field"><label>Роль</label><select id="aeRole"><option value="learner">Ученик</option><option value="teacher">Педагог</option><option value="admin">Администратор</option></select></div>' +
-        '<div class="tl-row"><div class="tl-field"><label>Класс</label><input type="text" id="aeCls"></div><div class="tl-field"><label>Школа</label><input type="text" id="aeSchool"></div></div>' +
-        '<div class="tl-field"><label>Новый пароль (пусто — не менять)</label><input type="password" id="aePass" autocomplete="new-password"></div>' +
-        '<div class="tl-err" id="aeErr"></div>' +
-        '<button class="tl-btn" type="button" onclick="TLCore.adminSave(\'' + escapeHtml(email).replace(/'/g, "\\'") + '\')">Сохранить</button>' +
-        '</div>';
-      document.body.appendChild(m);
-    }
-    m.style.display = 'flex';
-    document.getElementById('aeName').value = u.name || '';
-    document.getElementById('aeEmail').value = u.email || '';
-    document.getElementById('aeRole').value = u.role || 'learner';
-    document.getElementById('aeCls').value = u.cls || '';
-    document.getElementById('aeSchool').value = u.school || '';
-    document.getElementById('aePass').value = '';
-    var err = document.getElementById('aeErr'); if (err) err.textContent = '';
-  }
-
-  function adminSave(oldEmail) {
-    var patch = {
-      name: (document.getElementById('aeName') || {}).value || '',
-      email: (document.getElementById('aeEmail') || {}).value || '',
-      role: (document.getElementById('aeRole') || {}).value || 'learner',
-      cls: (document.getElementById('aeCls') || {}).value || '',
-      school: (document.getElementById('aeSchool') || {}).value || '',
-      pass: (document.getElementById('aePass') || {}).value || ''
-    };
-    var res = updateUser(oldEmail, patch);
-    var err = document.getElementById('aeErr');
-    if (!res.ok) { if (err) err.textContent = res.error; return; }
-    if (err) err.textContent = '';
-    var m = document.getElementById('tlAdminEditModal'); if (m) m.style.display = 'none';
-    renderAdminPanel();
+  function adminSave(uid) {
+    var u = currentUser();
+    if (!u || u.role !== 'admin') return;
+    var users = getUsers();
+    var target = users && users[uid];
+    if (!target) return;
+    target.name = (document.getElementById('tlAdmName') || {}).value || target.name;
+    target.cls = (document.getElementById('tlAdmCls') || {}).value || '';
+    target.school = (document.getElementById('tlAdmSchool') || {}).value || '';
+    saveUsers(users);
     renderCabinet();
-    toast('Профиль обновлён. Прогресс сохранён.');
-  }
-  function escapeHtml(s) {
-    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
+  
   function renderAuthWidget() {
-    // Пробуем найти кнопку .tl-auth-btn на странице и обновить её текст/состояние
     var btns = document.querySelectorAll('.tl-auth-btn');
     var u = currentUser();
     btns.forEach(function (b) {
@@ -582,18 +545,10 @@
     });
   }
 
-  /* -------- Внешнее API -------- */
-  var API = {
+  function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+var API = {
     version: VERSION,
-    init: function (opts) {
-      opts = opts || {};
-      ensureAdmin();
-      ensureStyle();
-      renderAuthWidget();
-      if (opts.onAuthChange) on('login', opts.onAuthChange), on('logout', opts.onAuthChange);
-      emit('ready', { user: currentUser() });
-      return API;
-    },
+    init: function (opts) { opts = opts || {}; ensureAdmin(); ensureStyle(); renderAuthWidget(); if (opts.onAuthChange) on('login', opts.onAuthChange), on('logout', opts.onAuthChange); emit('ready', { user: currentUser() }); return API; },
     register: register,
     login: login,
     logout: logout,
@@ -605,7 +560,7 @@
     getProgress: getProgress,
     setLessonDone: setLessonDone,
     isLessonDone: isLessonDone,
-    getAchievements: getVrAchievements,
+    getAchievements: getAllAchievements,
     waitlist: waitlist,
     openAuth: function (tab) { openModal(tab || 'login'); },
     closeAuth: closeModal,
@@ -617,50 +572,11 @@
     refreshUI: renderAuthWidget,
     on: on,
     _publicProfile: publicProfile,
-    doRegister: function (e) {
-      if (e && e.preventDefault) e.preventDefault();
-      var email = (document.getElementById('tlRegEmail') || {}).value || '';
-      var pass = (document.getElementById('tlRegPass') || {}).value || '';
-      var pass2 = (document.getElementById('tlRegPass2') || {}).value || '';
-      var errEl = document.getElementById('tlRegErr');
-      if (pass !== pass2) { if (errEl) errEl.textContent = 'Пароли не совпадают.'; return false; }
-      var name = (document.getElementById('tlRegName') || {}).value || '';
-      var data = {
-        name: name,
-        cls: (document.getElementById('tlRegCls') || {}).value,
-        school: (document.getElementById('tlRegSchool') || {}).value,
-        phone: (document.getElementById('tlRegPhone') || {}).value,
-        role: (document.getElementById('tlRegRole') || {}).value,
-        email: email,
-        pass: pass,
-        labs: selectedLabs()
-      };
-      var res = register(data);
-      if (!res.ok) { if (errEl) errEl.textContent = res.error; return false; }
-      if (errEl) errEl.textContent = '';
-      closeModal(); renderCabinet(); renderAuthWidget(); emit('login', res.user);
-      toast('Добро пожаловать, ' + (name || email) + '!');
-      return false;
-    },
-    doLogin: function (e) {
-      if (e && e.preventDefault) e.preventDefault();
-      var email = (document.getElementById('tlLoginEmail') || {}).value || '';
-      var pass = (document.getElementById('tlLoginPass') || {}).value || '';
-      var res = login(email, pass);
-      var errEl = document.getElementById('tlLoginErr');
-      if (!res.ok) { if (errEl) errEl.textContent = res.error; return false; }
-      if (errEl) errEl.textContent = '';
-      closeModal(); renderCabinet(); renderAuthWidget(); emit('login', res.user);
-      toast('Вы вошли в личный кабинет.');
-      return false;
-    },
-    doGuest: function () {
-      closeModal();
-      toast('Режим гостя: прогресс не сохранится. Лучше зарегистрируйтесь.');
-    }
+    doRegister: function (e) { if (e && e.preventDefault) e.preventDefault(); var email = (document.getElementById('tlRegEmail') || {}).value || ''; var pass = (document.getElementById('tlRegPass') || {}).value || ''; var pass2 = (document.getElementById('tlRegPass2') || {}).value || ''; var errEl = document.getElementById('tlRegErr'); if (pass !== pass2) { if (errEl) errEl.textContent = 'Пароли не совпадают.'; return false; } var name = (document.getElementById('tlRegName') || {}).value || ''; var data = { name: name, cls: (document.getElementById('tlRegCls') || {}).value, school: (document.getElementById('tlRegSchool') || {}).value, phone: (document.getElementById('tlRegPhone') || {}).value, role: (document.getElementById('tlRegRole') || {}).value, email: email, pass: pass, labs: selectedLabs() }; var res = register(data); if (!res.ok) { if (errEl) errEl.textContent = res.error; return false; } if (errEl) errEl.textContent = ''; closeModal(); renderCabinet(); renderAuthWidget(); emit('login', res.user); toast('Добро пожаловать, ' + (name || email) + '!'); return false; },
+    doLogin: function (e) { if (e && e.preventDefault) e.preventDefault(); var email = (document.getElementById('tlLoginEmail') || {}).value || ''; var pass = (document.getElementById('tlLoginPass') || {}).value || ''; var res = login(email, pass); var errEl = document.getElementById('tlLoginErr'); if (!res.ok) { if (errEl) errEl.textContent = res.error; return false; } if (errEl) errEl.textContent = ''; closeModal(); renderCabinet(); renderAuthWidget(); emit('login', res.user); toast('Вы вошли в личный кабинет.'); return false; },
+    doGuest: function () { closeModal(); toast('Режим гостя: прогресс не сохранится. Лучше войти.'); location.href = location.pathname; }
   };
-
-  global.TLCore = API;
+global.TLCore = API;
 
   // Автоподключение, если на странице есть кнопки с data-tl-auth
   if (global.document) {

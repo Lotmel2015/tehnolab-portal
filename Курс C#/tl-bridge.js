@@ -99,7 +99,25 @@
     } catch (e) { return false; }
   }
 
-  function init(opts) {
+  
+  function qp(name) { try { return new URLSearchParams(window.location.search || '').get(name); } catch (e) { return null; } }
+  function syncFromUrl() {
+    var email = qp('tl_email');
+    if (!email) return false;
+    // Создаём/используем профиль курса по email прямо здесь
+    var profiles = courseProfiles();
+    var cp = profiles.find(function (x) { return x.email === email || (x.name || '').toLowerCase() === email.replace(/@.*$/, '').toLowerCase(); });
+    if (!cp) {
+      cp = { email: email, name: email.split('@')[0] || email, role: 'student', klass: '', school: '', teacher: 'Казакевич Константин Михайлович' };
+      cp.uid = 'u' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      if (ID_FIELD === 'id') { cp.id = cp.uid; } else { cp.id = cp.uid; }
+      profiles.push(cp);
+      saveCourseProfiles(profiles);
+    }
+    try { localStorage.setItem(SESSION_KEY, String(cp.id || cp.uid || '')); } catch (e) {}
+    return !!cp;
+  }
+function init(opts) {
     opts = opts || {};
     if (opts.total) COURSE_TOTAL = opts.total;
     if (global.TLCore) {
@@ -107,6 +125,7 @@
       TLCore.on('logout', function () { try { localStorage.removeItem(SESSION_KEY); } catch (e) {} });
     }
     if (portalUser()) syncSessionToCourse();
+    if (!portalUser()) syncFromUrl();
     if (global.addEventListener) {
       global.addEventListener('storage', function (e) {
         if (e && (e.key === 'tl.session' || e.key === 'tl.users' || e.key === SESSION_KEY)) {
@@ -136,5 +155,5 @@
     return { ok: true, courseId: COURSE_ID };
   }
 
-  global.TLBridge = { init: init, COURSE_ID: COURSE_ID, COURSE_LABEL: COURSE_LABEL, COURSE_TOTAL: COURSE_TOTAL, syncSessionToCourse: syncSessionToCourse };
+  global.TLBridge = { init: init, syncFromUrl: syncFromUrl, COURSE_ID: COURSE_ID, COURSE_LABEL: COURSE_LABEL, COURSE_TOTAL: COURSE_TOTAL, syncSessionToCourse: syncSessionToCourse };
 })(window);
