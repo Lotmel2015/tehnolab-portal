@@ -1,4 +1,4 @@
-var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"profilesKey":"vr_profiles","mode":"lesson_l","lessonPrefix":"vr_u_","progressSuffix":"_l_","href":"../../Курс-VR-студия/Список занятий VR студии.html"},{"id":"blender_3d","label":"Blender 3D","total":28,"profilesKey":"blender_profiles","mode":"lesson_l","lessonPrefix":"blender_u_","progressSuffix":"_l_","href":"../../Курс-Blender-3D/index.html"},{"id":"csharp_course","label":"Основы C# (Unity)","total":6,"profilesKey":"cs_profiles","mode":"lesson_l","lessonPrefix":"cs_u_","progressSuffix":"_l_","href":"../../Курс C#/Список модулей C#.html"},{"id":"pn_navigator","label":"Проектный навигатор","total":36,"profilesKey":"pdn-course-users","idField":"id","mode":"week_obj","progressPrefix":"pdn-course-progress-","href":"../../Курс-Проектный-навигатор/index.html"},{"id":"bpla_course","label":"БПЛА","total":28,"profilesKey":"bpla-course-users","idField":"id","mode":"week_obj","progressPrefix":"bpla-course-progress-","href":"../../Курс-БПЛА/index.html"},{"id":"kompas_3d","label":"КОМПАС-3D","total":28,"profilesKey":"kompas-course-users","idField":"id","mode":"week_obj","progressPrefix":"kompas-course-progress-","href":"../../Курс-КОМПАС-3D/index.html"},{"id":"roboto_course","label":"Робототехника (EV3)","total":28,"profilesKey":"roboto-course-users","idField":"id","mode":"week_obj","progressPrefix":"roboto-course-progress-","href":"../../Курс-Робототехника/index.html"},{"id":"electron_course","label":"Электроника","total":28,"profilesKey":"electron-course-users","idField":"id","mode":"week_obj","progressPrefix":"electron-course-progress-","href":"../../Курс-Электроника/index.html"}];
+var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"profilesKey":"vr_profiles","mode":"lesson_l","lessonPrefix":"vr_u_","progressSuffix":"_l_","href":"../../Курс-VR-студия/Список занятий VR студии.html"},{"id":"blender_3d","label":"Blender 3D","total":28,"profilesKey":"blender_profiles","mode":"lesson_l","lessonPrefix":"blender_u_","progressSuffix":"_l_","href":"../../Курс-Blender-3D/index.html"},{"id":"csharp_course","label":"Углублённый курс C# (часть VR-студии)","total":6,"profilesKey":"cs_profiles","mode":"lesson_l","lessonPrefix":"cs_u_","progressSuffix":"_l_","href":"../../Курс C#/Доступ к курсу C#.html","parent":"vr_studio","requireLesson":4,"lockText":"Для доступа заверши занятия 3\u20134 в модуле \u00abСтарт в C# и ООП\u00bb VR-студии."},{"id":"pn_navigator","label":"Проектный навигатор","total":36,"profilesKey":"pdn-course-users","idField":"id","mode":"week_obj","progressPrefix":"pdn-course-progress-","href":"../../Курс-Проектный-навигатор/index.html"},{"id":"bpla_course","label":"БПЛА","total":28,"profilesKey":"bpla-course-users","idField":"id","mode":"week_obj","progressPrefix":"bpla-course-progress-","href":"../../Курс-БПЛА/index.html"},{"id":"kompas_3d","label":"КОМПАС-3D","total":28,"profilesKey":"kompas-course-users","idField":"id","mode":"week_obj","progressPrefix":"kompas-course-progress-","href":"../../Курс-КОМПАС-3D/index.html"},{"id":"roboto_course","label":"Робототехника (EV3)","total":28,"profilesKey":"roboto-course-users","idField":"id","mode":"week_obj","progressPrefix":"roboto-course-progress-","href":"../../Курс-Робототехника/index.html"},{"id":"electron_course","label":"Электроника","total":28,"profilesKey":"electron-course-users","idField":"id","mode":"week_obj","progressPrefix":"electron-course-progress-","href":"../../Курс-Электроника/index.html"}];
 
 /* ============================================================
    ТЕХНОЛОГИЧЕСКАЯ ЛАБОРАТОРИЯ — сквозная система ЛК и прогресса
@@ -455,7 +455,21 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     var u = currentUser();
     var result = { courses: {}, doneTotal: 0, totalAll: 0 };
     if (!u) return result;
-    COURSE_CONFIG.forEach(function (cfg) { var pr = courseProgressOf(cfg, u); result.courses[cfg.id] = pr; result.doneTotal += pr.done; result.totalAll += pr.total; });
+    COURSE_CONFIG.forEach(function (cfg) {
+      if (cfg.parent) return;
+      var pr = ach.courses[cfg.id] || { done: 0, total: cfg.total };
+      var pct = pr.total ? Math.round(pr.done / pr.total * 100) : 0;
+      html += '<a href="' + cfg.href + '" style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:8px 10px;border:1px solid #2A2D35;border-radius:8px;text-decoration:none;color:#EAECEF;"><span style="font-weight:600;">' + escapeHtml(cfg.label) + '</span><span style="font-size:12px;color:#8B8FA3;">' + pr.done + ' / ' + pr.total + ' · ' + pct + '%</span></a>';
+      COURSE_CONFIG.forEach(function (child) {
+        if (child.parent !== cfg.id) return;
+        var cpr = ach.courses[child.id] || { done: 0, total: child.total };
+        var unlocked = pr.done >= (child.requireLesson || 99);
+        var status = unlocked
+          ? '<span style="font-size:12px;color:#8B8FA3;">открыт · ' + cpr.done + ' / ' + cpr.total + '</span>'
+          : '<span style="font-size:12px;color:#B45309;">🔒 ' + escapeHtml(child.lockText || 'Доступ после прохождения условий') + '</span>';
+        html += '<a href="' + child.href + '" style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:4px;padding:6px 10px;border:1px dashed #3A3E47;border-radius:8px;text-decoration:none;color:#EAECEF;"><span style="font-weight:600;font-size:13px;padding-left:14px;">↳ ' + escapeHtml(child.label) + '</span>' + status + '</a>';
+      });
+    });
     return result;
   }
   function renderCabinet() {

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Доступ к углублённому курсу C# · Проектный навигатор · VR-студия</title>
+<style>
+  :root { --bg:#ffffff; --ink:#1B2A4A; --muted:#5A6B85; --accent:#1F6FE0; --accent-soft:#EAF2FD; --vr:#4D008C; --vr-soft:#F0EBF5; --def:#B45309; --def-soft:#FDF1E1; --pr:#167A4D; --pr-soft:#E7F4EE; --line:#D9E2EF; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  .wrap { max-width:760px; margin:0 auto; padding:2.4rem 1.25rem 3rem; }
+  .kicker { color:var(--accent); font-weight:700; font-size:.85rem; text-transform:uppercase; letter-spacing:.05em; }
+  h1 { font-size:1.7rem; line-height:1.25; margin:.2rem 0 .4rem; }
+  .lead { background:var(--vr-soft); border-left:4px solid var(--vr); border-radius:0 8px 8px 0; padding:.95rem 1.15rem; margin:1.4rem 0; }
+  .lead b { color:var(--vr); }
+  .conditions { background:var(--accent-soft); border:1px solid var(--line); border-radius:14px; padding:1rem 1.2rem; margin:1.2rem 0; }
+  h2 { font-size:1.05rem; border-bottom:1px solid var(--line); padding-bottom:.35rem; margin:1.3rem 0 .7rem; }
+  .cond-item { display:flex; gap:.7rem; align-items:flex-start; padding:.5rem 0; border-bottom:1px solid var(--line); }
+  .cond-item:last-child { border-bottom:0; }
+  .cond-num { flex:0 0 1.7rem; height:1.7rem; border-radius:50%; background:var(--accent); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:.9rem; }
+  .btn { display:inline-block; border:0; border-radius:10px; padding:.7rem 1.4rem; font:700 15px/1.2 system-ui,sans-serif; cursor:pointer; text-decoration:none; }
+  .btn-primary { background:var(--vr); color:#fff; }
+  .btn-ghost { background:#fff; color:var(--vr); border:1px solid var(--vr); }
+  .status { margin-top:1.2rem; padding:.8rem 1rem; border-radius:10px; font-weight:700; }
+  .status-open { background:var(--pr-soft); color:var(--pr); }
+  .status-lock { background:var(--def-soft); color:var(--def); }
+  footer { color:var(--muted); font-size:.82rem; border-top:1px solid var(--line); margin-top:2rem; padding-top:.8rem; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="kicker">Технологическая лаборатория · VR-студия · углублённый трек</p>
+  <h1>Углублённый курс C#</h1>
+  <div class="lead"><b>Это не отдельная лаборатория, а продолжение VR-студии.</b> Курс C# углубляет программирование: от основ языка до скриптов Unity. Он открывается автоматически после прохождения определённых занятий VR-студии.</div>
+  <div class="status status-lock" id="lockStatus">🔒 Доступ пока закрыт.</div>
+  <div class="conditions">
+    <h2>Как открыть доступ</h2>
+    <div class="cond-item"><span class="cond-num">1</span><div><b>Запишись на VR-студию</b><br><span style="color:var(--muted);font-size:.9rem">Курс C# доступен только ученикам VR-студии — это её углублённая часть.</span></div></div>
+    <div class="cond-item"><span class="cond-num">2</span><div><b>Пройди занятия 3–4 в модуле «Старт в C# и ООП»</b><br><span style="color:var(--muted);font-size:.9rem">Занятие 3 — переменные, условия, циклы. Занятие 4 — классы и ООП, разбор этапа НТО.</span></div></div>
+    <div class="cond-item"><span class="cond-num">3</span><div><b>После этого ссылка откроется</b><br><span style="color:var(--muted);font-size:.9rem">В личном кабинете и в списке занятий VR кнопка «Углублённый курс C#» станет активной.</span></div></div>
+  </div>
+  <p style="text-align:center;margin-top:1.4rem"><a class="btn btn-primary" href="../Курс-VR-студия/Список занятий VR студии.html">Перейти к занятиям VR-студии →</a> <a class="btn btn-ghost" href="../Курс C#/Список модулей C#.html" id="goToList" style="display:none">Открыть список модулей C# →</a></p>
+  <footer>Технологическая лаборатория · 2026–2027 · Углублённый курс C# (6 модулей) — часть программы VR-студии.</footer>
+</main>
+<script>
+  // Проверка доступа: если ученик прошёл 4 занятия VR — показать ссылку на модули C# и статус «открыт»
+  (function () {
+    function unlock() {
+      var uid = null;
+      try { var s = JSON.parse(localStorage.getItem('vr_current_user') || 'null'); if (s) uid = s.uid; } catch(e) {}
+      var passed = false;
+      try { passed = localStorage.getItem('vr_u_' + uid + '_l_4') === '1'; } catch(e) {}
+      var st = document.getElementById('lockStatus');
+      var go = document.getElementById('goToList');
+      if (passed) {
+        if (st) { st.className = 'status status-open'; st.textContent = '✅ Доступ открыт! Пройди 6 модулей C#.'; }
+        if (go) go.style.display = 'inline-block';
+      } else {
+        var link = document.getElementById('goToList');
+        if (link) link.remove();
+      }
+    }
+    unlock();
+  })();
+</script>
+</body>
+</html>
