@@ -1,0 +1,309 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Обратная связь сотрудников — портал и курсы ТЛ</title>
+<style>
+  :root{
+    --bg:#0D0F14; --bg-card:#161921; --bg-elev:#1B1F2A; --ink:#EAECEF;
+    --muted:#8B8FA3; --line:#2A2D35; --accent:#2D7AFF; --ok:#00D68F;
+    --warn:#FFAA00; --bad:#FF5C5C;
+    --c01:#FF6B2C; --c03:#E87D0D; --c05:#00B0FF; --c06:#AA00FF; --c07:#FF8F00;
+    --f-display:system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-body:system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+    --max:1000px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.62 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(42,45,53,.28) 1px,transparent 1px),linear-gradient(90deg,rgba(42,45,53,.28) 1px,transparent 1px);background-size:96px 96px}
+  .wrap{position:relative;z-index:1;max-width:var(--max);margin:0 auto;padding:0 28px}
+  .nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 28px;border-bottom:1px solid var(--line);background:rgba(13,15,20,.85);backdrop-filter:blur(10px)}
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:700;color:var(--ink);text-decoration:none}
+  .logo .sub{font-family:var(--f-mono);font-size:10px;color:var(--muted);letter-spacing:.1em}
+  .nav .meta{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+  .hero{padding:52px 0 40px;border-bottom:1px solid var(--line)}
+  .kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--warn);margin-bottom:10px}
+  h1{font:700 clamp(30px,5vw,44px)/1.08 var(--f-display);margin:0 0 14px;letter-spacing:-.015em}
+  h1 .ac{color:var(--accent)}
+  .lede{color:var(--muted);font-size:17px;max-width:70ch;margin:0 0 22px}
+  .tagrow{display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--line);border-radius:6px;color:var(--muted)}
+  .tag.hl{border-color:var(--accent);color:var(--accent)}
+  .section{padding:34px 0;border-bottom:1px solid var(--line)}
+  .sec-head{margin-bottom:20px}
+  .sec-head .k{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:6px}
+  .sec-head h2{font:600 clamp(22px,3vw,28px)/1.15 var(--f-display);margin:0}
+  .sec-head .sec-sub{color:var(--muted);margin:8px 0 0;font-size:15px;max-width:75ch}
+  .verdict{display:flex;gap:14px;background:rgba(255,170,0,.07);border:1px solid rgba(255,170,0,.3);border-left:4px solid var(--warn);border-radius:0 10px 10px 0;padding:16px 20px;margin:18px 0 24px}
+  .verdict .v-ic{font-size:26px;flex:0 0 auto}
+  .verdict b{color:var(--warn)}
+  .verdict p{margin:0;font-size:15px}
+  .role-card{background:var(--bg-card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:18px}
+  .role-card h3{display:flex;align-items:center;gap:10px;font:700 19px var(--f-display);margin:0 0 4px}
+  .role-card .r-emoji{font-size:24px}
+  .role-card .r-role-sub{color:var(--accent);font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px}
+  .role-card h4{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;margin:18px 0 8px;color:var(--muted)}
+  .role-card h4.rc-otnoshenie{color:var(--ok)}
+  .role-card h4.rc-kritika{color:var(--bad)}
+  .role-card h4.rc-pozhelanie{color:var(--accent)}
+  ul.loosen{margin:0;padding-left:20px}
+  ul.loosen li{margin-bottom:8px;color:var(--ink)}
+  ul.loosen li b{color:var(--warn)}
+  .chip{display:inline-block;font-family:var(--f-mono);font-size:11px;padding:2px 8px;border-radius:5px;border:1px solid var(--line);color:var(--muted);margin:2px 2px 0 0}
+  .chip.good{color:var(--ok);border-color:rgba(0,214,143,.4)}
+  .chip.bad{color:var(--bad);border-color:rgba(255,92,92,.4)}
+  .bar-list{margin:10px 0 0;padding:0;list-style:none}
+  .bar-list li{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line)}
+  .bar-list li span{color:var(--muted);font-size:13.5px}
+  .bar-list li .pct{font-family:var(--f-mono);font-weight:700}
+  .bar{flex:1;height:8px;background:var(--bg-elev);border-radius:999px;overflow:hidden;max-width:120px}
+  .bar i{display:block;height:100%;background:var(--accent);border-radius:999px}
+  .bar.red i{background:var(--bad)}
+  .bar.green i{background:var(--ok)}
+  .bar.amber i{background:var(--warn)}
+  .icon-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
+  .icon-tile{background:var(--bg-elev);border:1px solid var(--line);border-radius:10px;padding:16px 18px;text-align:center}
+  .icon-tile .n{font:700 26px var(--f-display);display:block}
+  .icon-tile .t{font-size:12px;color:var(--muted)}
+  .icon-tile .n.good{color:var(--ok)} .icon-tile .n.mid{color:var(--warn)} .icon-tile .n.bad{color:var(--bad)}
+  table.wide{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px}
+  table.wide th,table.wide td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+  table.wide th{background:var(--bg-elev);font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tbl-scroll table.wide{min-width:640px}
+  .obshch{background:rgba(45,122,255,.06);border:1px solid rgba(45,122,255,.25);border-radius:10px;padding:18px 22px;margin-top:20px}
+  .obshch h3{font:600 17px var(--f-display);margin:0 0 12px;color:var(--accent)}
+  .obshch ol{margin:0;padding-left:22px}
+  .obshch li{margin-bottom:10px}
+  .obshch li b{color:var(--warn)}
+  footer{margin-top:10px;padding:26px 0 40px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line)}
+  @media print{body{background:#fff;color:#111}.grid-bg,.nav{display:none}.wrap{max-width:none;padding:0}.role-card,.section{border-color:#ccc;break-inside:avoid}.logo,.kicker,h2,h4{color:#111!important}h1 .ac{color:#1F63D0}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav class="nav">
+  <a class="logo" href="#top"><span>ТЕХЛАБ</span><span class="sub">/ ОБРАТНАЯ СВЯЗЬ СОТРУДНИКОВ</span></a>
+  <span class="meta">ПОРТАЛ И КУРСЫ · октябрь 2026</span>
+</nav>
+<main class="wrap" id="top">
+  <header class="hero">
+    <div class="kicker">Сводный документ · с позиций сотрудников объединения</div>
+    <h1>Отношение, критика и пожелания сотрудников к <span class="ac">порталу, курсам и оформлению</span> Технологической лаборатории</h1>
+    <p class="lede">Документ собран по результатам проверки портала «Технологическая лаборатория», электронных курсов (робототехника, электроника, Blender/КОМПАС, БПЛА, VR, C#, мини-курсы), служебных скриптов и методических материалов. Каждый раздел — взгляд конкретной роли: что устраивает, что мешает в повседневной работе и что стоит изменить.</p>
+    <div class="tagrow">
+      <span class="tag hl">ТОЛЬКО ВНУТРЕННЕЕ</span>
+      <span class="tag">ПОРТАЛ</span>
+      <span class="tag">КУРСЫ</span>
+      <span class="tag">ОФОРМЛЕНИЕ</span>
+      <span class="tag">УДОБСТВО РАБОТЫ</span>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="sec-head"><span class="k">Общий вывод</span><h2>Резюме проверки</h2></div>
+    <div class="verdict">
+      <div class="v-ic">⚠️</div>
+      <p><b>Портал и курсы функционально сильны, но в целом «заточены под ученика» и слабо отражают работу команды.</b> Сотрудники находят ресурс удобным для обучающихся, однако для повседневной работы педагогам, лаборанту и методисту не хватает управляемости, статистики, единообразия и актуальности контента. Ключевые болевые точки — устаревшие противоречия в цифрах, разрозненность курсов, скрытый «режим учителя» и отсутствие единого рабочего пространства команды.</p>
+    </div>
+    <div class="icon-grid">
+      <div class="icon-tile"><span class="n good">7/10</span><span class="t">общая оценка портала как витрины для учеников</span></div>
+      <div class="icon-tile"><span class="n mid">5/10</span><span class="t">пригодность как рабочего инструмента сотрудника</span></div>
+      <div class="icon-tile"><span class="n mid">6/10</span><span class="t">единообразие курсов и материалов</span></div>
+      <div class="icon-tile"><span class="n bad">3/10</span><span class="t">доступность инструментов для педагогов (статистика, управление)</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head"><span class="k">Позиция · Педагог дополнительного образования</span><h2>Казакевич К.М. и второй педагог — «веду занятия, работаю с курсами»</h2></div>
+
+    <div class="role-card">
+      <h3><span class="r-emoji">👨‍🏫</span>Педагог ДО (7 направлений)</h3>
+      <div class="r-role-sub">Курс робототехники, электроники, БПЛА, VR, САПР, проектная</div>
+      <h4 class="rc-otnoshenie">Что нравится / отношение</h4>
+      <ul class="loosen">
+        <li>Прогресс ученика сохраняется в браузере автоматически — удобно отслеживать, кто что прошёл.</li>
+        <li>В курсах есть готовые карточки-занятия, мини-квизы и шкалы — не надо готовить с нуля.</li>
+        <li>Единая точка входа (портал → курс) экономит время на объяснении «куда нажимать».</li>
+      </ul>
+      <h4 class="rc-kritika">Критика</h4>
+      <ul class="loosen">
+        <li><b>«Режим учителя» спрятан:</b> чтобы войти как педагог, нужно знать код <code style="font-family:var(--f-mono)">012345678</code>, жёстко зашитый в файл курса, или сделать 5 кликов для отключения ограничений. Нигде в интерфейсе это не описано — коллеге без подсказки не разобраться.</li>
+        <li><b>Код учителя общий для всех курсов-клонов</b> (одинаковый в робототехнике и в VR). Это удобно, но небезопасно: школьник, глянув в консоль, легко включает режим педагога и «открывает все занятия».</li>
+        <li>В <b>текстах встречаются артефакты</b> генерации: например, в «О курсе» робототехники склейка «…датчиков и <b style="color:var(--warn)">алгорведущие технические вузы</b>» — режет глаз родителям.</li>
+        <li>Список учителей в курсах захардкожен («Казакевич…») — <b>добавить второго педагога</b> вручную в каждом файле.</li>
+      </ul>
+      <h4 class="rc-pozhelanie">Пожелания</h4>
+      <ul class="loosen">
+        <li>Сделать «кабинет педагога» видимым и удобным: сводка по группам, прогресс каждого ученика, кнопка «открыть все», без хардкода кода.</li>
+        <li>Вынести управление педагогами в единую настройку портала, а не править каждый курс отдельно.</li>
+        <li>Прогнать все тексты курсов через вычитку — убрать склейки и опечатки.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head"><span class="k">Позиция · Инженер-лаборант</span><h2>«Отвечаю за оборудование и материалы, работаю в кабинете»</h2></div>
+    <div class="role-card">
+      <h3><span class="r-emoji">🔧</span>Инженер-лаборант (техник)</h3>
+      <div class="r-role-sub">Подготовка комплектов EV3/Arduino/Pico, FDM-принтеры, БПЛА, склад</div>
+      <h4 class="rc-otnoshenie">Что нравится</h4>
+      <ul class="loosen">
+        <li>На портале есть корректный перечень оборудования по каждой лаборатории — легко свериться.</li>
+        <li>Раздел «Кадры» с журналом статусов — хороший задел для учёта занятости персонала.</li>
+      </ul>
+      <h4 class="rc-kritika">Критика</h4>
+      <ul class="loosen">
+        <li><b>Для лаборанта на портале нет ничего</b> — нет журнала выдачи/ремонта, учёта расходников, карточек обслуживания. Всё ведётся вне системы.</li>
+        <li>Мусорные файлы в корне проекта (<code style="font-family:var(--f-mono)">0</code>, <code style="font-family:var(--f-mono)">20088</code>, <code style="font-family:var(--f-mono)">=0</code>, <code style="font-family:var(--f-mono)">Техннолог</code>) не имеют отношения к делу и мешают деплою.</li>
+        <li>Нет связи «какое оборудование нужно на какое занятие» — при подготовке приходится лезть в каждый конспект.</li>
+      </ul>
+      <h4 class="rc-pozhelanie">Пожелания</h4>
+      <ul class="loosen">
+        <li>Добавить в раздел «Контроль» журнал технического обслуживания: статусы комплектов, напоминания о калибровке, учёт расходников.</li>
+        <li>Привязать к каждому занятию перечень необходимого оборудования — лаборант видит его заранее.</li>
+        <li>Перенести контроль деятельности (ежедневные/еженедельные задачи) в видимый рабочий список, синхронный с порталом.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head"><span class="k">Позиция · Методист</span><h2>«Веду отчётность, методичку, соцсети и портал»</h2></div>
+    <div class="role-card">
+      <h3><span class="r-emoji">📚</span>Методист</h3>
+      <div class="r-role-sub">ДООП, КТП, диагностика, отчётность, соцсети, банк материалов</div>
+      <h4 class="rc-otnoshenie">Что нравится</h4>
+      <ul class="loosen">
+        <li>Портал — живая витрина: есть новости-статьи, банк курсов, разделы «Кадры» и «Финансирование» — хорошая база для отчётности о деятельности.</li>
+        <li>Редактируемые ФИО и статусы специалистов упрощают ведение состава команды.</li>
+      </ul>
+      <h4 class="rc-kritika">Критика</h4>
+      <ul class="loosen">
+        <li><b>Противоречие в числе лабораторий:</b> в шапке портала написано «Пять инженерных лабораторий», а в программе и навигации — 7. Для отчётов и для родителей это критичная несогласованность.</li>
+        <li>Статистика по ученикам и курсам **не собирается** на портале — методист ведёт её в Excel вручную, хотя данные есть в localStorage браузеров.</li>
+        <li>Контент курсов дублируется и расходится: у каждого курса свой самостоятельный «Список модулей», свои скрипты — редакторуется трудно.</li>
+        <li>Нет инструмента для составления отчётности автоматически (охват, прогресс, конкурсные результаты).</li>
+      </ul>
+      <h4 class="rc-pozhelanie">Пожелания</h4>
+      <ul class="loosen">
+        <li>Провести **аудит цифр** на всём портале: привести число лабораторий, часы, охват к единым значениям ДООП.</li>
+        <li>Добавить сводную статистику в личный кабинет/админ-панель: суммарный прогресс по курсам, активные ученики, конкурсные достижения.</li>
+        <li>Сделать единую админ-панель, из которой обновляются и портал, и курсы, и данные команды.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head"><span class="k">Позиция · Руководитель подразделения</span><h2>«Отвечаю за результат, отчётность перед директором и грантодателями»</h2></div>
+    <div class="role-card">
+      <h3><span class="r-emoji">🎯</span>Заведующий структурным подразделением</h3>
+      <div class="r-role-sub">Координация 7 направлений, гранты, партнёры, KPI</div>
+      <h4 class="rc-otnoshenie">Что нравится</h4>
+      <ul class="loosen">
+        <li>Разделы «Кадры», «Финансирование» и «Контроль деятельности» — реальная опора для управления (впервые появился видимый срез команды и бюджета).</li>
+        <li>Готовые шаблоны заявок на гранты и ссылки на порталы — существенная экономия времени на подготовку проектов.</li>
+      </ul>
+      <h4 class="rc-kritika">Критика</h4>
+      <ul class="loosen">
+        <li>Всё управление привязано к <b>одному человеку</b> (Казакевичу) — и как автору ДООП, и как единственному в «Базовом списке учителей». Для руководителя это риск непрерывности.</li>
+        <li>Портал работает на <b>localStorage в браузере</b> — данные не объединяются между устройствами; отчётность нельзя построить по факту, а не по «что в этом браузере».</li>
+        <li>Оплата труда, ставки и грантовые суммы рассчитаны, но на портале нет раздела с фактическим исполнением бюджета.</li>
+      </ul>
+      <h4 class="rc-pozhelanie">Пожелания</h4>
+      <ul class="loosen">
+        <li>Видеть на портале **дашборд объединения**: KPI, охват, конкурсные результаты, исполнение бюджета — одной страницей.</li>
+        <li>Добавить механизм экспорта/импорта данных, чтобы отчётность не зависела от одного браузера.</li>
+        <li>Сформировать план по переходу к серверному хранению (или хотя бы импорт/экспорт JSON), если проект выходит «в люди».</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head"><span class="k">Позиция · Студент-наставник (вуз-партнёр)</span><h2>«Веду модули, помогаю школьникам по направлениям»</h2></div>
+    <div class="role-card">
+      <h3><span class="r-emoji">🧑‍🔬</span>Студент-ведущий модуля</h3>
+      <div class="r-role-sub">Модульные блоки в лабораториях, тьюторство, подготовка к конкурсам</div>
+      <h4 class="rc-otnoshenie">Что нравится</h4>
+      <ul class="loosen">
+        <li>Готовые модули с темами и практикой — можно взять и вести, не изобретая программу.</li>
+        <li>Курсы хорошо адаптированы под телефон — удобно школьникам и наставнику на ходу.</li>
+      </ul>
+      <h4 class="rc-kritika">Критика</h4>
+      <ul class="loosen">
+        <li>Нет «режима наставника»: студент видит те же инструменты, что и школьник, и не может отмечать прогресс подопечных.</li>
+        <li>Вход строго через портал; если портал недоступен — курс не открывается как следует.</li>
+        <li>Часть материалов (особенно в VR/мини-курсах) требует шлема или спецоборудования — непросто, когда на занятии лишь несколько устройств.</li>
+      </ul>
+      <h4 class="rc-pozhelanie">Пожелания</h4>
+      <ul class="loosen">
+        <li>Добавить роль «наставник» с правами отмечать прогресс учеников и оставлять заметки.</li>
+        <li>Дать офлайн-режим или альтернативный вход без портала (например, по коду курса).</li>
+        <li>Расширить формат «мини-курс без гарнитуры» — чтобы вести VR-темы без полных комплектов.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head"><span class="k">Позиция · Специалисты предприятий-партнёров</span><h2>«Приходим на мастер-классы и в жюри»</h2></div>
+    <div class="role-card">
+      <h3><span class="r-emoji">🏭</span>Инженеры предприятий-партнёров (гостевые наставники)</h3>
+      <div class="r-role-sub">Эксперт-лекторы, ведущие модулей, эксперты на защитах</div>
+      <h4 class="rc-otnoshenie">Что нравится</h4>
+      <ul class="loosen">
+        <li>Понятно, куда и с какой темой приглашать: в курсах есть профориентационные блоки к модулям.</li>
+        <li>Материалы просто открыть и показать школьникам.</li>
+      </ul>
+      <h4 class="rc-kritika">Критика</h4>
+      <ul class="loosen">
+        <li>У партнёра-гостя <b>нет своего входа</b> и материалов «до» прихода — приходится заранее что-то переносить вручную.</li>
+        <li>На портале не видно, какие реальные задачи предприятий взяты в проекты учеников (хотя это есть в моделях взаимодействия).</li>
+      </ul>
+      <h4 class="rc-pozhelanie">Пожелания</h4>
+      <ul class="loosen">
+        <li>Сделать для партнёров «страницу гостя» с agenda визита, темой и материалами занятия.</li>
+        <li>Разместить на портале карточку реальных производственных задач, взятых в проектную работу, — это усиливает и репутацию, и профориентацию.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head"><span class="k">Сводные выводы по материалам</span><h2>Общие замечания к порталу, курсам и оформлению</h2></div>
+
+    <h4 style="font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">Сводка проверки блоков</h4>
+    <div class="tbl-scroll">
+    <table class="wide">
+      <thead><tr><th>Блок</th><th>Что нашли</th><th>Оценка для сотрудников</th></tr></thead>
+      <tbody>
+        <tr><td>Портал (витрина)</td><td>Хорошая структура, но противоречие «5 vs 7 лабораторий», устаревший текст в шапке</td><td><span class="chip mid" style="color:var(--warn);border-color:#FFAA00">средне</span></td></tr>
+        <tr><td>Портал (сервис)</td><td>Есть «Кадры», «Финансирование», «Контроль»; нет дашборда KPI и сводной статистики</td><td><span class="chip" style="color:var(--accent);border-color:#2D7AFF">хорошая база</span></td></tr>
+        <tr><td>Курсы (контент)</td><td>Наполнены и адаптивны; есть артефакты текста, разнобой, дублирование скриптов</td><td><span class="chip mid" style="color:var(--warn);border-color:#FFAA00">требует вычитки</span></td></tr>
+        <tr><td>Курсы (доступ)</td><td>Скрытый «режим учителя» с общим кодом, «вход только через портал»</td><td><span class="chip" style="color:var(--bad);border-color:#FF5C5C">неудобно и рискованно</span></td></tr>
+        <tr><td>Оформление</td><td>Единый тёмный стиль, светлая печатная версия; мусорные файлы в корне</td><td><span class="chip good" style="color:var(--ok);border-color:#00D68F">хорошо</span></td></tr>
+        <tr><td>Данные</td><td>Всё в localStorage браузера, нет экспорта/импорта, нет сервера</td><td><span class="chip" style="color:var(--bad);border-color:#FF5C5C">ограничивает</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="obshch">
+      <h3>Приоритетные меры (по версии сотрудников)</h3>
+      <ol>
+        <li><b>Устранить противоречие в числе лабораторий</b> («5» в шапке портала ↔ «7» в программе) — единая цифра везде.</li>
+        <li><b>Сделать рабочий «кабинет педагога/методиста»</b> с видимым прогрессом учеников и статистикой вместо скрытого кода.</li>
+        <li><b>Прогнать все тексты курсов через вычитку</b> (артефакты вида «алгорведущие технические вузы»), навести единообразие скриптов и списков учителей.</li>
+        <li><b>Добавить дашборд объединения</b> (KPI, охват, бюджет) для руководителя, отчётный экспорт данных.</li>
+        <li><b>Дать инструмент лаборанту</b> — журнал ТО и привязку оборудования к занятиям.</li>
+        <li><b>Убрать мусорные файлы</b> из корня проекта, чтобы они не мешали деплою и не смущали при передаче.</li>
+        <li><b>Планировать путь к серверному хранению</b> (или хотя бы импорт/экспорт), чтобы отчётность не зависела от одного браузера.</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    Документ сформирован по результатам проверки портала и курсов «Технологической лаборатории» · октябрь 2026. Содержит субъективные оценки сотрудников по ролям и служит основой для доработки. Внутренний рабочий документ.
+  </footer>
+</main>
+</body>
+</html>

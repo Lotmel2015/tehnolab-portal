@@ -279,6 +279,61 @@ body { overflow-x: hidden; }
   .ctl-pill.p-done b { color: var(--ok); } .ctl-pill.p-work b { color: var(--warn); } .ctl-pill.p-late b { color: #ff4d4d; } .ctl-pill.p-todo b { color: var(--muted); }
   .ctl-reset { background: transparent; border: 1px dashed var(--warn); color: var(--warn); font: 600 13px var(--f-body); padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: .18s; margin-top: 12px; }
   .ctl-reset:hover { background: rgba(255,170,0,.08); }
+  /* ==== Новая модель контроля: календарь, контуры, дедлайны ==== */
+  .ctl-cal { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 18px 0 4px; }
+  .ctl-cal input[type="date"] { background: var(--bg-elev); border: 1px solid var(--line); color: var(--ink); font: 600 13px var(--f-mono); padding: 8px 12px; border-radius: 8px; }
+  .ctl-cal-btn { background: var(--bg-card); border: 1px solid var(--line); color: var(--ink); font: 700 15px var(--f-body); padding: 7px 13px; border-radius: 8px; cursor: pointer; transition: .18s; }
+  .ctl-cal-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .ctl-cal-btn.ctl-today { font: 600 12px var(--f-body); border-color: var(--accent); color: var(--accent); }
+  .ctl-daylabel { font-family: var(--f-mono); font-size: 12px; color: var(--muted); margin-left: 4px; }
+  .ctl-daylabel.is-today { color: var(--ok); }
+  .ctl-filters { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 10px 0 2px; }
+  .ctl-flabel { font-family: var(--f-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-right: 2px; }
+  .ctl-flabel-who { margin-left: 8px; }
+  .ctl-fchip { background: transparent; border: 1px solid var(--line); color: var(--muted); font: 500 11.5px var(--f-body); padding: 4px 10px; border-radius: 999px; cursor: pointer; transition: .15s; }
+  .ctl-fchip:hover { background: var(--bg-card); color: var(--ink); }
+  .ctl-fchip.active { background: var(--bg-card); border-color: var(--accent); color: var(--ink); }
+  .ctl-actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0 4px; }
+  .ctl-act { background: var(--bg-card); border: 1px solid var(--line); color: var(--ink); font: 600 12.5px var(--f-body); padding: 8px 14px; border-radius: 8px; cursor: pointer; transition: .18s; display: inline-flex; align-items: center; gap: 6px; }
+  .ctl-act:hover { border-color: var(--accent); color: var(--accent); }
+  .ctl-file { position: relative; overflow: hidden; }
+  .ctl-catchip { display: inline-block; font-family: var(--f-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .04em; padding: 2px 8px; border-radius: 5px; margin: 2px 0 8px; }
+  .c-edu { color: #4db6ff; border: 1px solid rgba(77,182,255,.5); }
+  .c-visit { color: var(--ok); border: 1px solid rgba(0,214,143,.5); }
+  .c-mtb { color: #ffb74d; border: 1px solid rgba(255,183,77,.5); }
+  .c-fin { color: #f06292; border: 1px solid rgba(240,98,146,.5); }
+  .c-cont { color: var(--warn); border: 1px solid rgba(255,170,0,.5); }
+  .c-safe { color: #ff5252; border: 1px solid rgba(255,82,82,.5); }
+  .c-staff { color: #ba68c8; border: 1px solid rgba(186,104,200,.5); }
+  .c-media { color: #4dd0e1; border: 1px solid rgba(77,208,225,.5); }
+  .ctl-prio { flex: 0 0 auto; font-family: var(--f-mono); font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 5px; margin-top: 2px; }
+  .ctl-prio.c-a { color: #ff4d4d; border: 1px solid rgba(255,77,77,.6); }
+  .ctl-prio.c-b { color: var(--warn); border: 1px solid rgba(255,170,0,.5); }
+  .ctl-prio.c-c { color: var(--ok); border: 1px solid rgba(0,214,143,.5); }
+  .ctl-task .tl-q { color: var(--c06); border: 1px solid var(--c06); }
+  .ctl-pill.p-skip b { color: var(--c06); }
+  .ctl-empty { color: var(--muted); font-size: 14px; padding: 30px 0; text-align: center; }
+  /* ==== Контроль: роль сотрудника и форма задач ==== */
+  .ctl-mybar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: rgba(45,122,255,.07); border: 1px solid rgba(45,122,255,.25); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; padding: 12px 16px; margin: 10px 0 4px; }
+  .ctl-mybar .mm-name { font-weight: 700; color: var(--ink); }
+  .ctl-mybar .mm-pos { font-family: var(--f-mono); font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+  .ctl-mybar .mm-hint { color: var(--muted); font-size: 13px; }
+  .ctl-add-wrap { margin: 10px 0; }
+  .ctl-add-toggle { background: var(--bg-card); border: 1px dashed var(--accent); color: var(--accent); font: 600 13px var(--f-body); padding: 9px 16px; border-radius: 8px; cursor: pointer; transition: .18s; }
+  .ctl-add-toggle:hover { background: rgba(45,122,255,.1); }
+  .ctl-add-form { display: none; background: var(--bg-card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin-top: 8px; }
+  .ctl-add-form.show { display: block; }
+  .ctl-add-form .af-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 720px) { .ctl-add-form .af-grid { grid-template-columns: 1fr; } }
+  .ctl-add-form label { display: block; font-family: var(--f-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 4px; }
+  .ctl-add-form select, .ctl-add-form input[type="text"], .ctl-add-form input[type="date"] { width: 100%; background: var(--bg-elev); border: 1px solid var(--line); color: var(--ink); font: 13px/1.4 var(--f-body); padding: 7px 9px; border-radius: 6px; }
+  .ctl-add-form input[type="text"].af-wide { grid-column: 1 / -1; }
+  .ctl-add-form .af-actions { display: flex; gap: 10px; margin-top: 12px; }
+  .ctl-add-save { background: var(--accent); border: 0; color: #fff; font: 600 13px var(--f-body); padding: 9px 18px; border-radius: 8px; cursor: pointer; }
+  .ctl-add-save:hover { background: var(--accent-d); }
+  .ctl-block.ctl-mine { background: rgba(0,214,143,.04); border: 1px solid rgba(0,214,143,.2); border-radius: 12px; padding: 4px 14px 14px; }
+  .ctl-only-admin { display: none; }
+  .ctl-role-note { color: var(--muted); font-size: 13px; padding: 12px 0; }
 </style>
 </head>
 <body>
@@ -804,27 +859,85 @@ body { overflow-x: hidden; }
 <main class="panel" id="panel-control">
   <header class="hero">
     <span class="ctl-hero-tag">🔒 Только для администратора</span>
-    <div class="kicker">Контроль ежедневной и еженедельной деятельности · служебный раздел</div>
+    <div class="kicker">Контроль деятельности специалистов · календарь, контуры, дедлайны</div>
     <h1>Контроль<br><span class="ac">деятельности специалистов</span></h1>
-    <p class="lede">Оптимизированная модель ежедневных и еженедельных задач по каждому сотруднику. Для каждой задачи — статус выполнения, который фиксируется и сохраняется. Сводка показывает текущую нагрузку и прогресс команды.</p>
+    <p class="lede">Единая карта контроля по контурам: качество образования, посещаемость и КТП, материально-техническая база, финансы, конкурсы, безопасность, кадры, портал. Статусы по дням хранятся с историей — можно вернуться к любой дате. Просроченное подсвечивается автоматически по дедлайнам.</p>
+
+    <div class="ctl-mybar" id="ctlMyBar" style="display:none;">
+      <span class="mm-name" id="ctlMyName"></span>
+      <span class="mm-pos" id="ctlMyPos"></span>
+      <span class="mm-hint" id="ctlMyHint"></span>
+    </div>
+
+    <div class="ctl-add-wrap" id="ctlAddWrap" style="display:none;">
+      <button class="ctl-add-toggle" type="button" onclick="ctlToggleAddForm()">+ Новая задача</button>
+      <div class="ctl-add-form" id="ctlAddForm">
+        <div class="af-grid">
+          <div><label>Сотрудник</label><select id="afWho"></select></div>
+          <div><label>Периодичность</label><select id="afPm"><option value="d">Ежедневно</option><option value="w">Еженедельно</option><option value="m">Ежемесячно</option><option value="q">Квартально</option></select></div>
+          <div><label>Приоритет</label><select id="afPrio"><option value="A">A — высокий</option><option value="B">B — средний</option><option value="C">C — низкий</option></select></div>
+          <div><label>Контур</label><select id="afCat"></select></div>
+          <div class="af-wide"><label>Задача</label><input type="text" id="afTitle" placeholder="Краткая формулировка задачи"></div>
+          <div class="af-wide"><label>Описание / детали</label><input type="text" id="afDesc" placeholder="Что именно нужно сделать (необязательно)"></div>
+        </div>
+        <div class="af-actions">
+          <button class="ctl-add-save" type="button" onclick="ctlAddTask()">Добавить задачу</button>
+          <button class="ctl-act" type="button" onclick="ctlToggleAddForm()">Отмена</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ctl-cal">
+      <button class="ctl-cal-btn" type="button" onclick="ctlNav(-1)" title="Предыдущий день">‹</button>
+      <input type="date" id="ctlDate" value="" onchange="ctlPickDate()" aria-label="Дата контроля">
+      <button class="ctl-cal-btn" type="button" onclick="ctlNav(1)" title="Следующий день">›</button>
+      <button class="ctl-cal-btn ctl-today" id="ctlTodayBtn" type="button" onclick="ctlNav(0)">Сегодня</button>
+      <span class="ctl-daylabel" id="ctlDayLabel"></span>
+    </div>
+
     <div class="ctl-sum">
-      <div class="sum-card"><b id="ctlTotalTasks">0</b><span>всего задач в контрольном списке</span></div>
-      <div class="sum-card"><b id="ctlDoneTasks">0</b><span>выполнено сегодня / на этой неделе</span></div>
+      <div class="sum-card"><b id="ctlTotalTasks">0</b><span>задач в периоде</span></div>
+      <div class="sum-card"><b id="ctlDoneTasks">0</b><span>выполнено</span></div>
       <div class="sum-card"><b id="ctlWorkTasks">0</b><span>в работе</span></div>
       <div class="sum-card"><b id="ctlLateTasks">0</b><span>просрочено / требует внимания</span></div>
     </div>
+
     <div class="ctl-tabs">
-      <button class="ctl-tab active" data-per="daily" onclick="ctlFilter('daily', this)">Ежедневные</button>
-      <button class="ctl-tab" data-per="weekly" onclick="ctlFilter('weekly', this)">Еженедельные</button>
-      <button class="ctl-tab" data-per="monthly" onclick="ctlFilter('monthly', this)">Ежемесячные</button>
-      <button class="ctl-tab" data-per="all" onclick="ctlFilter('all', this)">Все задачи</button>
+      <button class="ctl-tab" data-per="all" onclick="ctlSetFilter('per','all',this)">Все периоды</button>
+      <button class="ctl-tab" data-per="d" onclick="ctlSetFilter('per','d',this)">Ежедневные</button>
+      <button class="ctl-tab active" data-per="w" onclick="ctlSetFilter('per','w',this)">Еженедельные</button>
+      <button class="ctl-tab" data-per="m" onclick="ctlSetFilter('per','m',this)">Ежемесячные</button>
+      <button class="ctl-tab" data-per="q" onclick="ctlSetFilter('per','q',this)">Квартальные</button>
+    </div>
+
+<div class="ctl-filters ctl-only-admin">
+      <span class="ctl-flabel">Исполнитель:</span>
+      <button class="ctl-fchip active" data-who="all" onclick="ctlSetFilter('who','all',this)">Все</button>
+      <button class="ctl-fchip" data-who="zav" onclick="ctlSetFilter('who','zav',this)">Зав.</button>
+      <button class="ctl-fchip" data-who="kazakevich" onclick="ctlSetFilter('who','kazakevich',this)">Педагог</button>
+      <button class="ctl-fchip" data-who="ped2" onclick="ctlSetFilter('who','ped2',this)">Педагог 2</button>
+      <button class="ctl-fchip" data-who="lab" onclick="ctlSetFilter('who','lab',this)">Лаборант</button>
+      <button class="ctl-fchip" data-who="metod" onclick="ctlSetFilter('who','metod',this)">Методист</button>
+      <button class="ctl-fchip" data-who="stud" onclick="ctlSetFilter('who','stud',this)">Студент</button>
+      <button class="ctl-fchip" data-who="auto" onclick="ctlSetFilter('who','auto',this)">Автомат.</button>
+      <button class="ctl-fchip" data-who="konstr" onclick="ctlSetFilter('who','konstr',this)">Констр.</button>
+      <button class="ctl-fchip" data-who="kipia" onclick="ctlSetFilter('who','kipia',this)">КИПиА</button>
+      <button class="ctl-fchip" data-who="rproj" onclick="ctlSetFilter('who','rproj',this)">Рук. проекта</button>
+    </div>
+
+    <div class="ctl-actions ctl-only-admin">
+      <button class="ctl-act" type="button" onclick="ctlWeekReport()" title="Сформировать текстовый отчёт за неделю и скопировать">📋 Отчёт за неделю</button>
+      <button class="ctl-act" type="button" onclick="ctlExport()" title="Скачать архив статусов в JSON">⬇ Экспорт</button>
+      <label class="ctl-act ctl-file">⬆ Импорт<input type="file" accept=".json,application/json" style="display:none" onchange="ctlImportFile(event)"></label>
       <button class="ctl-reset" type="button" onclick="ctlReset()">Сбросить статусы за день</button>
     </div>
+
     <div class="ctl-summary" id="ctlSummary">
       <div class="ctl-pill p-done"><b id="sumDone">0</b><span>выполнено</span></div>
       <div class="ctl-pill p-work"><b id="sumWork">0</b><span>в работе</span></div>
       <div class="ctl-pill p-late"><b id="sumLate">0</b><span>просрочено</span></div>
       <div class="ctl-pill p-todo"><b id="sumTodo">0</b><span>не начато</span></div>
+      <div class="ctl-pill p-skip"><b id="sumSkip">0</b><span>не актуально</span></div>
     </div>
   </header>
 
@@ -832,10 +945,17 @@ body { overflow-x: hidden; }
 </main>
 <footer> <div class="frow"> <div style="text-align:center;width:100%;"> <b style="color:var(--ink);">Объединение «Технологическая лаборатория»</b><br> Создавай. Управляй. Запускай. </div> </div>
 </footer> <script src="tl-portal-core.js"></script> <script> function isAdminUser() { try { var u = (typeof TLCore !== 'undefined') ? TLCore.currentUser() : null; return !!(u && u.role === 'admin'); } catch (e) { return false; } }
-  var ADMIN_TABS = ['staff', 'finance', 'control'];
+  var ADMIN_TABS = ['staff', 'finance'];
+  var STAFF_TABS = ['control'];
   function isAdminTabName(name) { var n = String(name || '').replace('panel-', ''); return ADMIN_TABS.indexOf(n) !== -1; }
+  function isStaffTabName(name) { var n = String(name || '').replace('panel-', ''); return STAFF_TABS.indexOf(n) !== -1; }
+  function isControlAllowed() {
+    if (isAdminUser()) return true;
+    try { var u = TLCore.currentUser(); return !!(u && u.role === 'teacher' && u.position); } catch(e) { return false; }
+  }
   function switchTab(name) {
     if (isAdminTabName(name) && !isAdminUser()) { if (window.scrollTo) window.scrollTo(0, 0); return; }
+    if (isStaffTabName(name) && !isControlAllowed()) { if (window.scrollTo) window.scrollTo(0, 0); return; }
     var panels = document.querySelectorAll('main.panel'); for (var i = 0; i < panels.length; i++) { panels[i].classList.remove('active'); }
     var el = document.getElementById('panel-' + name);
     if (!el) return;
@@ -846,13 +966,23 @@ body { overflow-x: hidden; }
   }
   function refreshAdminTabs() {
     var admin = isAdminUser();
+    var ctrlOk = isControlAllowed();
     var adminBtns = document.querySelectorAll('.tab-btn.tl-admin-tab');
-    adminBtns.forEach(function (b) { b.classList.toggle('tl-visible', admin); if (!admin) b.classList.remove('active'); });
+    adminBtns.forEach(function (b) {
+      var tab = b.getAttribute('data-tab');
+      var visible = isAdminTabName(tab) ? admin : (isStaffTabName(tab) ? ctrlOk : false);
+      b.classList.toggle('tl-visible', visible);
+      if (!visible) b.classList.remove('active');
+    });
     if (!admin) {
       for (var k = 0; k < ADMIN_TABS.length; k++) {
         var p = document.getElementById('panel-' + ADMIN_TABS[k]);
         if (p) p.classList.remove('active');
       }
+    }
+    if (!ctrlOk) {
+      var pc = document.getElementById('panel-control');
+      if (pc) pc.classList.remove('active');
     }
   }
   var tabs = document.getElementById('tabs');
@@ -1078,49 +1208,83 @@ if (typeof TLCore !== 'undefined' && TLCore.on) {
     bindEditableFields();
   }
   if (document.readyState !== 'loading') initStaffEditable(); else document.addEventListener('DOMContentLoaded', initStaffEditable);
-  // ==== Контроль ежедневной/еженедельной деятельности ====
-  var CTL_KEY = 'tl-control-' + new Date().toISOString().slice(0,10);
+  // ==== Контроль деятельности: календарь, контуры, дедлайны (новая модель) ====
+  var CTL_LOG_KEY = 'tl-control-log-v2';
+  var CTL_TODAY = new Date();
+  function ctlFmtDate(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  function ctlTodayStr(){ try { return ctlFmtDate(new Date()); } catch(e){ return ''; } }
+  function ctlAddDays(ds, n){ var d = new Date(ds.getTime()); d.setDate(d.getDate() + n); return d; }
+  function ctlWeekStart(ds){ var d = new Date(ds.getTime()); var day = (d.getDay() + 6) % 7; d.setDate(d.getDate() - day); return d; }
+  function ctlMonthStart(ds){ return new Date(ds.getFullYear(), ds.getMonth(), 1); }
+  function ctlRuDate(ymd){ if(!ymd) return ''; var p = ymd.split('-'); var d = new Date(+p[0], +p[1]-1, +p[2]); return d.toLocaleDateString('ru-RU', { day:'numeric', month:'long', year:'numeric' }); }
+  function ctlRuShort(ymd){ if(!ymd) return ''; var p = ymd.split('-'); var d = new Date(+p[0], +p[1]-1, +p[2]); return d.toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit', year:'2-digit' }); }
+
+  // Контуры контроля
+  var CTL_CATS = {
+    'edu':    { l:'Качество образования', cl:'c-edu' },
+    'visit':  { l:'Посещаемость и КТП',   cl:'c-visit' },
+    'mtb':    { l:'Материально-техническая база', cl:'c-mtb' },
+    'fin':    { l:'Финансы и закупки',    cl:'c-fin' },
+    'cont':   { l:'Конкурсы и проекты',   cl:'c-cont' },
+    'safe':   { l:'Безопасность и инструктажи', cl:'c-safe' },
+    'staff':  { l:'Кадры и методика',     cl:'c-staff' },
+    'media':  { l:'Портал и соцсети',     cl:'c-media' }
+  };
+  // Дедлайны: due = 'd' (каждый день), 'w1..w5' (день недели: пн=1...вс=7), 'm1..m31' (число месяца), 'q' (каждый квартал)
+  // Автопросрочка срабатывает, если due-момент уже прошёл, а задача не выполнена.
   var CTL_TASKS = [
-    { who:'zav', name:'Руководитель ТЛ', role:'Заведующий', per:'daily', t:'Контроль посещаемости во всех лабораториях', d:'проверка по сводке электронного журнала' },
-    { who:'zav', name:'Руководитель ТЛ', role:'Заведующий', per:'daily', t:'Оперативные решения по текущим вопросам', d:'разбор инцидентов, смена раскладов, срочные распоряжения' },
-    { who:'zav', name:'Руководитель ТЛ', role:'Заведующий', per:'weekly', t:'Планёрка с педагогами', d:'итоги недели, планы, распределение нагрузки' },
-    { who:'zav', name:'Руководитель ТЛ', role:'Заведующий', per:'weekly', t:'Контроль занятий', d:'посещение/проверка минимум 2 занятий, фиксация в журнале' },
-    { who:'zav', name:'Руководитель ТЛ', role:'Заведующий', per:'weekly', t:'Переговоры с партнёрами', d:'статус наставничества и задач от предприятий-партнёров' },
-    { who:'zav', name:'Руководитель ТЛ', role:'Заведующий', per:'weekly', t:'Работа с отчётностью', d:'посещаемость недели, сводка для директора' },
-
-    { who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', per:'daily', t:'Проведение занятий по КТП', d:'4 ак.ч / направление по расписанию субботы' },
-    { who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', per:'daily', t:'Заполнение электронного журнала', d:'посещаемость и отметки за занятие' },
-    { who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', per:'weekly', t:'Планирование занятий по КТП', d:'корректировка по темпам групп' },
-    { who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', per:'weekly', t:'Подготовка методических материалов', d:'карты занятий, кейсы, раздатки' },
-    { who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', per:'weekly', t:'Работа с проектными командами', d:'консультации по проектам, контроль этапов' },
-    { who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', per:'weekly', t:'Методобъединение', d:'участие в методическом совете ТЛ' },
-
-    { who:'ped2', name:'Второй педагог ДО', role:'Педагог ДО', per:'daily', t:'Проведение занятий по своим лабораториям', d:'1–3 направления по матрице компетенций' },
-    { who:'ped2', name:'Второй педагог ДО', role:'Педагог ДО', per:'daily', t:'Заполнение журнала посещаемости', d:'свои группы по расписанию субботы' },
-    { who:'ped2', name:'Второй педагог ДО', role:'Педагог ДО', per:'weekly', t:'Подготовка и планирование занятий', d:'по КТП, согласование с руководителем' },
-    { who:'ped2', name:'Второй педагог ДО', role:'Педагог ДО', per:'weekly', t:'Наставничество студентов-практикантов', d:'2–3 студента, проверка отчётных материалов' },
-
-    { who:'lab', name:'Инженер-лаборант', role:'Техника', per:'daily', t:'Проверка и выдача комплектов', d:'EV3, Arduino, Pico 4, БПЛА, паяльные станции' },
-    { who:'lab', name:'Инженер-лаборант', role:'Техника', per:'daily', t:'Мониторинг 3D-печати', d:'запуск/контроль FDM-принтеров, качество деталей' },
-    { who:'lab', name:'Инженер-лаборант', role:'Техника', per:'daily', t:'Журнал учёта оборудования', d:'выдача/возврат, техническое состояние' },
-    { who:'lab', name:'Инженер-лаборант', role:'Техника', per:'weekly', t:'Техническое обслуживание', d:'диагностика, мелкий ремонт, чистка' },
-    { who:'lab', name:'Инженер-лаборант', role:'Техника', per:'weekly', t:'Обновление и настройка ПО', d:'EV3 Classroom, Arduino IDE, Blender, КОМПАС, Unity, Betaflight' },
-    { who:'lab', name:'Инженер-лаборант', role:'Техника', per:'weekly', t:'Закупка расходников', d:'контроль остатков PLA, компонентов, LiPo, припоя' },
-
-    { who:'metod', name:'Методист', role:'Методика', per:'daily', t:'Сбор статистики и подготовка отчётов', d:'посещаемость, конкурсные результаты' },
-    { who:'metod', name:'Методист', role:'Методика', per:'weekly', t:'Ведение соцсетей и портала', d:'новости, анонсы, фотоотчёты, «живой» контент' },
-    { who:'metod', name:'Методист', role:'Методика', per:'weekly', t:'Мониторинг конкурсного календаря', d:'«Большие вызовы», НТО, ВсОШ — сроки и заявки' },
-    { who:'metod', name:'Методист', role:'Методика', per:'weekly', t:'Методсопровождение ДООП', d:'актуализация материалов, помощь педагогам с заявками' },
-
-    { who:'stud', name:'Студент-ведущий модуля', role:'вуз-партнёр · практика', per:'weekly', t:'Ведение назначенных модулей', d:'1–3 тематических блока 8–32 ч под наблюдением наставника' },
-    { who:'stud', name:'Студент-ведущий модуля', role:'вуз-партнёр · практика', per:'weekly', t:'Тьюторство и сопровождение команд', d:'самостоятельная работа обучающихся' },
-
-    { who:'auto', name:'Инженер-автоматизатор', role:'предприятие-партнёр · эксперт', per:'weekly', t:'Мастер-классы по робототехнике', d:'LAB.01–02, по расписанию модулей' },
-    { who:'konstr', name:'Конструктор / нормоконтролёр', role:'предприятие-партнёр · эксперт', per:'weekly', t:'Занятия модуля ЕСКД', d:'LAB.03–04, разбор чертежей' },
-    { who:'konstr', name:'Конструктор / нормоконтролёр', role:'предприятие-партнёр · эксперт', per:'weekly', t:'Проверка чертежей учащихся', d:'нормоконтроль учебных работ' },
-    { who:'kipia', name:'Инженер КИПиА / метролог', role:'предприятие-партнёр · техэксперт', per:'monthly', t:'Технический аудит оборудования', d:'поверка, калибровка пайки/FDM, диагностика БПЛА' },
-    { who:'rproj', name:'Руководитель проекта', role:'предприятие-партнёр · наставник', per:'weekly', t:'Сопровождение команд проектов', d:'2 встречи/мес, постановка задач, предзащиты' }
+    // ── Качество образования ──
+    { cat:'edu', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'w', due:'w6', prio:'A', t:'Контроль качества занятий', d:'посещение минимум 2 занятий в неделю, оценка по чек-листу' },
+    { cat:'edu', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'m', due:'m28', prio:'A', t:'Промежуточная аттестация обучающихся', d:'анализ освоения программ по лабораториям' },
+    { cat:'edu', who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', pm:'w', due:'w6', prio:'A', t:'Проверка практических работ', d:'обратная связь по работам за неделю' },
+    { cat:'edu', who:'ped2', name:'Второй педагог ДО', role:'Педагог ДО', pm:'w', due:'w6', prio:'B', t:'Анализ успеваемости групп', d:'сводка по своей лаборатории' },
+    { cat:'edu', who:'metod', name:'Методист', role:'Методика', pm:'m', due:'m5', prio:'B', t:'Срез знаний (мониторинг)', d:'диагностика по направлениям, фиксация результатов' },
+    // ── Посещаемость и КТП ──
+    { cat:'visit', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'d', due:'d', prio:'A', t:'Контроль посещаемости', d:'проверка по сводке электронного журнала' },
+    { cat:'visit', who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', pm:'d', due:'d', prio:'A', t:'Проведение занятий по КТП', d:'4 ак.ч / направление по расписанию субботы' },
+    { cat:'visit', who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', pm:'d', due:'d', prio:'A', t:'Заполнение электронного журнала', d:'посещаемость и отметки за занятие' },
+    { cat:'visit', who:'ped2', name:'Второй педагог ДО', role:'Педагог ДО', pm:'d', due:'d', prio:'A', t:'Проведение занятий по своим лабораториям', d:'1–3 направления по матрице компетенций' },
+    { cat:'visit', who:'ped2', name:'Второй педагог ДО', role:'Педагог ДО', pm:'d', due:'d', prio:'B', t:'Журнал посещаемости', d:'свои группы по расписанию субботы' },
+    { cat:'visit', who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', pm:'w', due:'w5', prio:'B', t:'Планирование занятий по КТП', d:'корректировка по темпам групп' },
+    { cat:'visit', who:'metod', name:'Методист', role:'Методика', pm:'d', due:'d', prio:'B', t:'Сводка посещаемости за день', d:'сбор данных для заведующего' },
+    // ── Материально-техническая база ──
+    { cat:'mtb', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'d', due:'d', prio:'A', t:'Проверка и выдача комплектов', d:'EV3, Arduino, Pico 4, БПЛА, паяльные станции' },
+    { cat:'mtb', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'d', due:'d', prio:'B', t:'Мониторинг 3D-печати', d:'запуск/контроль FDM-принтеров, качество деталей' },
+    { cat:'mtb', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'d', due:'d', prio:'B', t:'Журнал учёта оборудования', d:'выдача/возврат, техническое состояние' },
+    { cat:'mtb', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'w', due:'w2', prio:'B', t:'Техническое обслуживание', d:'диагностика, мелкий ремонт, чистка' },
+    { cat:'mtb', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'w', due:'w3', prio:'B', t:'Обновление и настройка ПО', d:'EV3 Classroom, Arduino IDE, Blender, КОМПАС, Unity, Betaflight' },
+    { cat:'mtb', who:'kipia', name:'Инженер КИПиА / метролог', role:'Техэксперт', pm:'m', due:'m15', prio:'A', t:'Технический аудит оборудования', d:'поверка, калибровка пайки/FDM, диагностика БПЛА' },
+    { cat:'mtb', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'q', due:'q', prio:'B', t:'Инвентаризация оборудования', d:'сверка остатков, списание, акты' },
+    // ── Финансы и закупки ──
+    { cat:'fin', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'w', due:'w5', prio:'A', t:'Контроль бюджета недели', d:'расходы, сверка с планом' },
+    { cat:'fin', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'w', due:'w4', prio:'B', t:'Закупка расходников', d:'контроль остатков PLA, компонентов, LiPo, припоя' },
+    { cat:'fin', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'m', due:'m3', prio:'A', t:'Отчётность по грантам/субсидиям', d:'подготовка и подача отчётов' },
+    { cat:'fin', who:'metod', name:'Методист', role:'Методика', pm:'m', due:'m10', prio:'B', t:'Мониторинг грантовых окон', d:'Фонд президентских грантов и др., сроки заявок' },
+    // ── Конкурсы и проекты ──
+    { cat:'cont', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'w', due:'w6', prio:'B', t:'Переговоры с партнёрами', d:'статус наставничества и задач от предприятий-партнёров' },
+    { cat:'cont', who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', pm:'w', due:'w6', prio:'B', t:'Работа с проектными командами', d:'консультации по проектам, контроль этапов' },
+    { cat:'cont', who:'metod', name:'Методист', role:'Методика', pm:'w', due:'w4', prio:'B', t:'Мониторинг конкурсного календаря', d:'«Большие вызовы», НТО, ВсОШ — сроки и заявки' },
+    { cat:'cont', who:'rproj', name:'Руководитель проекта', role:'Наставник', pm:'w', due:'w6', prio:'B', t:'Сопровождение команд проектов', d:'2 встречи/мес, постановка задач, предзащиты' },
+    { cat:'cont', who:'stud', name:'Студент-ведущий модуля', role:'вуз-партнёр · практика', pm:'w', due:'w6', prio:'B', t:'Ведение назначенных модулей', d:'1–3 тематических блока 8–32 ч под наблюдением наставника' },
+    // ── Безопасность и инструктажи ──
+    { cat:'safe', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'m', due:'m1', prio:'A', t:'Инструктажи по технике безопасности', d:'журнал инструктажей, отметки обучающихся' },
+    { cat:'safe', who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', pm:'d', due:'d', prio:'A', t:'Проверка безопасности на занятии', d:'пайка, БПЛА, 3D-печать, VR — по чек-листу' },
+    { cat:'safe', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'w', due:'w1', prio:'A', t:'Проверка СИЗ и электроинструмента', d:'исправность, наличие средств защиты' },
+    // ── Кадры и методика ──
+    { cat:'staff', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'w', due:'w1', prio:'A', t:'Планёрка с педагогами', d:'итоги недели, планы, распределение нагрузки' },
+    { cat:'staff', who:'metod', name:'Методист', role:'Методика', pm:'w', due:'w5', prio:'B', t:'Методсопровождение ДООП', d:'актуализация материалов, помощь педагогам с заявками' },
+    { cat:'staff', who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', pm:'w', due:'w3', prio:'B', t:'Методобъединение', d:'участие в методическом совете ТЛ' },
+    { cat:'staff', who:'ped2', name:'Второй педагог ДО', role:'Педагог ДО', pm:'w', due:'w3', prio:'B', t:'Наставничество студентов-практикантов', d:'2–3 студента, проверка отчётных материалов' },
+    { cat:'staff', who:'auto', name:'Инженер-автоматизатор', role:'Эксперт', pm:'w', due:'w6', prio:'C', t:'Мастер-классы по робототехнике', d:'LAB.01–02, по расписанию модулей' },
+    { cat:'staff', who:'konstr', name:'Конструктор / нормоконтролёр', role:'Эксперт', pm:'w', due:'w6', prio:'C', t:'Занятия модуля ЕСКД', d:'LAB.03–04, разбор чертежей' },
+    { cat:'staff', who:'konstr', name:'Конструктор / нормоконтролёр', role:'Эксперт', pm:'w', due:'w6', prio:'C', t:'Нормоконтроль чертежей учащихся', d:'проверка учебных работ' },
+    { cat:'staff', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'m', due:'m2', prio:'B', t:'Мониторинг нагрузки сотрудников', d:'анализ загруженности, корректировка планов' },
+    // ── Портал и соцсети ──
+    { cat:'media', who:'metod', name:'Методист', role:'Методика', pm:'w', due:'w6', prio:'B', t:'Ведение соцсетей и портала', d:'новости, анонсы, фотоотчёты, «живой» контент' },
+    { cat:'media', who:'metod', name:'Методист', role:'Методика', pm:'m', due:'m20', prio:'C', t:'Аналитика посещаемости портала', d:'просмотры, заявки, конверсия' },
+    { cat:'media', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'m', due:'m25', prio:'B', t:'Работа с отчётностью для директора', d:'сводка по направлениям, результаты месяца' }
   ];
+
   var CTL_STATES = [
     {v:'todo', l:'Не начато', cl:'st-todo'},
     {v:'work', l:'В работе', cl:'st-work'},
@@ -1128,85 +1292,398 @@ if (typeof TLCore !== 'undefined' && TLCore.on) {
     {v:'late', l:'Просрочено', cl:'st-late'},
     {v:'skip', l:'Не актуально', cl:'st-skip'}
   ];
-  function ctlData() { try { return JSON.parse(localStorage.getItem(CTL_KEY) || '[]') || []; } catch(e){ return []; } }
-  function ctlSaveData(arr) { try { localStorage.setItem(CTL_KEY, JSON.stringify(arr)); } catch(e){} }
-  function ctlStateOf(i) { var d = ctlData(); return d[i] || 'todo'; }
-  function ctlSetStatus(i, s) { var d = ctlData(); d[i] = s; ctlSaveData(d); ctlRender(); }
-  function ctlFilter(per, btn) {
-    document.querySelectorAll('.ctl-tab').forEach(function(b){ b.classList.toggle('active', b === btn); });
-    ctlApplyFilter(per);
+
+  function ctlLog() { try { return JSON.parse(localStorage.getItem(CTL_LOG_KEY) || '{}') || {}; } catch(e){ return {}; } }
+  function ctlSaveLog(log) { try { localStorage.setItem(CTL_LOG_KEY, JSON.stringify(log)); } catch(e){} }
+  function ctlDayLog(ymd) { var log = ctlLog(); return log[ymd] || {}; }
+  // Статус задачи на заданный день с автопросрочкой
+  function ctlStatusOf(i, ymd) {
+    var day = ctlDayLog(ymd);
+    if (day[i] && day[i] !== 'todo') return day[i];
+    var t = CTL_TASKS[i];
+    if (ctlIsDuePassed(t, ymd)) {
+      var log = ctlLog(); var dl = log[ymd] || {}; if (dl[i] === 'done' || dl[i] === 'skip') return dl[i];
+      return 'late';
+    }
+    return day[i] || 'todo';
+  }
+  // Прошёл ли дедлайн задачи к вечеру даты ymd
+  function ctlIsDuePassed(t, ymd) {
+    if (!t || !t.due || t.due === 'q') return false;
+    var p = ymd.split('-'); var ds = new Date(+p[0], +p[1]-1, +p[2]);
+    var dueDate = null;
+    if (t.due === 'd') dueDate = ds;
+    else if (t.due.charAt(0) === 'w') { var wd = +t.due.slice(1); var ws = ctlWeekStart(ds); dueDate = ctlAddDays(ws, (wd + 6) % 7); if (dueDate > ds) dueDate = null; }
+    else if (t.due.charAt(0) === 'm') { var md = +t.due.slice(1); var ms = ctlMonthStart(ds); var dd = Math.min(md, new Date(ds.getFullYear(), ds.getMonth()+1, 0).getDate()); dueDate = new Date(ds.getFullYear(), ds.getMonth(), dd); if (dueDate > ds) dueDate = null; }
+    if (!dueDate) return false;
+    return ds.getTime() > dueDate.getTime();
+  }
+  // Отображать ли задачу в выбранном периоде (для daily — каждый день; weekly — в день недели due или весь будний день; monthly — весь месяц)
+  function ctlVisibleOn(t, ymd) {
+    var p = ymd.split('-'); var ds = new Date(+p[0], +p[1]-1, +p[2]);
+    if (t.pm === 'd') return true;
+    if (t.pm === 'w' && t.due && t.due.charAt(0) === 'w') {
+      var wd = +t.due.slice(1); var dow = (ds.getDay() + 6) % 7;
+      return dow === ((wd + 6) % 7);
+    }
+    if (t.pm === 'w') return true; // недельная без дня — показываем в понедельник
+    if (t.pm === 'm') return t.due.charAt(0) === 'm' ? (+p[2] === Math.min(+t.due.slice(1), 31)) : (+p[2] === 1);
+    if (t.pm === 'q') return (+p[1] === 1 || +p[1] === 4 || +p[1] === 7 || +p[1] === 10) && (+p[2] === 1);
+    return true;
+  }
+
+  // Состояние UI
+  var ctlCurDay = ctlTodayStr();
+  var ctlFPer = 'w';     // период: all | d | w | m | q
+  var ctlFCat = 'all';   // контур
+  var ctlFWho = 'all';   // исполнитель
+  var ctlFSt = 'all';    // статус
+
+  function ctlSave(i, v, ymd) {
+    var log = ctlLog();
+    if (!log[ymd]) log[ymd] = {};
+    if (v === 'todo') delete log[ymd][i]; else log[ymd][i] = v;
+    ctlSaveLog(log);
+    ctlRender();
+  }
+  // Перенос несделанного: при открытии дня, следующего за последним просмотром, daily-задачи остаются невыполненными
+  function ctlRollover(ymd) {
+    var log = ctlLog();
+    var last = log._last || '';
+    if (last && last !== ymd) {
+      // нового ничего не делаем: статусы по дням — историчны. Просто фиксируем текущий день.
+    }
+    log._last = ymd;
+    ctlSaveLog(log);
+  }
+
+  function ctlSetStatus(i, v) {
+    if (!ctlCanEdit(CTL_TASKS[i].who)) { alert('У вас нет прав менять эту задачу.'); ctlRender(); return; }
+    ctlSave(i, v, ctlCurDay);
+  }
+
+  // Фильтры
+  function ctlSetFilter(kind, val, btn) {
+    if (kind === 'per') ctlFPer = val;
+    else if (kind === 'cat') ctlFCat = val;
+    else if (kind === 'who') ctlFWho = val;
+    else if (kind === 'st') ctlFSt = val;
+    if (btn) {
+      var grp = btn.parentNode;
+      if (grp) grp.querySelectorAll('.active').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+    }
     ctlRenderBlocks();
   }
-  function ctlCurrentFilter() { var a = document.querySelector('.ctl-tab.active'); return a ? a.getAttribute('data-per') : 'all'; }
-  function ctlTaskRow(i, t) {
-    var s = CTL_STATES.filter(function(x){ return x.v === ctlStateOf(i); })[0] || CTL_STATES[0];
-    var opts = CTL_STATES.map(function(st){ return '<option value="' + st.v + '"' + (st.v === s.v ? ' selected' : '') + '>' + st.l + '</option>'; }).join('');
-    var perCls = t.per === 'daily' ? 'tl-d' : (t.per === 'weekly' ? 'tl-w' : 'tl-m');
-    var perLbl = t.per === 'daily' ? 'ДЕНЬ' : (t.per === 'weekly' ? 'НЕД' : 'МЕС');
-    return '<div class="ctl-task" data-per="' + t.per + '" data-i="' + i + '">' +
-      '<span class="t-lbl ' + perCls + '">' + perLbl + '</span>' +
+  function ctlNav(offset) {
+    var p = ctlCurDay.split('-'); var ds = new Date(+p[0], +p[1]-1, +p[2]);
+    var nd = ctlAddDays(ds, offset);
+    ctlCurDay = ctlFmtDate(nd);
+    if (offset === 0) ctlCurDay = ctlTodayStr();
+    var inp = document.getElementById('ctlDate');
+    if (inp) inp.value = ctlCurDay;
+    ctlRollover(ctlCurDay);
+    ctlRender();
+  }
+  function ctlPickDate() {
+    var inp = document.getElementById('ctlDate');
+    if (!inp || !inp.value) return;
+    ctlCurDay = inp.value;
+    ctlRollover(ctlCurDay);
+    ctlRender();
+  }
+
+  // Сводка за период (день/неделя/месяц)
+  function ctlPeriodRange(ymd) {
+    var p = ymd.split('-'); var ds = new Date(+p[0], +p[1]-1, +p[2]);
+    var from, to;
+    if (ctlFPer === 'd' || ctlFPer === 'all') { from = ds; to = ds; }
+    else if (ctlFPer === 'w') { from = ctlWeekStart(ds); to = ctlAddDays(from, 6); }
+    else if (ctlFPer === 'm') { from = ctlMonthStart(ds); to = new Date(ds.getFullYear(), ds.getMonth()+1, 0); }
+    else if (ctlFPer === 'q') { var qm = Math.floor(ds.getMonth()/3)*3; from = new Date(ds.getFullYear(), qm, 1); to = new Date(ds.getFullYear(), qm+3, 0); }
+    else { from = ds; to = ds; }
+    var days = [];
+    for (var dd = new Date(from.getTime()); dd <= to; dd = ctlAddDays(dd, 1)) days.push(ctlFmtDate(dd));
+    return days;
+  }
+  function ctlDayStatus(i, ymd, ds) {
+    // статус на конкретную дату (для агрегатов за период): берём фактический или автопросрочку
+    var day = ctlDayLog(ymd);
+    if (day[i] && day[i] !== 'todo') return day[i];
+    var t = CTL_TASKS[i];
+    if (ctlIsDuePassed(t, ymd)) return 'late';
+    return 'todo';
+  }
+  function ctlAggregate() {
+    var days = ctlPeriodRange(ctlCurDay);
+    var counts = { done:0, work:0, late:0, todo:0, skip:0, total:0 };
+    var byCat = {};
+    CTL_TASKS.forEach(function(t, i){
+      var shown = false;
+      days.forEach(function(ymd){ if (ctlVisibleOn(t, ymd)) shown = true; });
+      if (!shown) return;
+      counts.total++;
+      var st = 'todo';
+      days.forEach(function(ymd){ var s = ctlDayStatus(i, ymd); if (s === 'done' || s === 'work' || s === 'late') { st = s; } });
+      if (counts[st] !== undefined) counts[st]++;
+      var c = t.cat; if (!byCat[c]) byCat[c] = { total:0, done:0 };
+      byCat[c].total++; if (st === 'done') byCat[c].done++;
+    });
+    return { counts: counts, byCat: byCat };
+  }
+
+  // Рендер
+  function ctlTaskRow(i, ymd) {
+    var t = CTL_TASKS[i];
+    var s = ctlStatusOf(i, ymd);
+    var st = CTL_STATES.filter(function(x){ return x.v === s; })[0] || CTL_STATES[0];
+    var opts = CTL_STATES.map(function(x){ return '<option value="' + x.v + '"' + (x.v === s ? ' selected' : '') + '>' + x.l + '</option>'; }).join('');
+    var canEdit = ctlCanEdit(t.who);
+    var selAttrs = canEdit ? 'onchange="ctlSetStatus(' + i + ', this.value)"' : 'disabled title="Нет прав на редактирование этой задачи"';
+    var pmLbl = t.pm === 'd' ? 'ДЕНЬ' : (t.pm === 'w' ? 'НЕД' : (t.pm === 'm' ? 'МЕС' : 'КВ'));
+    var pmCls = t.pm === 'd' ? 'tl-d' : (t.pm === 'w' ? 'tl-w' : (t.pm === 'm' ? 'tl-m' : 'tl-q'));
+    var prio = t.prio ? '<span class="ctl-prio c-' + t.prio.toLowerCase() + '">' + t.prio + '</span>' : '';
+    return '<div class="ctl-task" data-i="' + i + '">' +
+      '<span class="t-lbl ' + pmCls + '">' + pmLbl + '</span>' +
+      prio +
       '<div class="t-body"><div class="t-name">' + t.t + '</div><div class="t-meta">' + t.d + '</div></div>' +
-      '<select class="t-st ' + s.cl + '" data-i="' + i + '" onchange="ctlSetStatus(' + i + ', this.value)">' + opts + '</select>' +
+      '<select class="t-st ' + st.cl + '" data-i="' + i + '" ' + selAttrs + '>' + opts + '</select>' +
       '</div>';
   }
-  function ctlApplyFilter(per) {
-    var blocks = document.querySelectorAll('#ctlBlocks .ctl-block');
-    blocks.forEach(function(b){
-      if (per === 'all') { b.style.display = ''; return; }
-      var has = b.querySelector('.ctl-task[data-per="' + per + '"]');
-      var relevant = per === 'daily' || per === 'weekly' || per === 'monthly';
-      b.style.display = has ? '' : 'none';
-      b.querySelectorAll('.ctl-task').forEach(function(t){ t.style.display = t.getAttribute('data-per') === per ? '' : 'none'; });
-    });
+  function ctlCatChip(cat) {
+    var c = CTL_CATS[cat];
+    return '<span class="ctl-catchip ' + (c ? c.cl : '') + '">' + (c ? c.l : cat) + '</span>';
   }
   function ctlRenderBlocks() {
     var wrap = document.getElementById('ctlBlocks');
     if (!wrap) return;
-    var per = ctlCurrentFilter();
-    var html = '';
-    CTL_TASKS.forEach(function(t, i){ t._i = i; });
+    var ymd = ctlCurDay;
+    ctlRollover(ymd);
+    var days = ctlPeriodRange(ymd);
+    var agg = ctlAggregate();
+    var meWho = ctlMeWho();
+    var isAdmin = isAdminUser();
+    var scopeWho = (!isAdmin && meWho) ? meWho : ctlFWho;
     var byWho = {};
     CTL_TASKS.forEach(function(t, i){ var k = t.who; if (!byWho[k]) byWho[k] = []; byWho[k].push(i); });
-    html += '<div class="ctl-summary" id="ctlSummary2" style="display:none;"></div>';
+    var html = '';
     Object.keys(byWho).forEach(function(who){
+      if (scopeWho !== 'all' && scopeWho !== who) return;
       var idxs = byWho[who];
-      var t0 = CTL_TASKS[idxs[0]];
-      var doneC = idxs.filter(function(i){ return ctlStateOf(i) === 'done'; }).length;
-      var pct = Math.round(doneC / idxs.length * 100);
+      var t1 = CTL_TASKS[idxs[0]];
+      var shown = idxs.filter(function(i){
+        if (ctlFCat !== 'all' && CTL_TASKS[i].cat !== ctlFCat) return false;
+        var vis = days.some(function(d){ return ctlVisibleOn(CTL_TASKS[i], d); });
+        if (!vis) return false;
+        var s = ctlStatusForPeriod(i, days);
+        if (ctlFSt !== 'all' && s !== ctlFSt) return false;
+        return true;
+      });
+      if (!shown.length) return;
+      var doneC = idxs.filter(function(i){ var vis = days.some(function(d){ return ctlVisibleOn(CTL_TASKS[i], d); }); return vis && ctlStatusForPeriod(i, days) === 'done'; }).length;
+      var totC = shown.length;
+      var pct = totC ? Math.round(doneC / totC * 100) : 0;
       html += '<div class="ctl-block">';
-      html += '<h3><span>' + t0.name + '</span><span class="b-cnt">' + t0.role + '</span><span class="ctl-prog">' + doneC + '/' + idxs.length + ' · ' + pct + '%</span></h3>';
+      html += '<h3><span>' + t1.name + '</span><span class="b-cnt">' + t1.role + '</span><span class="ctl-prog">' + doneC + '/' + totC + ' · ' + pct + '%</span></h3>';
       html += '<div class="ctl-bar"><i style="width:' + pct + '%;"></i></div>';
       html += '<div class="ctl-grid">';
-      idxs.forEach(function(i){ html += '<div class="ctl-card"><div class="cc-head"><span class="cc-name">' + CTL_TASKS[i].t + '</span><span class="cc-role">' + CTL_TASKS[i].role + '</span></div>' + ctlTaskRow(i, CTL_TASKS[i]) + '</div>'; });
+      shown.forEach(function(i){
+        var t = CTL_TASKS[i];
+        html += '<div class="ctl-card"><div class="cc-head"><span class="cc-name">' + t.t + '</span><span class="cc-role">' + t.role + '</span></div>' + ctlCatChip(t.cat) + ctlTaskRow(i, ymd) + '</div>';
+      });
       html += '</div></div>';
     });
+    if (!html) html = '<p class="ctl-empty">Нет задач, соответствующих фильтрам в этом периоде.</p>';
     wrap.innerHTML = html;
-    ctlApplyFilter(per);
-    ctlRenderSummary();
+    ctlRenderSummary(agg);
+    var lbl = document.getElementById('ctlDayLabel');
+    if (lbl) lbl.textContent = ctlPeriodLabel();
+    var todayBtn = document.getElementById('ctlTodayBtn');
+    if (todayBtn) todayBtn.classList.toggle('is-today', ymd === ctlTodayStr());
   }
-  function ctlRenderSummary() {
-    var counts = { done:0, work:0, late:0, todo:0 };
-    CTL_TASKS.forEach(function(t, i){ var s = ctlStateOf(i); if (counts[s] !== undefined) counts[s]++; });
+  function ctlStatusForPeriod(i, days) {
+    var st = 'todo';
+    days.forEach(function(ymd){
+      if (!ctlVisibleOn(CTL_TASKS[i], ymd)) return;
+      var s = ctlDayStatus(i, ymd);
+      if (s === 'done' || s === 'work' || s === 'late') st = s;
+    });
+    return st;
+  }
+  function ctlPeriodLabel() {
+    var days = ctlPeriodRange(ctlCurDay);
+    if (days.length === 1) return ctlRuDate(days[0]);
+    return ctlRuDate(days[0]) + ' — ' + ctlRuDate(days[days.length - 1]);
+  }
+  function ctlRenderSummary(agg) {
+    if (!agg) agg = ctlAggregate();
+    var c = agg.counts;
     var set = function(id, v){ var el = document.getElementById(id); if (el) el.textContent = v; };
-    set('ctlTotalTasks', CTL_TASKS.length);
-    set('ctlDoneTasks', counts.done);
-    set('ctlWorkTasks', counts.work);
-    set('ctlLateTasks', counts.late);
-    set('sumDone', counts.done); set('sumWork', counts.work); set('sumLate', counts.late); set('sumTodo', counts.todo);
+    set('ctlTotalTasks', c.total);
+    set('ctlDoneTasks', c.done);
+    set('ctlWorkTasks', c.work);
+    set('ctlLateTasks', c.late);
+    set('sumDone', c.done); set('sumWork', c.work); set('sumLate', c.late); set('sumTodo', c.todo); set('sumSkip', c.skip);
   }
-  function ctlRender() { ctlRenderBlocks(); ctlRenderSummary(); }
+  function ctlRender() { ctlRenderBlocks(); }
   function ctlReset() {
-    if (!confirm('Сбросить статусы задач за сегодня? Все задачи станут «Не начато».')) return;
-    ctlSaveData([]);
+    if (!confirm('Сбросить статусы задач за выбранный день? Все статусы этого дня станут «Не начато».')) return;
+    var log = ctlLog();
+    delete log[ctlCurDay];
+    ctlSaveLog(log);
     ctlRender();
+  }
+  // Экспорт/импорт
+  function ctlExport() {
+    var data = { version: 2, exported: new Date().toISOString(), tasks: CTL_TASKS, log: ctlLog() };
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'tl-control-export-' + ctlTodayStr() + '.json';
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 3000);
+  }
+  function ctlImportFile(ev) {
+    var f = ev.target.files && ev.target.files[0];
+    if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function(){
+      try {
+        var d = JSON.parse(rd.result);
+        if (d && d.log && typeof d.log === 'object') {
+          ctlSaveLog(d.log);
+          alert('Статусы импортированы.');
+          ctlRender();
+        } else alert('Файл не похож на экспорт контроля ТЛ.');
+      } catch(e){ alert('Не удалось прочитать файл.'); }
+    };
+    rd.readAsText(f);
+    ev.target.value = '';
+  }
+  // Отчёт за неделю
+  function ctlWeekReport() {
+    var p = ctlCurDay.split('-'); var ds = new Date(+p[0], +p[1]-1, +p[2]);
+    var ws = ctlWeekStart(ds);
+    var days = [];
+    for (var k=0;k<7;k++) days.push(ctlFmtDate(ctlAddDays(ws, k)));
+    var lines = ['ОТЧЁТ О КОНТРОЛЕ ДЕЯТЕЛЬНОСТИ ТЛ', 'Период: ' + ctlRuDate(days[0]) + ' — ' + ctlRuDate(days[6]), ''];
+    var byWho = {};
+    CTL_TASKS.forEach(function(t,i){ var k=t.who; if(!byWho[k]) byWho[k]=[]; byWho[k].push(i); });
+    Object.keys(byWho).forEach(function(who){
+      var t1 = CTL_TASKS[byWho[who][0]];
+      lines.push('— ' + t1.name + ' (' + t1.role + ') —');
+      byWho[who].forEach(function(i){
+        var t = CTL_TASKS[i];
+        var shown = days.filter(function(ymd){ return ctlVisibleOn(t, ymd); }).length;
+        if (!shown) return;
+        var st = 'todo';
+        days.forEach(function(ymd){ var s = ctlDayStatus(i, ymd); if (s === 'done' || s === 'work' || s === 'late') st = s; });
+        var lbl = CTL_STATES.filter(function(x){ return x.v === st; })[0];
+        lines.push('  [' + (lbl ? lbl.l : st) + '] ' + t.t + ' (' + (CTL_CATS[t.cat] ? CTL_CATS[t.cat].l : t.cat) + ')');
+      });
+      lines.push('');
+    });
+    var txt = lines.join('\n');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(function(){ alert('Отчёт скопирован в буфер обмена.'); });
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = txt; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); alert('Отчёт скопирован в буфер обмена.'); } catch(e){ alert('Не удалось скопировать.'); }
+      document.body.removeChild(ta);
+    }
+  }
+  // Код должности текущего сотрудника (админ = 'admin'); null — не сотрудник
+  function ctlMeWho() { try { return TLCore.currentPositionCode ? TLCore.currentPositionCode() : null; } catch(e){ return null; } }
+  function ctlCanEdit(who) { var me = ctlMeWho(); return me === 'admin' || me === who; }
+  function ctlSetupScope() {
+    var admin = isAdminUser();
+    var bar = document.getElementById('ctlMyBar');
+    var addWrap = document.getElementById('ctlAddWrap');
+    var onlyAdmin = document.querySelectorAll('.ctl-only-admin');
+    if (admin) {
+      onlyAdmin.forEach(function(el){ el.style.display = ''; });
+      if (bar) { bar.style.display = 'flex'; bar.querySelector('#ctlMyName').textContent = 'Администратор'; bar.querySelector('#ctlMyPos').textContent = 'Полный доступ'; bar.querySelector('#ctlMyHint').textContent = 'Вы управляете задачами всех сотрудников.'; }
+      if (addWrap) { addWrap.style.display = 'block'; ctlFillAddForm(); }
+    } else {
+      onlyAdmin.forEach(function(el){ el.style.display = 'none'; });
+      var me = ctlMeWho();
+      var lbl = '';
+      try { lbl = TLCore.currentPositionLabel ? TLCore.currentPositionLabel() : ''; } catch(e){}
+      if (bar && me) {
+        bar.style.display = 'flex';
+        var nm = document.getElementById('ctlMyName'); if (nm) nm.textContent = 'Мои задачи:';
+        var ps = document.getElementById('ctlMyPos'); if (ps) ps.textContent = lbl || me;
+        var ht = document.getElementById('ctlMyHint'); if (ht) ht.textContent = 'Вы видите и можете отмечать только свои задачи.';
+      }
+      if (addWrap) addWrap.style.display = 'none';
+      // сотрудник принудительно фильтрует по себе
+      ctlFWho = me || 'all';
+    }
+    if (!admin && ctlMeWho()) ctlSetActiveFilterChip('who', ctlMeWho());
+  }
+  function ctlSetActiveFilterChip(kind, val) {
+    document.querySelectorAll('.ctl-fchip[data-' + kind + ']').forEach(function(ch){ ch.classList.toggle('active', ch.getAttribute('data-' + kind) === val); });
+  }
+  function ctlFillAddForm() {
+    var whoSel = document.getElementById('afWho');
+    if (!whoSel) return;
+    var list = [];
+    if (window.CTL_WHO_LIST) list = window.CTL_WHO_LIST;
+    else {
+      // соберём из известных задач
+      var seen = {};
+      CTL_TASKS.forEach(function(t){ var k = t.who; if (!seen[k]) { seen[k] = 1; list.push({k:k, n:t.name, r:t.role}); } });
+      // добавим недостающие из кадров
+      var extra = [['zav','Руководитель ТЛ','Заведующий'],['kazakevich','Казакевич К.М.','Педагог ДО'],['ped2','Второй педагог ДО','Педагог ДО'],['lab','Инженер-лаборант','Техника'],['metod','Методист','Методика'],['stud','Студент-ведущий модуля','Практика'],['auto','Инженер-автоматизатор','Эксперт'],['konstr','Конструктор / нормоконтролёр','Эксперт'],['kipia','Инженер КИПиА / метролог','Техэксперт'],['rproj','Руководитель проекта','Наставник']];
+      extra.forEach(function(e){ if (!seen[e[0]]) list.push({k:e[0], n:e[1], r:e[2]}); });
+      window.CTL_WHO_LIST = list;
+    }
+    whoSel.innerHTML = list.map(function(o){ return '<option value="' + o.k + '">' + o.n + ' (' + o.r + ')</option>'; }).join('');
+    var catSel = document.getElementById('afCat');
+    if (catSel) {
+      catSel.innerHTML = Object.keys(CTL_CATS || {}).map(function(c){ return '<option value="' + c + '">' + (CTL_CATS[c].l || c) + '</option>'; }).join('');
+    }
+  }
+  function ctlToggleAddForm() {
+    var f = document.getElementById('ctlAddForm');
+    if (f) f.classList.toggle('show');
+  }
+  function ctlAddTask() {
+    var who = (document.getElementById('afWho') || {}).value || '';
+    var pm = (document.getElementById('afPm') || {}).value || 'w';
+    var prio = (document.getElementById('afPrio') || {}).value || 'B';
+    var cat = (document.getElementById('afCat') || {}).value || 'staff';
+    var title = ((document.getElementById('afTitle') || {}).value || '').trim();
+    var desc = ((document.getElementById('afDesc') || {}).value || '').trim();
+    if (!who || !title) { alert('Укажите сотрудника и текст задачи.'); return; }
+    var whoMeta = (window.CTL_WHO_LIST || []).filter(function(o){ return o.k === who; })[0] || { n: who, r: '' };
+    var due = pm === 'd' ? 'd' : (pm === 'q' ? 'q' : (pm === 'm' ? 'm1' : 'w1'));
+    var task = { cat: cat, who: who, name: whoMeta.n, role: whoMeta.r, pm: pm, due: due, prio: prio, t: title, d: desc || '', _custom: true, created: new Date().toISOString() };
+    CTL_TASKS.push(task);
+    ctlSaveCustom(CTL_TASKS);
+    var f = document.getElementById('ctlAddForm'); if (f) f.classList.remove('show');
+    document.getElementById('afTitle').value = ''; document.getElementById('afDesc').value = '';
+    ctlRender();
+  }
+  function ctlLoadCustom() {
+    try {
+      var c = JSON.parse(localStorage.getItem('tl.control.custom') || '[]') || [];
+      c.forEach(function(t){ if (t && t.t) CTL_TASKS.push(t); });
+    } catch(e){}
+  }
+  function ctlSaveCustom(list) {
+    var custom = list.filter(function(t){ return t._custom; });
+    try { localStorage.setItem('tl.control.custom', JSON.stringify(custom)); } catch(e){}
   }
   function initControl() {
     var panel = document.getElementById('panel-control');
-    if (panel && !panel.dataset.init) { panel.dataset.init = '1'; ctlRender(); }
+    if (panel && !panel.dataset.init) { panel.dataset.init = '1'; ctlLoadCustom(); ctlRollover(ctlCurDay); ctlRender(); }
+    ctlSetupScope();
   }
   TLCore.on('login', function(){ refreshAdminTabs(); if (isAdminUser()) initControl(); });
   function goLab(num) { switchTab('labs'); setTimeout(function(){ var el = document.getElementById('lab-' + String(num).padStart(2,'0')); if (el) { el.classList.add('open'); el.scrollIntoView({behavior:'smooth', block:'start'}); } }, 120); }
-var nav = document.getElementById('topnav'); window.addEventListener('scroll', function () { nav.classList.toggle('scrolled', window.scrollY > 40); }); TLCore.init({ cabinetEl:'#tlCabinetPanel', loginBtn:'.tl-auth-btn' }); TLCore.on('login', function(){ if (window.switchTab) { try { var u = TLCore.currentUser(); if (u && u.role === 'admin') { switchTab('staff'); } else if (u && u.role === 'teacher') { switchTab('home'); } } catch(e){} } });
+var nav = document.getElementById('topnav'); window.addEventListener('scroll', function () { nav.classList.toggle('scrolled', window.scrollY > 40); }); TLCore.init({ cabinetEl:'#tlCabinetPanel', loginBtn:'.tl-auth-btn' }); TLCore.on('login', function(){ if (window.switchTab) { try { var u = TLCore.currentUser(); if (u && u.role === 'admin') { switchTab('staff'); } else if (u && u.role === 'teacher' && u.position) { refreshAdminTabs(); switchTab('control'); } else if (u && u.role === 'teacher') { switchTab('home'); } } catch(e){} } });
   // ==== Тёмная/светлая тема ====
   function toggleTheme() {
     var d = document.documentElement;

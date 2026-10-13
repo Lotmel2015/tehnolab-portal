@@ -157,6 +157,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     if (patch && patch.phone !== undefined) u.phone = String(patch.phone || '').trim();
     if (patch && patch.labs !== undefined) u.labs = Array.isArray(patch.labs) ? patch.labs : [];
     if (patch && patch.role !== undefined) u.role = patch.role === 'teacher' ? 'teacher' : (patch.role === 'admin' ? 'admin' : 'learner');
+    if (patch && patch.position !== undefined) u.position = String(patch.position || '').trim();
     if (patch && patch.pass) u.passHash = hashPass(String(patch.pass));
     if (newKey !== key) {
       u.email = newKey;
@@ -182,6 +183,28 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
       school: u.school,
       email: u.email
     };
+  }
+
+  /* -------- Должность сотрудника -------- */
+  var POSITIONS = {
+    zav:'Руководитель ТЛ', kazakevich:'Казакевич К.М.', ped2:'Второй педагог ДО',
+    lab:'Инженер-лаборант', metod:'Методист', stud:'Студент-ведущий модуля',
+    auto:'Инженер-автоматизатор', konstr:'Конструктор / нормоконтролёр',
+    kipia:'Инженер КИПиА / метролог', rproj:'Руководитель проекта'
+  };
+  function currentPositionCode() {
+    var u = currentUser(); if (!u) return null;
+    if (u.role === 'admin') return 'admin';
+    return u.position || null;
+  }
+  function currentPositionLabel() {
+    var code = currentPositionCode();
+    if (code === 'admin') return 'Администратор';
+    return POSITIONS[code] || null;
+  }
+  function isStaff() {
+    var code = currentPositionCode();
+    return !!code && code !== 'admin';
   }
 
   /* -------- Прогресс курсов -------- */
@@ -518,9 +541,13 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     if (!target) return;
     ap.innerHTML = '<div style="padding:8px 0;"><b>Редактирование: ' + escapeHtml(target.name || target.email) + '</b></div>' +
       '<div><label style="font-size:12px;color:#8B8FA3;">Имя</label><input id="tlAdmName" value="' + escapeHtml(target.name || '') + '" style="width:100%;background:#1B1E26;border:1px solid #2A2D35;color:#EAECEF;padding:6px 8px;border-radius:6px;"></div>' +
+      '<div style="margin-top:6px;"><label style="font-size:12px;color:#8B8FA3;">Должность/роль</label><select id="tlAdmRole" style="width:100%;background:#1B1E26;border:1px solid #2A2D35;color:#EAECEF;padding:6px 8px;border-radius:6px;"><option value="learner">Обучающийся</option><option value="teacher">Педагог / сотрудник</option><option value="admin">Администратор</option></select></div>' +
+      (target.role === 'admin' ? '' : '<div style="margin-top:6px;"><label style="font-size:12px;color:#8B8FA3;">Должность (для сотрудника)</label><select id="tlAdmPosition" style="width:100%;background:#1B1E26;border:1px solid #2A2D35;color:#EAECEF;padding:6px 8px;border-radius:6px;">' + Object.keys(POSITIONS).map(function(k){ return '<option value="' + k + '">' + POSITIONS[k] + '</option>'; }).join('') + '</select></div>') +
       '<div style="margin-top:6px;"><label style="font-size:12px;color:#8B8FA3;">Класс</label><input id="tlAdmCls" value="' + escapeHtml(target.cls || '') + '" style="width:100%;background:#1B1E26;border:1px solid #2A2D35;color:#EAECEF;padding:6px 8px;border-radius:6px;"></div>' +
       '<div style="margin-top:6px;"><label style="font-size:12px;color:#8B8FA3;">Школа</label><input id="tlAdmSchool" value="' + escapeHtml(target.school || '') + '" style="width:100%;background:#1B1E26;border:1px solid #2A2D35;color:#EAECEF;padding:6px 8px;border-radius:6px;"></div>' +
       '<div style="margin-top:10px;"><button class="tl-adm-save" style="background:#2D7AFF;border:0;color:#fff;font-size:13px;border-radius:6px;padding:6px 14px;cursor:pointer;">Сохранить</button></div>';
+    var selR = ap.querySelector('#tlAdmRole'); if (selR) selR.value = target.role === 'teacher' ? 'teacher' : (target.role === 'admin' ? 'admin' : 'learner');
+    var selP = ap.querySelector('#tlAdmPosition'); if (selP) selP.value = target.position || '';
     var sb = ap.querySelector('.tl-adm-save');
     if (sb) sb.onclick = function () { adminSave(uid); };
   }
@@ -533,6 +560,11 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     target.name = (document.getElementById('tlAdmName') || {}).value || target.name;
     target.cls = (document.getElementById('tlAdmCls') || {}).value || '';
     target.school = (document.getElementById('tlAdmSchool') || {}).value || '';
+    var roleSel = document.getElementById('tlAdmRole');
+    if (roleSel) target.role = roleSel.value === 'teacher' ? 'teacher' : (roleSel.value === 'admin' ? 'admin' : 'learner');
+    var posSel = document.getElementById('tlAdmPosition');
+    if (posSel && target.role !== 'admin') target.position = posSel.value || '';
+    else if (target.role === 'admin') target.position = '';
     saveUsers(users);
     renderCabinet();
   }
@@ -562,6 +594,10 @@ var API = {
     currentUser: currentUser,
     isTeacher: function () { var u = currentUser(); return !!(u && u.role === 'teacher'); },
     isAdmin: isAdmin,
+    isStaff: isStaff,
+    currentPositionCode: currentPositionCode,
+    currentPositionLabel: currentPositionLabel,
+    POSITIONS: POSITIONS,
     listUsers: listUsers,
     updateUser: updateUser,
     getProgress: getProgress,
