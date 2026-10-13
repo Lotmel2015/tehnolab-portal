@@ -9,6 +9,73 @@
 <script src="../tl-bridge.js"></script>
 <script>try { if (window.TLCore) TLCore.init(); if (window.TLBridge) TLBridge.init({ total: 36 }); } catch (e) { console.error("tl-bridge init error", e); }</script>
 <style> :root { --bg: #FFFFFF; --ink: #1B2A4A; --muted: #5A6B85; --accent: #1F6FE0; --accent-soft: #EAF2FD; --good: #167A4D; --good-soft: #E7F4EE; --line: #D9E2EF; --warn: #B45309; --warn-soft: #FDF1E1; --crit: #B4332C; --crit-soft: #FBE9E7; --sign: #B45309; --wish: #167A4D; --vr: #4D008C; --vr-soft: #F0EBF5;} * { box-sizing: border-box; } body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; } .wrap { max-width: 900px; margin: 0 auto; padding: 1.6rem 1.25rem 3rem; } header { text-align: center; margin-bottom: 1.1rem; } .kicker { color: var(--accent); font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; } header h1 { font-size: 1.8rem; line-height: 1.25; margin: .3rem 0 .2rem; } header .sub { color: var(--muted); margin: 0; font-size: 1rem; } .toolbar { display: flex; flex-wrap: wrap; gap: .55rem; justify-content: center; margin: 1rem 0 1.2rem; } .toolbar button { font: inherit; cursor: pointer; border-radius: 10px; padding: .6rem 1.1rem; font-weight: 700; font-size: .95rem; border: 2px solid var(--line); background: #fff; color: var(--ink); } .toolbar button.primary { background: var(--accent); border-color: var(--accent); color: #fff; } .toolbar button:hover { transform: translateY(-1px); } .save-note { text-align: center; font-size: .8rem; color: var(--muted); margin-top: .5rem; } .sheet { background: #fff; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 10px 30px rgba(20,33,61,.08); padding: 1.5rem 1.6rem; } .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin: .6rem 0 .2rem; } @media (max-width: 560px) { .meta-grid { grid-template-columns: 1fr; } } .field label { display: block; font-size: .8rem; font-weight: 700; color: var(--muted); margin-bottom: .2rem; } .field input, .field textarea { width: 100%; font: inherit; color: var(--ink); border: 1.5px solid var(--line); border-radius: 10px; padding: .55rem .7rem; background: #fbfcfe; } .field input:focus, .field textarea:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); } .field textarea { min-height: 60px; resize: vertical; } .block { border: 2px solid var(--line); border-radius: 14px; padding: 1rem 1.1rem; margin: 1.1rem 0; background: #fbfcfe; } .block .label { font-size: .72rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin-bottom: .35rem; } .block .q { font-weight: 700; color: var(--accent); font-size: 1rem; margin-bottom: .5rem; } .block.good { border-color: var(--good); background: var(--good-soft); } .block.good .label { color: var(--good); } .block.warn { border-color: var(--warn); } .block.warn .label { color: var(--warn); } .row { border: 1px solid var(--line); border-radius: 12px; padding: .6rem .8rem; margin: .6rem 0; background: #fbfcfe; } .row .rgrid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: .5rem; margin-bottom: .4rem; } @media (max-width: 560px) { .row .rgrid { grid-template-columns: 1fr; } } .row input { width: 100%; font: inherit; border: 1.5px solid var(--line); border-radius: 8px; padding: .4rem .6rem; } .row select { font: inherit; border: 1.5px solid var(--line); border-radius: 8px; padding: .4rem .5rem; background: #fff; } .row .rfix { width: 100%; font: inherit; border: 1.5px solid var(--line); border-radius: 8px; padding: .4rem .6rem; background: #fff; min-height: 40px; } .row .del { border: none; background: transparent; color: var(--muted); font-size: 1.1rem; cursor: pointer; padding: .2rem .4rem; } .add { display: inline-block; margin-top: .3rem; font: inherit; font-weight: 700; color: var(--accent); background: #fff; border: 1.5px dashed var(--accent); border-radius: 10px; padding: .5rem 1rem; cursor: pointer; } .was-became { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; } @media (max-width: 560px) { .was-became { grid-template-columns: 1fr; } } .check { border: 1px solid var(--line); border-radius: 12px; padding: .8rem 1rem; margin: 1.1rem 0; background: #fbfcfe; } .check b { color: var(--warn); } .check label { display: flex; align-items: flex-start; gap: .5rem; font-size: .94rem; margin: .4rem 0; cursor: pointer; } .check input { margin-top: .3rem; accent-color: var(--accent); transform: scale(1.1); } .foot { border: 1px solid var(--line); border-radius: 12px; padding: .8rem 1rem; background: #fbfcfe; } .foot .field { margin: .5rem 0; } footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 1.4rem; } @media print { body { background: #fff; } .wrap { max-width: none; padding: 0; } .toolbar, .save-note, .no-print, .add, .row .del { display: none !important; } .sheet { border: none; box-shadow: none; padding: 0; } .block, .row, .check, .foot { break-inside: avoid; } } /* Единый стиль · Технологическая лаборатория 2026–2027 */ :root { --shadow-card: 0 1px 2px rgba(27,42,74,.05), 0 6px 18px rgba(27,42,74,.06); --vr: #4D008C; --vr-soft: #F0EBF5;} body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; } section { margin-top: 2.2rem; } h2 { letter-spacing: -.01em; } img { max-width: 100%; height: auto; } a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; } .card, .step-card, .tier, .link-row, .ig-card, .lesson-card, .sm, .pair, .info-box { box-shadow: var(--shadow-card); } @media (max-width: 640px) { header h1 { font-size: 1.6rem; } }
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== *//* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== */
+img, svg, video, canvas { max-width: 100%; height: auto; }
+pre, code, .code, textarea { max-width: 100%; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+table { max-width: 100%; }
+.tbl-wrap, .tbl-scroll, .table-wrap, .tw, .asso-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+h1 { word-wrap: break-word; overflow-wrap: break-word; }
+h2, h3, p, li, div, span, a, button, input, select, textarea, label { overflow-wrap: break-word; }
+input, select, textarea, button, a.btn { font-size: 16px; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overflow-x: hidden; }
+
+@media (max-width: 900px) {
+  .grid2, .grid3, .duo-grid, .motiv-grid, .cols3, .labs-grid, .rev-grid, .grid { grid-template-columns: 1fr !important; }
+  .refs, .struct, .two-col, .grid2, .grid3 { grid-template-columns: 1fr !important; }
+  .mod.open .mod-b { grid-template-columns: 1fr !important; }
+  .mod-b > .ph, .mod-b .ph { min-height: 180px; }
+  footer .frow, .bar, .nav, .top .bar { flex-wrap: wrap; }
+  .hero { padding: 40px 0 28px; }
+}
+@media (max-width: 640px) {
+  .wrap, main, .page { padding-left: 14px !important; padding-right: 14px !important; }
+  h1 { font-size: 1.7rem !important; }
+  h2 { font-size: 1.35rem !important; }
+  .hero h1 { font-size: 1.8rem !important; line-height: 1.1 !important; }
+  .btns, .cta-row, .final-cta, .actions, .cta .btn { flex-wrap: wrap; }
+  .btn, .btn-lg { width: auto; padding: 11px 16px; }
+  th, td { padding: 8px 6px; font-size: 13px; }
+  .lab-card { min-height: 170px !important; padding: 18px 14px !important; }
+  .card, .rev, .trainer, .mod-h, .step { padding: 14px !important; }
+  .avatar { width: 52px !important; height: 52px !important; font-size: 18px !important; }
+  .lab-strip { gap: 10px; justify-content: center; }
+  .lab-dot { width: 64px; }
+  .lab-dot .ring { width: 44px; height: 44px; }
+  .nav .tabs { width: 100%; justify-content: center; order: 3; overflow-x: auto; }
+  .nav-info { display: none; }
+  .trainer, .mentor { flex-direction: column; align-items: flex-start; }
+  details.lab { padding: 10px 12px; }
+}
+@media (max-width: 420px) {
+  .hero h1 { font-size: 1.5rem !important; }
+  .lab-dot { width: 52px; }
+  .lab-dot .ring { width: 38px; height: 38px; }
+  .lab-dot .lname { font-size: 8px; }
+  .kpi-band, .kpis { grid-template-columns: 1fr 1fr !important; }
+  .kpi b { font-size: 24px !important; }
+}
+/* ==== Курсы: карты, шаги, код, навигация (до 900px) ==== */
+@media (max-width: 900px) {
+.ig-step { min-width: 0 !important; flex: 1 1 calc(50% - .4rem) !important; }
+.ig-steps { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: .45rem !important; }
+.ig-step b { font-size: .8rem !important; }
+.ig-step span { font-size: .72rem !important; }
+.step-card { min-width: 0 !important; }
+.files-panel { width: 100% !important; border-left: 0 !important; border-top: 1px solid var(--line) !important; }
+.edwrap { flex-direction: column !important; }
+.alt-editor { flex-direction: column !important; }
+.alt-sep { display: none !important; }
+.edbox textarea, .edbox pre { min-height: 180px !important; font-size: 13px !important; }
+.role-tabs, .mode-tabs, .mtab, .rtab { flex-wrap: wrap !important; }
+.auth .fields { grid-template-columns: 1fr !important; }
+.nav-crumb, .crumb, .lesson-nav { flex-wrap: wrap !important; }
+}
+@media (max-width: 480px) {
+.ig-steps { grid-template-columns: 1fr !important; }
+.ig-step { flex: 1 1 100% !important; }
+}
 </style>
 </head>
 <body>

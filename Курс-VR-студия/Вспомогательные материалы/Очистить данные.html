@@ -5,6 +5,73 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Очистка всех профилей и прогресса</title>
 <style> body { font-family: system-ui, "Segoe UI", sans-serif; background:#F5F7FB; color:#1B2A4A; display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0; padding:1rem; } .card { background:#fff; border:1px solid #D9E2EF; border-radius:16px; box-shadow:0 12px 40px rgba(27,42,74,.10); max-width:520px; padding:2rem; text-align:center; } h1 { font-size:1.3rem; margin:0 0 .5rem; } p { color:#5A6B85; font-size:.95rem; line-height:1.6; } .btn { display:inline-block; border:0; border-radius:10px; padding:.7rem 1.4rem; font:700 15px/1.2 system-ui,sans-serif; cursor:pointer; background:#C62828; color:#fff; margin:.4rem; } .btn.green { background:#167A4D; } .btn.gray { background:#5A6B85; } #status { margin-top:1rem; font-weight:700; min-height:1.4em; }
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== *//* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== */
+img, svg, video, canvas { max-width: 100%; height: auto; }
+pre, code, .code, textarea { max-width: 100%; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+table { max-width: 100%; }
+.tbl-wrap, .tbl-scroll, .table-wrap, .tw, .asso-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+h1 { word-wrap: break-word; overflow-wrap: break-word; }
+h2, h3, p, li, div, span, a, button, input, select, textarea, label { overflow-wrap: break-word; }
+input, select, textarea, button, a.btn { font-size: 16px; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overflow-x: hidden; }
+
+@media (max-width: 900px) {
+  .grid2, .grid3, .duo-grid, .motiv-grid, .cols3, .labs-grid, .rev-grid, .grid { grid-template-columns: 1fr !important; }
+  .refs, .struct, .two-col, .grid2, .grid3 { grid-template-columns: 1fr !important; }
+  .mod.open .mod-b { grid-template-columns: 1fr !important; }
+  .mod-b > .ph, .mod-b .ph { min-height: 180px; }
+  footer .frow, .bar, .nav, .top .bar { flex-wrap: wrap; }
+  .hero { padding: 40px 0 28px; }
+}
+@media (max-width: 640px) {
+  .wrap, main, .page { padding-left: 14px !important; padding-right: 14px !important; }
+  h1 { font-size: 1.7rem !important; }
+  h2 { font-size: 1.35rem !important; }
+  .hero h1 { font-size: 1.8rem !important; line-height: 1.1 !important; }
+  .btns, .cta-row, .final-cta, .actions, .cta .btn { flex-wrap: wrap; }
+  .btn, .btn-lg { width: auto; padding: 11px 16px; }
+  th, td { padding: 8px 6px; font-size: 13px; }
+  .lab-card { min-height: 170px !important; padding: 18px 14px !important; }
+  .card, .rev, .trainer, .mod-h, .step { padding: 14px !important; }
+  .avatar { width: 52px !important; height: 52px !important; font-size: 18px !important; }
+  .lab-strip { gap: 10px; justify-content: center; }
+  .lab-dot { width: 64px; }
+  .lab-dot .ring { width: 44px; height: 44px; }
+  .nav .tabs { width: 100%; justify-content: center; order: 3; overflow-x: auto; }
+  .nav-info { display: none; }
+  .trainer, .mentor { flex-direction: column; align-items: flex-start; }
+  details.lab { padding: 10px 12px; }
+}
+@media (max-width: 420px) {
+  .hero h1 { font-size: 1.5rem !important; }
+  .lab-dot { width: 52px; }
+  .lab-dot .ring { width: 38px; height: 38px; }
+  .lab-dot .lname { font-size: 8px; }
+  .kpi-band, .kpis { grid-template-columns: 1fr 1fr !important; }
+  .kpi b { font-size: 24px !important; }
+}
+/* ==== Курсы: карты, шаги, код, навигация (до 900px) ==== */
+@media (max-width: 900px) {
+.ig-step { min-width: 0 !important; flex: 1 1 calc(50% - .4rem) !important; }
+.ig-steps { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: .45rem !important; }
+.ig-step b { font-size: .8rem !important; }
+.ig-step span { font-size: .72rem !important; }
+.step-card { min-width: 0 !important; }
+.files-panel { width: 100% !important; border-left: 0 !important; border-top: 1px solid var(--line) !important; }
+.edwrap { flex-direction: column !important; }
+.alt-editor { flex-direction: column !important; }
+.alt-sep { display: none !important; }
+.edbox textarea, .edbox pre { min-height: 180px !important; font-size: 13px !important; }
+.role-tabs, .mode-tabs, .mtab, .rtab { flex-wrap: wrap !important; }
+.auth .fields { grid-template-columns: 1fr !important; }
+.nav-crumb, .crumb, .lesson-nav { flex-wrap: wrap !important; }
+}
+@media (max-width: 480px) {
+.ig-steps { grid-template-columns: 1fr !important; }
+.ig-step { flex: 1 1 100% !important; }
+}
 </style>
 </head>
 <body>

@@ -40,6 +40,73 @@
   li { margin-bottom: 4px; }
   .note { background: #FBFCFE; border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 13px; color: var(--muted); margin: 12px 0; }
   footer { margin-top: 26px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== *//* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== */
+img, svg, video, canvas { max-width: 100%; height: auto; }
+pre, code, .code, textarea { max-width: 100%; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+table { max-width: 100%; }
+.tbl-wrap, .tbl-scroll, .table-wrap, .tw, .asso-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+h1 { word-wrap: break-word; overflow-wrap: break-word; }
+h2, h3, p, li, div, span, a, button, input, select, textarea, label { overflow-wrap: break-word; }
+input, select, textarea, button, a.btn { font-size: 16px; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overflow-x: hidden; }
+
+@media (max-width: 900px) {
+  .grid2, .grid3, .duo-grid, .motiv-grid, .cols3, .labs-grid, .rev-grid, .grid { grid-template-columns: 1fr !important; }
+  .refs, .struct, .two-col, .grid2, .grid3 { grid-template-columns: 1fr !important; }
+  .mod.open .mod-b { grid-template-columns: 1fr !important; }
+  .mod-b > .ph, .mod-b .ph { min-height: 180px; }
+  footer .frow, .bar, .nav, .top .bar { flex-wrap: wrap; }
+  .hero { padding: 40px 0 28px; }
+}
+@media (max-width: 640px) {
+  .wrap, main, .page { padding-left: 14px !important; padding-right: 14px !important; }
+  h1 { font-size: 1.7rem !important; }
+  h2 { font-size: 1.35rem !important; }
+  .hero h1 { font-size: 1.8rem !important; line-height: 1.1 !important; }
+  .btns, .cta-row, .final-cta, .actions, .cta .btn { flex-wrap: wrap; }
+  .btn, .btn-lg { width: auto; padding: 11px 16px; }
+  th, td { padding: 8px 6px; font-size: 13px; }
+  .lab-card { min-height: 170px !important; padding: 18px 14px !important; }
+  .card, .rev, .trainer, .mod-h, .step { padding: 14px !important; }
+  .avatar { width: 52px !important; height: 52px !important; font-size: 18px !important; }
+  .lab-strip { gap: 10px; justify-content: center; }
+  .lab-dot { width: 64px; }
+  .lab-dot .ring { width: 44px; height: 44px; }
+  .nav .tabs { width: 100%; justify-content: center; order: 3; overflow-x: auto; }
+  .nav-info { display: none; }
+  .trainer, .mentor { flex-direction: column; align-items: flex-start; }
+  details.lab { padding: 10px 12px; }
+}
+@media (max-width: 420px) {
+  .hero h1 { font-size: 1.5rem !important; }
+  .lab-dot { width: 52px; }
+  .lab-dot .ring { width: 38px; height: 38px; }
+  .lab-dot .lname { font-size: 8px; }
+  .kpi-band, .kpis { grid-template-columns: 1fr 1fr !important; }
+  .kpi b { font-size: 24px !important; }
+}
+/* ==== Курсы: карты, шаги, код, навигация (до 900px) ==== */
+@media (max-width: 900px) {
+.ig-step { min-width: 0 !important; flex: 1 1 calc(50% - .4rem) !important; }
+.ig-steps { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: .45rem !important; }
+.ig-step b { font-size: .8rem !important; }
+.ig-step span { font-size: .72rem !important; }
+.step-card { min-width: 0 !important; }
+.files-panel { width: 100% !important; border-left: 0 !important; border-top: 1px solid var(--line) !important; }
+.edwrap { flex-direction: column !important; }
+.alt-editor { flex-direction: column !important; }
+.alt-sep { display: none !important; }
+.edbox textarea, .edbox pre { min-height: 180px !important; font-size: 13px !important; }
+.role-tabs, .mode-tabs, .mtab, .rtab { flex-wrap: wrap !important; }
+.auth .fields { grid-template-columns: 1fr !important; }
+.nav-crumb, .crumb, .lesson-nav { flex-wrap: wrap !important; }
+}
+@media (max-width: 480px) {
+.ig-steps { grid-template-columns: 1fr !important; }
+.ig-step { flex: 1 1 100% !important; }
+}
 </style>
 </head>
 <body>
@@ -74,7 +141,7 @@
   <h2>3. Портрет портала ТЛ (текущее состояние)</h2>
   <div class="card-row">
     <div class="tile"><b>Онлайн-метрики файла</b><span>1 HTML (~56 КБ), 3 вкладки, 9 секций, 7 изображений, 6 ссылок.</span></div>
-    <div class="tile"><b>Аудитория</b><span>Подростки 14–18, родители, педагоги Железногорска/региона.</span></div>
+    <div class="tile"><b>Аудитория</b><span>Подростки 14–18, родители, педагоги региона присутствия.</span></div>
     <div class="tile"><b>Задача</b><span>Витрина объединения, набор в лаборатории, ДООП, методичка.</span></div>
     <div class="tile"><b>Статус</b><span>Редактируемый статичный прототип на столе руководителя.</span></div>
   </div>
@@ -114,7 +181,7 @@
   <h3 style="font-size:15px;">A. Приоритет 1 (базовый каркас «как у всех», даст 80% пользы)</h3>
   <ul>
     <li><b>Добавить разделы в шапку:</b> «Расписание», «Наставники», «Материалы», «Новости/События», «Запись». (+ витрину с 7 лабораториями и возрастным фильтром).</li>
-    <li><b>Форма заявки на портале</b> (ФИО, класс, школа, лаборатория, родитель, телефон) вместо только внешней ссылки. Плюс ссылка на навигатор доп.образования Красноярского края.</li>
+    <li><b>Форма заявки на портале</b> (ФИО, класс, школа, лаборатория, родитель, телефон) вместо только внешней ссылки. Плюс ссылка на навигатор доп.образования региона.</li>
     <li><b>Раздел «Наставники»</b>: сетка педагогов с фото, должностью, лабораториями, регалиями — по образцу уже сделанной карточки Казакевича, но для всех преподавателей (Кириллов, Кондратьев, Мороз, Чистов).</li>
     <li><b>«Материалы»</b>: готовые электронные курсы (VR, C#, Робототехника, Электроника, КОМПАС, Blender, БПЛА, Проектный навигатор), методички, ИОТ, ДООП — у ТЛ уже есть огромный цифровой архив, его надо показать.</li>
     <li><b>Мини-лента новостей/событий</b> с датами (набор, конкурсы, хакатоны) — даже простая, чтобы портал «жил».</li>

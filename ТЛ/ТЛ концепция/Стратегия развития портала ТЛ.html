@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="utf-8">
@@ -51,6 +51,73 @@
   .chip.c5 { background: rgba(10,110,178,.12); color: var(--c05); }
   .chip.c6 { background: rgba(139,47,201,.12); color: var(--c06); }
   .chip.c7 { background: rgba(224,123,0,.12); color: var(--c07); }
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== *//* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== */
+img, svg, video, canvas { max-width: 100%; height: auto; }
+pre, code, .code, textarea { max-width: 100%; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+table { max-width: 100%; }
+.tbl-wrap, .tbl-scroll, .table-wrap, .tw, .asso-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+h1 { word-wrap: break-word; overflow-wrap: break-word; }
+h2, h3, p, li, div, span, a, button, input, select, textarea, label { overflow-wrap: break-word; }
+input, select, textarea, button, a.btn { font-size: 16px; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overflow-x: hidden; }
+
+@media (max-width: 900px) {
+  .grid2, .grid3, .duo-grid, .motiv-grid, .cols3, .labs-grid, .rev-grid, .grid { grid-template-columns: 1fr !important; }
+  .refs, .struct, .two-col, .grid2, .grid3 { grid-template-columns: 1fr !important; }
+  .mod.open .mod-b { grid-template-columns: 1fr !important; }
+  .mod-b > .ph, .mod-b .ph { min-height: 180px; }
+  footer .frow, .bar, .nav, .top .bar { flex-wrap: wrap; }
+  .hero { padding: 40px 0 28px; }
+}
+@media (max-width: 640px) {
+  .wrap, main, .page { padding-left: 14px !important; padding-right: 14px !important; }
+  h1 { font-size: 1.7rem !important; }
+  h2 { font-size: 1.35rem !important; }
+  .hero h1 { font-size: 1.8rem !important; line-height: 1.1 !important; }
+  .btns, .cta-row, .final-cta, .actions, .cta .btn { flex-wrap: wrap; }
+  .btn, .btn-lg { width: auto; padding: 11px 16px; }
+  th, td { padding: 8px 6px; font-size: 13px; }
+  .lab-card { min-height: 170px !important; padding: 18px 14px !important; }
+  .card, .rev, .trainer, .mod-h, .step { padding: 14px !important; }
+  .avatar { width: 52px !important; height: 52px !important; font-size: 18px !important; }
+  .lab-strip { gap: 10px; justify-content: center; }
+  .lab-dot { width: 64px; }
+  .lab-dot .ring { width: 44px; height: 44px; }
+  .nav .tabs { width: 100%; justify-content: center; order: 3; overflow-x: auto; }
+  .nav-info { display: none; }
+  .trainer, .mentor { flex-direction: column; align-items: flex-start; }
+  details.lab { padding: 10px 12px; }
+}
+@media (max-width: 420px) {
+  .hero h1 { font-size: 1.5rem !important; }
+  .lab-dot { width: 52px; }
+  .lab-dot .ring { width: 38px; height: 38px; }
+  .lab-dot .lname { font-size: 8px; }
+  .kpi-band, .kpis { grid-template-columns: 1fr 1fr !important; }
+  .kpi b { font-size: 24px !important; }
+}
+/* ==== Курсы: карты, шаги, код, навигация (до 900px) ==== */
+@media (max-width: 900px) {
+.ig-step { min-width: 0 !important; flex: 1 1 calc(50% - .4rem) !important; }
+.ig-steps { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: .45rem !important; }
+.ig-step b { font-size: .8rem !important; }
+.ig-step span { font-size: .72rem !important; }
+.step-card { min-width: 0 !important; }
+.files-panel { width: 100% !important; border-left: 0 !important; border-top: 1px solid var(--line) !important; }
+.edwrap { flex-direction: column !important; }
+.alt-editor { flex-direction: column !important; }
+.alt-sep { display: none !important; }
+.edbox textarea, .edbox pre { min-height: 180px !important; font-size: 13px !important; }
+.role-tabs, .mode-tabs, .mtab, .rtab { flex-wrap: wrap !important; }
+.auth .fields { grid-template-columns: 1fr !important; }
+.nav-crumb, .crumb, .lesson-nav { flex-wrap: wrap !important; }
+}
+@media (max-width: 480px) {
+.ig-steps { grid-template-columns: 1fr !important; }
+.ig-step { flex: 1 1 100% !important; }
+}
 </style>
 </head>
 <body>
@@ -71,8 +138,8 @@
   <h3>Этап 1 — Базовый каркас (неделя 1-2) <span class="pill pill-p1">Приоритет 1</span></h3>
   <ul class="tick">
     <li><b>Структура:</b> добавить разделы — «Расписание», «Наставники», «Материалы», «Новости/События», «Запись»; оставить вкладки «Объединение / Программа / Лаборатории».</li>
-    <li><b>Форма заявки на портале</b> (ФИО, класс, школа, лаборатория, родитель, телефон) + дублирующая ссылка на навигатор Красноярского края и страницу «Спутник».</li>
-    <li><b>Расписание:</b> встроить таблицу реальных лабораторий (Школа космонавтики + «Спутник») из файла «Расписание-лабораторий-2026-2027».</li>
+    <li><b>Форма заявки на портале</b> (ФИО, класс, школа, лаборатория, родитель, телефон) + дублирующая ссылка на навигатор региона и страницу «Спутник».</li>
+    <li><b>Расписание:</b> встроить таблицу реальных лабораторий (обе площадки) из файла «Расписание-лабораторий-2026-2027».</li>
     <li><b>Наставники:</b> сетка из 5 педагогов (Казакевич, Кириллов, Кондратьев, Мороз, Чистов) с фото, должностями, лабораториями и регалиями — по образцу карточки Казакевича.</li>
     <li><b>Материалы:</b> собрать на портале ссылки на готовые курсы и методички.</li>
   </ul>
@@ -119,7 +186,7 @@
       <tr><td>Доступ к материалам и методичкам в одном месте</td><td class="bad">Разрозненно</td><td class="ok">Банк курсов/методичек на портале</td></tr>
       <tr><td>Гибкое использование: повторять, догонять, заниматься очно+дистанционно</td><td class="warn">Частично</td><td class="ok">Курсы сами по себе — база для очно-заочного обучения (у ТЛ это уже прописано в ДООП)</td></tr>
       <tr><td>Показать ребёнку реальные результаты ДО записи (портфолио учеников)</td><td class="warn">У части (олимпиады)</td><td class="ok">Раздел «Достижения» с проектами и победами</td></tr>
-      <tr><td>Локальное/региональное соответствие (Железногорск, предприятия ИСС, «Спутник»)</td><td class="bad">Федеральный уровень</td><td class="ok">Партнёры и профориентация с местными предприятиями</td></tr>
+      <tr><td>Локальное/региональное соответствие (города присутствия, предприятия-партнёры, «Спутник»)</td><td class="bad">Федеральный уровень</td><td class="ok">Партнёры и профориентация с местными предприятиями</td></tr>
       <tr><td>Инструмент для педагогов (готовые планы, материалы, ИОТ)</td><td class="bad">Нет</td><td class="ok">Раздел «Педагогам» с методичками/ИОТ (уже готовые файлы)</td></tr>
     </tbody>
   </table>

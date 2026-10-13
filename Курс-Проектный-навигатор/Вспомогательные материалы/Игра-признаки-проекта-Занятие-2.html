@@ -5,6 +5,73 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Игра «Признаки проекта» · Проектный навигатор</title>
 <style> :root { --bg: #ffffff; --ink: #1B2A4A; --muted: #5A6B85; --accent: #1F6FE0; --accent-soft: #EAF2FD; --good: #167a4d; --good-soft: #e7f4ee; --bad: #b45309; --bad-soft: #fdf1e1; --line: #D9E2EF; --vr: #4D008C; --vr-soft: #F0EBF5;} * { box-sizing: border-box; } html, body { height: 100%; } body { margin: 0; background: linear-gradient(180deg, #F0EBF5 0%, var(--bg) 40%); color: var(--ink); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; display: flex; flex-direction: column; } .wrap { max-width: 780px; margin: 0 auto; padding: 1.6rem 1.25rem 2.5rem; width: 100%; } header { text-align: center; margin-bottom: 1.2rem; } .kicker { color: var(--accent); font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; } header h1 { font-size: 1.7rem; line-height: 1.25; margin: .25rem 0 .2rem; } header p.sub { color: var(--muted); margin: 0; font-size: .98rem; } .card-box { background: #fff; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 10px 30px rgba(20,33,61,.08); padding: 1.6rem 1.6rem 1.4rem; } /* Экран приветствия */ .rules { text-align: left; } .rules h2 { font-size: 1.15rem; margin: 0 0 .6rem; } .rules ul { margin: .3rem 0 1rem; padding-left: 1.2rem; color: var(--ink); } .rules li { margin: .35rem 0; } .rules .hint { background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; padding: .7rem .9rem; font-size: .92rem; margin: .8rem 0 1.2rem; } .rules .hint b { color: var(--accent); } /* Игровой экран */ .progress { display: flex; align-items: center; gap: .7rem; margin-bottom: .9rem; } .progress .bar { flex: 1; height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; } .progress .fill { height: 100%; width: 0%; background: var(--accent); border-radius: 99px; transition: width .3s ease; } .progress .count { font-size: .85rem; color: var(--muted); font-weight: 600; white-space: nowrap; } .q-label { color: var(--accent); font-weight: 700; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; } .question { font-size: 1.28rem; line-height: 1.4; font-weight: 700; margin: .45rem 0 1.1rem; min-height: 3.4em; } .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; } button { font: inherit; cursor: pointer; border-radius: 12px; padding: .85rem 1rem; font-weight: 700; font-size: 1rem; border: 2px solid var(--line); background: #fbfcfe; color: var(--ink); transition: transform .06s ease, box-shadow .15s ease; } button:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(20,33,61,.10); } button.primary { background: var(--accent); border-color: var(--accent); color: #fff; } button.ghost { background: #fff; } button:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; } .feedback { display: none; margin-top: 1rem; border-radius: 12px; padding: .85rem 1rem; font-size: .95rem; } .feedback.show { display: block; animation: pop .25s ease; } .feedback.correct { background: var(--good-soft); border-left: 4px solid var(--good); } .feedback.wrong { background: var(--bad-soft); border-left: 4px solid var(--bad); } .feedback b { display: block; margin-bottom: .25rem; } .feedback .why { color: var(--ink); font-size: .9rem; } .feedback .signs { margin-top: .55rem; font-size: .85rem; color: var(--muted); } .feedback .signs span { display: block; margin: .12rem 0; } @keyframes pop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } } /* Финальный экран */ .final { text-align: center; } .final .score { font-size: 3.2rem; font-weight: 800; color: var(--accent); line-height: 1.1; } .final .score small { font-size: 1.1rem; color: var(--muted); font-weight: 600; } .final h2 { margin: .4rem 0 .5rem; font-size: 1.3rem; } .final p { color: var(--muted); margin: 0 0 1.2rem; } .final .verdict { display: inline-block; background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: .35rem 1rem; font-weight: 700; font-size: .9rem; margin-bottom: 1.2rem; } .stars { font-size: 1.6rem; letter-spacing: .2em; margin: .2rem 0 .6rem; } .mistakes { text-align: left; background: #fbfcfe; border: 1px solid var(--line); border-radius: 12px; padding: .9rem 1rem; margin: 1rem 0; } .mistakes b { display: block; margin-bottom: .4rem; } .mistakes .m { font-size: .88rem; margin: .3rem 0; color: var(--ink); } .mistakes .m em { font-style: normal; color: var(--bad); font-weight: 700; } footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 1.4rem; } @media (max-width: 520px) { .buttons { grid-template-columns: 1fr; } .question { font-size: 1.12rem; } } /* Единый стиль · Технологическая лаборатория 2026–2027 */ :root { --shadow-card: 0 1px 2px rgba(27,42,74,.05), 0 6px 18px rgba(27,42,74,.06); --vr: #4D008C; --vr-soft: #F0EBF5;} body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; } section { margin-top: 2.2rem; } h2 { letter-spacing: -.01em; } img { max-width: 100%; height: auto; } a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; } .card, .step-card, .tier, .link-row, .ig-card, .lesson-card, .sm, .pair, .info-box { box-shadow: var(--shadow-card); } @media (max-width: 640px) { header h1 { font-size: 1.6rem; } }
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== *//* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== */
+img, svg, video, canvas { max-width: 100%; height: auto; }
+pre, code, .code, textarea { max-width: 100%; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+table { max-width: 100%; }
+.tbl-wrap, .tbl-scroll, .table-wrap, .tw, .asso-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+h1 { word-wrap: break-word; overflow-wrap: break-word; }
+h2, h3, p, li, div, span, a, button, input, select, textarea, label { overflow-wrap: break-word; }
+input, select, textarea, button, a.btn { font-size: 16px; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overflow-x: hidden; }
+
+@media (max-width: 900px) {
+  .grid2, .grid3, .duo-grid, .motiv-grid, .cols3, .labs-grid, .rev-grid, .grid { grid-template-columns: 1fr !important; }
+  .refs, .struct, .two-col, .grid2, .grid3 { grid-template-columns: 1fr !important; }
+  .mod.open .mod-b { grid-template-columns: 1fr !important; }
+  .mod-b > .ph, .mod-b .ph { min-height: 180px; }
+  footer .frow, .bar, .nav, .top .bar { flex-wrap: wrap; }
+  .hero { padding: 40px 0 28px; }
+}
+@media (max-width: 640px) {
+  .wrap, main, .page { padding-left: 14px !important; padding-right: 14px !important; }
+  h1 { font-size: 1.7rem !important; }
+  h2 { font-size: 1.35rem !important; }
+  .hero h1 { font-size: 1.8rem !important; line-height: 1.1 !important; }
+  .btns, .cta-row, .final-cta, .actions, .cta .btn { flex-wrap: wrap; }
+  .btn, .btn-lg { width: auto; padding: 11px 16px; }
+  th, td { padding: 8px 6px; font-size: 13px; }
+  .lab-card { min-height: 170px !important; padding: 18px 14px !important; }
+  .card, .rev, .trainer, .mod-h, .step { padding: 14px !important; }
+  .avatar { width: 52px !important; height: 52px !important; font-size: 18px !important; }
+  .lab-strip { gap: 10px; justify-content: center; }
+  .lab-dot { width: 64px; }
+  .lab-dot .ring { width: 44px; height: 44px; }
+  .nav .tabs { width: 100%; justify-content: center; order: 3; overflow-x: auto; }
+  .nav-info { display: none; }
+  .trainer, .mentor { flex-direction: column; align-items: flex-start; }
+  details.lab { padding: 10px 12px; }
+}
+@media (max-width: 420px) {
+  .hero h1 { font-size: 1.5rem !important; }
+  .lab-dot { width: 52px; }
+  .lab-dot .ring { width: 38px; height: 38px; }
+  .lab-dot .lname { font-size: 8px; }
+  .kpi-band, .kpis { grid-template-columns: 1fr 1fr !important; }
+  .kpi b { font-size: 24px !important; }
+}
+/* ==== Курсы: карты, шаги, код, навигация (до 900px) ==== */
+@media (max-width: 900px) {
+.ig-step { min-width: 0 !important; flex: 1 1 calc(50% - .4rem) !important; }
+.ig-steps { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: .45rem !important; }
+.ig-step b { font-size: .8rem !important; }
+.ig-step span { font-size: .72rem !important; }
+.step-card { min-width: 0 !important; }
+.files-panel { width: 100% !important; border-left: 0 !important; border-top: 1px solid var(--line) !important; }
+.edwrap { flex-direction: column !important; }
+.alt-editor { flex-direction: column !important; }
+.alt-sep { display: none !important; }
+.edbox textarea, .edbox pre { min-height: 180px !important; font-size: 13px !important; }
+.role-tabs, .mode-tabs, .mtab, .rtab { flex-wrap: wrap !important; }
+.auth .fields { grid-template-columns: 1fr !important; }
+.nav-crumb, .crumb, .lesson-nav { flex-wrap: wrap !important; }
+}
+@media (max-width: 480px) {
+.ig-steps { grid-template-columns: 1fr !important; }
+.ig-step { flex: 1 1 100% !important; }
+}
 </style>
 </head>
 <body>

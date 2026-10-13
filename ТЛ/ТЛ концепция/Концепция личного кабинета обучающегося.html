@@ -56,6 +56,73 @@
   .chip.c5 { background: rgba(10,110,178,.12); color: var(--c05); }
   .chip.c6 { background: rgba(139,47,201,.12); color: var(--c06); }
   .chip.c7 { background: rgba(224,123,0,.12); color: var(--c07); }
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== *//* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== */
+img, svg, video, canvas { max-width: 100%; height: auto; }
+pre, code, .code, textarea { max-width: 100%; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+table { max-width: 100%; }
+.tbl-wrap, .tbl-scroll, .table-wrap, .tw, .asso-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+h1 { word-wrap: break-word; overflow-wrap: break-word; }
+h2, h3, p, li, div, span, a, button, input, select, textarea, label { overflow-wrap: break-word; }
+input, select, textarea, button, a.btn { font-size: 16px; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overflow-x: hidden; }
+
+@media (max-width: 900px) {
+  .grid2, .grid3, .duo-grid, .motiv-grid, .cols3, .labs-grid, .rev-grid, .grid { grid-template-columns: 1fr !important; }
+  .refs, .struct, .two-col, .grid2, .grid3 { grid-template-columns: 1fr !important; }
+  .mod.open .mod-b { grid-template-columns: 1fr !important; }
+  .mod-b > .ph, .mod-b .ph { min-height: 180px; }
+  footer .frow, .bar, .nav, .top .bar { flex-wrap: wrap; }
+  .hero { padding: 40px 0 28px; }
+}
+@media (max-width: 640px) {
+  .wrap, main, .page { padding-left: 14px !important; padding-right: 14px !important; }
+  h1 { font-size: 1.7rem !important; }
+  h2 { font-size: 1.35rem !important; }
+  .hero h1 { font-size: 1.8rem !important; line-height: 1.1 !important; }
+  .btns, .cta-row, .final-cta, .actions, .cta .btn { flex-wrap: wrap; }
+  .btn, .btn-lg { width: auto; padding: 11px 16px; }
+  th, td { padding: 8px 6px; font-size: 13px; }
+  .lab-card { min-height: 170px !important; padding: 18px 14px !important; }
+  .card, .rev, .trainer, .mod-h, .step { padding: 14px !important; }
+  .avatar { width: 52px !important; height: 52px !important; font-size: 18px !important; }
+  .lab-strip { gap: 10px; justify-content: center; }
+  .lab-dot { width: 64px; }
+  .lab-dot .ring { width: 44px; height: 44px; }
+  .nav .tabs { width: 100%; justify-content: center; order: 3; overflow-x: auto; }
+  .nav-info { display: none; }
+  .trainer, .mentor { flex-direction: column; align-items: flex-start; }
+  details.lab { padding: 10px 12px; }
+}
+@media (max-width: 420px) {
+  .hero h1 { font-size: 1.5rem !important; }
+  .lab-dot { width: 52px; }
+  .lab-dot .ring { width: 38px; height: 38px; }
+  .lab-dot .lname { font-size: 8px; }
+  .kpi-band, .kpis { grid-template-columns: 1fr 1fr !important; }
+  .kpi b { font-size: 24px !important; }
+}
+/* ==== Курсы: карты, шаги, код, навигация (до 900px) ==== */
+@media (max-width: 900px) {
+.ig-step { min-width: 0 !important; flex: 1 1 calc(50% - .4rem) !important; }
+.ig-steps { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: .45rem !important; }
+.ig-step b { font-size: .8rem !important; }
+.ig-step span { font-size: .72rem !important; }
+.step-card { min-width: 0 !important; }
+.files-panel { width: 100% !important; border-left: 0 !important; border-top: 1px solid var(--line) !important; }
+.edwrap { flex-direction: column !important; }
+.alt-editor { flex-direction: column !important; }
+.alt-sep { display: none !important; }
+.edbox textarea, .edbox pre { min-height: 180px !important; font-size: 13px !important; }
+.role-tabs, .mode-tabs, .mtab, .rtab { flex-wrap: wrap !important; }
+.auth .fields { grid-template-columns: 1fr !important; }
+.nav-crumb, .crumb, .lesson-nav { flex-wrap: wrap !important; }
+}
+@media (max-width: 480px) {
+.ig-steps { grid-template-columns: 1fr !important; }
+.ig-step { flex: 1 1 100% !important; }
+}
 </style>
 </head>
 <body>
@@ -84,7 +151,7 @@
       <tr><td><b>Мои курсы</b></td><td>Все лаборатории и доступные курсы</td><td>Карточки курсов с обложками, статус («в процессе», «скоро», «пройден»), прогресс по каждому</td></tr>
       <tr><td><b>Занятие</b></td><td>Обучающий контент</td><td>Теория→практика→проект, «Завершить занятие», самопроверка, ссылка на материалы/методичку</td></tr>
       <tr><td><b>Карта трека</b></td><td>Путь от начала к программам/соревнованиям</td><td>Линия с этапами: введение→навыки→продукт→защита/соревнование</td></tr>
-      <tr><td><b>Мои достижения</b></td><td>Портфолио и геймификация</td><td>Металлы/уровни, сертификаты, победы, «мои проекты», ссылка на GitHub/ArtStation</td></tr>
+      <tr><td><b>Мои достижения</b></td><td>Портфолио и гейпрофильный вузкация</td><td>Металлы/уровни, сертификаты, победы, «мои проекты», ссылка на GitHub/ArtStation</td></tr>
       <tr><td><b>Расписание</b></td><td>Очные занятия и дедлайны</td><td>Очные субботы, сроки конкурсов, «у меня на этой неделе»</td></tr>
       <tr><td><b>Профиль</b></td><td>Данные, избранные лаборатории</td><td>Имя, класс, школа, избранные LAB, пароль; согласие на обработку ПДн</td></tr>
     </tbody>
@@ -106,7 +173,7 @@
     </ul></div>
   </div>
 
-  <h2>4. Мотивационная механика (геймификация по «Мотивационной шкале»)</h2>
+  <h2>4. Мотивационная механика (гейпрофильный вузкация по «Мотивационной шкале»)</h2>
   <div class="mom">
     <div class="m"><b>Металлы / ступени</b><span>За освоение модуля — «медаль»/ступень (например, 10 металлов шкалы). Прогресс виден в единой шкале.</span></div>
     <div class="m"><b>Уровень и XP</b><span>Каждое занятие — опыт; при накоплении — новый уровень (маленькие награды часто).</span></div>
@@ -115,7 +182,7 @@
     <div class="m"><b>Достижения</b><span>Блок «Мои достижения»: сертификаты, места в конкурсах, проекты — видимый рост.</span></div>
     <div class="m"><b>Соц. витрина</b><span>По желанию показать профиль «моего инженерного пути» наставнику/группе (не обязательно публично).</span></div>
   </div>
-  <p>Важно: геймификация — <b>дополнительная</b>, не подмена обучения. Она отражает реальный прогресс по занятиям, а не награждает «за клики».</p>
+  <p>Важно: гейпрофильный вузкация — <b>дополнительная</b>, не подмена обучения. Она отражает реальный прогресс по занятиям, а не награждает «за клики».</p>
 
   <h2>5. Образовательная составляющая</h2>
   <ul class="tick">
@@ -139,7 +206,7 @@
   <ol class="roadmap">
     <li data-n="1"><b>Базовый пульт</b><div class="m">Главный экран: «Продолжить», прогресс, карта трека-заглушка (неделя 1).</div></li>
     <li data-n="2"><b>Прогресс на курсах</b><div class="m">Привязка к page курсов через TLCore; прогресс в кабинете (неделя 2).</div></li>
-    <li data-n="3"><b>Геймификация</b><div class="m">Металлы/уровни/бейджи на базе прогресса (неделя 3).</div></li>
+    <li data-n="3"><b>Гейпрофильный вузкация</b><div class="m">Металлы/уровни/бейджи на базе прогресса (неделя 3).</div></li>
     <li data-n="4"><b>Достижения и сертификаты</b><div class="m">Раздел «Мои достижения», экспорт в PDF (неделя 4).</div></li>
     <li data-n="5"><b>Разделы «Расписание», «Наставник», «Профтрек»</b><div class="m">Интеграция с данными расписания и педагогами (неделя 5).</div></li>
   </ol>

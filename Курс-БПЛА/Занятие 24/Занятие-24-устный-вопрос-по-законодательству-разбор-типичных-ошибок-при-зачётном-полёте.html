@@ -25,6 +25,73 @@
   .quiz-game .explain.bad { background:var(--def-soft); color:var(--def); }
   .quiz-game .stats { margin:.7rem 0 0; font-weight:700; }
   .quiz-game .again { margin-top:.7rem; border:0; background:var(--vr); color:#fff; border-radius:10px; padding:.5rem 1.1rem; font:700 .9rem/1.2 system-ui,sans-serif; cursor:pointer; }
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== *//* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== */
+img, svg, video, canvas { max-width: 100%; height: auto; }
+pre, code, .code, textarea { max-width: 100%; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+table { max-width: 100%; }
+.tbl-wrap, .tbl-scroll, .table-wrap, .tw, .asso-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+h1 { word-wrap: break-word; overflow-wrap: break-word; }
+h2, h3, p, li, div, span, a, button, input, select, textarea, label { overflow-wrap: break-word; }
+input, select, textarea, button, a.btn { font-size: 16px; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overflow-x: hidden; }
+
+@media (max-width: 900px) {
+  .grid2, .grid3, .duo-grid, .motiv-grid, .cols3, .labs-grid, .rev-grid, .grid { grid-template-columns: 1fr !important; }
+  .refs, .struct, .two-col, .grid2, .grid3 { grid-template-columns: 1fr !important; }
+  .mod.open .mod-b { grid-template-columns: 1fr !important; }
+  .mod-b > .ph, .mod-b .ph { min-height: 180px; }
+  footer .frow, .bar, .nav, .top .bar { flex-wrap: wrap; }
+  .hero { padding: 40px 0 28px; }
+}
+@media (max-width: 640px) {
+  .wrap, main, .page { padding-left: 14px !important; padding-right: 14px !important; }
+  h1 { font-size: 1.7rem !important; }
+  h2 { font-size: 1.35rem !important; }
+  .hero h1 { font-size: 1.8rem !important; line-height: 1.1 !important; }
+  .btns, .cta-row, .final-cta, .actions, .cta .btn { flex-wrap: wrap; }
+  .btn, .btn-lg { width: auto; padding: 11px 16px; }
+  th, td { padding: 8px 6px; font-size: 13px; }
+  .lab-card { min-height: 170px !important; padding: 18px 14px !important; }
+  .card, .rev, .trainer, .mod-h, .step { padding: 14px !important; }
+  .avatar { width: 52px !important; height: 52px !important; font-size: 18px !important; }
+  .lab-strip { gap: 10px; justify-content: center; }
+  .lab-dot { width: 64px; }
+  .lab-dot .ring { width: 44px; height: 44px; }
+  .nav .tabs { width: 100%; justify-content: center; order: 3; overflow-x: auto; }
+  .nav-info { display: none; }
+  .trainer, .mentor { flex-direction: column; align-items: flex-start; }
+  details.lab { padding: 10px 12px; }
+}
+@media (max-width: 420px) {
+  .hero h1 { font-size: 1.5rem !important; }
+  .lab-dot { width: 52px; }
+  .lab-dot .ring { width: 38px; height: 38px; }
+  .lab-dot .lname { font-size: 8px; }
+  .kpi-band, .kpis { grid-template-columns: 1fr 1fr !important; }
+  .kpi b { font-size: 24px !important; }
+}
+/* ==== Курсы: карты, шаги, код, навигация (до 900px) ==== */
+@media (max-width: 900px) {
+.ig-step { min-width: 0 !important; flex: 1 1 calc(50% - .4rem) !important; }
+.ig-steps { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: .45rem !important; }
+.ig-step b { font-size: .8rem !important; }
+.ig-step span { font-size: .72rem !important; }
+.step-card { min-width: 0 !important; }
+.files-panel { width: 100% !important; border-left: 0 !important; border-top: 1px solid var(--line) !important; }
+.edwrap { flex-direction: column !important; }
+.alt-editor { flex-direction: column !important; }
+.alt-sep { display: none !important; }
+.edbox textarea, .edbox pre { min-height: 180px !important; font-size: 13px !important; }
+.role-tabs, .mode-tabs, .mtab, .rtab { flex-wrap: wrap !important; }
+.auth .fields { grid-template-columns: 1fr !important; }
+.nav-crumb, .crumb, .lesson-nav { flex-wrap: wrap !important; }
+}
+@media (max-width: 480px) {
+.ig-steps { grid-template-columns: 1fr !important; }
+.ig-step { flex: 1 1 100% !important; }
+}
 </style>
 </head>
 <body>
@@ -64,7 +131,7 @@
 <p>2. Почему «появление людей в зоне полёта» требует немедленной посадки, даже если полёт идёт хорошо?</p>
 <p>3. Расскажи своими словами, что такое план полёта и зачем он нужен диспетчерам.</p>
 </div>
-</div></section> <section id="practice"> <h2><span class="n">03</span>Практика</h2> <p>Выполни все шаги по порядку. Если что-то не получается — вернись к разделу «Теория» или обратись к педагогу.</p> <div class="plan"><div class="step-card"><span class="num">задание</span><b>Задание</b><span>Устный вопрос по законодательству. Разбор типичных ошибок при зачётном полёте</span></div></div> <ol class="pract-steps"><li><b>Шаг 1.</b> Повтори билеты по законодательству (5 вопросов) с товарищем по парте.</li><li><b>Шаг 2.</b> Разбери 3 типичные ошибки зачётного полёта и сформулируй правильные действия.</li><li><b>Шаг 3.</b> Потренируй ответ на 2 случайных билета вслух (таймер 2 минуты).</li><li><b>Шаг 4.</b> Пройди пробный устный опрос у педагога.</li><li><b>Шаг 5*.</b> Собери «билеты» устных вопросов (5 штук) и ответь на каждый по трёхчастной схеме: что это, зачем нужно, пример из жизни. <b>Почему так:</b> трёхчастный ответ (определение → цель → пример) — проверенный способ показать понимание, а не заучивание, и он же структурирует твой устный ответ на аттестации.</li></ol> <div class="donecheck"><b>✓ Чек-лист результата.</b><p>Уверенные ответы на вопросы законодательства и знание алгоритмов при ошибках.</p></div><div class="tl-chk" id="tlChk_BPLA_l24"><div class="tl-chk-t">✓ Прогресс занятия</div><p class="tl-chk-p">Отмечай выполненное — прогресс сохраняется на этом устройстве.</p><div class="tl-chk-prog"><i></i></div><ul><li><label><input type="checkbox" data-t="1"><span>Изучил(а) материал / теорию</span></label></li><li><label><input type="checkbox" data-t="2"><span>Выполнил(а) практическое задание</span></label></li><li><label><input type="checkbox" data-t="3"><span>Заполнил(а) рефлексию / зафиксировал(а) результат</span></label></li></ul><div class="tl-chk-status"></div></div></section> <section id="quiz"><div class="quiz-game" id="quiz-box" data-q="[{&quot;q&quot;:&quot;Что мы сегодня будем изучать?&quot;,&quot;opts&quot;:[{&quot;t&quot;:&quot;Устный вопрос по законодательству. Разбор типичных ошибок при зачётном…&quot;,&quot;good&quot;:true,&quot;why&quot;:&quot;Именно это заявлено в теме занятия.&quot;},{&quot;t&quot;:&quot;Историю компьютеров&quot;,&quot;good&quot;:false,&quot;why&quot;:&quot;Не относится к теме занятия.&quot;},{&quot;t&quot;:&quot;Школьную математику&quot;,&quot;good&quot;:false,&quot;why&quot;:&quot;Это не тема нашего занятия.&quot;}]},{&quot;q&quot;:&quot;Для чего нужна практика на этом занятии?&quot;,&quot;opts&quot;:[{&quot;t&quot;:&quot;Чтобы применить знания и получить результат&quot;,&quot;good&quot;:true,&quot;why&quot;:&quot;Навык закрепляется только через действие.&quot;},{&quot;t&quot;:&quot;Чтобы просто посмотреть пример&quot;,&quot;good&quot;:false,&quot;why&quot;:&quot;Смотреть мало — важно пробовать самому.&quot;},{&quot;t&quot;:&quot;Она не обязательна&quot;,&quot;good&quot;:false,&quot;why&quot;:&quot;Практика — основа занятия.&quot;}]},{&quot;q&quot;:&quot;Что делать, если шаг практики не получается?&quot;,&quot;opts&quot;:[{&quot;t&quot;:&quot;Вернуться к теории и позвать педагога&quot;,&quot;good&quot;:true,&quot;why&quot;:&quot;Так ты найдёшь ошибку и выполнишь шаг.&quot;},{&quot;t&quot;:&quot;Пропустить этот шаг&quot;,&quot;good&quot;:false,&quot;why&quot;:&quot;Пропущенный шаг сломает результат.&quot;},{&quot;t&quot;:&quot;Списать у соседа, не разобравшись&quot;,&quot;good&quot;:false,&quot;why&quot;:&quot;Без понимания результат не закрепится.&quot;}]}]"><h4>&#127918; Квиз занятия</h4><div class="qn">Загрузка…</div></div></section><section id="reflect"> <h2><span class="n">04</span>Рефлексия занятия</h2> <p>Ответь на вопросы — это закрепляет материал и помогает педагогу понять, что получилось, а что стоит разобрать ещё раз.</p> <div class="reflection"> <h3>Мои впечатления</h3> <label>Что нового я узнал сегодня?</label> <textarea id="r1" placeholder="Напиши 1–2 предложения"></textarea> <label>Что получилось лучше всего?</label> <textarea id="r2" placeholder="Напиши 1–2 предложения"></textarea> <label>Что было сложно и как я это преодолел?</label> <textarea id="r3" placeholder="Напиши 1–2 предложения"></textarea> <label>Моя самооценка за занятие</label> <div class="ratings" id="ratingWrap"> <label><input type="radio" name="rating" value="1"> 1</label> <label><input type="radio" name="rating" value="2"> 2</label> <label><input type="radio" name="rating" value="3"> 3</label> <label><input type="radio" name="rating" value="4"> 4</label> <label><input type="radio" name="rating" value="5"> 5</label> </div> <div class="check"><input type="checkbox" id="doneCheck"> Я выполнил практику и домашнее задание занятия</div> <button type="button" class="refl-btn primary" onclick="pdSaveReflection()">Сохранить рефлексию в личную папку</button> <button type="button" class="refl-btn ghost" onclick="pdClearReflection()">Очистить</button> <p id="reflSaveMsg"></p> </div> </section> <section id="next"> <h2><span class="n">05</span>Что дальше</h2> <p>Следующее занятие — по КТП. Не забудь сохранить результаты работы в свою папку.</p> </section> <footer> <p>«Инициативная навигация (БПЛА)» · Дополнительная общеобразовательная программа «Технологическая лаборатория» · 2026–2027 учебный год.</p> </footer>
+</div></section> <section id="practice"> <h2><span class="n">03</span>Практика</h2> <p>Выполни все шаги по порядку. Если что-то не получается — вернись к разделу «Теория» или обратись к педагогу.</p> <div class="plan"><div class="step-card"><span class="num">задание</span><b>Задание</b><span>Устный вопрос по законодательству. Разбор типичных ошибок при зачётном полёте</span></div></div> <ol class="pract-steps"><li><b>Шаг 1.</b> Повтори билеты по законодательству (5 вопросов) с товарищем по парте.</li><li><b>Шаг 2.</b> Разбери 3 типичные ошибки зачётного полёта и сформулируй правильные действия.</li><li><b>Шаг 3.</b> Потренируй ответ на 2 случайных билета вслух (таймер 2 минуты).</li><li><b>Шаг 4.</b> Пройди пробный устный опрос у педагога.</li><li><b>Шаг 5*.</b> Собери «билеты» устных вопросов (5 штук) и ответь на каждый по трёхчастной схеме: что это, зачем нужно, пример из жизни. <b>Почему так:</b> трёхчастный ответ (определение → цель → пример) — проверенный способ показать понимание, а не заучивание, и он же структурирует твой устный ответ на аттестации.</li></ol> <div class="donecheck"><b>✓ Чек-лист результата.</b><p>Уверенные ответы на вопросы законодательства и знание алгорведущие технические вузыв при ошибках.</p></div><div class="tl-chk" id="tlChk_BPLA_l24"><div class="tl-chk-t">✓ Прогресс занятия</div><p class="tl-chk-p">Отмечай выполненное — прогресс сохраняется на этом устройстве.</p><div class="tl-chk-prog"><i></i></div><ul><li><label><input type="checkbox" data-t="1"><span>Изучил(а) материал / теорию</span></label></li><li><label><input type="checkbox" data-t="2"><span>Выполнил(а) практическое задание</span></label></li><li><label><input type="checkbox" data-t="3"><span>Заполнил(а) рефлексию / зафиксировал(а) результат</span></label></li></ul><div class="tl-chk-status"></div></div></section> <section id="quiz"><div class="quiz-game" id="quiz-box" data-q="[{&quot;q&quot;:&quot;Что мы сегодня будем изучать?&quot;,&quot;opts&quot;:[{&quot;t&quot;:&quot;Устный вопрос по законодательству. Разбор типичных ошибок при зачётном…&quot;,&quot;good&quot;:true,&quot;why&quot;:&quot;Именно это заявлено в теме занятия.&quot;},{&quot;t&quot;:&quot;Историю компьютеров&quot;,&quot;good&quot;:false,&quot;why&quot;:&quot;Не относится к теме занятия.&quot;},{&quot;t&quot;:&quot;Школьную математику&quot;,&quot;good&quot;:false,&quot;why&quot;:&quot;Это не тема нашего занятия.&quot;}]},{&quot;q&quot;:&quot;Для чего нужна практика на этом занятии?&quot;,&quot;opts&quot;:[{&quot;t&quot;:&quot;Чтобы применить знания и получить результат&quot;,&quot;good&quot;:true,&quot;why&quot;:&quot;Навык закрепляется только через действие.&quot;},{&quot;t&quot;:&quot;Чтобы просто посмотреть пример&quot;,&quot;good&quot;:false,&quot;why&quot;:&quot;Смотреть мало — важно пробовать самому.&quot;},{&quot;t&quot;:&quot;Она не обязательна&quot;,&quot;good&quot;:false,&quot;why&quot;:&quot;Практика — основа занятия.&quot;}]},{&quot;q&quot;:&quot;Что делать, если шаг практики не получается?&quot;,&quot;opts&quot;:[{&quot;t&quot;:&quot;Вернуться к теории и позвать педагога&quot;,&quot;good&quot;:true,&quot;why&quot;:&quot;Так ты найдёшь ошибку и выполнишь шаг.&quot;},{&quot;t&quot;:&quot;Пропустить этот шаг&quot;,&quot;good&quot;:false,&quot;why&quot;:&quot;Пропущенный шаг сломает результат.&quot;},{&quot;t&quot;:&quot;Списать у соседа, не разобравшись&quot;,&quot;good&quot;:false,&quot;why&quot;:&quot;Без понимания результат не закрепится.&quot;}]}]"><h4>&#127918; Квиз занятия</h4><div class="qn">Загрузка…</div></div></section><section id="reflect"> <h2><span class="n">04</span>Рефлексия занятия</h2> <p>Ответь на вопросы — это закрепляет материал и помогает педагогу понять, что получилось, а что стоит разобрать ещё раз.</p> <div class="reflection"> <h3>Мои впечатления</h3> <label>Что нового я узнал сегодня?</label> <textarea id="r1" placeholder="Напиши 1–2 предложения"></textarea> <label>Что получилось лучше всего?</label> <textarea id="r2" placeholder="Напиши 1–2 предложения"></textarea> <label>Что было сложно и как я это преодолел?</label> <textarea id="r3" placeholder="Напиши 1–2 предложения"></textarea> <label>Моя самооценка за занятие</label> <div class="ratings" id="ratingWrap"> <label><input type="radio" name="rating" value="1"> 1</label> <label><input type="radio" name="rating" value="2"> 2</label> <label><input type="radio" name="rating" value="3"> 3</label> <label><input type="radio" name="rating" value="4"> 4</label> <label><input type="radio" name="rating" value="5"> 5</label> </div> <div class="check"><input type="checkbox" id="doneCheck"> Я выполнил практику и домашнее задание занятия</div> <button type="button" class="refl-btn primary" onclick="pdSaveReflection()">Сохранить рефлексию в личную папку</button> <button type="button" class="refl-btn ghost" onclick="pdClearReflection()">Очистить</button> <p id="reflSaveMsg"></p> </div> </section> <section id="next"> <h2><span class="n">05</span>Что дальше</h2> <p>Следующее занятие — по КТП. Не забудь сохранить результаты работы в свою папку.</p> </section> <footer> <p>«Инициативная навигация (БПЛА)» · Дополнительная общеобразовательная программа «Технологическая лаборатория» · 2026–2027 учебный год.</p> </footer>
 </main> <script>
 /* ПД-Модуль-Старт-занятия — общий для всех курсов */
 (function () { function qe(n) { try { return new URLSearchParams(window.location.search).get(n); } catch (e) { return null; } } var uid = qe("uid") || qe("user") || qe("u"); var lessonNum = (function () { var m = decodeURIComponent(window.location.pathname || "").match(/(d{1,2})/); var n = parseInt(m && m[1], 10); return (n >= 1 && n <= 37) ? n : 24; })(); var EKEY = uid ? ("bpla_entry_" + uid + "_" + lessonNum) : null; window.pdEntrySave = function () { var prev = (document.getElementById("entryPrev") || {}).value || ""; var goal = (document.getElementById("entryGoal") || {}).value || ""; if (!EKEY) { var m = document.getElementById("entryMsg"); if (m) { m.textContent = "Войди в профиль на главной странице курса, чтобы сохранить."; m.style.color = "var(--def)"; } return; } try { localStorage.setItem(EKEY, JSON.stringify({ prev: prev, goal: goal, date: new Date().toLocaleDateString("ru-RU") })); var m = document.getElementById("entryMsg"); if (m) { m.textContent = "✓ Сохранено для тебя."; m.style.color = "var(--pr)"; setTimeout(function(){ if(m) m.textContent=""; }, 3000); } } catch (e) {} }; try { var saved = EKEY ? JSON.parse(localStorage.getItem(EKEY) || "null") : null; if (saved) { var p = document.getElementById("entryPrev"); if (p) p.value = saved.prev || ""; var g = document.getElementById("entryGoal"); if (g) g.value = saved.goal || ""; } } catch (e) {}

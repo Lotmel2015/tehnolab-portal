@@ -77,9 +77,76 @@
 .tscope li{margin:.3rem 0}
 .tscope .spec{background:var(--vr-soft);border:1px solid var(--vr);border-radius:10px;padding:.7rem .9rem;margin:1rem 0;font-size:.92rem}
 .tscope .spec b{color:var(--vr)}
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== *//* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== */
+img, svg, video, canvas { max-width: 100%; height: auto; }
+pre, code, .code, textarea { max-width: 100%; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+table { max-width: 100%; }
+.tbl-wrap, .tbl-scroll, .table-wrap, .tw, .asso-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+h1 { word-wrap: break-word; overflow-wrap: break-word; }
+h2, h3, p, li, div, span, a, button, input, select, textarea, label { overflow-wrap: break-word; }
+input, select, textarea, button, a.btn { font-size: 16px; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overflow-x: hidden; }
+
+@media (max-width: 900px) {
+  .grid2, .grid3, .duo-grid, .motiv-grid, .cols3, .labs-grid, .rev-grid, .grid { grid-template-columns: 1fr !important; }
+  .refs, .struct, .two-col, .grid2, .grid3 { grid-template-columns: 1fr !important; }
+  .mod.open .mod-b { grid-template-columns: 1fr !important; }
+  .mod-b > .ph, .mod-b .ph { min-height: 180px; }
+  footer .frow, .bar, .nav, .top .bar { flex-wrap: wrap; }
+  .hero { padding: 40px 0 28px; }
+}
+@media (max-width: 640px) {
+  .wrap, main, .page { padding-left: 14px !important; padding-right: 14px !important; }
+  h1 { font-size: 1.7rem !important; }
+  h2 { font-size: 1.35rem !important; }
+  .hero h1 { font-size: 1.8rem !important; line-height: 1.1 !important; }
+  .btns, .cta-row, .final-cta, .actions, .cta .btn { flex-wrap: wrap; }
+  .btn, .btn-lg { width: auto; padding: 11px 16px; }
+  th, td { padding: 8px 6px; font-size: 13px; }
+  .lab-card { min-height: 170px !important; padding: 18px 14px !important; }
+  .card, .rev, .trainer, .mod-h, .step { padding: 14px !important; }
+  .avatar { width: 52px !important; height: 52px !important; font-size: 18px !important; }
+  .lab-strip { gap: 10px; justify-content: center; }
+  .lab-dot { width: 64px; }
+  .lab-dot .ring { width: 44px; height: 44px; }
+  .nav .tabs { width: 100%; justify-content: center; order: 3; overflow-x: auto; }
+  .nav-info { display: none; }
+  .trainer, .mentor { flex-direction: column; align-items: flex-start; }
+  details.lab { padding: 10px 12px; }
+}
+@media (max-width: 420px) {
+  .hero h1 { font-size: 1.5rem !important; }
+  .lab-dot { width: 52px; }
+  .lab-dot .ring { width: 38px; height: 38px; }
+  .lab-dot .lname { font-size: 8px; }
+  .kpi-band, .kpis { grid-template-columns: 1fr 1fr !important; }
+  .kpi b { font-size: 24px !important; }
+}
+/* ==== Курсы: карты, шаги, код, навигация (до 900px) ==== */
+@media (max-width: 900px) {
+.ig-step { min-width: 0 !important; flex: 1 1 calc(50% - .4rem) !important; }
+.ig-steps { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: .45rem !important; }
+.ig-step b { font-size: .8rem !important; }
+.ig-step span { font-size: .72rem !important; }
+.step-card { min-width: 0 !important; }
+.files-panel { width: 100% !important; border-left: 0 !important; border-top: 1px solid var(--line) !important; }
+.edwrap { flex-direction: column !important; }
+.alt-editor { flex-direction: column !important; }
+.alt-sep { display: none !important; }
+.edbox textarea, .edbox pre { min-height: 180px !important; font-size: 13px !important; }
+.role-tabs, .mode-tabs, .mtab, .rtab { flex-wrap: wrap !important; }
+.auth .fields { grid-template-columns: 1fr !important; }
+.nav-crumb, .crumb, .lesson-nav { flex-wrap: wrap !important; }
+}
+@media (max-width: 480px) {
+.ig-steps { grid-template-columns: 1fr !important; }
+.ig-step { flex: 1 1 100% !important; }
+}
 </style>
 
-<p class="lead">Представь, что инженер из Красноярска должен передать чертёж детали коллеге из Москвы, а тот — собрать её завод. Ни один из них не увидит деталь вживую, но оба поймут её одинаково. Как это возможно? Ответ — язык инженерного черчения: строгие правила, которые делают чертёж понятным каждому, кто его читает. Сегодня мы разберём, зачем человечество тысячелетиями шлифовало эти правила, что такое ГОСТ и ЕСКД, и почему чертёж без рамки и основной надписи — не чертёж, а просто картинка.</p>
+<p class="lead">Представь, что инженер должен передать чертёж детали коллеге из другого города, а тот — собрать её завод. Ни один из них не увидит деталь вживую, но оба поймут её одинаково. Как это возможно? Ответ — язык инженерного черчения: строгие правила, которые делают чертёж понятным каждому, кто его читает. Сегодня мы разберём, зачем человечество тысячелетиями шлифовало эти правила, что такое ГОСТ и ЕСКД, и почему чертёж без рамки и основной надписи — не чертёж, а просто картинка.</p>
 <h3>Как люди «рисовали» до чертежей</h3>
 <p>Наши предки передавали форму предметов словами, картинками и макетами. Но у всех этих способов был один изъян: они неточны. Нарисованная «от руки» лошадь может быть любой длины, а «большой шкив» у одного мастера — это 300 мм, а у другого — 900. Настоящий прорыв произошёл в эпоху Возрождения: Леонардо да Винчи и его современники начали строить перспективные и ортогональные проекции — то есть изображать предмет так, будто смотришь на него строго сверху, строго спереди или строго сбоку. Это уже не рисование, а точное построение по линиям. Но даже в XIX веке чертёж у каждого конструктора был «своим»: один толщину стенки штриховал косыми линиями, другой — сеткой. Два завода могли сделать деталь по одному «чертежу» совершенно по-разному. Поэтому назрела потребность в ЕДИНОМ языке.</p>
 <table class="tbl"><thead><tr><th>Способ</th><th>Суть</th><th>Главный минус</th></tr></thead><tbody><tr><td>Рисунок от руки</td><td>Художественное изображение</td><td>Точные размеры неизвестны</td></tr><tr><td>Словесное описание</td><td>«Длинная труба с утолщением»</td><td>Каждый понимает по-своему</td></tr><tr><td>Макет / модель</td><td>Готовая уменьшенная копия</td><td>Дорого, долго, нельзя копировать идеально</td></tr><tr><td>Ортогональный чертёж</td><td>Вид сверху / спереди / сбоку по линиям</td><td>Без стандартов тоже «свой язык»</td></tr><tr><td>Чертёж по ГОСТ</td><td>Единые правила для всех</td><td>Требует дисциплины и обучения</td></tr></tbody></table><div class="tbl-caption">Способы «передать» форму детали: от прошлого к современности</div>
@@ -111,7 +178,7 @@
 <script>/* ТЛ: чек-лист прогресса занятия */ (function(){var KEY='tl_chk_'+'KMP_l1';var box=document.getElementById('tlChk_KMP_l1');if(!box)return;var saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){saved={}}var boxes=box.querySelectorAll('input[type=checkbox]');function render(){var done=0;boxes.forEach(function(c){if(c.checked)done++});var bar=box.querySelector('.tl-chk-prog i');if(bar)bar.style.width=(boxes.length?Math.round(done/boxes.length*100):0)+'%';var st=box.querySelector('.tl-chk-status');if(st)st.textContent=done===boxes.length?'Занятие 1: всё выполнено — можно переходить к следующему занятию ✓':'Занятие 1: выполнено '+done+' из '+boxes.length;}boxes.forEach(function(c){if(saved[c.dataset.t])c.checked=true;c.addEventListener('change',function(){saved[c.dataset.t]=c.checked;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}render()})});render()})();</script>
 
 <script>
-/* Интерактивный квиз занятия (геймификация) */
+/* Интерактивный квиз занятия (гейпрофильный вузкация) */
 (function(){
   var KEY="kompas_quiz_" + 1;
   var state={idx:0,score:0,done:0};
