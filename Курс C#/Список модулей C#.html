@@ -221,6 +221,11 @@ function getProgress(uid){var a=[];try{a=JSON.parse(localStorage.getItem(PROGKEY
 function setProgress(uid,num,done){var a=getProgress(uid);a[num-1]=!!done;try{localStorage.setItem(PROGKEY+uid,JSON.stringify(a));}catch(e){}try{localStorage.setItem("cs_u_"+uid+"_m_"+num,done?"1":"");}catch(e){}}
 function csDone(uid,num){if(uid){try{if(localStorage.getItem("cs_u_"+uid+"_m_"+num)==="1")return true;}catch(e){}}return !!getProgress(uid)[num-1];}
 function getTeachers(){var names=BASE_TEACHERS.slice();try{var u=getUsers();u.forEach(function(p){if(p.role==="teacher"){var n=p.name||"";if(names.indexOf(n)<0)names.push(n);}});}catch(e){}return names;}
+function registryTeachersFallback(){ try{ if (window.TLCore && TLCore.teacherList) return TLCore.teacherList(); }catch(e){} return []; }
+function registryCodeFallback(){ try{ if (window.TLCore && TLCore.teacherCode) return TLCore.teacherCode(); }catch(e){} return ''; }
+function getTeachers(){ var names=BASE_TEACHERS.slice(); try{ var users=getUsers(); users.forEach(function(p){ if(p.role==="teacher"){ var n=p.name||""; if(names.indexOf(n)<0) names.push(n); } }); }catch(e){} var rts=registryTeachersFallback(); rts.forEach(function(n){ if(names.indexOf(n)<0) names.push(n); }); return names; }
+function teacherCodeOk(code){ if (registryCodeFallback()) return String(code||"").trim()===registryCodeFallback(); return String(code||"").trim()===TEACHER_CODE; }
+
 function initTeacherSelect(){var sel=document.getElementById("inpTeacher");if(!sel)return;var t=getTeachers();sel.innerHTML='<option value="">— выбери учителя —</option>'+t.map(function(x){return '<option value="'+x+'">'+x+'</option>';}).join("");}
 function genCode(){var code;do{code=String(Math.floor(1000+Math.random()*9000));code=code+"/"+Math.random().toString(36).slice(2,6).toUpperCase();}while(false);return code;}
 window.__roleTab=function(r){var tabs=document.querySelectorAll(".rtab");tabs.forEach(function(b){b.classList.remove("active");});var el=document.querySelector('.rtab[data-r="'+r+'"]');if(el)el.classList.add("active");document.getElementById("tab-student").style.display=r==="student"?"":"none";document.getElementById("tab-teacher").style.display=r==="teacher"?"":"none";};
@@ -265,7 +270,7 @@ function doTeacherLogin(){
   var code=document.getElementById("inpTeacherCode").value.trim();
   var msg=document.getElementById("authMsgT");
   if(!name){msg.textContent="Укажи ФИО.";return;}
-  if(code!==TEACHER_CODE){msg.textContent="Неверный код учителя.";return;}
+  if(!teacherCodeOk(code)){msg.textContent="Неверный код учителя.";return;}
   var users=getUsers();
   var found=users.find(function(p){return p.role==="teacher"&&p.name.toLowerCase()===name.toLowerCase();});
   if(!found){found={uid:"t"+Date.now().toString(36)+Math.random().toString(36).slice(2,7),role:"teacher",name:name,created:new Date().toISOString()};users.push(found);saveUsers(users);}

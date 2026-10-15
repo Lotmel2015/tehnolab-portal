@@ -145,5 +145,62 @@ body { overflow-x: hidden; }
 })();
 </script>
 
-<script>/* ТЛ: чек-лист прогресса занятия */ (function(){var KEY='tl_chk_'+'EL_l14';var box=document.getElementById('tlChk_EL_l14');if(!box)return;var saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){saved={}}var boxes=box.querySelectorAll('input[type=checkbox]');function render(){var done=0;boxes.forEach(function(c){if(c.checked)done++});var bar=box.querySelector('.tl-chk-prog i');if(bar)bar.style.width=(boxes.length?Math.round(done/boxes.length*100):0)+'%';var st=box.querySelector('.tl-chk-status');if(st)st.textContent=done===boxes.length?'Занятие 14: всё выполнено — можно переходить к следующему занятию ✓':'Занятие 14: выполнено '+done+' из '+boxes.length;}boxes.forEach(function(c){if(saved[c.dataset.t])c.checked=true;c.addEventListener('change',function(){saved[c.dataset.t]=c.checked;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}render()})});render()})();</script></body>
+<script>
+/* ТЛ: чек-лист прогресса занятия */
+(function(){
+  var KEY='tl_chk_'+'EL_l14';
+  var box=document.getElementById('tlChk_'+'EL_l14');
+  if(!box)return;
+  var LESSON=14;
+  var SKEY='electron-course-active', PROGKEY='electron-course-progress-';
+  var saved={};
+  try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){saved={}}
+  var boxes=box.querySelectorAll('input[type=checkbox]');
+  function courseUid(){
+    try{
+      var q=new URLSearchParams(window.location.search||'');
+      var u=q.get('uid')||q.get('user')||q.get('u');
+      if(u)return u;
+      var sd=localStorage.getItem(SKEY);
+      if(sd){ try{ var o=JSON.parse(sd); return o.uid||o.id||(typeof o==='string'?o:null); }catch(e){ return sd||null; } }
+      return null;
+    }catch(e){ return null; }
+  }
+  function writeProg(uid,val){
+    try{
+      var p={};
+      try{ p=JSON.parse(localStorage.getItem(PROGKEY+uid)||'{}'); }catch(e){ p={}; }
+      if(val) p['w'+LESSON]=true; else delete p['w'+LESSON];
+      localStorage.setItem(PROGKEY+uid, JSON.stringify(p));
+    }catch(e){}
+  }
+  function render(){
+    var done=0; boxes.forEach(function(c){ if(c.checked) done++; });
+    var bar=box.querySelector('.tl-chk-prog i');
+    if(bar) bar.style.width=(boxes.length?Math.round(done/boxes.length*100):0)+'%';
+    var st=box.querySelector('.tl-chk-status');
+    var full=done===boxes.length;
+    var uid=courseUid();
+    if(st){
+      if(full){
+        st.textContent = uid
+          ? 'Занятие '+LESSON+': всё выполнено — отмечено пройденным ✓'
+          : 'Занятие '+LESSON+': всё выполнено ✓ (войди в профиль курса, чтобы отметка сохранилась)';
+      } else {
+        st.textContent='Занятие '+LESSON+': выполнено '+done+' из '+boxes.length;
+      }
+    }
+    if(uid) writeProg(uid, full);
+  }
+  boxes.forEach(function(c){
+    if(saved[c.dataset.t]) c.checked=true;
+    c.addEventListener('change', function(){
+      saved[c.dataset.t]=c.checked;
+      try{ localStorage.setItem(KEY, JSON.stringify(saved)); }catch(e){}
+      render();
+    });
+  });
+  render();
+})();
+</script></body>
 <script src="tl-quiz.js"></script><script>try { if (window.TQuiz) TQuiz.start("electron_quiz_14"); } catch (e) { console.error(e); }</script></html>

@@ -293,6 +293,11 @@ const BASE_TEACHERS=["Казакевич Константин Михайлови
 const METALS=[{"name":"Железо","icon":"⚙","need":5,"bg":"linear-gradient(160deg,#6b7a8c,#39434f)","fg":"#fff"},{"name":"Медь","icon":"◎","need":15,"bg":"linear-gradient(160deg,#ee7a4b,#b23c1f)","fg":"#fff"},{"name":"Бронза","icon":"⑂","need":25,"bg":"linear-gradient(160deg,#c98a3d,#7c4e18)","fg":"#fff"},{"name":"Олово","icon":"❆","need":35,"bg":"linear-gradient(160deg,#9fc2da,#56748e)","fg":"#0f1c28"},{"name":"Серебро","icon":"◐","need":45,"bg":"linear-gradient(160deg,#eef1f5,#aab4c0)","fg":"#232a36"},{"name":"Золото","icon":"☀","need":55,"bg":"linear-gradient(160deg,#ffd75e,#c3940f)","fg":"#3a2c00"},{"name":"Платина","icon":"✧","need":65,"bg":"linear-gradient(160deg,#9aa6b3,#616e7d)","fg":"#fff"},{"name":"Палладий","icon":"❖","need":75,"bg":"linear-gradient(160deg,#e0c69a,#976f34)","fg":"#2b2006"},{"name":"Родий","icon":"✪","need":85,"bg":"linear-gradient(160deg,#fbfdff,#c6cdd6)","fg":"#1a2430"},{"name":"Иридий","icon":"✦","need":93,"bg":"linear-gradient(160deg,#4a5561,#232b34)","fg":"#fff"}];
 
 function getTeachers(){ var names=BASE_TEACHERS.slice(); try{ var users=getUsers(); users.forEach(function(p){ if(p.role==="teacher"){ var n=p.name||""; if(names.indexOf(n)<0) names.push(n); } }); }catch(e){} return names; }
+function registryTeachersFallback(){ try{ if (window.TLCore && TLCore.teacherList) return TLCore.teacherList(); }catch(e){} return []; }
+function registryCodeFallback(){ try{ if (window.TLCore && TLCore.teacherCode) return TLCore.teacherCode(); }catch(e){} return ''; }
+function getTeachers(){ var names=BASE_TEACHERS.slice(); try{ var users=getUsers(); users.forEach(function(p){ if(p.role==="teacher"){ var n=p.name||""; if(names.indexOf(n)<0) names.push(n); } }); }catch(e){} var rts=registryTeachersFallback(); rts.forEach(function(n){ if(names.indexOf(n)<0) names.push(n); }); return names; }
+function teacherCodeOk(code){ if (registryCodeFallback()) return String(code||"").trim()===registryCodeFallback(); return String(code||"").trim()===TEACHER_CODE; }
+
 function isTeacherMode(){ try{ return localStorage.getItem(TEACHER_KEY)==="1"; }catch(e){ return false; } }
 function setTeacherMode(v){ try{ localStorage.setItem(TEACHER_KEY, v?"1":""); }catch(e){} }
 function updateTeacherToolbar(){ var tb=document.getElementById("teacherToolbar"); if(tb) tb.style.display=isTeacherMode()?"flex":"none"; }
@@ -349,7 +354,7 @@ function doTeacherLogin(){
   var code=document.getElementById("inpTeacherCode").value.trim();
   var msg=document.getElementById("authMsgT");
   if(!name){ msg.textContent="Укажи ФИО."; return; }
-  if(code!==TEACHER_CODE){ msg.textContent="Неверный код учителя."; return; }
+  if(!teacherCodeOk(code)){ msg.textContent="Неверный код учителя."; return; }
   var users=getUsers();
   var found=users.find(function(p){ return p.role==="teacher" && p.name.toLowerCase()===name.toLowerCase(); });
   if(!found){ found={ uid:"t"+Date.now().toString(36)+Math.random().toString(36).slice(2,7), role:"teacher", name:name, created:new Date().toISOString() }; users.push(found); saveUsers(users); }

@@ -157,6 +157,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     if (patch && patch.phone !== undefined) u.phone = String(patch.phone || '').trim();
     if (patch && patch.labs !== undefined) u.labs = Array.isArray(patch.labs) ? patch.labs : [];
     if (patch && patch.role !== undefined) u.role = patch.role === 'teacher' ? 'teacher' : (patch.role === 'admin' ? 'admin' : 'learner');
+    if (patch && patch.position !== undefined) u.position = String(patch.position || '').trim();
     if (patch && patch.pass) u.passHash = hashPass(String(patch.pass));
     if (newKey !== key) {
       u.email = newKey;
@@ -182,6 +183,82 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
       school: u.school,
       email: u.email
     };
+  }
+
+  /* -------- Должность сотрудника -------- */
+  var POSITIONS = {
+    zav:'Руководитель ТЛ', kazakevich:'Казакевич К.М.', ped2:'Второй педагог ДО',
+    lab:'Инженер-лаборант', metod:'Методист', stud:'Студент-ведущий модуля',
+    auto:'Инженер-автоматизатор', konstr:'Конструктор / нормоконтролёр',
+    kipia:'Инженер КИПиА / метролог', rproj:'Руководитель проекта'
+  };
+  function currentPositionCode() {
+    var u = currentUser(); if (!u) return null;
+    if (u.role === 'admin') return 'admin';
+    return u.position || null;
+  }
+  function currentPositionLabel() {
+    var code = currentPositionCode();
+    if (code === 'admin') return 'Администратор';
+    return POSITIONS[code] || null;
+  }
+  function isStaff() {
+    var code = currentPositionCode();
+    return !!code && code !== 'admin';
+  }
+
+  /* -------- Единый реестр педагогов (код учителя + список) -------- */
+  var TEACHERS_DEFAULT_CODE = '012345678';
+  var TEACHERS_DEFAULT_LIST = ['Казакевич Константин Михайлович'];
+  function getTeacherRegistry() {
+    var r = read('teachers', null);
+    if (!r || typeof r !== 'object' || !Array.isArray(r.list)) {
+      r = { code: TEACHERS_DEFAULT_CODE, list: TEACHERS_DEFAULT_LIST.slice() };
+      write('teachers', r);
+    }
+    if (!r.code) r.code = TEACHERS_DEFAULT_CODE;
+    return r;
+  }
+  function saveTeacherRegistry(patch) {
+    var u = currentUser();
+    if (!u || u.role !== 'admin') return { ok: false, error: 'Только администратор может менять реестр педагогов.' };
+    var r = getTeacherRegistry();
+    if (patch && patch.code !== undefined) r.code = String(patch.code || '').trim() || TEACHERS_DEFAULT_CODE;
+    if (patch && patch.list !== undefined) r.list = Array.isArray(patch.list) ? patch.list.filter(function (x) { return String(x || '').trim(); }).map(String) : r.list;
+    write('teachers', r);
+    emit('teachers', r);
+    return { ok: true, registry: r };
+  }
+  function teacherList() { return getTeacherRegistry().list.slice(); }
+  function teacherCode() { return getTeacherRegistry().code; }
+  function isTeacherCode(code) { return String(code || '').trim() === teacherCode(); }
+  function addTeacher(name) {
+    var nm = String(name || '').trim();
+    if (!nm) return { ok: false, error: 'Укажите ФИО педагога.' };
+    var r = getTeacherRegistry();
+    var exists = r.list.some(function (x) { return String(x).toLowerCase() === nm.toLowerCase(); });
+    if (exists) return { ok: false, error: 'Такой педагог уже есть.' };
+    return saveTeacherRegistry({ list: r.list.concat([nm]) });
+  }
+  function removeTeacher(nameOrIdx) {
+    var r = getTeacherRegistry();
+    var list = r.list.slice();
+    var idx = (typeof nameOrIdx === 'number' || /^\d+$/.test(String(nameOrIdx))) ? +nameOrIdx : list.findIndex(function (x) { return String(x).toLowerCase() === String(nameOrIdx).toLowerCase(); });
+    if (idx < 0 || idx >= list.length) return { ok: false, error: 'Педагог не найден.' };
+    list.splice(idx, 1);
+    return saveTeacherRegistry({ list: list });
+  }
+  function uiSaveTeacherCode() {
+    var inp = document.getElementById('tlTeacherCode');
+    if (!inp) return;
+    saveTeacherRegistry({ code: inp.value });
+    renderCabinet();
+  }
+  function uiAddTeacher() {
+    var inp = document.getElementById('tlTeacherAdd');
+    if (!inp) return;
+    addTeacher(inp.value);
+    renderCabinet();
   }
 
   /* -------- Прогресс курсов -------- */
@@ -465,6 +542,54 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     });
     return result;
   }
+  /* -------- Сводка учеников для педагога / руководителя -------- */
+  function normName(s) { return String(s || '').toLowerCase().replace(/ё/g, 'е').replace(/[^a-zа-я0-9\s]/g, ' ').replace(/\s+/g, ' ').trim(); }
+  function surnameOf(s) { return normName(s).split(' ')[0] || ''; }
+  function teacherMatches(teacherField, teacherUser) {
+    if (!teacherField || !teacherUser) return false;
+    var t = normName(teacherField);
+    var n = teacherUser.name ? normName(teacherUser.name) : '';
+    var pos = teacherUser.position || '';
+    var posLabel = POSITIONS[pos] || '';
+    if (n && (t === n || (surnameOf(n) && t.indexOf(surnameOf(n)) !== -1))) return true;
+    var sn = surnameOf(posLabel);
+    if (pos === 'kazakevich' && t.indexOf('казакевич') !== -1) return true;
+    if (sn && t.indexOf(sn) !== -1) return true;
+    return false;
+  }
+  function studentsOfCourse(cfg) {
+    try { return JSON.parse(localStorage.getItem(cfg.profilesKey) || '[]') || []; } catch (e) { return []; }
+  }
+  function progressForStudentProfile(cfg, sp) {
+    var courseUid = sp && (sp.uid || sp.id);
+    var res = { done: 0, total: cfg.total };
+    if (!courseUid) return res;
+    for (var i = 1; i <= cfg.total; i++) {
+      var done = false;
+      try {
+        if (cfg.mode === 'lesson_l') { done = localStorage.getItem(cfg.lessonPrefix + courseUid + cfg.progressSuffix + i) === '1'; }
+        else if (cfg.mode === 'week_obj') { var obj = JSON.parse(localStorage.getItem(cfg.progressPrefix + courseUid) || '{}') || {}; done = !!obj['w' + i]; }
+      } catch (e) {}
+      if (done) res.done++;
+    }
+    return res;
+  }
+  function getStudentsForTeacher() {
+    var u = currentUser();
+    var result = { courses: {}, total: 0 };
+    if (!u) return result;
+    var all = (u.role === 'admin' || u.position === 'zav');
+    COURSE_CONFIG.forEach(function (cfg) {
+      var list = [];
+      studentsOfCourse(cfg).forEach(function (sp) {
+        if (!sp || sp.role === 'teacher' || sp.role === 'admin') return;
+        if (!all && !teacherMatches(sp.teacher, u)) return;
+        list.push({ profile: sp, progress: progressForStudentProfile(cfg, sp), courseId: cfg.id });
+      });
+      if (list.length) { result.courses[cfg.id] = { cfg: cfg, students: list }; result.total += list.length; }
+    });
+    return result;
+  }
   function renderCabinet() {
     var u = currentUser();
     if (!u) return;
@@ -485,6 +610,43 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     html += '<div style="margin-top:10px;padding:8px 10px;border:1px solid #2A2D35;border-radius:8px;"><span style="font-weight:700;display:block;margin-bottom:4px;">Мои достижения</span>';
     html += '<div class="tl-cab-row"><span>Всего пройдено занятий</span><b>' + ach.doneTotal + ' из ' + ach.totalAll + '</b></div>';
     html += '<div style="margin-top:8px;"><div style="background:#2A2D35;border-radius:999px;height:8px;overflow:hidden;"><div style="width:' + totalPct + '%;height:100%;background:#2D7AFF;border-radius:999px;"></div></div><div style="color:#8B8FA3;font-size:11px;margin-top:4px;">Общий прогресс по всем курсам · ' + totalPct + '%</div></div></div>';
+    if (u.role === 'teacher' || u.role === 'admin') {
+      var ts = getStudentsForTeacher();
+      var tsAll = (u.role === 'admin' || u.position === 'zav');
+      html += '<div style="margin-top:12px;padding-top:10px;border-top:1px solid #24272E;">';
+      html += '<div style="font-weight:700;margin-bottom:2px;">' + (tsAll ? 'Ученики объединения' : 'Мои ученики') + '</div>';
+      html += '<div style="color:#8B8FA3;font-size:11px;margin-bottom:6px;">' + (ts.total ? ts.total + ' ученик(ов) · сводка по курсам' : 'нет привязанных учеников') + '</div>';
+      if (ts.total) {
+        Object.keys(ts.courses).forEach(function (cid) {
+          var g = ts.courses[cid];
+          var sum = g.students.reduce(function (a, x) { return a + x.progress.done; }, 0);
+          var avg = g.students.length ? Math.round(sum / g.students.length) : 0;
+          html += '<div style="margin-top:8px;padding:8px 10px;border:1px solid #2A2D35;border-radius:8px;">';
+          html += '<div style="display:flex;justify-content:space-between;gap:6px;font-weight:600;font-size:12.5px;">' + escapeHtml(g.cfg.label) + '<span style="color:#8B8FA3;font-size:11px;">' + g.students.length + ' · ср. ' + avg + '%</span></div>';
+          g.students.forEach(function (x) {
+            var pct = x.progress.total ? Math.round(x.progress.done / x.progress.total * 100) : 0;
+            html += '<div style="display:flex;justify-content:space-between;gap:6px;align-items:center;padding:3px 0;border-bottom:1px dashed #24272E;font-size:12px;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escapeHtml(x.profile.name || '—') + (x.profile.klass ? ' <span style="color:#8B8FA3;">' + escapeHtml(String(x.profile.klass)) + '</span>' : '') + '</span><span style="color:#8B8FA3;white-space:nowrap;">' + x.progress.done + '/' + x.progress.total + ' · ' + pct + '%</span></div>';
+          });
+          html += '</div>';
+        });
+      } else if (u.role === 'teacher') {
+        html += '<div style="color:#8B8FA3;font-size:12px;padding:4px 0;">Ученики курсов привязываются к педагогу по полю «учитель».</div>';
+      }
+      html += '</div>';
+    }
+    if (u.role === 'admin') {
+      var reg = getTeacherRegistry();
+      html += '<div style="margin-top:12px;padding-top:10px;border-top:1px solid #24272E;">';
+      html += '<div style="font-weight:700;">Педагоги и код учителя</div>';
+      html += '<div style="color:#8B8FA3;font-size:11px;margin-bottom:6px;">Единый реестр для всех курсов. Код открывает режим учителя.</div>';
+      html += '<div style="display:flex;gap:6px;"><input id="tlTeacherCode" value="' + escapeHtml(reg.code) + '" style="flex:1;background:#0D0F14;border:1px solid #2A2D35;color:#EAECEF;padding:5px 8px;border-radius:6px;font-size:12px;"><button class="tl-logout" style="width:auto;padding:4px 10px;font-size:12px;margin:0;" onclick="TLCore.saveTeacherCode()">ОК</button></div>';
+      html += '<div style="margin-top:6px;color:#8B8FA3;font-size:11px;">Список педагогов (для выбора учеником):</div>';
+      reg.list.forEach(function (nm, idx) {
+        html += '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;padding:2px 0;border-bottom:1px dashed #24272E;font-size:12px;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escapeHtml(nm) + '</span><button class="tl-logout" style="width:auto;padding:2px 8px;font-size:11px;margin:0;" onclick="TLCore.removeTeacher(' + idx + ')">✕</button></div>';
+      });
+      html += '<div style="display:flex;gap:6px;margin-top:6px;"><input id="tlTeacherAdd" placeholder="ФИО педагога" style="flex:1;background:#0D0F14;border:1px solid #2A2D35;color:#EAECEF;padding:5px 8px;border-radius:6px;font-size:12px;"><button class="tl-logout" style="width:auto;padding:4px 10px;font-size:12px;margin:0;" onclick="TLCore.addTeacher()">+</button></div>';
+      html += '</div>';
+    }
     COURSE_CONFIG.forEach(function (cfg) {
       var pr = ach.courses[cfg.id] || { done: 0, total: cfg.total };
       var pct = pr.total ? Math.round(pr.done / pr.total * 100) : 0;
@@ -518,9 +680,13 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     if (!target) return;
     ap.innerHTML = '<div style="padding:8px 0;"><b>Редактирование: ' + escapeHtml(target.name || target.email) + '</b></div>' +
       '<div><label style="font-size:12px;color:#8B8FA3;">Имя</label><input id="tlAdmName" value="' + escapeHtml(target.name || '') + '" style="width:100%;background:#1B1E26;border:1px solid #2A2D35;color:#EAECEF;padding:6px 8px;border-radius:6px;"></div>' +
+      '<div style="margin-top:6px;"><label style="font-size:12px;color:#8B8FA3;">Должность/роль</label><select id="tlAdmRole" style="width:100%;background:#1B1E26;border:1px solid #2A2D35;color:#EAECEF;padding:6px 8px;border-radius:6px;"><option value="learner">Обучающийся</option><option value="teacher">Педагог / сотрудник</option><option value="admin">Администратор</option></select></div>' +
+      (target.role === 'admin' ? '' : '<div style="margin-top:6px;"><label style="font-size:12px;color:#8B8FA3;">Должность (для сотрудника)</label><select id="tlAdmPosition" style="width:100%;background:#1B1E26;border:1px solid #2A2D35;color:#EAECEF;padding:6px 8px;border-radius:6px;">' + Object.keys(POSITIONS).map(function(k){ return '<option value="' + k + '">' + POSITIONS[k] + '</option>'; }).join('') + '</select></div>') +
       '<div style="margin-top:6px;"><label style="font-size:12px;color:#8B8FA3;">Класс</label><input id="tlAdmCls" value="' + escapeHtml(target.cls || '') + '" style="width:100%;background:#1B1E26;border:1px solid #2A2D35;color:#EAECEF;padding:6px 8px;border-radius:6px;"></div>' +
       '<div style="margin-top:6px;"><label style="font-size:12px;color:#8B8FA3;">Школа</label><input id="tlAdmSchool" value="' + escapeHtml(target.school || '') + '" style="width:100%;background:#1B1E26;border:1px solid #2A2D35;color:#EAECEF;padding:6px 8px;border-radius:6px;"></div>' +
       '<div style="margin-top:10px;"><button class="tl-adm-save" style="background:#2D7AFF;border:0;color:#fff;font-size:13px;border-radius:6px;padding:6px 14px;cursor:pointer;">Сохранить</button></div>';
+    var selR = ap.querySelector('#tlAdmRole'); if (selR) selR.value = target.role === 'teacher' ? 'teacher' : (target.role === 'admin' ? 'admin' : 'learner');
+    var selP = ap.querySelector('#tlAdmPosition'); if (selP) selP.value = target.position || '';
     var sb = ap.querySelector('.tl-adm-save');
     if (sb) sb.onclick = function () { adminSave(uid); };
   }
@@ -533,6 +699,11 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     target.name = (document.getElementById('tlAdmName') || {}).value || target.name;
     target.cls = (document.getElementById('tlAdmCls') || {}).value || '';
     target.school = (document.getElementById('tlAdmSchool') || {}).value || '';
+    var roleSel = document.getElementById('tlAdmRole');
+    if (roleSel) target.role = roleSel.value === 'teacher' ? 'teacher' : (roleSel.value === 'admin' ? 'admin' : 'learner');
+    var posSel = document.getElementById('tlAdmPosition');
+    if (posSel && target.role !== 'admin') target.position = posSel.value || '';
+    else if (target.role === 'admin') target.position = '';
     saveUsers(users);
     renderCabinet();
   }
@@ -562,12 +733,26 @@ var API = {
     currentUser: currentUser,
     isTeacher: function () { var u = currentUser(); return !!(u && u.role === 'teacher'); },
     isAdmin: isAdmin,
+    isStaff: isStaff,
+    currentPositionCode: currentPositionCode,
+    currentPositionLabel: currentPositionLabel,
+    POSITIONS: POSITIONS,
     listUsers: listUsers,
     updateUser: updateUser,
     getProgress: getProgress,
     setLessonDone: setLessonDone,
     isLessonDone: isLessonDone,
     getAchievements: getAllAchievements,
+    getStudents: getStudentsForTeacher,
+    getTeacherRegistry: getTeacherRegistry,
+    saveTeacherRegistry: saveTeacherRegistry,
+    teacherList: teacherList,
+    teacherCode: teacherCode,
+    isTeacherCode: isTeacherCode,
+    addTeacher: addTeacher,
+    removeTeacher: removeTeacher,
+    saveTeacherCode: uiSaveTeacherCode,
+    addTeacherUI: uiAddTeacher,
     waitlist: waitlist,
     openAuth: function (tab) { openModal(tab || 'login'); },
     closeAuth: closeModal,

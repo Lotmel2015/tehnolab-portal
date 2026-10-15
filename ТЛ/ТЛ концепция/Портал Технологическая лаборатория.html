@@ -167,7 +167,7 @@
   .fin-calc .calc-card .c-line b { color: var(--ink); font-weight: 600; white-space: nowrap; }
   .fin-calc .calc-card .c-total { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 0; margin-top: 6px; border-top: 2px solid var(--line); font: 700 17px var(--f-display); color: var(--ink); }
 
-/* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== *//* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== */
+/* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== */
 img, svg, video, canvas { max-width: 100%; height: auto; }
 pre, code, .code, textarea { max-width: 100%; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
 table { max-width: 100%; }
@@ -315,6 +315,109 @@ body { overflow-x: hidden; }
   .ctl-empty { color: var(--muted); font-size: 14px; padding: 30px 0; text-align: center; }
   /* ==== Контроль: роль сотрудника и форма задач ==== */
   .ctl-mybar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: rgba(45,122,255,.07); border: 1px solid rgba(45,122,255,.25); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; padding: 12px 16px; margin: 10px 0 4px; }
+  /* ==== Дашборд «Пульс недели» ==== */
+  .ctl-dash { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:16px 0 4px; }
+  @media (max-width:900px){ .ctl-dash { grid-template-columns:repeat(2,1fr); } }
+  .ctl-dcard { background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+  .ctl-dcard .dc-t { font-family:var(--f-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); }
+  .ctl-dcard .dc-v { font:700 26px var(--f-display); color:var(--accent); margin:4px 0 2px; }
+  .ctl-dcard .dc-s { font-size:12px; color:var(--muted); }
+  .ctl-dcard.dc-warn .dc-v { color:var(--warn); }
+  .ctl-dcard.dc-bad .dc-v { color:#ff4d4d; }
+  .ctl-trend-up { color:var(--ok); font-weight:700; } .ctl-trend-down { color:#ff4d4d; font-weight:700; } .ctl-trend-flat { color:var(--muted); }
+  .ctl-hot-list { list-style:none; margin:0; padding:0; }
+  .ctl-hot-list li { display:flex; justify-content:space-between; gap:10px; padding:6px 0; border-bottom:1px dashed var(--line); font-size:13px; cursor:pointer; }
+  .ctl-hot-list li:last-child { border-bottom:none; }
+  .ctl-hot-list li:hover { color:var(--accent); }
+  .ctl-hot-list b { font-family:var(--f-mono); color:#ff4d4d; }
+  /* ==== Блок «Требует внимания» ==== */
+  .ctl-attn { background:var(--bg-card); border:1px solid rgba(255,77,77,.35); border-radius:10px; padding:12px 16px; margin:16px 0 0; }
+  .ctl-attn .at-t { font-family:var(--f-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:#ff4d4d; font-weight:700; }
+  .ctl-attn .at-item { display:flex; gap:8px; align-items:baseline; padding:3px 0; font-size:13px; color:var(--ink); cursor:pointer; }
+  .ctl-attn .at-item:hover { color:var(--accent); }
+  .ctl-attn .at-who { font-family:var(--f-mono); font-size:11px; color:var(--muted); }
+  .ctl-attn .at-none { color:var(--ok); font-size:13px; padding:2px 0; }
+  /* ==== Лента дедлайнов недели ==== */
+  .ctl-strip { display:flex; gap:6px; margin:14px 0 2px; }
+  .ctl-strip .cs-day { flex:1; border:1px solid var(--line); border-radius:8px; padding:6px 4px 5px; text-align:center; cursor:pointer; background:var(--bg-card); transition:border-color .15s, background .15s; }
+  .ctl-strip .cs-day:hover { border-color:var(--accent); }
+  .ctl-strip .cs-day.today { border-color:var(--accent); }
+  .ctl-strip .cs-day.cur { background:rgba(120,180,255,.12); box-shadow:inset 0 0 0 1px var(--accent); }
+  .ctl-strip .cs-dow { display:block; font-size:9.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-family:var(--f-mono); }
+  .ctl-strip .cs-num { display:block; font-size:15px; font-weight:700; color:var(--ink); line-height:1.25; }
+  .ctl-strip .cs-dots { display:flex; gap:3px; justify-content:center; margin-top:2px; min-height:7px; }
+  .ctl-strip .cs-dots i.dot { width:7px; height:7px; border-radius:50%; display:inline-block; }
+  .ctl-strip .cs-dots i.late { background:#ff4d4d; box-shadow:0 0 0 2px rgba(255,77,77,.22); }
+  .ctl-strip .cs-dots i.todo { background:#ffb84d; }
+  .ctl-strip .cs-dots i.done { background:#2ecc71; }
+  .ctl-strip .cs-cnt { display:block; font-size:9.5px; color:var(--muted); font-family:var(--f-mono); margin-top:1px; }
+  .ctl-spark { display:flex; align-items:flex-end; gap:6px; height:44px; margin-top:8px; }
+  .ctl-spark .sp-bar { flex:1 1 0; display:flex; flex-direction:column; justify-content:flex-end; text-align:center; gap:2px; }
+  .ctl-spark .sp-bar i { display:block; width:100%; background:linear-gradient(180deg,var(--accent),rgba(45,122,255,.55)); border-radius:4px 4px 0 0; min-height:2px; }
+  .ctl-spark .sp-bar.cur i { background:linear-gradient(180deg,var(--accent),var(--ok)); }
+  .ctl-spark .sp-bar span { font-family:var(--f-mono); font-size:8.5px; color:var(--muted); }
+  .ctl-spark .sp-bar b { font-family:var(--f-mono); font-size:10px; color:var(--ink); font-weight:700; }
+  /* ==== Панель «Планёрка» ==== */
+  .ctl-meet { background:var(--bg-card); border:1px solid var(--accent); border-radius:12px; margin:16px 0; overflow:hidden; }
+  .ctl-meet-head { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:12px 16px; background:var(--bg-elev); border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .ctl-meet-head b { font:600 15px var(--f-display); }
+  .ctl-meet-head .mm-week { font-family:var(--f-mono); font-size:11px; color:var(--muted); margin-left:8px; }
+  .ctl-meet-actions { display:flex; gap:8px; flex-wrap:wrap; }
+  .ctl-meet-body { padding:14px 16px; font-size:13.5px; max-height:380px; overflow:auto; }
+  .ctl-meet-body .mm-h { font:700 13px var(--f-display); color:var(--accent); margin:10px 0 4px; border-top:1px dashed var(--line); padding-top:8px; }
+  .ctl-meet-body .mm-h:first-child { border-top:none; padding-top:0; margin-top:0; }
+  .ctl-meet-body .mm-task { display:flex; gap:8px; align-items:baseline; padding:3px 0; color:var(--ink); }
+  .ctl-meet-body .mm-prio { flex:0 0 auto; font-family:var(--f-mono); font-size:9px; font-weight:700; padding:1px 5px; border-radius:4px; }
+  .ctl-meet-body .mm-prio.a { color:#ff4d4d; border:1px solid rgba(255,77,77,.5); }
+  .ctl-meet-body .mm-prio.b { color:var(--warn); border:1px solid rgba(255,170,0,.5); }
+  .ctl-meet-body .mm-prio.c { color:var(--ok); border:1px solid rgba(0,214,143,.4); }
+  .ctl-meet-body .mm-st { flex:0 0 auto; font-family:var(--f-mono); font-size:9px; text-transform:uppercase; padding:1px 6px; border-radius:4px; }
+  .ctl-meet-body .mm-st.w { color:var(--warn); border:1px solid rgba(255,170,0,.5); }
+  .ctl-meet-body .mm-st.l { color:#ff4d4d; border:1px solid rgba(255,77,77,.5); }
+  .ctl-meet-body .mm-task .mm-t { flex:1 1 auto; }
+  .ctl-meet-body .mm-empty { color:var(--muted); font-size:13px; padding:6px 0; }
+  .ctl-meet-notes { padding:12px 16px; border-top:1px solid var(--line); }
+  .ctl-meet-notes label { display:block; font-family:var(--f-mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:6px; }
+  .ctl-meet-notes textarea { width:100%; min-height:80px; background:var(--bg-elev); border:1px solid var(--line); color:var(--ink); font:13px/1.5 var(--f-body); border-radius:8px; padding:10px 12px; resize:vertical; }
+  /* ==== Легенда контуров ==== */
+  .ctl-legend { background:var(--bg-card); border:1px solid var(--line); border-radius:10px; margin:14px 0 0; }
+  .ctl-legend summary { cursor:pointer; padding:11px 16px; font:600 13.5px var(--f-body); color:var(--ink); }
+  .ctl-legend[open] summary { border-bottom:1px dashed var(--line); }
+  .ctl-legend-body { padding:12px 16px 14px; font-size:13px; color:var(--muted); }
+  .ctl-legend-body .lg-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:8px 16px; }
+  .ctl-legend-body .lg-item { padding:3px 0; }
+  .ctl-legend-body .lg-item b { color:var(--ink); }
+  .ctl-legend-body .lg-hint { margin-top:10px; padding-top:8px; border-top:1px dashed var(--line); font-size:12px; }
+  .ctl-legend-body .lg-st { display:inline-block; font-family:var(--f-mono); font-size:10px; padding:1px 6px; border-radius:4px; margin-right:6px; }
+  .ctl-legend-body .lg-st.done { color:var(--ok); border:1px solid rgba(0,214,143,.4); }
+  .ctl-legend-body .lg-st.work { color:var(--warn); border:1px solid rgba(255,170,0,.4); }
+  .ctl-legend-body .lg-st.late { color:#ff4d4d; border:1px solid rgba(255,77,77,.5); }
+  .ctl-legend-body .lg-st.todo { color:var(--muted); border:1px solid var(--line); }
+  .ctl-legend-body .lg-st.skip { color:var(--c06); border:1px solid rgba(170,0,255,.4); }
+  /* ==== Компактный обзор сотрудников ==== */
+  .ctl-ov { width:100%; border-collapse:collapse; font-size:13.5px; background:var(--bg-card); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .ctl-ov th { text-align:left; font-family:var(--f-mono); font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); padding:9px 12px; background:var(--bg-elev); }
+  .ctl-ov td { padding:9px 12px; border-top:1px solid var(--line); vertical-align:middle; }
+  .ctl-ov tr.ov-r { cursor:pointer; }
+  .ctl-ov tr.ov-r:hover td { background:var(--bg-elev); }
+  .ctl-ov .ov-nm { font-weight:600; color:var(--ink); }
+  .ctl-ov .ov-role { font-size:11px; color:var(--muted); }
+  .ctl-ov .ov-bar { display:inline-block; width:80px; height:6px; background:var(--bg-elev); border-radius:999px; overflow:hidden; margin-right:8px; vertical-align:middle; }
+  .ctl-ov .ov-bar i { display:block; height:100%; background:var(--ok); border-radius:999px; }
+  .ctl-ov .ov-late { color:#ff4d4d; font-weight:700; }
+  .ctl-ov .ov-work { color:var(--warn); }
+  .ctl-ov .ov-exp { font-family:var(--f-mono); font-size:10px; color:var(--accent); }
+  .ctl-ov .ov-hint { font-size:11px; color:var(--muted); }
+  .ctl-ov .ov-detail { display:none; background:var(--bg-elev); }
+  .ctl-ov tr.ov-open .ov-detail { display:table-row; }
+  .ctl-ov .ov-detail td { padding:12px; }
+  .ctl-ov .ov-detail .ctl-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media (max-width:800px){ .ctl-ov .ov-detail .ctl-grid { grid-template-columns:1fr; } }
+  .ctl-ov-wrap { margin:16px 0 4px; }
+  .ctl-ov tr.ov-risk-hi td { background:rgba(255,77,77,.08); }
+  .ctl-ov tr.ov-risk-md td { background:rgba(255,170,0,.06); }
+  .ctl-ov tr.ov-risk-hi:hover td, .ctl-ov tr.ov-risk-md:hover td { background:var(--bg-elev); }
+  .ctl-ov .ov-summary { font-family:var(--f-mono); font-size:11.5px; color:var(--muted); margin-bottom:8px; }
   .ctl-mybar .mm-name { font-weight: 700; color: var(--ink); }
   .ctl-mybar .mm-pos { font-family: var(--f-mono); font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
   .ctl-mybar .mm-hint { color: var(--muted); font-size: 13px; }
@@ -339,9 +442,9 @@ body { overflow-x: hidden; }
 <body>
 <div class="grid-bg"></div> <nav class="nav" id="topnav"> <a class="logo" href="#top"> <svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="#2D7AFF" stroke-width="1.8" aria-hidden="true"> <path d="M14 2 25 8.3v11.4L14 26 3 19.7V8.3L14 2z"/><path d="M12.5 8.6h4l-2.2 4h2.2l-4 6.8" stroke-linecap="round" stroke-linejoin="round"/> </svg> <span class="sub">объединение</span> <span style="font-family:var(--f-display);font-weight:700;font-size:16px;letter-spacing:.02em;">Технологическая лаборатория</span> </a> <div class="tabs" id="tabs"> <button class="tab-btn active" data-tab="home">Объединение</button> <button class="tab-btn" data-tab="program">Программа</button> <button class="tab-btn" data-tab="labs">Лаборатории</button> <button class="tab-btn" data-tab="motiv">Мотивация</button> <button class="tab-btn tl-admin-tab" data-tab="staff">Кадры</button> <button class="tab-btn tl-admin-tab" data-tab="finance">Финансирование</button> <button class="tab-btn tl-admin-tab" data-tab="control">Контроль</button> </div> <a class="btn btn-primary" href="javascript:void(0)" onclick="switchTab('home');setTimeout(function(){document.getElementById('join').scrollIntoView({behavior:'smooth'})},50);" style="padding:9px 16px;">Записаться</a> <button class="btn btn-ghost tl-auth-btn" type="button" style="padding:9px 16px;">Войти</button> <button class="btn btn-ghost" id="tlThemeBtn" type="button" title="Переключить тему" style="padding:9px 14px;" onclick="toggleTheme()">🌓</button>
 </nav> <!-- ================= РАЗДЕЛ: ОБЪЕДИНЕНИЕ ================= -->
-<main class="panel active" id="panel-home"> <header class="hero" id="top"> <div class="kicker">Объединение дополнительного образования · техническая направленность</div> <h1>ТЕХНОЛОГИЧЕСКАЯ<br><span class="ac">ЛАБОРАТОРИЯ</span></h1> <p class="lede">Пять инженерных лабораторий для подростков 14–18 лет: робототехника, электроника, моделирование (3D и инженерная графика), БАС и VR. «Создавай. Управляй. Запускай.» — 65% практики и реальный продукт в конце каждого модуля, а проектная деятельность объединяет все направления.</p> <div class="cta"> <a class="btn btn-primary btn-lg" href="javascript:void(0)" onclick="switchTab('home');setTimeout(function(){document.getElementById('join').scrollIntoView({behavior:'smooth'})},50);">Записаться</a> <a class="btn btn-ghost btn-lg" href="javascript:void(0)" onclick="switchTab('labs')">Смотреть лаборатории</a> </div> <div class="lab-strip"><div class="lab-dot" style="--acc:var(--c01)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.2 5.2l1.7 1.7M17.1 17.1l1.7 1.7M18.8 5.2l-1.7 1.7M6.9 17.1l-1.7 1.7"/><circle cx="12" cy="12" r="5"/><path d="M10.7 9.6h2.5l-1.4 2.5h1.4l-2.5 3.1"/></svg></span><span class="lname">LAB.01</span></div> <div class="lab-dot" style="--acc:var(--c02)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="7" width="10" height="10"/><path d="M7 4.2V1.5M7 22.5v-2.7M17 4.2V1.5M17 22.5v-2.7M4.2 7H1.5M4.2 17H1.5M22.5 7h-2.7M22.5 17h-2.7"/><path d="M11.2 9.3h2.6l-1.5 2.6h1.5l-2.6 3.5"/></svg></span><span class="lname">LAB.02</span></div> <div class="lab-dot" style="--acc:var(--c03)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.5 21 7v10l-9 4.5L3 17V7l9-4.5z"/><path d="M3 7l9 4.5L21 7M12 11.5v10"/></svg></span><span class="lname">LAB.03</span></div> <div class="lab-dot" style="--acc:var(--c05)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="5" r="2.1"/><circle cx="19" cy="5" r="2.1"/><circle cx="5" cy="19" r="2.1"/><circle cx="19" cy="19" r="2.1"/><path d="M6.6 6.6 17.4 17.4M17.4 6.6 6.6 17.4"/><circle cx="12" cy="12" r="2.3"/></svg></span><span class="lname">LAB.04</span></div> <div class="lab-dot" style="--acc:var(--c06)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 8.5h16v6.5a1.2 1.2 0 0 1-1.2 1.2h-3.9a1.4 1.4 0 0 1-1.3-.8L12 13.9l-1.6 1.5a1.4 1.4 0 0 1-1.3.8H5.2A1.2 1.2 0 0 1 4 15z"/><circle cx="8.3" cy="12.3" r="1.1"/><circle cx="15.7" cy="12.3" r="1.1"/><path d="M7.5 5.5v2M16.5 5.5v2"/></svg></span><span class="lname">LAB.05</span></div></div> </header> <div class="kpi-band"> <div class="kpi"><b>5</b><span>лабораторий</span></div> <div class="kpi"><b>560</b><span>часов практики и теории</span></div> <div class="kpi"><b>65%</b><span>времени — практика</span></div> <div class="kpi"><b>14–18</b><span>лет — возраст</span></div> </div> <section> <div class="sec-head"><span class="k">Почему мы</span><h2>Принципы объединения</h2></div> <div class="cols3"> <div class="prin"><div class="ico"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 3v28M3 17h28M6.5 6.5 27.5 27.5M27.5 6.5 6.5 27.5"/><circle cx="17" cy="17" r="8.5"/></svg></div><h3>Практика 65%+</h3><p>Не лекции, а руки в деле: сборка, пайка, код, рендер, полёт. Теория — только чтобы развязать практику.</p></div> <div class="prin"><div class="ico"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 3.5 28.5 10v14L17 30.5 5.5 24V10z"/><path d="M5.5 10 17 16.5 28.5 10M17 16.5V30.5"/></svg></div><h3>Реальный продукт</h3><p>Каждая лаборатория заканчивается осязаемым результатом: робот на поле, устройство, 3D-модель, приложение, полёт, питч.</p></div> <div class="prin"><div class="ico"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="17" cy="17" r="13"/><path d="M17 8.5V17l6 4.5"/><path d="M17 17 22 12"/></svg></div><h3>Профориентация</h3><p>Пять лабораторий — карьерные треки в инженерии и IT: от инженера-робототехника до VR-разработчика. Ученик выбирает свою.</p></div> </div> </section> <section id="labs-map"> <div class="sec-head"><span class="k">Карта лабораторий</span><h2>Пять лабораторий — одна экосистема</h2><p class="sec-sub">Пять инженерных лабораторий образуют экосистему создания реальных продуктов. Моделирование объединяет два направления: Blender 3D и КОМПАС-3D. Проектная деятельность — сквозная программа, которая объединяет все лаборатории. Нажмите на карточку, чтобы открыть полное описание лаборатории: навыки, оборудование, профессии и итоговый продукт.</p></div> <div class="labs-grid"> <article class="lab-card" style="--acc:var(--c01)" onclick="switchTab('labs')"> <div class="bg" style="background-image:url('assets/img/lab01-robotics.jpg')"></div> <div class="inner"><div class="num">LAB.01</div><h3>Инициативная робототехника</h3></div> </article> <article class="lab-card" style="--acc:var(--c02)" onclick="switchTab('labs')"> <div class="bg" style="background-image:url('assets/img/lab02-electronics.jpg')"></div> <div class="inner"><div class="num">LAB.02</div><h3>Инициативная электроника</h3></div> </article> <article class="lab-card" style="--acc:var(--c03)" onclick="switchTab('labs')"> <div class="bg" style="background-image:url('assets/img/lab03-blender.jpg')"></div> <div class="inner"><div class="num">LAB.03</div><h3>Инициативное моделирование</h3><div class="tags"><span class="tag">Blender 3D</span><span class="tag">КОМПАС-3D</span></div></div> </article> <article class="lab-card" style="--acc:var(--c06)" onclick="switchTab('labs')"> <div class="bg" style="background-image:url('assets/img/lab06-vr.jpg')"></div> <div class="inner"><div class="num">LAB.06</div><h3>Инициативная VR-разработка</h3></div> </article> <article class="lab-card" style="--acc:var(--c05)" onclick="switchTab('labs')"> <div class="bg" style="background-image:url('assets/img/lab05-uav.jpg')"></div> <div class="inner"><div class="num">LAB.05</div><h3>Инициативная навигация — БАС</h3><div class="tags"><span class="tag">беспилотные авиационные системы</span></div></div> </article> </div> <div class="result-band" style="margin-top:18px;"><div class="rl">Программа-объединитель</div><p style="margin:6px 0 0;"><b>Проектная деятельность</b> — не отдельная лаборатория, а сквозная программа, в которой участники всех лабораторий учатся проектировать: ставят цель, планируют, работают в команде и защищают свой проект перед аудиторией.</p></div> </section> <section id="trainers"> <div class="sec-head"><span class="k">Наставники</span><h2>Кто ведёт лаборатории</h2></div> <div style="display:grid;gap:14px;"> <div class="profile-acc"> <div class="pa-head" onclick="this.parentNode.classList.toggle('open')"> <div class="avatar"><img src="assets/img/mentor-kazakevich.jpg" alt="Казакевич Константин Михайлович"></div> <div class="pa-ttl"> <div class="nm">Казакевич Константин Михайлович</div> <div class="role">Заведующий сектором технологических лабораторий · учитель информатики и технологии · педагог дополнительного образования</div> <div class="tags-row"><span class="tag">робототехника</span><span class="tag">электроника</span><span class="tag">3D-моделирование</span><span class="tag">БАС</span><span class="tag">VR-разработка</span><span class="tag">проектная деятельность</span></div> </div> <svg class="pa-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg> </div> <div class="pa-body"> <div class="pa-grid"> <div class="pa-block"><h5>Образование</h5><p>Высшее образование (психолого-педагогическое направление, направление «Тренер-технолог деятельностных образовательных практик»). Профпереподготовка «Педагог дополнительного образования», регулярное повышение квалификации по техническим и педагогическим направлениям.</p></div> <div class="pa-block"><h5>Опыт</h5><p>Более 20 лет в технической и IT-сфере. Заведующий сектором технологических лабораторий ТЛ (с 2025): закупка и настройка оборудования (120+ ед.), разработка программ лабораторий, методическое и медиасопровождение, работа с родителями и навигатором допобразования. Ранее — педагог ДО Центра «Перспектива» (Зеленогорск, 2019–2024): программы «Виртуальная реальность» (Unity, C#), «Робототехника LEGO» (EV3, NXT, Spike, Arduino), «Электроника Arduino», «Агентство прогрессивных решений». Системный администратор и инженер-программист (СОШ №4 Минусинск, Бизнесколлегия «Малтат», снабженческую организацию, ФБУ ИК-27): сети до 700 ПК, Active Directory, Windows-серверы, NetSchool, 1С.</p></div> <div class="pa-block"><h5>Регалии и награды</h5><p>Действующий тренер Ассоциации молодых педагогов региона (компетенция «Командодействие»). Участник краевого проекта «Реальное образование» (кадровые школы 2017–2018, сертификаты курсы повышения квалификации). 1-е место в категории «Инженерная компетентность» на кадровой школе 2017 (программа «3D-моделирование»). Автор программ «Юный инженер-изобретатель» и сетевой программы с региональным центром допобразования. Организатор крауд-проектов на Планете.ру и РосМолодёжь.</p></div> <div class="pa-block"><h5>Соревнования и ученики</h5><p>Подготовка команд к конкурсам высшей категории: призовые места и лауреатства городских, краевых и всероссийских проектных конкурсов. Призовое место на всероссийской конференции «Шаг в будущее» (2024, VR-направление). Бизнес-акселератор «Технолидеры будущего» (Сбер, Сириус), JuniorSkills «Мультимедийная журналистика», сопровождение команд в акселераторах.</p></div> <div class="pa-block" style="grid-column:1/-1;"><h5>Ключевые навыки</h5><div class="pa-chips"><span>LEGO MINDSTORMS EV3</span><span>Arduino</span><span>схемотехника и пайка</span><span>C/C++</span><span>Blender 4.x / 3D-печать</span><span>КОМПАС-3D / ЕСКД</span><span>управление БАС</span><span>Unity · C# · VR-разработка</span><span>Pico 4 Ultra</span><span>проектное обучение (SMART, Гант, питч)</span><span>дистанционное обучение</span><span>презентации и медиа</span></div></div> </div> </div> </div> <div class="trainer" style="border-style:dashed;background:transparent;"><div class="avatar" style="color:var(--muted);border-color:var(--line);">+</div><div><div class="nm">Приглашённые специалисты</div><div class="role">Инженеры и разработчики технологических предприятий</div><div class="desc">Профориентационные встречи в каждой лаборатории: инженеры профильных предприятий, разработчики технопарков — с разбором реальных кейсов и рынка труда.</div></div></div> </div> </section> <section id="reviews"> <div class="sec-head"><span class="k">Отзывы</span><h2>Что говорят ученики и родители</h2></div> <div class="rev-grid"> <div class="rev"><div class="stars">★★★★★</div><p>Собрал робота, который объезжает препятствия, и занял второе место на мини-соревновании. Самое крутое — что это мой собственный механизм от и до.</p><div class="who"><b>LAB.01</b> · ученик 9 класса, робототехника</div></div> <div class="rev"><div class="stars">★★★★★</div><p>Сделал VR-приложение и впервые в жизни тестировал его в шлеме. Теперь понял, что хочу в геймдев — уже посмотрел, куда поступать.</p><div class="who"><b>LAB.06</b> · ученик 11 класса, VR-разработка</div></div> <div class="rev"><div class="stars">★★★★★</div><p>Субботний формат идеально встроился в учебную неделю. Дочь ждёт занятий — это редкость после шести дней школы.</p><div class="who"><b>Родитель</b> · LAB.02, электроника</div></div> </div> </section> <section id="materials" style="border-bottom:1px solid var(--line);"> <div class="sec-head"><div><span class="k">Материалы и курсы</span><h2>Цифровой хаб лаборатории</h2><p class="sec-sub">Электронные курсы по лабораториям — для очно-заочного обучения и самостоятельной работы. Единый личный кабинет и сквозной вход на портале и курсах уже работают.</p></div><span class="tech">ФИШКА ТЛ // ПОПРОБУЙ ЗАНЯТИЕ</span></div> <div class="labs-grid" id="tlCoursesGrid"> <a class="lab-card" style="--acc:var(--c01);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-Робототехника/index.html"><div class="num">LAB.01</div><h3>Курс «Робототехника»</h3><p class="desc">Готов! 28 занятий: EV3, датчики, программирование — от сборки до зачётных заездов. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c01);color:var(--c01);">открыт</span><span class="tag">EV3 · 28 занятий</span></div></a> <a class="lab-card" style="--acc:var(--c02);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-Электроника/index.html"><div class="num">LAB.02</div><h3>Курс «Электроника»</h3><p class="desc">Готов! 28 занятий: от закона Ома до Arduino — паяем, собираем и защищаем свой проект. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c02);color:var(--c02);">открыт</span><span class="tag">Arduino · 28 занятий</span></div></a> <a class="lab-card" style="--acc:var(--c03);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-Blender-3D/index.html"><div class="num">LAB.03</div><h3>Курс «Моделирование (часть 1 · Blender 3D)»</h3><p class="desc">Готов! 28 занятий Blender: моделирование, материалы и рендер — до защиты собственного проекта. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c03);color:var(--c03);">открыт</span><span class="tag">3D-моделирование · 28 занятий</span></div></a> <a class="lab-card" style="--acc:var(--c03);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-КОМПАС-3D/index.html"><div class="num">LAB.03</div><h3>Курс «Моделирование (часть 2 · КОМПАС-3D)»</h3><p class="desc">Готов! 28 занятий: от ЕСКД до 3D-модели и ассоциативного чертежа в КОМПАС-3D. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c03);color:var(--c03);">открыт</span><span class="tag">инженерное черчение · 28 занятий</span></div></a> <a class="lab-card" style="--acc:var(--c05);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-БПЛА/index.html"><div class="num">LAB.05</div><h3>Курс «БАС — беспилотные авиационные системы»</h3><p class="desc">Готов! 28 занятий: сборка дрона, калибровка, полёты на симуляторе и зачётный маршрут. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c05);color:var(--c05);">открыт</span><span class="tag">пилотирование · 28 занятий</span></div></a> <a class="lab-card" style="--acc:var(--c06);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-VR-студия/Список занятий VR студии.html"><div class="num">LAB.06</div><h3>Курс «VR-разработка»</h3><p class="desc">Готов! 36 занятий: Unity, C#, XR — от первой сцены до APK на Pico 4. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c06);color:var(--c06);">открыт</span><span class="tag">Unity · 36 занятий</span></div></a> <a class="lab-card" style="--acc:var(--c07);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-Проектный-навигатор/index.html"><div class="num">ПД</div><h3>Курс «Проектный навигатор»</h3><p class="desc">Готов! 36 занятий: от идеи до защищённого проекта — методология, прототип и презентация. Сквозная программа для всех лабораторий. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c07);color:var(--c07);">открыт</span><span class="tag">PBL · 36 занятий</span></div></a> </div> <div class="result-band" style="margin-top:18px;"><div class="rl">Хотите первыми узнать о новых курсах?</div><p style="margin:6px 0 0;">Войдите в личный кабинет — мы добавим вас в список ожидания и сообщим, когда появятся новые материалы.</p><p style="margin:10px 0 0;"><button class="btn btn-ghost" type="button" onclick="TLCore.openAuth('login')">Войти и подписаться</button></p></div></section> <section id="join" class="cta-section"> <div class="cta-final"> <span class="k" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);">Набор открыт · 2026–2027</span> <h2>Стань частью инжинирингового хаба</h2> <p>Оставьте заявку — педагог свяжется, поможет выбрать лабораторию и ответит на вопросы. Группы 10–16 человек, набор свободный.</p> <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;"> <a class="btn btn-primary btn-lg" href="https://sputnik.cosmoschool.ru/events/459" target="_blank" rel="noopener">Оставить заявку</a> <a class="btn btn-ghost btn-lg" href="javascript:void(0)" onclick="switchTab('program')">Положение и программа</a> </div> </div> </section>
+<main class="panel active" id="panel-home"> <header class="hero" id="top"> <div class="kicker">Объединение дополнительного образования · техническая направленность</div> <h1>ТЕХНОЛОГИЧЕСКАЯ<br><span class="ac">ЛАБОРАТОРИЯ</span></h1> <p class="lede">Пять инженерных лабораторий для подростков 14–18 лет: робототехника, электроника, моделирование (3D и инженерная графика), БАС и VR. «Создавай. Управляй. Запускай.» — 65% практики и реальный продукт в конце каждого модуля, а проектная деятельность объединяет все направления.</p> <div class="cta"> <a class="btn btn-primary btn-lg" href="javascript:void(0)" onclick="switchTab('home');setTimeout(function(){document.getElementById('join').scrollIntoView({behavior:'smooth'})},50);">Записаться</a> <a class="btn btn-ghost btn-lg" href="javascript:void(0)" onclick="switchTab('labs')">Смотреть лаборатории</a> </div> <div class="lab-strip"><div class="lab-dot" style="--acc:var(--c01)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.2 5.2l1.7 1.7M17.1 17.1l1.7 1.7M18.8 5.2l-1.7 1.7M6.9 17.1l-1.7 1.7"/><circle cx="12" cy="12" r="5"/><path d="M10.7 9.6h2.5l-1.4 2.5h1.4l-2.5 3.1"/></svg></span><span class="lname">LAB.01</span></div> <div class="lab-dot" style="--acc:var(--c02)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="7" width="10" height="10"/><path d="M7 4.2V1.5M7 22.5v-2.7M17 4.2V1.5M17 22.5v-2.7M4.2 7H1.5M4.2 17H1.5M22.5 7h-2.7M22.5 17h-2.7"/><path d="M11.2 9.3h2.6l-1.5 2.6h1.5l-2.6 3.5"/></svg></span><span class="lname">LAB.02</span></div> <div class="lab-dot" style="--acc:var(--c03)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.5 21 7v10l-9 4.5L3 17V7l9-4.5z"/><path d="M3 7l9 4.5L21 7M12 11.5v10"/></svg></span><span class="lname">LAB.03</span></div> <div class="lab-dot" style="--acc:var(--c05)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="5" cy="5" r="2.1"/><circle cx="19" cy="5" r="2.1"/><circle cx="5" cy="19" r="2.1"/><circle cx="19" cy="19" r="2.1"/><path d="M6.6 6.6 17.4 17.4M17.4 6.6 6.6 17.4"/><circle cx="12" cy="12" r="2.3"/></svg></span><span class="lname">LAB.04</span></div> <div class="lab-dot" style="--acc:var(--c06)"><span class="ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 8.5h16v6.5a1.2 1.2 0 0 1-1.2 1.2h-3.9a1.4 1.4 0 0 1-1.3-.8L12 13.9l-1.6 1.5a1.4 1.4 0 0 1-1.3.8H5.2A1.2 1.2 0 0 1 4 15z"/><circle cx="8.3" cy="12.3" r="1.1"/><circle cx="15.7" cy="12.3" r="1.1"/><path d="M7.5 5.5v2M16.5 5.5v2"/></svg></span><span class="lname">LAB.05</span></div></div> </header> <div class="kpi-band"> <div class="kpi"><b>5</b><span>лабораторий</span></div> <div class="kpi"><b>784</b><span>часа: лаборатории + Проектный навигатор</span></div> <div class="kpi"><b>67%</b><span>времени — практика</span></div> <div class="kpi"><b>14–18</b><span>лет — возраст</span></div> </div> <section> <div class="sec-head"><span class="k">Почему мы</span><h2>Принципы объединения</h2></div> <div class="cols3"> <div class="prin"><div class="ico"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 3v28M3 17h28M6.5 6.5 27.5 27.5M27.5 6.5 6.5 27.5"/><circle cx="17" cy="17" r="8.5"/></svg></div><h3>Практика 65%+</h3><p>Не лекции, а руки в деле: сборка, пайка, код, рендер, полёт. Теория — только чтобы развязать практику.</p></div> <div class="prin"><div class="ico"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 3.5 28.5 10v14L17 30.5 5.5 24V10z"/><path d="M5.5 10 17 16.5 28.5 10M17 16.5V30.5"/></svg></div><h3>Реальный продукт</h3><p>Каждая лаборатория заканчивается осязаемым результатом: робот на поле, устройство, 3D-модель, приложение, полёт, питч.</p></div> <div class="prin"><div class="ico"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="17" cy="17" r="13"/><path d="M17 8.5V17l6 4.5"/><path d="M17 17 22 12"/></svg></div><h3>Профориентация</h3><p>Пять лабораторий — карьерные треки в инженерии и IT: от инженера-робототехника до VR-разработчика. Ученик выбирает свою.</p></div> </div> </section> <section id="labs-map"> <div class="sec-head"><span class="k">Карта лабораторий</span><h2>Пять лабораторий — одна экосистема</h2><p class="sec-sub">Пять инженерных лабораторий образуют экосистему создания реальных продуктов. Моделирование объединяет два направления: Blender 3D и КОМПАС-3D. Проектная деятельность — сквозная программа, которая объединяет все лаборатории. Нажмите на карточку, чтобы открыть полное описание лаборатории: навыки, оборудование, профессии и итоговый продукт.</p></div> <div class="labs-grid"> <article class="lab-card" style="--acc:var(--c01)" onclick="switchTab('labs')"> <div class="bg" style="background-image:url('assets/img/lab01-robotics.jpg')"></div> <div class="inner"><div class="num">LAB.01</div><h3>Инициативная робототехника</h3></div> </article> <article class="lab-card" style="--acc:var(--c02)" onclick="switchTab('labs')"> <div class="bg" style="background-image:url('assets/img/lab02-electronics.jpg')"></div> <div class="inner"><div class="num">LAB.02</div><h3>Инициативная электроника</h3></div> </article> <article class="lab-card" style="--acc:var(--c03)" onclick="switchTab('labs')"> <div class="bg" style="background-image:url('assets/img/lab03-blender.jpg')"></div> <div class="inner"><div class="num">LAB.03</div><h3>Инициативное моделирование</h3><div class="tags"><span class="tag">Blender 3D</span><span class="tag">КОМПАС-3D</span></div></div> </article> <article class="lab-card" style="--acc:var(--c06)" onclick="switchTab('labs')"> <div class="bg" style="background-image:url('assets/img/lab06-vr.jpg')"></div> <div class="inner"><div class="num">LAB.06</div><h3>Инициативная VR-разработка</h3></div> </article> <article class="lab-card" style="--acc:var(--c05)" onclick="switchTab('labs')"> <div class="bg" style="background-image:url('assets/img/lab05-uav.jpg')"></div> <div class="inner"><div class="num">LAB.05</div><h3>Инициативная навигация — БАС</h3><div class="tags"><span class="tag">беспилотные авиационные системы</span></div></div> </article> </div> <div class="result-band" style="margin-top:18px;"><div class="rl">Программа-объединитель</div><p style="margin:6px 0 0;"><b>Проектная деятельность</b> — не отдельная лаборатория, а сквозная программа, в которой участники всех лабораторий учатся проектировать: ставят цель, планируют, работают в команде и защищают свой проект перед аудиторией.</p></div> </section> <section id="trainers"> <div class="sec-head"><span class="k">Наставники</span><h2>Кто ведёт лаборатории</h2></div> <div style="display:grid;gap:14px;"> <div class="profile-acc"> <div class="pa-head" onclick="this.parentNode.classList.toggle('open')"> <div class="avatar"><img src="assets/img/mentor-kazakevich.jpg" alt="Казакевич Константин Михайлович"></div> <div class="pa-ttl"> <div class="nm">Казакевич Константин Михайлович</div> <div class="role">Заведующий сектором технологических лабораторий · учитель информатики и технологии · педагог дополнительного образования</div> <div class="tags-row"><span class="tag">робототехника</span><span class="tag">электроника</span><span class="tag">3D-моделирование</span><span class="tag">БАС</span><span class="tag">VR-разработка</span><span class="tag">проектная деятельность</span></div> </div> <svg class="pa-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg> </div> <div class="pa-body"> <div class="pa-grid"> <div class="pa-block"><h5>Образование</h5><p>Высшее образование (психолого-педагогическое направление, направление «Тренер-технолог деятельностных образовательных практик»). Профпереподготовка «Педагог дополнительного образования», регулярное повышение квалификации по техническим и педагогическим направлениям.</p></div> <div class="pa-block"><h5>Опыт</h5><p>Более 20 лет в технической и IT-сфере. Заведующий сектором технологических лабораторий ТЛ (с 2025): закупка и настройка оборудования (120+ ед.), разработка программ лабораторий, методическое и медиасопровождение, работа с родителями и навигатором допобразования. Ранее — педагог ДО Центра «Перспектива» (Зеленогорск, 2019–2024): программы «Виртуальная реальность» (Unity, C#), «Робототехника LEGO» (EV3, NXT, Spike, Arduino), «Электроника Arduino», «Агентство прогрессивных решений». Системный администратор и инженер-программист (СОШ №4 Минусинск, Бизнесколлегия «Малтат», снабженческую организацию, ФБУ ИК-27): сети до 700 ПК, Active Directory, Windows-серверы, NetSchool, 1С.</p></div> <div class="pa-block"><h5>Регалии и награды</h5><p>Действующий тренер Ассоциации молодых педагогов региона (компетенция «Командодействие»). Участник краевого проекта «Реальное образование» (кадровые школы 2017–2018, сертификаты курсы повышения квалификации). 1-е место в категории «Инженерная компетентность» на кадровой школе 2017 (программа «3D-моделирование»). Автор программ «Юный инженер-изобретатель» и сетевой программы с региональным центром допобразования. Организатор крауд-проектов на Планете.ру и РосМолодёжь.</p></div> <div class="pa-block"><h5>Соревнования и ученики</h5><p>Подготовка команд к конкурсам высшей категории: призовые места и лауреатства городских, краевых и всероссийских проектных конкурсов. Призовое место на всероссийской конференции «Шаг в будущее» (2024, VR-направление). Бизнес-акселератор «Технолидеры будущего» (Сбер, Сириус), JuniorSkills «Мультимедийная журналистика», сопровождение команд в акселераторах.</p></div> <div class="pa-block" style="grid-column:1/-1;"><h5>Ключевые навыки</h5><div class="pa-chips"><span>LEGO MINDSTORMS EV3</span><span>Arduino</span><span>схемотехника и пайка</span><span>C/C++</span><span>Blender 4.x / 3D-печать</span><span>КОМПАС-3D / ЕСКД</span><span>управление БАС</span><span>Unity · C# · VR-разработка</span><span>Pico 4 Ultra</span><span>проектное обучение (SMART, Гант, питч)</span><span>дистанционное обучение</span><span>презентации и медиа</span></div></div> </div> </div> </div> <div class="trainer" style="border-style:dashed;background:transparent;"><div class="avatar" style="color:var(--muted);border-color:var(--line);">+</div><div><div class="nm">Приглашённые специалисты</div><div class="role">Инженеры и разработчики технологических предприятий</div><div class="desc">Профориентационные встречи в каждой лаборатории: инженеры профильных предприятий, разработчики технопарков — с разбором реальных кейсов и рынка труда.</div></div></div> </div> </section> <section id="reviews"> <div class="sec-head"><span class="k">Отзывы</span><h2>Что говорят ученики и родители</h2></div> <div class="rev-grid"> <div class="rev"><div class="stars">★★★★★</div><p>Собрал робота, который объезжает препятствия, и занял второе место на мини-соревновании. Самое крутое — что это мой собственный механизм от и до.</p><div class="who"><b>LAB.01</b> · ученик 9 класса, робототехника</div></div> <div class="rev"><div class="stars">★★★★★</div><p>Сделал VR-приложение и впервые в жизни тестировал его в шлеме. Теперь понял, что хочу в геймдев — уже посмотрел, куда поступать.</p><div class="who"><b>LAB.06</b> · ученик 11 класса, VR-разработка</div></div> <div class="rev"><div class="stars">★★★★★</div><p>Субботний формат идеально встроился в учебную неделю. Дочь ждёт занятий — это редкость после шести дней школы.</p><div class="who"><b>Родитель</b> · LAB.02, электроника</div></div> </div> </section> <section id="materials" style="border-bottom:1px solid var(--line);"> <div class="sec-head"><div><span class="k">Материалы и курсы</span><h2>Цифровой хаб лаборатории</h2><p class="sec-sub">Электронные курсы по лабораториям — для очно-заочного обучения и самостоятельной работы. Единый личный кабинет и сквозной вход на портале и курсах уже работают.</p></div><span class="tech">ФИШКА ТЛ // ПОПРОБУЙ ЗАНЯТИЕ</span></div> <div class="labs-grid" id="tlCoursesGrid"> <a class="lab-card" style="--acc:var(--c01);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-Робототехника/index.html"><div class="num">LAB.01</div><h3>Курс «Робототехника»</h3><p class="desc">Готов! 28 занятий: EV3, датчики, программирование — от сборки до зачётных заездов. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c01);color:var(--c01);">открыт</span><span class="tag">EV3 · 28 занятий</span></div></a> <a class="lab-card" style="--acc:var(--c02);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-Электроника/index.html"><div class="num">LAB.02</div><h3>Курс «Электроника»</h3><p class="desc">Готов! 28 занятий: от закона Ома до Arduino — паяем, собираем и защищаем свой проект. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c02);color:var(--c02);">открыт</span><span class="tag">Arduino · 28 занятий</span></div></a> <a class="lab-card" style="--acc:var(--c03);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-Blender-3D/index.html"><div class="num">LAB.03</div><h3>Курс «Моделирование (часть 1 · Blender 3D)»</h3><p class="desc">Готов! 28 занятий Blender: моделирование, материалы и рендер — до защиты собственного проекта. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c03);color:var(--c03);">открыт</span><span class="tag">3D-моделирование · 28 занятий</span></div></a> <a class="lab-card" style="--acc:var(--c03);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-КОМПАС-3D/index.html"><div class="num">LAB.03</div><h3>Курс «Моделирование (часть 2 · КОМПАС-3D)»</h3><p class="desc">Готов! 28 занятий: от ЕСКД до 3D-модели и ассоциативного чертежа в КОМПАС-3D. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c03);color:var(--c03);">открыт</span><span class="tag">инженерное черчение · 28 занятий</span></div></a> <a class="lab-card" style="--acc:var(--c05);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-БПЛА/index.html"><div class="num">LAB.05</div><h3>Курс «БАС — беспилотные авиационные системы»</h3><p class="desc">Готов! 28 занятий: сборка дрона, калибровка, полёты на симуляторе и зачётный маршрут. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c05);color:var(--c05);">открыт</span><span class="tag">пилотирование · 28 занятий</span></div></a> <a class="lab-card" style="--acc:var(--c06);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-VR-студия/Список занятий VR студии.html"><div class="num">LAB.06</div><h3>Курс «VR-разработка»</h3><p class="desc">Готов! 36 занятий: Unity, C#, XR — от первой сцены до APK на Pico 4. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c06);color:var(--c06);">открыт</span><span class="tag">Unity · 36 занятий</span></div></a> <a class="lab-card" style="--acc:var(--c07);min-height:200px;text-decoration:none;display:flex;flex-direction:column;" href="../../Курс-Проектный-навигатор/index.html"><div class="num">ПД</div><h3>Курс «Проектный навигатор»</h3><p class="desc">Готов! 36 занятий: от идеи до защищённого проекта — методология, прототип и презентация. Сквозная программа для всех лабораторий. Заходи и начинай.</p><div class="tags"><span class="tag" style="border-color:var(--c07);color:var(--c07);">открыт</span><span class="tag">PBL · 36 занятий</span></div></a> </div> <div class="result-band" style="margin-top:18px;"><div class="rl">Хотите первыми узнать о новых курсах?</div><p style="margin:6px 0 0;">Войдите в личный кабинет — мы добавим вас в список ожидания и сообщим, когда появятся новые материалы.</p><p style="margin:10px 0 0;"><button class="btn btn-ghost" type="button" onclick="TLCore.openAuth('login')">Войти и подписаться</button></p></div></section> <section id="join" class="cta-section"> <div class="cta-final"> <span class="k" style="font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);">Набор открыт · 2026–2027</span> <h2>Стань частью инжинирингового хаба</h2> <p>Оставьте заявку — педагог свяжется, поможет выбрать лабораторию и ответит на вопросы. Группы 10–16 человек, набор свободный.</p> <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;"> <a class="btn btn-primary btn-lg" href="https://sputnik.cosmoschool.ru/events/459" target="_blank" rel="noopener">Оставить заявку</a> <a class="btn btn-ghost btn-lg" href="javascript:void(0)" onclick="switchTab('program')">Положение и программа</a> </div> </div> </section>
 </main> <!-- ================= РАЗДЕЛ: ПРОГРАММА (ДООП) ================= -->
-<main class="panel" id="panel-program"> <header class="hero" id="prog-top"> <div class="kicker">Дополнительная общеобразовательная общеразвивающая программа</div> <h1>Технологическая<br><span class="ac">лаборатория</span></h1> <div class="tagrow" style="display:flex;gap:8px;flex-wrap:wrap;"> <span class="tag">Направленность: техническая</span><span class="tag">Уровень: стартовый</span><span class="tag">14–18 лет</span> </div> </header> <section> <div class="sec-head"><span class="k">Раздел 1</span><h2>Пояснительная записка</h2></div> <h3 style="font-size:17px;">Нормативно-правовые основания</h3> <ul class="prav"> <li>Федеральный закон от 29.12.2012 № 273-ФЗ «Об образовании в Российской Федерации» (ред. от 25.12.2023)</li> <li>Указ Президента РФ от 07.05.2024 № 309 «О национальных целях развития РФ на период до 2030 года и перспективу до 2036 года»</li> <li>Указ Президента РФ от 09.11.2022 № 809 «Об утверждении Основ государственной политики по сохранению и укреплению традиционных российских духовно-нравственных ценностей»</li> <li>Распоряжение Правительства РФ от 31.03.2022 № 678-р «Концепция развития дополнительного образования детей до 2030 года»</li> <li>Приказ Минпросвещения РФ от 27.07.2022 № 629 «Порядок организации и осуществления образовательной деятельности по ДОП» (зарег. № 70226)</li> <li>Постановление Главного санитарного врача РФ от 28.09.2020 № 28, СП 2.4.3648-20</li> <li>Приказ Минтруда РФ от 22.09.2021 № 652н «Профессиональный стандарт «Педагог дополнительного образования детей и взрослых»</li> <li>Распоряжение Правительства РФ от 29.05.2015 № 996-р «Стратегия развития воспитания в РФ на период до 2025 года»</li> </ul> <div class="grid2"> <div class="card"><div class="ch">Актуальность и новизна</div><p style="font-size:14.5px;color:var(--muted);">Программа отвечает на стратегический запрос технологического суверенитета и кадровой потребности региона: предприятия реального сектора нуждаются в выпускниках, владеющих инженерными и цифровыми компетенциями. Новизна — в системном подходе: пять практико-ориентированных лабораторий связаны общим проектным контуром, единой системой оценивания и сквозной профориентацией. Обучающийся получает не разрозненные кружки, а целостную экосистему, где любой продукт можно довести от идеи до публичной защиты, а стартовый уровень доступен всем желающим 14–18 лет без вступительных испытаний.</p></div> <div class="card"><div class="ch">Педагогическая целесообразность</div><p style="font-size:14.5px;color:var(--muted);">Программа построена на принципе «от продукта к знанию»: сначала ребёнок делает реальное устройство, модель, код или полёт, затем осмысляет теорию и применяет её в новой задаче. Такой путь соответствует возрастным особенностям подростков 14–18 лет: поддерживает мотивацию (видимый результат на каждом занятии), развивает инженерное мышление, ответственность и навык решения открытых задач. Трудовая нагрузка рассчитана по санитарным нормам, каждая лаборатория обеспечена оборудованием и методическими материалами, а постепенное усложнение формирует непрерывный маршрут «стартовый → базовый → продвинутый» с выходом на соревнования всероссийского уровня.</p></div> </div> <div class="tbl-wrap"> <table class="t"> <thead><tr><th>Параметр</th><th>Значение</th></tr></thead> <tbody> <tr><td>Возраст обучающихся</td><td>14–18 лет (8–11 классы)</td></tr> <tr><td>Общий объём программы</td><td>560 ч (5 лабораторий × 112 ч)</td></tr> <tr><td>Режим занятий</td><td>По субботам, 4 ак. часа в неделю на каждую лабораторию (2 занятия по 2 ч с перерывом 10 мин)</td></tr> <tr><td>Продолжительность занятия</td><td>45 минут (академический час); пара = 2 ак. ч = 90 мин</td></tr> <tr><td>Наполняемость группы</td><td>10–16 человек (по количеству комплектов оборудования)</td></tr> <tr><td>Форма обучения</td><td>Очная; допускается очно-заочная с применением дистанционных технологий</td></tr> <tr><td>Зачисление</td><td>Свободный набор, по заявлению родителей (законных представителей)</td></tr> <tr><td>Учебный год</td><td>28 учебных недель (сентябрь — май, по субботам)</td></tr> </tbody> </table> </div> </section> <section> <div class="sec-head"><span class="k">Раздел 2</span><h2>Цель и задачи</h2></div> <div class="result-band" style="border-left-color:var(--accent);"><div class="rl" style="color:var(--accent);">Цель</div><p style="margin:0;">Развитие творческих и научно-технических компетенций обучающихся в неразрывном единстве с воспитанием патриотизма, коммуникативных качеств и целенаправленности личности через систему практико-ориентированных занятий в семи технических лабораториях, обеспечивающих формирование осознанного профессионального выбора в сфере инженерных и IT-профессий.</p></div> <div class="grid3"> <div class="card"><div class="ch">Обучающие</div><ul class="tight"><li>EV3: конструирование и программирование роботов</li><li>Электроника и Arduino</li><li>3D-моделирование в Blender и КОМПАС-3D</li><li>Управление БАС и законодательство</li><li>VR-приложения в Unity для Pico 4 Ultra</li><li>Проектное мышление: SMART, Гант, питч</li></ul></div> <div class="card"><div class="ch">Развивающие</div><ul class="tight"><li>Инженерное и алгоритмическое мышление</li><li>Самостоятельный поиск решений и отладка</li><li>Критический анализ своих и чужих результатов</li><li>Публичное представление работы</li><li>Цифровая грамотность и профессиональное ПО</li></ul></div> <div class="card"><div class="ch">Воспитательные</div><ul class="tight"><li>Гражданская гордость за достижения отечества</li><li>Ценностное отношение к труду</li><li>Культура безопасности</li><li>Коллективная ответственность</li><li>Неприятие деструктивного использования технологий</li></ul></div> </div> </section> <section> <div class="sec-head"><span class="k">Раздел 3</span><h2>Учебно-тематический план</h2><p class="sec-sub">Пять самостоятельных лабораторий реализуются параллельно по субботам. Обучающийся выбирает одну или несколько лабораторий в соответствии с профессиональными интересами.</p></div> <div class="tbl-wrap"> <table class="t"> <thead><tr><th>№</th><th>Лаборатория</th><th class="num">Всего ч.</th><th class="num">Теория</th><th class="num">Практика</th><th class="num">ч/нед</th><th>Итоговый контроль</th></tr></thead> <tbody> <tr><td class="m">01</td><td><b>Инициативная робототехника</b></td><td class="num">112</td><td class="num">38</td><td class="num">74</td><td class="num">4</td><td>Соревнование</td></tr> <tr><td class="m">02</td><td><b>Инициативная электроника</b></td><td class="num">112</td><td class="num">42</td><td class="num">70</td><td class="num">4</td><td>Защита проекта</td></tr> <tr><td class="m">03</td><td><b>Моделирование — объединяет два направления (Blender 3D + КОМПАС-3D)</b></td><td class="num">112</td><td class="num">40</td><td class="num">72</td><td class="num">4</td><td>Защита 3D-проекта / КД</td></tr> <tr><td class="m">05</td><td><b>Инициативная навигация (БАС)</b></td><td class="num">112</td><td class="num">36</td><td class="num">76</td><td class="num">4</td><td>Демонстрация полёта</td></tr> <tr><td class="m">06</td><td><b>Инициативная VR-разработка</b></td><td class="num">112</td><td class="num">30</td><td class="num">82</td><td class="num">4</td><td>Демонстрация VR-приложения</td></tr> <tr class="tot"><td></td><td><b>ИТОГО по лабораториям:</b></td><td class="num">560</td><td class="num">186</td><td class="num">374</td><td class="num">4</td><td>—</td></tr> </tbody> </table> </div> <div class="pill-row"><span class="pill acc">Практика 524 ч · 66,8%</span><span class="pill">Теория 260 ч · 33,2%</span></div> </section>  
+<main class="panel" id="panel-program"> <header class="hero" id="prog-top"> <div class="kicker">Дополнительная общеобразовательная общеразвивающая программа</div> <h1>Технологическая<br><span class="ac">лаборатория</span></h1> <div class="tagrow" style="display:flex;gap:8px;flex-wrap:wrap;"> <span class="tag">Направленность: техническая</span><span class="tag">Уровень: стартовый</span><span class="tag">14–18 лет</span> </div> </header> <section> <div class="sec-head"><span class="k">Раздел 1</span><h2>Пояснительная записка</h2></div> <h3 style="font-size:17px;">Нормативно-правовые основания</h3> <ul class="prav"> <li>Федеральный закон от 29.12.2012 № 273-ФЗ «Об образовании в Российской Федерации» (ред. от 25.12.2023)</li> <li>Указ Президента РФ от 07.05.2024 № 309 «О национальных целях развития РФ на период до 2030 года и перспективу до 2036 года»</li> <li>Указ Президента РФ от 09.11.2022 № 809 «Об утверждении Основ государственной политики по сохранению и укреплению традиционных российских духовно-нравственных ценностей»</li> <li>Распоряжение Правительства РФ от 31.03.2022 № 678-р «Концепция развития дополнительного образования детей до 2030 года»</li> <li>Приказ Минпросвещения РФ от 27.07.2022 № 629 «Порядок организации и осуществления образовательной деятельности по ДОП» (зарег. № 70226)</li> <li>Постановление Главного санитарного врача РФ от 28.09.2020 № 28, СП 2.4.3648-20</li> <li>Приказ Минтруда РФ от 22.09.2021 № 652н «Профессиональный стандарт «Педагог дополнительного образования детей и взрослых»</li> <li>Распоряжение Правительства РФ от 29.05.2015 № 996-р «Стратегия развития воспитания в РФ на период до 2025 года»</li> </ul> <div class="grid2"> <div class="card"><div class="ch">Актуальность и новизна</div><p style="font-size:14.5px;color:var(--muted);">Программа отвечает на стратегический запрос технологического суверенитета и кадровой потребности региона: предприятия реального сектора нуждаются в выпускниках, владеющих инженерными и цифровыми компетенциями. Новизна — в системном подходе: пять практико-ориентированных лабораторий связаны общим проектным контуром, единой системой оценивания и сквозной профориентацией. Обучающийся получает не разрозненные кружки, а целостную экосистему, где любой продукт можно довести от идеи до публичной защиты, а стартовый уровень доступен всем желающим 14–18 лет без вступительных испытаний.</p></div> <div class="card"><div class="ch">Педагогическая целесообразность</div><p style="font-size:14.5px;color:var(--muted);">Программа построена на принципе «от продукта к знанию»: сначала ребёнок делает реальное устройство, модель, код или полёт, затем осмысляет теорию и применяет её в новой задаче. Такой путь соответствует возрастным особенностям подростков 14–18 лет: поддерживает мотивацию (видимый результат на каждом занятии), развивает инженерное мышление, ответственность и навык решения открытых задач. Трудовая нагрузка рассчитана по санитарным нормам, каждая лаборатория обеспечена оборудованием и методическими материалами, а постепенное усложнение формирует непрерывный маршрут «стартовый → базовый → продвинутый» с выходом на соревнования всероссийского уровня.</p></div> </div> <div class="tbl-wrap"> <table class="t"> <thead><tr><th>Параметр</th><th>Значение</th></tr></thead> <tbody> <tr><td>Возраст обучающихся</td><td>14–18 лет (8–11 классы)</td></tr> <tr><td>Общий объём программы</td><td>784 ч: 5 лабораторий (6 программ направлений, моделИрование = Blender 3D + КОМПАС-3D) + Программа «Проектный навигатор» (7 × 112 ч)</td></tr> <tr><td>Режим занятий</td><td>По субботам, 4 ак. часа в неделю на каждую лабораторию (2 занятия по 2 ч с перерывом 10 мин)</td></tr> <tr><td>Продолжительность занятия</td><td>45 минут (академический час); пара = 2 ак. ч = 90 мин</td></tr> <tr><td>Наполняемость группы</td><td>10–16 человек (по количеству комплектов оборудования)</td></tr> <tr><td>Форма обучения</td><td>Очная; допускается очно-заочная с применением дистанционных технологий</td></tr> <tr><td>Зачисление</td><td>Свободный набор, по заявлению родителей (законных представителей)</td></tr> <tr><td>Учебный год</td><td>28 учебных недель (сентябрь — май, по субботам)</td></tr> </tbody> </table> </div> </section> <section> <div class="sec-head"><span class="k">Раздел 2</span><h2>Цель и задачи</h2></div> <div class="result-band" style="border-left-color:var(--accent);"><div class="rl" style="color:var(--accent);">Цель</div><p style="margin:0;">Развитие творческих и научно-технических компетенций обучающихся в неразрывном единстве с воспитанием патриотизма, коммуникативных качеств и целенаправленности личности через систему практико-ориентированных занятий в семи технических лабораториях, обеспечивающих формирование осознанного профессионального выбора в сфере инженерных и IT-профессий.</p></div> <div class="grid3"> <div class="card"><div class="ch">Обучающие</div><ul class="tight"><li>EV3: конструирование и программирование роботов</li><li>Электроника и Arduino</li><li>3D-моделирование в Blender и КОМПАС-3D</li><li>Управление БАС и законодательство</li><li>VR-приложения в Unity для Pico 4 Ultra</li><li>Проектное мышление: SMART, Гант, питч</li></ul></div> <div class="card"><div class="ch">Развивающие</div><ul class="tight"><li>Инженерное и алгоритмическое мышление</li><li>Самостоятельный поиск решений и отладка</li><li>Критический анализ своих и чужих результатов</li><li>Публичное представление работы</li><li>Цифровая грамотность и профессиональное ПО</li></ul></div> <div class="card"><div class="ch">Воспитательные</div><ul class="tight"><li>Гражданская гордость за достижения отечества</li><li>Ценностное отношение к труду</li><li>Культура безопасности</li><li>Коллективная ответственность</li><li>Неприятие деструктивного использования технологий</li></ul></div> </div> </section> <section> <div class="sec-head"><span class="k">Раздел 3</span><h2>Учебно-тематический план</h2><p class="sec-sub">Пять самостоятельных лабораторий (шесть программ направлений: моделирование представлено Blender 3D и КОМПАС-3D) и сквозная программа «Проектный навигатор» реализуются параллельно по субботам. Обучающийся выбирает одну или несколько лабораторий в соответствии с профессиональными интересами.</p></div> <div class="tbl-wrap"> <table class="t"> <thead><tr><th>№</th><th>Лаборатория</th><th class="num">Всего ч.</th><th class="num">Теория</th><th class="num">Практика</th><th class="num">ч/нед</th><th>Итоговый контроль</th></tr></thead> <tbody> <tr><td class="m">01</td><td><b>Инициативная робототехника</b></td><td class="num">112</td><td class="num">38</td><td class="num">74</td><td class="num">4</td><td>Соревнование</td></tr> <tr><td class="m">02</td><td><b>Инициативная электроника</b></td><td class="num">112</td><td class="num">42</td><td class="num">70</td><td class="num">4</td><td>Защита проекта</td></tr> <tr><td class="m">03</td><td><b>Моделирование — Blender 3D</b></td><td class="num">112</td><td class="num">38</td><td class="num">74</td><td class="num">4</td><td>Защита 3D-проекта</td></tr> <tr><td class="m">04</td><td><b>Моделирование — КОМПАС-3D</b></td><td class="num">112</td><td class="num">42</td><td class="num">70</td><td class="num">4</td><td>Защита КД</td></tr> <tr><td class="m">05</td><td><b>Инициативная навигация (БАС)</b></td><td class="num">112</td><td class="num">36</td><td class="num">76</td><td class="num">4</td><td>Демонстрация полёта</td></tr> <tr><td class="m">06</td><td><b>Инициативная VR-разработка</b></td><td class="num">112</td><td class="num">30</td><td class="num">82</td><td class="num">4</td><td>Демонстрация VR-приложения</td></tr> <tr><td class="m">07</td><td><b>Проектный навигатор — сквозная программа (ПД)</b></td><td class="num">112</td><td class="num">34</td><td class="num">78</td><td class="num">4</td><td>Защита проекта</td></tr> <tr class="tot"><td></td><td><b>ИТОГО (лаборатории + Проектный навигатор):</b></td><td class="num">784</td><td class="num">260</td><td class="num">524</td><td class="num">4</td><td>—</td></tr> </tbody> </table> </div> <div class="pill-row"><span class="pill acc">Практика 524 ч · 66,8%</span><span class="pill">Теория 260 ч · 33,2%</span></div> </section>  
 </main> <!-- ================= РАЗДЕЛ: ЛАБОРАТОРИИ ================= -->
 <main class="panel" id="panel-labs"> <header class="hero" id="labs-top"> <h1>Лаборатории<br><span class="ac">объединения</span></h1> <p class="lede">Пять инженерных лабораторий. Моделирование представлено двумя направлениями: Blender 3D и КОМПАС-3D. Проектная деятельность — сквозная программа, объединяющая все лаборатории. Раскройте модуль, чтобы увидеть навыки, оборудование, профессии и итоговый продукт.</p> </header> <section> <div class="sec-head"><span class="k">Структура</span><h2>Структура курса</h2><p class="sec-sub">Навык → инструмент → профессия → соревнование → продукт.</p></div>
 
@@ -438,7 +541,7 @@ body { overflow-x: hidden; }
           <tr data-who="stud"><td class="sm-fio"><div class="fio-wrap"><span class="fio-text" contenteditable="true" data-fio="stud">Студент-ведущий модуля</span></div><span class="sm-role editable-box" contenteditable="true" data-field="role" data-who="stud">вуз-партнёр · практика</span></td><td><div class="sm-tags editable-tags" data-field="skills" data-who="stud"><span class="sm-tag editable-tag" contenteditable="true" data-field="skill" data-role="skill">профиль лаб.</span><span class="sm-tag editable-tag" contenteditable="true" data-field="skill" data-role="skill">ПО</span><button class="sm-tag-add" type="button" title="Добавить компетенцию" onclick="addSkillTag(this)">+</button></div></td><td class="sm-cell-ed"><span class="editable-box" contenteditable="true" data-field="activity" data-who="stud">Ведёт 1–3 блока · тьюторство · наставник команды · методические результаты</span></td><td class="sm-cell-ed"><span class="editable-box" contenteditable="true" data-field="psig" data-who="stud">Уверенный старший наставник</span></td><td><div class="sm-row-status-cell"><select class="staff-status" data-who="stud" data-role="Студент-ведущий"><option value="active">занято</option><option value="hire">к найму</option><option value="sovm">совмещение</option><option value="practice">практика</option><option value="partner">партнёр</option></select></div></td><td><button class="sm-del" type="button" title="Удалить" onclick="delStaffRow('stud')">×</button></td></tr>
           <tr data-who="auto"><td class="sm-fio"><div class="fio-wrap"><span class="fio-text" contenteditable="true" data-fio="auto">Инженер-автоматизатор</span></div><span class="sm-role editable-box" contenteditable="true" data-field="role" data-who="auto">профильное предприятие · эксперт</span></td><td><div class="sm-tags editable-tags" data-field="skills" data-who="auto"><span class="sm-tag editable-tag" contenteditable="true" data-field="skill" data-role="skill">АСУТП</span><span class="sm-tag editable-tag" contenteditable="true" data-field="skill" data-role="skill">роботы</span><button class="sm-tag-add" type="button" title="Добавить компетенцию" onclick="addSkillTag(this)">+</button></div></td><td class="sm-cell-ed"><span class="editable-box" contenteditable="true" data-field="activity" data-who="auto">Мастер-классы · постановка задач · LAB.01/02</span></td><td class="sm-cell-ed"><span class="editable-box" contenteditable="true" data-field="psig" data-who="auto">Практик-эксперт, доходчивость</span></td><td><div class="sm-row-status-cell"><select class="staff-status" data-who="auto" data-role="Инженер-автоматизатор"><option value="active">занято</option><option value="hire">к найму</option><option value="sovm">совмещение</option><option value="practice">практика</option><option value="partner">партнёр</option></select></div></td><td><button class="sm-del" type="button" title="Удалить" onclick="delStaffRow('auto')">×</button></td></tr>
           <tr data-who="konstr"><td class="sm-fio"><div class="fio-wrap"><span class="fio-text" contenteditable="true" data-fio="konstr">Конструктор / нормоконтролёр</span></div><span class="sm-role editable-box" contenteditable="true" data-field="role" data-who="konstr">профильное предприятие · эксперт</span></td><td><div class="sm-tags editable-tags" data-field="skills" data-who="konstr"><span class="sm-tag editable-tag" contenteditable="true" data-field="skill" data-role="skill">ЕСКД</span><span class="sm-tag editable-tag" contenteditable="true" data-field="skill" data-role="skill">КОМПАС</span><button class="sm-tag-add" type="button" title="Добавить компетенцию" onclick="addSkillTag(this)">+</button></div></td><td class="sm-cell-ed"><span class="editable-box" contenteditable="true" data-field="activity" data-who="konstr">Разбор чертежей · нормоконтроль · LAB.03/04</span></td><td class="sm-cell-ed"><span class="editable-box" contenteditable="true" data-field="psig" data-who="konstr">Требовательный наставник, точность</span></td><td><div class="sm-row-status-cell"><select class="staff-status" data-who="konstr" data-role="Конструктор"><option value="active">занято</option><option value="hire">к найму</option><option value="sovm">совмещение</option><option value="practice">практика</option><option value="partner">партнёр</option></select></div></td><td><button class="sm-del" type="button" title="Удалить" onclick="delStaffRow('konstr')">×</button></td></tr>
-          <tr data-who="kipia"><td class="sm-fio"><div class="fio-wrap"><span class="fio-text" contenteditable="true" data-fio="kipia">Инженер КИПиА / метролог</span></div><span class="sm-role editable-box" contenteditable="true" data-field="role" data-who="kipia">профильное предприятие · техэксперт</span></td><td><div class="sm-tags editable-tags" data-field="skills" data-who="kipia"><span class="sm-tag editable-tag" contenteditable="true" data-field="skill" data-role="skill">поверка</span><span class="sm-tag editable-tag" contenteditable="true" data-field="skill" data-role="skill">калибровка</span><button class="sm-tag-add" type="button" title="Добавить компетенцию" onclick="addSkillTag(this)">+</button></div></td><td class="sm-cell-ed"><span class="editable-box" contenteditable="true" data-field="activity" data-who="kipia">Поверка оборудования · калибровка FDM/пайки · диагностика БПЛА</span></td><td class="sm-cell-ed"><span class="editable-box" contenteditable="true" data-field="psig" data-who="kipia">Эксперт-инженер, скрупулёзность</span></td><td><div class="sm-row-status-cell"><select class="staff-status" data-who="kipia" data-role="Инженер КИПиА"><option value="active">занято</option><option value="hire">к найму</option><option value="sovm">совмещение</option><option value="practice">практика</option><option value="partner">партнёр</option></select></div></td><td><button class="sm-del" type="button" title="Удалить" onclick="delStaffRow('kipia')">×</button></td></tr>
+          <tr data-who="kipia"><td class="sm-fio"><div class="fio-wrap"><span class="fio-text" contenteditable="true" data-fio="kipia">Инженер КИПиА / метролог</span></div><span class="sm-role editable-box" contenteditable="true" data-field="role" data-who="kipia">профильное предприятие · техэксперт</span></td><td><div class="sm-tags editable-tags" data-field="skills" data-who="kipia"><span class="sm-tag editable-tag" contenteditable="true" data-field="skill" data-role="skill">поверка</span><span class="sm-tag editable-tag" contenteditable="true" data-field="skill" data-role="skill">калибровка</span><button class="sm-tag-add" type="button" title="Добавить компетенцию" onclick="addSkillTag(this)">+</button></div></td><td class="sm-cell-ed"><span class="editable-box" contenteditable="true" data-field="activity" data-who="kipia">Поверка оборудования · калибровка FDM/пайки · диагностика БАС</span></td><td class="sm-cell-ed"><span class="editable-box" contenteditable="true" data-field="psig" data-who="kipia">Эксперт-инженер, скрупулёзность</span></td><td><div class="sm-row-status-cell"><select class="staff-status" data-who="kipia" data-role="Инженер КИПиА"><option value="active">занято</option><option value="hire">к найму</option><option value="sovm">совмещение</option><option value="practice">практика</option><option value="partner">партнёр</option></select></div></td><td><button class="sm-del" type="button" title="Удалить" onclick="delStaffRow('kipia')">×</button></td></tr>
           <tr data-who="rproj"><td class="sm-fio"><div class="fio-wrap"><span class="fio-text" contenteditable="true" data-fio="rproj">Руководитель проекта</span></div><span class="sm-role editable-box" contenteditable="true" data-field="role" data-who="rproj">профильное предприятие · наставник</span></td><td><div class="sm-tags editable-tags" data-field="skills" data-who="rproj"><span class="sm-tag editable-tag" contenteditable="true" data-field="skill" data-role="skill">проекты</span><span class="sm-tag editable-tag" contenteditable="true" data-field="skill" data-role="skill">Гант</span><span class="sm-tag editable-tag" contenteditable="true" data-field="skill" data-role="skill">риски</span><button class="sm-tag-add" type="button" title="Добавить компетенцию" onclick="addSkillTag(this)">+</button></div></td><td class="sm-cell-ed"><span class="editable-box" contenteditable="true" data-field="activity" data-who="rproj">Ведение модуля · сопровождение команд · предзащиты · эксперт на защите</span></td><td class="sm-cell-ed"><span class="editable-box" contenteditable="true" data-field="psig" data-who="rproj">Интерактивный фасилитатор</span></td><td><div class="sm-row-status-cell"><select class="staff-status" data-who="rproj" data-role="Руководитель проекта"><option value="active">занято</option><option value="hire">к найму</option><option value="sovm">совмещение</option><option value="practice">практика</option><option value="partner">партнёр</option></select></div></td><td><button class="sm-del" type="button" title="Удалить" onclick="delStaffRow('rproj')">×</button></td></tr>
         </tbody>
       </table>
@@ -484,7 +587,7 @@ body { overflow-x: hidden; }
           <div class="s-block s-wide"><h6>Должностные обязанности</h6><ul><li>Проведение занятий по КТП (4 ак. ч/нед на направление)</li><li>Входная, текущая и итоговая диагностика компетенций</li><li>Ведение электронного журнала посещаемости</li><li>Инструктаж по ТБ под роспись перед первым занятием</li><li>Подготовка и сопровождение команд на соревнованиях</li><li>Формирование портфолио достижений, обновление методических материалов</li><li>Повышение квалификации не реже 1 раза в 3 года</li></ul></div>
           <div class="s-block"><h6>Ежедневная деятельность</h6><div class="freq-row"><span class="freq f-d">проведение занятий</span><span class="freq f-d">заполнение журнала</span><span class="freq f-d">индивидуальные консультации</span></div></div>
           <div class="s-block"><h6>Еженедельная деятельность</h6><div class="freq-row"><span class="freq f-w">планирование занятий по КТП</span><span class="freq f-w">подготовка материалов</span><span class="freq f-w">работа с проектными командами</span><span class="freq f-w">методобъединение</span></div></div>
-          <div class="s-block"><h6>Компетенции</h6><p>Ведёт направления: робототехника, электроника, 3D-моделирование, БПЛА, VR, проектная деятельность. Практический опыт + соответствие профстандарту.</p></div>
+          <div class="s-block"><h6>Компетенции</h6><p>Ведёт направления: робототехника, электроника, 3D-моделирование, БАС, VR, проектная деятельность. Практический опыт + соответствие профстандарту.</p></div>
           <div class="s-block"><h6>Навыки</h6><p>Методика «практика 65%+», тьюторство, наставничество студентов, подготовка к соревнованиям, работа с подростками 14–18.</p></div>
           <div class="s-block"><h6>Психологический профиль</h6><p>Универсальный практик-тьютор: терпеливость, умение объяснять «от простого к сложному», эмпатия к подростку, вовлечение в проектную деятельность.</p></div>
         </div>
@@ -492,7 +595,7 @@ body { overflow-x: hidden; }
           <div class="s-head"><span class="s-name">Второй педагог ДО</span></div><div class="s-status-wrap"><label>Статус</label><select class="staff-status" data-who="ped2" data-role="Второй педагог"><option value="active">занято</option><option value="hire">к найму</option><option value="sovm">совмещение</option><option value="practice">практика</option><option value="partner">партнёр</option></select><span class="st-saved">✓</span></div>
           <div class="s-role">Педагог ДО · дополнительная ставка</div>
           <div class="s-det"><b>Назначение:</b> закрывает дефицит нагрузки при 7 лабораториях; финансирование — грант.</div>
-          <div class="s-block s-wide"><h6>Должностные обязанности</h6><ul><li>Ведение 1–3 лабораторий по матрице компетенций (робототехника, электроника, САПР, БПЛА, VR, проектная)</li><li>Проведение занятий по КТП, диагностика, электронный журнал</li><li>Инструктаж по ТБ, подготовка к конкурсам</li><li>Наставничество студентов-практикантов</li></ul></div>
+          <div class="s-block s-wide"><h6>Должностные обязанности</h6><ul><li>Ведение 1–3 лабораторий по матрице компетенций (робототехника, электроника, САПР, БАС, VR, проектная)</li><li>Проведение занятий по КТП, диагностика, электронный журнал</li><li>Инструктаж по ТБ, подготовка к конкурсам</li><li>Наставничество студентов-практикантов</li></ul></div>
           <div class="s-block"><h6>Компетенции (требование для найма)</h6><ul><li>Высшее техническое или педагогическое</li><li>Практический опыт в предметной области по матрице компетенций</li><li>Соответствие профстандарту «Педагог ДО» № 652н</li></ul></div>
           <div class="s-block"><h6>Навыки</h6><p>Ведение практических занятий, работа с оборудованием лаборатории, подготовка к соревнованиям.</p></div>
           <div class="s-block"><h6>Психологический профиль</h6><p>Практик-наставник: готовность к работе с подростками, устойчивость, умение держать дисциплину без авторитаризма, интерес к техническому творчеству.</p></div>
@@ -508,7 +611,7 @@ body { overflow-x: hidden; }
           <div class="s-head"><span class="s-name">Инженер-лаборант</span></div><div class="s-status-wrap"><label>Статус</label><select class="staff-status" data-who="lab" data-role="Инженер-лаборант"><option value="active">занято</option><option value="hire">к найму</option><option value="sovm">совмещение</option><option value="practice">практика</option><option value="partner">партнёр</option></select><span class="st-saved">✓</span></div>
           <div class="s-role">Техническое обеспечение лабораторий</div>
           <div class="s-det"><b>Назначение:</b> СПО или ВО (электроника, радиотехника, ИТ); без требований к стажу.</div>
-          <div class="s-block s-wide"><h6>Должностные обязанности</h6><ul><li>Подготовка оборудования к занятиям: выдача, сборка, проверка комплектов EV3, Arduino, Pico 4 Ultra, БПЛА, паяльных станций</li><li>ТО: диагностика, мелкий ремонт, гарантийный сервис</li><li>Обслуживание FDM-принтеров: загрузка пластика, чистка, замена сопел, мониторинг печати</li><li>Складской учёт расходников (PLA/PETG, компоненты, LiPo, пропеллеры, припой)</li><li>Установка и администрирование ПО: EV3 Classroom, Arduino IDE, Blender, КОМПАС-3D, Unity, Betaflight</li><li>Журнал технического состояния и выдачи/возврата оборудования</li><li>Зарядка и хранение аккумуляторов по регламенту</li><li>Инвентаризация не реже 2 раз в год · матответственность (ТК РФ ст. 244)</li></ul></div>
+          <div class="s-block s-wide"><h6>Должностные обязанности</h6><ul><li>Подготовка оборудования к занятиям: выдача, сборка, проверка комплектов EV3, Arduino, Pico 4 Ultra, БАС, паяльных станций</li><li>ТО: диагностика, мелкий ремонт, гарантийный сервис</li><li>Обслуживание FDM-принтеров: загрузка пластика, чистка, замена сопел, мониторинг печати</li><li>Складской учёт расходников (PLA/PETG, компоненты, LiPo, пропеллеры, припой)</li><li>Установка и администрирование ПО: EV3 Classroom, Arduino IDE, Blender, КОМПАС-3D, Unity, Betaflight</li><li>Журнал технического состояния и выдачи/возврата оборудования</li><li>Зарядка и хранение аккумуляторов по регламенту</li><li>Инвентаризация не реже 2 раз в год · матответственность (ТК РФ ст. 244)</li></ul></div>
           <div class="s-block"><h6>Ежедневная деятельность</h6><div class="freq-row"><span class="freq f-d">проверка и выдача комплектов</span><span class="freq f-d">мониторинг печати</span><span class="freq f-d">журнал учёта</span></div></div>
           <div class="s-block"><h6>Еженедельная деятельность</h6><div class="freq-row"><span class="freq f-w">ТО оборудования</span><span class="freq f-w">обновление ПО</span><span class="freq f-w">закупка расходников</span></div></div>
           <div class="s-block"><h6>Компетенции</h6><ul><li>Диагностика и ремонт электроники (пайка, замена компонентов)</li><li>Настройка ПО, обслуживание FDM-принтеров</li><li>Базовый Android/ADB (Pico 4 Ultra), зарядка LiPo</li></ul></div>
@@ -639,7 +742,7 @@ body { overflow-x: hidden; }
       <div class="fin-card">
         <span class="f-kind fk-partner">Партнёрство</span>
         <h4>Со-финансирование предприятий-партнёров</h4>
-        <p class="f-sub">Партнёрский взнос на расходные материалы и лицензии (КОМПАС-3D, БПЛА-направление), наставничество и техническое обслуживание — бесплатно для ТЛ.</p>
+        <p class="f-sub">Партнёрский взнос на расходные материалы и лицензии (КОМПАС-3D, БАС-направление), наставничество и техническое обслуживание — бесплатно для ТЛ.</p>
         <div class="f-amount">в натуральном виде<small> + 0,5–1 млн ₽/год на расходники</small></div>
         <span class="f-status fst-active">Партнёрская сеть формируется</span>
       </div>
@@ -698,7 +801,7 @@ body { overflow-x: hidden; }
           <tr><td>Лаб.2 Электроника (Starter Kit ×15, паяльные станции)</td><td>404 400</td></tr>
           <tr><td>Лаб.3 Blender 3D (ПК GPU ×15, FDM-принтеры ×3)</td><td>1 737 500</td></tr>
           <tr><td>Лаб.4 КОМПАС-3D (ПК ×15, лицензии v24)</td><td>924 000</td></tr>
-          <tr><td>Лаб.5 БПЛА (Геоскан, симуляторы, LiPo)</td><td>611 000</td></tr>
+          <tr><td>Лаб.5 БАС (Геоскан, симуляторы, LiPo)</td><td>611 000</td></tr>
           <tr><td>Лаб.6 VR (Pico 4 Ultra ×8, Unity Pro)</td><td>646 600</td></tr>
           <tr><td>Лаб.7 Проектная (интерактивная панель, ноутбуки)</td><td>315 250</td></tr>
           <tr><td>Мебель и оснащение общих зон</td><td>383 650</td></tr>
@@ -717,7 +820,7 @@ body { overflow-x: hidden; }
         <h5>Устойчивость после завершения гранта</h5>
         <ul>
           <li>Включение в государственное задание Учреждения (краевой бюджет)</li>
-          <li>Партнёрские взносы на расходные материалы КОМПАС-3D и БПЛА</li>
+          <li>Партнёрские взносы на расходные материалы КОМПАС-3D и БАС</li>
           <li>Оборудование служит 7–10 лет — низкая амортизация</li>
           <li>С 2028 — тиражирование в 3–5 школах района (источник дохода от сертификации)</li>
         </ul>
@@ -861,7 +964,7 @@ body { overflow-x: hidden; }
     <span class="ctl-hero-tag">🔒 Только для администратора</span>
     <div class="kicker">Контроль деятельности специалистов · календарь, контуры, дедлайны</div>
     <h1>Контроль<br><span class="ac">деятельности специалистов</span></h1>
-    <p class="lede">Единая карта контроля по контурам: качество образования, посещаемость и КТП, материально-техническая база, финансы, конкурсы, безопасность, кадры, портал. Статусы по дням хранятся с историей — можно вернуться к любой дате. Просроченное подсвечивается автоматически по дедлайнам.</p>
+    <p class="lede">Единая карта контроля по контурам: качество образования, посещаемость и КТП, материально-техническая база (МТБ), финансы, конкурсы, безопасность, кадры, портал и соцсети. МТБ — оборудование, расходники, инвентаризация. Статусы по дням хранятся с историей — можно вернуться к любой дате. Просроченное подсвечивается автоматически по дедлайнам.</p>
 
     <div class="ctl-mybar" id="ctlMyBar" style="display:none;">
       <span class="mm-name" id="ctlMyName"></span>
@@ -895,12 +998,18 @@ body { overflow-x: hidden; }
       <span class="ctl-daylabel" id="ctlDayLabel"></span>
     </div>
 
+    <div class="ctl-strip" id="ctlCalStrip"></div>
+
     <div class="ctl-sum">
       <div class="sum-card"><b id="ctlTotalTasks">0</b><span>задач в периоде</span></div>
       <div class="sum-card"><b id="ctlDoneTasks">0</b><span>выполнено</span></div>
       <div class="sum-card"><b id="ctlWorkTasks">0</b><span>в работе</span></div>
       <div class="sum-card"><b id="ctlLateTasks">0</b><span>просрочено / требует внимания</span></div>
     </div>
+
+    <div class="ctl-attn ctl-only-admin" id="ctlAttn" style="display:none;"></div>
+
+    <div class="ctl-dash ctl-only-admin" id="ctlDash"></div>
 
     <div class="ctl-tabs">
       <button class="ctl-tab" data-per="all" onclick="ctlSetFilter('per','all',this)">Все периоды</button>
@@ -927,8 +1036,11 @@ body { overflow-x: hidden; }
 
     <div class="ctl-actions ctl-only-admin">
       <button class="ctl-act" type="button" onclick="ctlWeekReport()" title="Сформировать текстовый отчёт за неделю и скопировать">📋 Отчёт за неделю</button>
+      <button class="ctl-act" type="button" onclick="ctlDirectorReport()" title="Сформировать сводку для директора (неделя/месяц)">🏛 Отчёт для директора</button>
       <button class="ctl-act" type="button" onclick="ctlExport()" title="Скачать архив статусов в JSON">⬇ Экспорт</button>
       <label class="ctl-act ctl-file">⬆ Импорт<input type="file" accept=".json,application/json" style="display:none" onchange="ctlImportFile(event)"></label>
+      <button class="ctl-act ctl-only-admin" type="button" onclick="ctlMeetToggle()" title="Собрать повестку планёрки">🗓 Планёрка</button>
+      <button class="ctl-act ctl-only-admin" type="button" id="ctlViewBtn" onclick="ctlToggleView()" title="Переключить вид: карточки / компактный обзор">▦ Обзор</button>
       <button class="ctl-reset" type="button" onclick="ctlReset()">Сбросить статусы за день</button>
     </div>
 
@@ -940,6 +1052,28 @@ body { overflow-x: hidden; }
       <div class="ctl-pill p-skip"><b id="sumSkip">0</b><span>не актуально</span></div>
     </div>
   </header>
+
+
+  <details class="ctl-legend ctl-only-admin" id="ctlLegend" open>
+    <summary>📖 Справка: контуры, статусы и дедлайны</summary>
+    <div class="ctl-legend-body" id="ctlLegendBody"></div>
+  </details>
+
+  <div class="ctl-meet ctl-only-admin" id="ctlMeetPanel" style="display:none;">
+    <div class="ctl-meet-head">
+      <div><b>🗓 Повестка планёрки</b><span class="mm-week" id="ctlMeetWeek"></span></div>
+      <div class="ctl-meet-actions">
+        <button class="ctl-act" type="button" onclick="ctlMeetCopy()">📋 Копировать</button>
+        <button class="ctl-act" type="button" onclick="ctlMeetPrint()">🖨 Печать</button>
+        <button class="ctl-act" type="button" onclick="ctlMeetToggle()">✕ Закрыть</button>
+      </div>
+    </div>
+    <div class="ctl-meet-body" id="ctlMeetBody"></div>
+    <div class="ctl-meet-notes">
+      <label>Заметки планёрки (сохраняются на этом устройстве)</label>
+      <textarea id="ctlMeetNotes" placeholder="Решения, поручения, сроки…" oninput="ctlMeetSaveNotes()"></textarea>
+    </div>
+  </div>
 
   <section id="ctlBlocks"></section>
 </main>
@@ -1236,7 +1370,7 @@ if (typeof TLCore !== 'undefined' && TLCore.on) {
     // ── Качество образования ──
     { cat:'edu', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'w', due:'w6', prio:'A', t:'Контроль качества занятий', d:'посещение минимум 2 занятий в неделю, оценка по чек-листу' },
     { cat:'edu', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'m', due:'m28', prio:'A', t:'Промежуточная аттестация обучающихся', d:'анализ освоения программ по лабораториям' },
-    { cat:'edu', who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', pm:'w', due:'w6', prio:'A', t:'Проверка практических работ', d:'обратная связь по работам за неделю' },
+    { cat:'edu', who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', pm:'w', due:'w6', prio:'A', t:'Проверка практических работ и рефлексий', d:'обратная связь по работам и рефлексивным листам за неделю' },
     { cat:'edu', who:'ped2', name:'Второй педагог ДО', role:'Педагог ДО', pm:'w', due:'w6', prio:'B', t:'Анализ успеваемости групп', d:'сводка по своей лаборатории' },
     { cat:'edu', who:'metod', name:'Методист', role:'Методика', pm:'m', due:'m5', prio:'B', t:'Срез знаний (мониторинг)', d:'диагностика по направлениям, фиксация результатов' },
     // ── Посещаемость и КТП ──
@@ -1248,12 +1382,12 @@ if (typeof TLCore !== 'undefined' && TLCore.on) {
     { cat:'visit', who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', pm:'w', due:'w5', prio:'B', t:'Планирование занятий по КТП', d:'корректировка по темпам групп' },
     { cat:'visit', who:'metod', name:'Методист', role:'Методика', pm:'d', due:'d', prio:'B', t:'Сводка посещаемости за день', d:'сбор данных для заведующего' },
     // ── Материально-техническая база ──
-    { cat:'mtb', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'d', due:'d', prio:'A', t:'Проверка и выдача комплектов', d:'EV3, Arduino, Pico 4, БПЛА, паяльные станции' },
+    { cat:'mtb', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'d', due:'d', prio:'A', t:'Проверка и выдача комплектов', d:'EV3, Arduino, Pico 4, БАС, паяльные станции' },
     { cat:'mtb', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'d', due:'d', prio:'B', t:'Мониторинг 3D-печати', d:'запуск/контроль FDM-принтеров, качество деталей' },
     { cat:'mtb', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'d', due:'d', prio:'B', t:'Журнал учёта оборудования', d:'выдача/возврат, техническое состояние' },
     { cat:'mtb', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'w', due:'w2', prio:'B', t:'Техническое обслуживание', d:'диагностика, мелкий ремонт, чистка' },
     { cat:'mtb', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'w', due:'w3', prio:'B', t:'Обновление и настройка ПО', d:'EV3 Classroom, Arduino IDE, Blender, КОМПАС, Unity, Betaflight' },
-    { cat:'mtb', who:'kipia', name:'Инженер КИПиА / метролог', role:'Техэксперт', pm:'m', due:'m15', prio:'A', t:'Технический аудит оборудования', d:'поверка, калибровка пайки/FDM, диагностика БПЛА' },
+    { cat:'mtb', who:'kipia', name:'Инженер КИПиА / метролог', role:'Техэксперт', pm:'m', due:'m15', prio:'A', t:'Технический аудит оборудования', d:'поверка, калибровка пайки/FDM, диагностика БАС' },
     { cat:'mtb', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'q', due:'q', prio:'B', t:'Инвентаризация оборудования', d:'сверка остатков, списание, акты' },
     // ── Финансы и закупки ──
     { cat:'fin', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'w', due:'w5', prio:'A', t:'Контроль бюджета недели', d:'расходы, сверка с планом' },
@@ -1268,7 +1402,7 @@ if (typeof TLCore !== 'undefined' && TLCore.on) {
     { cat:'cont', who:'stud', name:'Студент-ведущий модуля', role:'вуз-партнёр · практика', pm:'w', due:'w6', prio:'B', t:'Ведение назначенных модулей', d:'1–3 тематических блока 8–32 ч под наблюдением наставника' },
     // ── Безопасность и инструктажи ──
     { cat:'safe', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'m', due:'m1', prio:'A', t:'Инструктажи по технике безопасности', d:'журнал инструктажей, отметки обучающихся' },
-    { cat:'safe', who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', pm:'d', due:'d', prio:'A', t:'Проверка безопасности на занятии', d:'пайка, БПЛА, 3D-печать, VR — по чек-листу' },
+    { cat:'safe', who:'kazakevich', name:'Казакевич К.М.', role:'Педагог ДО', pm:'d', due:'d', prio:'A', t:'Проверка безопасности на занятии', d:'пайка, БАС, 3D-печать, VR — по чек-листу' },
     { cat:'safe', who:'lab', name:'Инженер-лаборант', role:'Техника', pm:'w', due:'w1', prio:'A', t:'Проверка СИЗ и электроинструмента', d:'исправность, наличие средств защиты' },
     // ── Кадры и методика ──
     { cat:'staff', who:'zav', name:'Руководитель ТЛ', role:'Заведующий', pm:'w', due:'w1', prio:'A', t:'Планёрка с педагогами', d:'итоги недели, планы, распределение нагрузки' },
@@ -1457,13 +1591,14 @@ if (typeof TLCore !== 'undefined' && TLCore.on) {
   function ctlRenderBlocks() {
     var wrap = document.getElementById('ctlBlocks');
     if (!wrap) return;
+    if (ctlViewMode === 'ov') { ctlRenderOverview(); ctlRenderSummary(); return; }
     var ymd = ctlCurDay;
     ctlRollover(ymd);
     var days = ctlPeriodRange(ymd);
     var agg = ctlAggregate();
     var meWho = ctlMeWho();
     var isAdmin = isAdminUser();
-    var scopeWho = (!isAdmin && meWho) ? meWho : ctlFWho;
+    var scopeWho = (!isAdmin && meWho && meWho !== 'zav') ? meWho : ctlFWho;
     var byWho = {};
     CTL_TASKS.forEach(function(t, i){ var k = t.who; if (!byWho[k]) byWho[k] = []; byWho[k].push(i); });
     var html = '';
@@ -1525,7 +1660,7 @@ if (typeof TLCore !== 'undefined' && TLCore.on) {
     set('ctlLateTasks', c.late);
     set('sumDone', c.done); set('sumWork', c.work); set('sumLate', c.late); set('sumTodo', c.todo); set('sumSkip', c.skip);
   }
-  function ctlRender() { ctlRenderBlocks(); }
+  function ctlRender() { ctlRenderBlocks(); ctlRenderDash(); ctlRenderAttn(); ctlRenderCalStrip(); }
   function ctlReset() {
     if (!confirm('Сбросить статусы задач за выбранный день? Все статусы этого дня станут «Не начато».')) return;
     var log = ctlLog();
@@ -1610,15 +1745,30 @@ if (typeof TLCore !== 'undefined' && TLCore.on) {
       var me = ctlMeWho();
       var lbl = '';
       try { lbl = TLCore.currentPositionLabel ? TLCore.currentPositionLabel() : ''; } catch(e){}
-      if (bar && me) {
+      var isZav = me === 'zav';
+      if (isZav) {
+        // руководитель: видит команду (дашборд, обзор, планёрку, отчёт), но свои задачи отмечает сам
+        onlyAdmin.forEach(function(el){ el.style.display = ''; });
+        if (bar) {
+          bar.style.display = 'flex';
+          var nm2 = document.getElementById('ctlMyName'); if (nm2) nm2.textContent = 'Руководитель:';
+          var ps2 = document.getElementById('ctlMyPos'); if (ps2) ps2.textContent = lbl || me;
+          var ht2 = document.getElementById('ctlMyHint'); if (ht2) ht2.textContent = 'Вы видите команду; отмечать можете только свои задачи.';
+        }
+        if (addWrap) addWrap.style.display = 'none';
+        ctlFWho = 'all';
+      } else if (bar && me) {
         bar.style.display = 'flex';
         var nm = document.getElementById('ctlMyName'); if (nm) nm.textContent = 'Мои задачи:';
         var ps = document.getElementById('ctlMyPos'); if (ps) ps.textContent = lbl || me;
         var ht = document.getElementById('ctlMyHint'); if (ht) ht.textContent = 'Вы видите и можете отмечать только свои задачи.';
+        if (addWrap) addWrap.style.display = 'none';
+        // сотрудник принудительно фильтрует по себе
+        ctlFWho = me || 'all';
+      } else {
+        if (addWrap) addWrap.style.display = 'none';
+        ctlFWho = 'all';
       }
-      if (addWrap) addWrap.style.display = 'none';
-      // сотрудник принудительно фильтрует по себе
-      ctlFWho = me || 'all';
     }
     if (!admin && ctlMeWho()) ctlSetActiveFilterChip('who', ctlMeWho());
   }
@@ -1676,9 +1826,427 @@ if (typeof TLCore !== 'undefined' && TLCore.on) {
     var custom = list.filter(function(t){ return t._custom; });
     try { localStorage.setItem('tl.control.custom', JSON.stringify(custom)); } catch(e){}
   }
+  // ==== Дашборд «Пульс недели» для руководителя ====
+  function ctlWeekStats(ymd){
+    var p = ymd.split('-'); var ds = new Date(+p[0], +p[1]-1, +p[2]);
+    var ws = ctlWeekStart(ds);
+    var days = []; for (var k=0;k<7;k++) days.push(ctlFmtDate(ctlAddDays(ws,k)));
+    var counts = { total:0, done:0, work:0, late:0, todo:0, skip:0 };
+    var byWho = {};
+    CTL_TASKS.forEach(function(t, i){
+      var vis = days.some(function(d){ return ctlVisibleOn(t, d); });
+      if (!vis) return;
+      counts.total++;
+      var st = ctlStatusForPeriod(i, days);
+      if (counts[st] !== undefined) counts[st]++;
+      if (!byWho[t.who]) byWho[t.who] = { name:t.name, late:0, total:0, work:0 };
+      byWho[t.who].total++;
+      if (st === 'late') byWho[t.who].late++;
+      if (st === 'work') byWho[t.who].work++;
+    });
+    counts.pct = counts.total ? Math.round(counts.done/counts.total*100) : 0;
+    return { counts:counts, byWho:byWho, days:days };
+  }
+  function ctlRenderAttn(){
+    var el = document.getElementById('ctlAttn');
+    if (!el) return;
+    var days = ctlPeriodRange(ctlCurDay);
+    var meWho = ctlMeWho();
+    var isAdmin = isAdminUser();
+    var isZav = meWho === 'zav';
+    var items = [];
+    CTL_TASKS.forEach(function(t, i){
+      var vis = days.some(function(d){ return ctlVisibleOn(t, d); });
+      if (!vis) return;
+      var st = ctlStatusForPeriod(i, days);
+      if (st === 'done' || st === 'skip') return;
+      // приоритет A незавершённое ИЛИ просроченное
+      var attention = (st === 'late') || (t.prio === 'A' && st !== 'done');
+      if (!attention) return;
+      if (!isAdmin && !isZav && meWho && meWho !== t.who) return;
+      items.push({ who: t.who, name: t.name, task: t.t, prio: t.prio || '', st: st });
+    });
+    if (!items.length) { el.style.display = 'none'; el.innerHTML = ''; return; }
+    el.style.display = 'block';
+    var html = '<div class="at-t">⚠ Требует внимания (' + items.length + ')</div>';
+    items.slice(0, 8).forEach(function(it){
+      html += '<div class="at-item" onclick="ctlDashFilter(\'who\',\'' + it.who + '\')" title="Показать задачи сотрудника">' +
+        '<span>' + (it.st === 'late' ? '⏰ ' : '🔴 ') + it.task + '</span>' +
+        '<span class="at-who">' + it.name + (it.prio ? ' · приоритет ' + it.prio : '') + '</span></div>';
+    });
+    if (items.length > 8) html += '<div class="at-who" style="margin-top:4px">… ещё ' + (items.length - 8) + '</div>';
+    el.innerHTML = html;
+  }
+  function ctlParseDay(ymd){ var p = ymd.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+  function ctlRenderCalStrip(){
+    var el = document.getElementById('ctlCalStrip');
+    if (!el) return;
+    var meWho = ctlMeWho();
+    var isAdmin = isAdminUser();
+    var scopeWho = (!isAdmin && meWho && meWho !== 'zav') ? meWho : 'all';
+    var ws = ctlWeekStart(ctlParseDay(ctlCurDay));
+    var html = '';
+    for (var k = 0; k < 7; k++){
+      var d = ctlAddDays(ws, k);
+      var ymd = ctlFmtDate(d);
+      var lateN = 0, todoN = 0, doneN = 0, cnt = 0;
+      CTL_TASKS.forEach(function(t, i){
+        if (scopeWho !== 'all' && scopeWho !== t.who) return;
+        if (!ctlVisibleOn(t, ymd)) return;
+        cnt++;
+        var st = ctlDayStatus(i, ymd);
+        if (st === 'done') doneN++; else if (st === 'late') lateN++; else todoN++;
+      });
+      var isToday = ymd === ctlTodayStr();
+      var isCur = ymd === ctlCurDay;
+      html += '<div class="cs-day' + (isToday ? ' today' : '') + (isCur ? ' cur' : '') + '" onclick="ctlNavTo(\'' + ymd + '\')" title="' + ctlRuShort(ymd) + '">';
+      html += '<span class="cs-dow">' + ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'][k] + '</span>';
+      html += '<span class="cs-num">' + d.getDate() + '</span>';
+      html += '<span class="cs-dots">';
+      if (lateN) html += '<i class="dot late"></i>';
+      if (todoN) html += '<i class="dot todo"></i>';
+      if (doneN) html += '<i class="dot done"></i>';
+      html += '</span>';
+      html += '<span class="cs-cnt">' + (cnt ? cnt : '') + '</span>';
+      html += '</div>';
+    }
+    el.innerHTML = html;
+  }
+  function ctlNavTo(ymd){ ctlCurDay = ymd; ctlRollover(ymd); ctlRender(); }
+  function ctlRenderDash(){
+    var el = document.getElementById('ctlDash');
+    if (!el) return;
+    var st = ctlWeekStats(ctlCurDay);
+    var p = ctlCurDay.split('-'); var ds = new Date(+p[0], +p[1]-1, +p[2]);
+    var prev = ctlWeekStats(ctlFmtDate(ctlAddDays(ds, -7)));
+    var diff = st.counts.pct - prev.counts.pct;
+    var trend = diff > 3 ? '<span class="ctl-trend-up">▲ +'+diff+'%</span>' : (diff < -3 ? '<span class="ctl-trend-down">▼ '+diff+'%</span>' : '<span class="ctl-trend-flat">= '+diff+'%</span>');
+    var weeks = [];
+    for (var wi=3; wi>=0; wi--){
+      var wa = ctlAddDays(ds, -7*wi);
+      var ws2 = ctlWeekStats(ctlFmtDate(wa));
+      weeks.push({ pct: ws2.counts.pct });
+    }
+    var sparkHtml = '<div class="ctl-spark">' + weeks.map(function(w,idx){
+      return '<div class="sp-bar'+(idx===3?' cur':'')+'"><i style="height:'+Math.max(2,w.pct)+'%"></i><b>'+w.pct+'%</b><span>'+(idx===3?'эта':'−'+(3-idx))+'</span></div>';
+    }).join('') + '</div>';
+    var hot = Object.keys(st.byWho).map(function(k){ var v = st.byWho[k]; return { k:k, name:v.name, late:v.late }; })
+      .filter(function(h){ return h.late > 0; }).sort(function(a,b){ return b.late - a.late; }).slice(0,3);
+    var hotHtml = hot.length
+      ? '<ul class="ctl-hot-list">' + hot.map(function(h){ return '<li data-who="'+h.k+'" title="Показать задачи сотрудника">'+h.name+'<b>'+h.late+'</b></li>'; }).join('') + '</ul>'
+      : '<div style="font-size:12.5px;color:var(--muted);padding:4px 0">Просроченных задач нет</div>';
+    el.innerHTML =
+      '<div class="ctl-dcard"><div class="dc-t">Готовность недели</div><div class="dc-v">'+st.counts.pct+'%</div><div class="dc-s">'+trend+' к прошлой неделе</div>'+sparkHtml+'</div>' +
+      '<div class="ctl-dcard"><div class="dc-t">Выполнено</div><div class="dc-v">'+st.counts.done+'</div><div class="dc-s">из '+st.counts.total+' задач</div></div>' +
+      '<div class="ctl-dcard'+(st.counts.work ? ' dc-warn':'')+'" data-st="work" role="button" style="cursor:pointer" title="Показать в работе"><div class="dc-t">В работе</div><div class="dc-v">'+st.counts.work+'</div></div>' +
+      '<div class="ctl-dcard'+(st.counts.late ? ' dc-bad':'')+'" data-st="late" role="button" style="cursor:pointer" title="Показать просроченное"><div class="dc-t">Просрочено</div><div class="dc-v">'+st.counts.late+'</div></div>' +
+      '<div class="ctl-dcard" style="grid-column:1/-1"><div class="dc-t">Горячие точки недели</div>'+hotHtml+'</div>';
+    var hots = el.querySelectorAll('.ctl-hot-list li[data-who]');
+    for (var qi=0; qi<hots.length; qi++) (function(li){ li.addEventListener('click', function(){ ctlDashFilter('who', li.getAttribute('data-who')); }); })(hots[qi]);
+    var statEls = el.querySelectorAll('.ctl-dcard[data-st]');
+    for (var si=0; si<statEls.length; si++) (function(card){ card.addEventListener('click', function(){ ctlDashFilter('st', card.getAttribute('data-st')); }); })(statEls[si]);
+  }
+  function ctlDashFilter(kind, val){
+    if (kind === 'who') { ctlFWho = val; }
+    else if (kind === 'st') { ctlFSt = val; }
+    else return;
+    ctlRender();
+    var wrap = document.getElementById('ctlBlocks');
+    if (wrap && wrap.scrollIntoView) wrap.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+  // ==== Планёрка ====
+  function ctlMeetKey(){
+    var mp = ctlCurDay.split('-');
+    var mds = new Date(+mp[0], +mp[1]-1, +mp[2]);
+    return 'tl.meet.notes.' + ctlFmtDate(ctlWeekStart(mds));
+  }
+  function ctlMeetToggle(){
+    var panel = document.getElementById('ctlMeetPanel');
+    if (!panel) return;
+    var show = panel.style.display === 'none';
+    panel.style.display = show ? 'block' : 'none';
+    if (show) { ctlMeetBuild(); ctlMeetNotesLoad(); }
+  }
+  function ctlMeetWeekLabel(){
+    var p = ctlCurDay.split('-'); var ds = new Date(+p[0], +p[1]-1, +p[2]);
+    var ws = ctlWeekStart(ds);
+    var we = ctlAddDays(ws, 6);
+    return ctlRuDate(ctlFmtDate(ws)) + ' — ' + ctlRuDate(ctlFmtDate(we));
+  }
+  function ctlMeetBuild(){
+    var body = document.getElementById('ctlMeetBody');
+    var wk = document.getElementById('ctlMeetWeek');
+    if (!body) return;
+    if (wk) wk.textContent = ctlMeetWeekLabel();
+    var p = ctlCurDay.split('-'); var ds = new Date(+p[0], +p[1]-1, +p[2]);
+    var ws = ctlWeekStart(ds);
+    var days = []; for (var k=0;k<7;k++) days.push(ctlFmtDate(ctlAddDays(ws,k)));
+    // группы сотрудников: сначала с просроченным, потом в работе
+    var order = [];
+    CTL_TASKS.forEach(function(t, i){
+      if (order.indexOf(t.who) < 0) order.push(t.who);
+    });
+    var html = '';
+    html += '<div class="mm-h">Состав недели · готовность</div>';
+    var stats = ctlWeekStats(ctlCurDay);
+    html += '<div class="mm-empty">Выполнено ' + stats.counts.done + ' из ' + stats.counts.total + ' задач (' + stats.counts.pct + '%). Просрочено: ' + stats.counts.late + ', в работе: ' + stats.counts.work + '.</div>';
+    html += '<div class="mm-h">Просроченные задачи</div>';
+    var lateHtml = '';
+    order.forEach(function(who){
+      CTL_TASKS.forEach(function(t, i){
+        if (t.who !== who) return;
+        var st = ctlStatusForPeriod(i, days);
+        if (st !== 'late' && st !== 'work') return;
+        lateHtml += '<div class="mm-task"><span class="mm-prio '+(t.prio||'b').toLowerCase()+'">'+(t.prio||'B')+'</span><span class="mm-st '+(st==='late'?'l':'w')+'">'+(st==='late'?'проср':'в работе')+'</span><span class="mm-t">'+t.t+'</span><span style="color:var(--muted);font-size:11px">'+(t.name||'')+'</span></div>';
+      });
+    });
+    html += lateHtml ? lateHtml : '<div class="mm-empty">Просроченных и выполняемых задач нет — отлично.</div>';
+    body.innerHTML = html;
+  }
+  function ctlMeetNotesLoad(){
+    var ta = document.getElementById('ctlMeetNotes');
+    if (!ta) return;
+    try { ta.value = localStorage.getItem(ctlMeetKey()) || ''; } catch(e){}
+  }
+  function ctlMeetSaveNotes(){
+    var ta = document.getElementById('ctlMeetNotes');
+    if (!ta) return;
+    try { localStorage.setItem(ctlMeetKey(), ta.value); } catch(e){}
+  }
+  function ctlMeetAgendaText(){
+    var body = document.getElementById('ctlMeetBody');
+    var wk = document.getElementById('ctlMeetWeek');
+    var lines = [];
+    lines.push('ПОВЕСТКА ПЛАНЁРКИ · ТЕХНОЛОГИЧЕСКАЯ ЛАБОРАТОРИЯ');
+    lines.push('Период: ' + (wk ? wk.textContent : ctlMeetWeekLabel()));
+    lines.push('');
+    if (body) {
+      var tasks = body.querySelectorAll('.mm-task');
+      if (tasks.length) {
+        tasks.forEach(function(td){
+          var st = td.querySelector('.mm-st');
+          var tt = td.querySelector('.mm-t');
+          var nm = td.children[3];
+          lines.push('[' + (st ? st.textContent : '') + '] ' + (tt ? tt.textContent : '') + (nm && nm.textContent ? ' — ' + nm.textContent : ''));
+        });
+      } else lines.push('Просроченных и выполняемых задач нет.');
+    }
+    var notes = document.getElementById('ctlMeetNotes');
+    if (notes && notes.value.trim()) {
+      lines.push('');
+      lines.push('ЗАМЕТКИ:');
+      lines.push(notes.value.trim());
+    }
+    return lines.join('\n');
+  }
+  function ctlMeetCopy(){
+    var txt = ctlMeetAgendaText();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(function(){ alert('Повестка скопирована в буфер обмена.'); });
+    } else {
+      var ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); alert('Повестка скопирована.'); } catch(e){ alert('Не удалось скопировать.'); }
+      document.body.removeChild(ta);
+    }
+  }
+  function ctlMeetPrint(){
+    var txt = ctlMeetAgendaText();
+    var win = window.open('', '_blank');
+    if (!win) { alert('Разрешите всплывающие окна для печати.'); return; }
+    win.document.write('<html><head><meta charset="utf-8"><title>Планёрка ТЛ</title></head><body style="font-family:Segoe UI,system-ui,sans-serif;font-size:13px;line-height:1.5;white-space:pre-wrap;padding:20px;">' +
+      txt.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</body></html>');
+    win.document.close();
+    win.focus();
+    setTimeout(function(){ win.print(); }, 250);
+  }
+  // ==== Легенда контуров ====
+  var CTL_CAT_DESC = {
+    edu:'Контроль занятий, аттестации, проверка работ, срезы знаний',
+    visit:'Журнал посещаемости, проведение и планирование занятий по КТП',
+    mtb:'Материально-техническая база (МТБ): оборудование, расходники, инвентаризация, ТО и ремонт',
+    fin:'Бюджет, закупки, грантовая отчётность, мониторинг грантов',
+    cont:'Конкурсы, проектные команды, наставничество, календарь конкурсов',
+    safe:'Техника безопасности, инструктажи, СИЗ, проверки на занятиях',
+    staff:'Планёрки, методобъединение, наставничество практикантов, нагрузка',
+    media:'Соцсети, портал, аналитика, отчётность для директора'
+  };
+  function ctlRenderLegend(){
+    var wrap = document.getElementById('ctlLegendBody');
+    if (!wrap) return;
+    var grid = Object.keys(CTL_CATS).map(function(cat){
+      var c = CTL_CATS[cat];
+      var desc = CTL_CAT_DESC[cat] || '';
+      return '<div class="lg-item"><span class="ctl-catchip ' + (c ? c.cl : '') + '">' + (c ? c.l : cat) + '</span> — ' + desc + '</div>';
+    }).join('');
+    var sts = CTL_STATES.map(function(st){
+      return '<span class="lg-st ' + st.cl.replace('st-','') + '">' + st.l + '</span>';
+    }).join('');
+    wrap.innerHTML =
+      '<div class="lg-grid">' + grid + '</div>' +
+      '<div class="lg-hint"><b>Статусы:</b> ' + sts + '<br>' +
+      '<b>Дедлайны:</b> ДЕНЬ — ежедневно; НЕД — по дню недели (Пн..Вс); МЕС — по числу месяца; КВ — ежеквартально. ' +
+      '«Просрочено» считается автоматически, если дедлайн прошёл, а задача не отмечена выполненной.</div>';
+  }
+  // ==== Компактный обзор сотрудников ====
+  var ctlViewMode = 'cards';
+  try { ctlViewMode = localStorage.getItem('tl.control.view') || 'cards'; } catch(e){}
+  function ctlToggleView(){
+    ctlViewMode = ctlViewMode === 'cards' ? 'ov' : 'cards';
+    try { localStorage.setItem('tl.control.view', ctlViewMode); } catch(e){}
+    var btn = document.getElementById('ctlViewBtn');
+    if (btn) btn.textContent = ctlViewMode === 'ov' ? '▦ Карточки' : '▦ Обзор';
+    ctlRender();
+  }
+  function ctlRenderOverview(){
+    var wrap = document.getElementById('ctlBlocks');
+    if (!wrap) return;
+    var ymd = ctlCurDay;
+    var days = ctlPeriodRange(ymd);
+    var meWho = ctlMeWho();
+    var isAdmin = isAdminUser();
+    var scopeWho = (!isAdmin && meWho && meWho !== 'zav') ? meWho : ctlFWho;
+    var byWho = {};
+    CTL_TASKS.forEach(function(t, i){ var k = t.who; if (!byWho[k]) byWho[k] = []; byWho[k].push(i); });
+    var data = [];
+    Object.keys(byWho).forEach(function(who){
+      if (scopeWho !== 'all' && scopeWho !== who) return;
+      var idxs = byWho[who];
+      var t1 = CTL_TASKS[idxs[0]];
+      var shown = idxs.filter(function(i){
+        if (ctlFCat !== 'all' && CTL_TASKS[i].cat !== ctlFCat) return false;
+        var vis = days.some(function(d){ return ctlVisibleOn(CTL_TASKS[i], d); });
+        if (!vis) return false;
+        var st = ctlStatusForPeriod(i, days);
+        if (ctlFSt !== 'all' && st !== ctlFSt) return false;
+        return true;
+      });
+      if (!shown.length) return;
+      var doneC=0, lateC=0, workC=0, todoC=0, risk=0, hasA=false;
+      shown.forEach(function(i){
+        var st = ctlStatusForPeriod(i, days);
+        if (st==='done') doneC++;
+        else if (st==='late'){ lateC++; risk += 3; }
+        else if (st==='work'){ workC++; risk += 1; }
+        else todoC++;
+        if (CTL_TASKS[i].prio === 'A') hasA = true;
+      });
+      var pct = shown.length ? Math.round(doneC / shown.length * 100) : 0;
+      if (lateC > 0 && hasA) risk += 2;
+      if (todoC > shown.length * 0.5) risk += 1;
+      var top = null;
+      shown.some(function(i){ if (ctlStatusForPeriod(i, days) === 'late') { top = CTL_TASKS[i]; return true; } return false; });
+      if (!top) shown.some(function(i){ if (ctlStatusForPeriod(i, days) === 'work') { top = CTL_TASKS[i]; return true; } return false; });
+      if (!top) shown.some(function(i){ if (CTL_TASKS[i].prio === 'A') { top = CTL_TASKS[i]; return true; } return false; });
+      data.push({ who: who, name: t1.name, role: t1.role, done: doneC, late: lateC, work: workC, todo: todoC, total: shown.length, pct: pct, risk: risk, top: top });
+    });
+    data.sort(function(a,b){
+      if (b.risk !== a.risk) return b.risk - a.risk;
+      return b.late - a.late || b.work - a.work;
+    });
+    var rows = '';
+    data.forEach(function(r){
+      var riskCls = r.risk >= 3 ? ' ov-risk-hi' : (r.risk >= 1 ? ' ov-risk-md' : '');
+      var detail = '';
+      byWho[r.who].forEach(function(i){
+        if (ctlFCat !== 'all' && CTL_TASKS[i].cat !== ctlFCat) return;
+        var vis = days.some(function(d){ return ctlVisibleOn(CTL_TASKS[i], d); });
+        if (!vis) return;
+        var st = ctlStatusForPeriod(i, days);
+        if (ctlFSt !== 'all' && st !== ctlFSt) return;
+        var t = CTL_TASKS[i];
+        var stl = st === 'late' ? '⚠ Просрочено' : (st === 'work' ? 'В работе' : (st === 'done' ? 'Выполнено' : 'Не начато'));
+        detail += '<div class="ctl-task">' +
+          '<span class="t-lbl '+(t.pm==='d'?'tl-d':(t.pm==='w'?'tl-w':(t.pm==='m'?'tl-m':'tl-q')))+'">'+(t.pm==='d'?'ДЕНЬ':(t.pm==='w'?'НЕД':(t.pm==='m'?'МЕС':'КВ')))+'</span>' +
+          '<div class="t-body"><div class="t-name">'+t.t+'</div><div class="t-meta">'+stl+(t.prio?' · приоритет '+t.prio:'')+'</div></div></div>';
+      });
+      rows += '<tr class="ov-r'+riskCls+'" data-ov="1">' +
+        '<td><span class="ov-nm">'+r.name+'</span><br><span class="ov-role">'+r.role+'</span></td>' +
+        '<td><span class="ov-bar"><i style="width:'+r.pct+'%"></i></span> '+r.done+'/'+r.total+' ('+r.pct+'%)</td>' +
+        '<td class="'+(r.work?'ov-work':'')+'">'+r.work+'</td>' +
+        '<td class="'+(r.late?'ov-late':'')+'">'+r.late+'</td>' +
+        '<td>'+(r.top ? r.top.t : '—')+'</td>' +
+        '<td class="ov-exp">'+(r.total ? 'раскрыть ▾' : '')+'</td>' +
+        '</tr>' +
+        '<tr class="ov-detail"><td colspan="6"><div class="ctl-grid">'+detail+'</div></td></tr>';
+    });
+    var html = rows
+      ? '<div class="ctl-ov-wrap">' +
+        (data.length ? '<div class="ov-summary">' + data.filter(function(d){ return d.late>0; }).length + ' сотрудников с просрочкой · ' + data.reduce(function(a,d){ return a+d.late; },0) + ' просроченных задач · сортировка: риск ↓</div>' : '') +
+        '<table class="ctl-ov"><thead><tr><th>Сотрудник</th><th>Готовность</th><th>В работе</th><th>Просрочено</th><th>Топ-задача</th><th></th></tr></thead><tbody>' + rows + '</tbody></table>' +
+        '<p class="ctl-hint" style="font-size:11px;color:var(--muted);margin-top:6px;">Строки с риском выделены. Нажмите на строку, чтобы раскрыть задачи сотрудника.</p></div>'
+      : '<p class="ctl-empty">Нет задач, соответствующих фильтрам в этом периоде.</p>';
+    wrap.innerHTML = html;
+    var ovRows = wrap.querySelectorAll('tr.ov-r[data-ov]');
+    for (var oi=0; oi<ovRows.length; oi++) (function(row){
+      row.addEventListener('click', function(){ row.classList.toggle('ov-open'); });
+    })(ovRows[oi]);
+  }
+
+  // ==== Отчёт для директора ====
+  function ctlDirectorReport(){
+    var period = ctlFPer === 'm' ? 'месяц' : (ctlFPer === 'q' ? 'квартал' : 'неделю');
+    var ymd = ctlCurDay;
+    var days = ctlPeriodRange(ymd);
+    var p = ymd.split('-'); var ds = new Date(+p[0], +p[1]-1, +p[2]);
+    var ws = ctlWeekStart(ds);
+    var from = days[0], to = days[days.length - 1];
+    var total=0, done=0, work=0, late=0, todo=0, skip=0;
+    var byWho = {};
+    CTL_TASKS.forEach(function(t, i){
+      var vis = days.some(function(d){ return ctlVisibleOn(t, d); });
+      if (!vis) return;
+      total++;
+      var st = ctlStatusForPeriod(i, days);
+      if (st==='done') done++; else if (st==='work') work++; else if (st==='late') late++; else if (st==='skip') skip++; else todo++;
+      if (!byWho[t.who]) byWho[t.who] = { name: t.name, role: t.role, done:0, late:0, work:0, total:0 };
+      byWho[t.who].total++;
+      if (st==='done') byWho[t.who].done++;
+      if (st==='late') byWho[t.who].late++;
+      if (st==='work') byWho[t.who].work++;
+    });
+    var pct = total ? Math.round(done/total*100) : 0;
+    var lines = [];
+    lines.push('СВОДКА ПО ТЕХНОЛОГИЧЕСКОЙ ЛАБОРАТОРИИ — для директора');
+    lines.push('Период: ' + ctlRuDate(from) + ' — ' + ctlRuDate(to) + ' (' + period + ')');
+    lines.push('Дата формирования: ' + new Date().toLocaleString('ru-RU'));
+    lines.push('');
+    lines.push('1. ВЫПОЛНЕНИЕ ПРОГРАММ');
+    lines.push('   Всего задач контроля: ' + total);
+    lines.push('   Выполнено: ' + done + ' (' + pct + '%) · В работе: ' + work + ' · Просрочено: ' + late + ' · Не начато: ' + todo);
+    lines.push('');
+    lines.push('2. ПО СОТРУДНИКАМ');
+    Object.keys(byWho).forEach(function(who){
+      var v = byWho[who];
+      lines.push('   — ' + v.name + ' (' + v.role + '): ' + v.done + '/' + v.total + ' выполнено' + (v.late ? ', просрочено ' + v.late : '') + (v.work ? ', в работе ' + v.work : ''));
+    });
+    lines.push('');
+    lines.push('3. РИСКИ И ВНИМАНИЕ');
+    var risktasks = [];
+    CTL_TASKS.forEach(function(t, i){
+      var vis = days.some(function(d){ return ctlVisibleOn(t, d); });
+      if (!vis) return;
+      if (ctlStatusForPeriod(i, days) === 'late') risktasks.push('   — ' + t.t + ' (' + (byWho[t.who] ? byWho[t.who].name : t.who) + ')');
+    });
+    lines.push(risktasks.length ? risktasks.join('\n') : '   Просроченных задач нет.');
+    lines.push('');
+    lines.push('4. ПОСЕЩАЕМОСТЬ (общая оценка по журналам)');
+    lines.push('   Заполняется заведующим по журналам лабораторий.');
+    lines.push('');
+    lines.push('Подпись заведующего: _________________ / ' + new Date().toLocaleDateString('ru-RU'));
+    var txt = lines.join('\n');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(function(){ alert('Сводка для директора скопирована в буфер обмена.'); });
+    } else {
+      var ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); alert('Сводка скопирована.'); } catch(e){ alert('Не удалось скопировать.'); }
+      document.body.removeChild(ta);
+    }
+  }
   function initControl() {
     var panel = document.getElementById('panel-control');
-    if (panel && !panel.dataset.init) { panel.dataset.init = '1'; ctlLoadCustom(); ctlRollover(ctlCurDay); ctlRender(); }
+    if (panel && !panel.dataset.init) { panel.dataset.init = '1'; ctlLoadCustom(); ctlRollover(ctlCurDay); ctlRender(); ctlRenderLegend(); }
+    var vb = document.getElementById('ctlViewBtn');
+    if (vb) vb.textContent = ctlViewMode === 'ov' ? '▦ Карточки' : '▦ Обзор';
     ctlSetupScope();
   }
   TLCore.on('login', function(){ refreshAdminTabs(); if (isAdminUser()) initControl(); });
