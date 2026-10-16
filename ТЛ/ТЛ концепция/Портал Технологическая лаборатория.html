@@ -1071,8 +1071,10 @@ body { overflow-x: hidden; }
     <div class="ctl-actions ctl-only-admin">
       <button class="ctl-act" type="button" onclick="ctlWeekReport()" title="Сформировать текстовый отчёт за неделю и скопировать">📋 Отчёт за неделю</button>
       <button class="ctl-act" type="button" onclick="ctlDirectorReport()" title="Сформировать сводку для директора (неделя/месяц)">🏛 Отчёт для директора</button>
-      <button class="ctl-act" type="button" onclick="ctlExport()" title="Скачать архив статусов в JSON">⬇ Экспорт</button>
-      <label class="ctl-act ctl-file">⬆ Импорт<input type="file" accept=".json,application/json" style="display:none" onchange="ctlImportFile(event)"></label>
+      <button class="ctl-act" type="button" onclick="ctlExport()" title="Скачать архив статусов в JSON">⬇ Статусы</button>
+      <label class="ctl-act ctl-file">⬆ Статусы<input type="file" accept=".json,application/json" style="display:none" onchange="ctlImportFile(event)"></label>
+      <button class="ctl-act ctl-only-admin" type="button" onclick="ctlExportAll()" title="Скачать полный архив данных портала и кабинета (JSON)">📦 Экспорт всех</button>
+      <label class="ctl-act ctl-file ctl-only-admin">📦 Импорт всех<input type="file" accept=".json,application/json" style="display:none" onchange="ctlImportAllFile(event)"></label>
       <button class="ctl-act ctl-only-admin" type="button" onclick="ctlMeetToggle()" title="Собрать повестку планёрки">🗓 Планёрка</button>
       <button class="ctl-act ctl-only-admin" type="button" id="ctlViewBtn" onclick="ctlToggleView()" title="Переключить вид: карточки / компактный обзор">▦ Обзор</button>
       <button class="ctl-reset" type="button" onclick="ctlReset()">Сбросить статусы за день</button>
@@ -1727,6 +1729,57 @@ if (typeof TLCore !== 'undefined' && TLCore.on) {
     ctlRender();
   }
   // Экспорт/импорт
+  function pvKey(k) { try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function pvSet(k, v) { try { if (v === undefined || v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch(e){} }
+  function portalAllKeys() {
+    return ['tl-theme', 'tl-staff-status', 'tl-staff-fio', 'tl-staff-added', 'tl-staff-fields', 'tl-staff-skills',
+      'tl-control-log-v2', 'tl.control.custom', 'tl.control.view', 'tl-to'];
+  }
+  function portalCoreKeys() {
+    var out = ['tl.session', 'tl.users', 'tl.teachers', 'tl.waitlist'];
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('tl.progress.') === 0) out.push(k);
+      }
+    } catch(e){}
+    return out;
+  }
+  function ctlExportAll() {
+    if (!isAdminUser()) { alert('Экспорт всех данных доступен только администратору.'); return; }
+    var store = {};
+    portalAllKeys().concat(portalCoreKeys()).forEach(function(k){ var v = pvKey(k); if (v !== null) store[k] = v; });
+    var data = { app: 'tl-portal', version: 3, exported: new Date().toISOString(), store: store };
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'tl-portal-full-' + ctlTodayStr() + '.json';
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 3000);
+  }
+  function ctlImportAllFile(ev) {
+    if (!isAdminUser()) { alert('Импорт всех данных доступен только администратору.'); return; }
+    var f = ev.target.files && ev.target.files[0];
+    if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function(){
+      try {
+        var d = JSON.parse(rd.result);
+        if (!d || d.app !== 'tl-portal' || !d.store || typeof d.store !== 'object') { alert('Это не файл полного экспорта портала ТЛ.'); return; }
+        if (!confirm('Заменить все данные портала (кадры, контроль, журнал ТО, пользователи, прогресс) на содержимое файла?')) return;
+        // Сначала очистить известные ключи портала, чтобы не осталось «хвостов»
+        portalAllKeys().concat(portalCoreKeys()).forEach(function(k){ pvSet(k, null); });
+        Object.keys(d.store).forEach(function(k){ pvSet(k, d.store[k]); });
+        alert('Данные импортированы. Обновите страницу.');
+        try { if (typeof refreshAdminTabs === 'function') refreshAdminTabs(); } catch(e){}
+        try { if (typeof TLCore !== 'undefined' && TLCore.refreshUI) TLCore.refreshUI(); } catch(e){}
+        setTimeout(function(){ try { location.reload(); } catch(e){} }, 600);
+      } catch(e){ alert('Не удалось прочитать файл: ' + e.message); }
+    };
+    rd.readAsText(f);
+    ev.target.value = '';
+  }
+  // Старый экспорт/импорт контроля оставляем как «только контроль»
   function ctlExport() {
     var data = { version: 2, exported: new Date().toISOString(), tasks: CTL_TASKS, log: ctlLog() };
     var blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
