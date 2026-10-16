@@ -337,7 +337,19 @@ body { overflow-x: hidden; }
   .ctl-attn .at-item:hover { color:var(--accent); }
   .ctl-attn .at-who { font-family:var(--f-mono); font-size:11px; color:var(--muted); }
   .ctl-attn .at-none { color:var(--ok); font-size:13px; padding:2px 0; }
-  /* ==== Журнал ТО ==== */
+  /* ==== Дашборд объединения ==== */
+  .ctl-kpi { margin:14px 0 0; padding:14px 16px; border:1px solid rgba(45,122,255,.35); border-radius:10px; background:var(--bg-card); }
+  .ctl-kpi-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+  .ctl-kpi-head b { font-family:var(--f-display); font-size:17px; }
+  .ctl-kpi-head .mm-week { display:block; color:var(--muted); font-size:12px; margin-top:2px; }
+  .ctl-kpi-grid { margin-top:12px; display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; }
+  .ctl-kpi-card { border:1px solid var(--line); border-radius:8px; padding:10px 12px; background:var(--bg-elev); }
+  .ctl-kpi-card .kp-label { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-family:var(--f-mono); }
+  .ctl-kpi-card .kp-val { font:700 22px var(--f-display); margin-top:2px; }
+  .ctl-kpi-card .kp-sub { color:var(--muted); font-size:12px; margin-top:2px; }
+  .ctl-kpi-card .kp-val.good { color:var(--ok); } .ctl-kpi-card .kp-val.mid { color:var(--warn); } .ctl-kpi-card .kp-val.bad { color:var(--bad); }
+  .ctl-kpi-card .kp-bar { height:6px; background:var(--bg); border-radius:999px; margin-top:6px; overflow:hidden; }
+  .ctl-kpi-card .kp-bar i { display:block; height:100%; background:var(--accent); border-radius:999px; }
   .ctl-to-wrap { margin:14px 0 0; padding:14px 16px; border:1px solid var(--line); border-radius:10px; background:var(--bg-card); }
   .ctl-to-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:10px; }
   .ctl-to-head b { font-family:var(--f-display); font-size:17px; }
@@ -1065,6 +1077,7 @@ body { overflow-x: hidden; }
       <button class="ctl-act ctl-only-admin" type="button" id="ctlViewBtn" onclick="ctlToggleView()" title="Переключить вид: карточки / компактный обзор">▦ Обзор</button>
       <button class="ctl-reset" type="button" onclick="ctlReset()">Сбросить статусы за день</button>
       <button class="ctl-act ctl-staff-visible" type="button" id="ctlToBtn" onclick="ctlToToggle()" title="Журнал технического обслуживания: комплекты, расходники, привязка к занятиям">🛠 Журнал ТО</button>
+      <button class="ctl-act ctl-staff-visible" type="button" id="ctlKpiBtn" onclick="ctlKpiToggle()" title="Дашборд объединения: KPI, охват, команда, бюджет">📊 Дашборд</button>
     </div>
 
     <div class="ctl-summary" id="ctlSummary">
@@ -1099,6 +1112,12 @@ body { overflow-x: hidden; }
   </div>
 
   <section id="ctlBlocks"></section>
+
+  <div class="ctl-kpi" id="ctlKpi" style="display:none;">
+    <div class="ctl-kpi-head"><div><b>📊 Дашборд объединения</b><span class="mm-week">обновляется автоматически по данным портала и курсов</span></div>
+    <button class="ctl-act" type="button" onclick="ctlKpiToggle()">✕</button></div>
+    <div class="ctl-kpi-grid" id="ctlKpiBody"></div>
+  </div>
 
   <div class="ctl-to-wrap ctl-only-admin" id="ctlToWrap" style="display:none;">
     <div class="ctl-to-head">
@@ -1918,6 +1937,75 @@ if (typeof TLCore !== 'undefined' && TLCore.on) {
   }
   function ctlParseDay(ymd){ var p = ymd.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
 
+  /* ============ Дашборд объединения (руководитель/админ) ============ */
+  function ctlKpiAllowed(){ try { var u = TLCore.currentUser(); return !!(u && (u.role === 'admin' || (u.role === 'teacher' && u.position === 'zav'))); } catch(e){ return false; } }
+  function ctlKpiToggle(){ var w = document.getElementById('ctlKpi'); if (!w) return; w.style.display = w.style.display === 'none' ? 'block' : 'none'; if (w.style.display === 'block') ctlKpiRender(); }
+  function kpiFmtMoney(n){ return (n >= 1000000 ? (n / 1000000).toLocaleString('ru-RU', { maximumFractionDigits: 1 }) + ' млн' : Math.round(n).toLocaleString('ru-RU')) + ' ₽'; }
+  function staffStatusOfCtl(who){
+    var d = null; try { d = JSON.parse(localStorage.getItem('tl-staff-status') || 'null'); } catch(e){}
+    var def = { zav:'active', kazakevich:'active', ped2:'hire', lab:'hire', metod:'sovm', stud:'practice', auto:'partner', konstr:'partner', kipia:'partner', rproj:'partner' };
+    var st = (d && typeof d === 'object' && d[who] !== undefined) ? d[who] : (def[who] || 'hire');
+    return st;
+  }
+  function ctlToSummary(){
+    var d = null; try { d = JSON.parse(localStorage.getItem('tl-to') || 'null'); } catch(e){}
+    if (!d) return { kits: 0, consum: 0, needTo: 0, low: 0 };
+    var needTo = (d.kits || []).filter(function(k){ return toStatusOf(k, k.days || 30) !== 'ok'; }).length;
+    var low = (d.consum || []).filter(function(c){ return c.low !== undefined && c.qty <= c.low; }).length;
+    return { kits: (d.kits || []).length, consum: (d.consum || []).length, needTo: needTo, low: low };
+  }
+  function ctlKpiRender(){
+    var body = document.getElementById('ctlKpiBody');
+    if (!body) return;
+    var cards = [];
+    // 1. Охват: ученики по курсам (из кабинета/ядра)
+    var students = 0, coursesWith = 0;
+    try {
+      var ts = (typeof TLCore !== 'undefined' && TLCore.getStudents) ? TLCore.getStudents() : null;
+      if (ts && ts.total) { students = ts.total; coursesWith = Object.keys(ts.courses || {}).length; }
+    } catch(e){}
+    cards.push({ label: 'Охват (ученики)', val: students, cls: students >= 100 ? 'good' : (students >= 84 ? 'mid' : 'bad'), sub: 'цель года 1: ≥ 84 · год 2: ≥ 100' });
+    cards.push({ label: 'Курсов с учениками', val: coursesWith + ' / 8', cls: coursesWith >= 6 ? 'good' : 'mid', sub: '8 электронных курсов ТЛ' });
+    // 2. Исполнение задач контроля
+    var tasksTotal = 0, tasksDone = 0, tasksLate = 0;
+    try {
+      if (typeof CTL_TASKS !== 'undefined') {
+        var days = ctlPeriodRange ? ctlPeriodRange(ctlCurDay) : [];
+        tasksTotal = CTL_TASKS.length;
+        CTL_TASKS.forEach(function(t, i){ var st = ctlStatusForPeriod ? ctlStatusForPeriod(i, days) : 'todo'; if (st === 'done') tasksDone++; if (st === 'late') tasksLate++; });
+      }
+    } catch(e){}
+    var pct = tasksTotal ? Math.round(tasksDone / tasksTotal * 100) : 0;
+    cards.push({ label: 'Контроль: выполняется', val: pct + '%', cls: pct >= 80 ? 'good' : (pct >= 50 ? 'mid' : 'bad'), sub: tasksLate ? tasksLate + ' просрочено' : 'без просрочек' });
+    // 3. Команда
+    var team = ['zav','kazakevich','ped2','lab','metod','stud','auto','konstr','kipia','rproj'];
+    var filled = team.filter(function(w){ return staffStatusOfCtl(w) === 'active'; }).length;
+    var part = team.filter(function(w){ var st = staffStatusOfCtl(w); return st === 'sovm' || st === 'practice' || st === 'partner'; }).length;
+    cards.push({ label: 'Команда', val: filled + ' / ' + team.length, cls: filled >= 8 ? 'good' : (filled >= 6 ? 'mid' : 'bad'), sub: filled + ' заняты · ' + part + ' в ротации/внешние' });
+    // 4. Бюджет
+    var need = 8728650, grant = 9500000, own = 1200000;
+    var cover = Math.min(100, Math.round((grant + own) / need * 100));
+    cards.push({ label: 'Бюджет (потребность ' + kpiFmtMoney(need) + ')', val: kpiFmtMoney(grant + own), cls: cover >= 100 ? 'good' : 'mid', sub: 'заявка ' + kpiFmtMoney(grant) + ' + вклад ' + kpiFmtMoney(own) + ' · покрытие ~' + cover + '%' });
+    // 5. Оплата труда / ставки
+    cards.push({ label: 'ФОТ доп. персонала (г.1)', val: kpiFmtMoney(1313000), cls: 'mid', sub: 'лаборант + педагог + методист · 10 мес.' });
+    // 6. МТБ из журнала ТО
+    var to = ctlToSummary();
+    cards.push({ label: 'МТБ (журнал ТО)', val: to.kits + ' комплектов', cls: to.needTo ? 'mid' : 'good', sub: to.needTo + ' требуют ТО · расходников с малым остатком: ' + to.low });
+    // 7. Ключевая ставка: теория/практика
+    cards.push({ label: 'Практика в программе', val: '67%', cls: 'good', sub: 'плановая доля практики (KPI ≥ 65%)' });
+    var html = cards.map(function(c){
+      return '<div class="ctl-kpi-card"><div class="kp-label">' + c.label + '</div><div class="kp-val ' + c.cls + '">' + c.val + '</div><div class="kp-sub">' + c.sub + '</div></div>';
+    }).join('');
+    body.innerHTML = html;
+  }
+  function ctlKpiRefresh(){
+    var w = document.getElementById('ctlKpi');
+    if (!w) return;
+    if (!ctlKpiAllowed()) { w.style.display = 'none'; return; }
+    w.style.display = 'block';
+    ctlKpiRender();
+  }
+
   /* ============ Журнал ТО (лаборант) ============ */
   function toStore(){ var d = null; try { d = JSON.parse(localStorage.getItem('tl-to') || 'null'); } catch(e){} if (!d) { d = { kits: [], consum: [], plan: {} }; } return d; }
   function toSave(d){ try { localStorage.setItem('tl-to', JSON.stringify(d)); } catch(e){} }
@@ -2369,6 +2457,7 @@ function toKitAdd(){ var st = toStore(); var n = document.getElementById('toKitN
     ctlSetupScope();
     ctlToRefresh();
     ctlToToggleBtn();
+    ctlKpiRefresh();
   }
   TLCore.on('login', function(){ refreshAdminTabs(); if (isAdminUser()) initControl(); });
   function goLab(num) { switchTab('labs'); setTimeout(function(){ var el = document.getElementById('lab-' + String(num).padStart(2,'0')); if (el) { el.classList.add('open'); el.scrollIntoView({behavior:'smooth', block:'start'}); } }, 120); }
