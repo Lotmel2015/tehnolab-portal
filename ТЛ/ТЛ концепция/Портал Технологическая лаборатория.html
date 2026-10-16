@@ -337,7 +337,29 @@ body { overflow-x: hidden; }
   .ctl-attn .at-item:hover { color:var(--accent); }
   .ctl-attn .at-who { font-family:var(--f-mono); font-size:11px; color:var(--muted); }
   .ctl-attn .at-none { color:var(--ok); font-size:13px; padding:2px 0; }
-  /* ==== Лента дедлайнов недели ==== */
+  /* ==== Журнал ТО ==== */
+  .ctl-to-wrap { margin:14px 0 0; padding:14px 16px; border:1px solid var(--line); border-radius:10px; background:var(--bg-card); }
+  .ctl-to-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:10px; }
+  .ctl-to-head b { font-family:var(--f-display); font-size:17px; }
+  .ctl-to-head .mm-week { display:block; color:var(--muted); font-size:12px; margin-top:2px; }
+  .ctl-to-actions { display:flex; gap:6px; }
+  .ctl-to-body { margin-top:10px; }
+  .ctl-to-card { border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-bottom:8px; background:var(--bg-elev); }
+  .ctl-to-card .to-name { font-weight:700; font-size:13.5px; display:flex; justify-content:space-between; gap:8px; align-items:center; }
+  .ctl-to-card .to-meta { color:var(--muted); font-size:12px; margin-top:2px; }
+  .ctl-to-status { font-family:var(--f-mono); font-size:11px; padding:2px 8px; border-radius:999px; white-space:nowrap; }
+  .ctl-to-status.st-ok { background:rgba(46,204,113,.15); color:#2ecc71; border:1px solid rgba(46,204,113,.4); }
+  .ctl-to-status.st-warn { background:rgba(255,184,77,.15); color:#ffb84d; border:1px solid rgba(255,184,77,.4); }
+  .ctl-to-status.st-bad { background:rgba(255,77,77,.15); color:#ff4d4d; border:1px solid rgba(255,77,77,.4); }
+  .ctl-to-row { display:flex; gap:8px; align-items:center; padding:5px 0; border-bottom:1px dashed var(--line); font-size:13px; }
+  .ctl-to-row:last-child { border-bottom:0; }
+  .ctl-to-add { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .ctl-to-add input, .ctl-to-add select { background:var(--bg); border:1px solid var(--line); color:var(--ink); border-radius:6px; padding:6px 8px; font-size:13px; }
+  .ctl-to-add button { background:var(--accent); border:0; color:#fff; border-radius:6px; padding:6px 14px; font-size:13px; cursor:pointer; font-weight:700; }
+  .ctl-to-add button:hover { filter:brightness(1.1); }
+  .ctl-to-rm { background:transparent; border:1px solid var(--line); color:var(--muted); border-radius:5px; padding:2px 8px; font-size:11px; cursor:pointer; }
+  .ctl-to-rm:hover { color:#ff4d4d; border-color:#ff4d4d; }
+  .ctl-to-sel { background:var(--bg); border:1px solid var(--line); color:var(--ink); border-radius:6px; padding:4px 6px; font-size:12px; }
   .ctl-strip { display:flex; gap:6px; margin:14px 0 2px; }
   .ctl-strip .cs-day { flex:1; border:1px solid var(--line); border-radius:8px; padding:6px 4px 5px; text-align:center; cursor:pointer; background:var(--bg-card); transition:border-color .15s, background .15s; }
   .ctl-strip .cs-day:hover { border-color:var(--accent); }
@@ -1042,6 +1064,7 @@ body { overflow-x: hidden; }
       <button class="ctl-act ctl-only-admin" type="button" onclick="ctlMeetToggle()" title="Собрать повестку планёрки">🗓 Планёрка</button>
       <button class="ctl-act ctl-only-admin" type="button" id="ctlViewBtn" onclick="ctlToggleView()" title="Переключить вид: карточки / компактный обзор">▦ Обзор</button>
       <button class="ctl-reset" type="button" onclick="ctlReset()">Сбросить статусы за день</button>
+      <button class="ctl-act ctl-staff-visible" type="button" id="ctlToBtn" onclick="ctlToToggle()" title="Журнал технического обслуживания: комплекты, расходники, привязка к занятиям">🛠 Журнал ТО</button>
     </div>
 
     <div class="ctl-summary" id="ctlSummary">
@@ -1076,6 +1099,22 @@ body { overflow-x: hidden; }
   </div>
 
   <section id="ctlBlocks"></section>
+
+  <div class="ctl-to-wrap ctl-only-admin" id="ctlToWrap" style="display:none;">
+    <div class="ctl-to-head">
+      <div><b>🛠 Журнал технического обслуживания</b><span class="mm-week">комплекты, расходники, привязка к занятиям</span></div>
+      <div class="ctl-to-actions">
+        <button class="ctl-act" type="button" onclick="ctlToToggle()">✕</button>
+      </div>
+    </div>
+    <div class="ctl-legend-body" style="padding-top:4px;">
+      <span class="ctl-flabel">Режим:</span>
+      <button class="ctl-fchip active" data-to="kits" onclick="ctlToMode('kits',this)">Комплекты</button>
+      <button class="ctl-fchip" data-to="consum" onclick="ctlToMode('consum',this)">Расходники</button>
+      <button class="ctl-fchip" data-to="plan" onclick="ctlToMode('plan',this)">Привязка к занятиям</button>
+    </div>
+    <div class="ctl-to-body" id="ctlToBody"></div>
+  </div>
 </main>
 <footer> <div class="frow"> <div style="text-align:center;width:100%;"> <b style="color:var(--ink);">Объединение «Технологическая лаборатория»</b><br> Создавай. Управляй. Запускай. </div> </div>
 </footer> <script src="tl-portal-core.js"></script> <script> function isAdminUser() { try { var u = (typeof TLCore !== 'undefined') ? TLCore.currentUser() : null; return !!(u && u.role === 'admin'); } catch (e) { return false; } }
@@ -1878,6 +1917,86 @@ if (typeof TLCore !== 'undefined' && TLCore.on) {
     el.innerHTML = html;
   }
   function ctlParseDay(ymd){ var p = ymd.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+
+  /* ============ Журнал ТО (лаборант) ============ */
+  function toStore(){ var d = null; try { d = JSON.parse(localStorage.getItem('tl-to') || 'null'); } catch(e){} if (!d) { d = { kits: [], consum: [], plan: {} }; } return d; }
+  function toSave(d){ try { localStorage.setItem('tl-to', JSON.stringify(d)); } catch(e){} }
+  function ctlToAllowed(){ try { var u = TLCore.currentUser(); return !!(u && (u.role === 'admin' || (u.role === 'teacher' && (u.position === 'lab' || u.position === 'zav')))); } catch(e){ return false; } }
+  function ctlToToggle(){ var w = document.getElementById('ctlToWrap'); if (!w) return; w.style.display = w.style.display === 'none' ? 'block' : 'none'; if (w.style.display === 'block') ctlToRender(); }
+  var ctlToModeNow = 'kits';
+  function ctlToMode(m, btn){ ctlToModeNow = m; document.querySelectorAll('.ctl-to-head .ctl-fchip').forEach(function(b){ b.classList.toggle('active', b.dataset.to === m); }); ctlToRender(); }
+  function toStatusOf(k, days){ if (!k || !k.lastTs) return 'ok'; var diff = days || 30; var age = Math.floor((Date.now() - k.lastTs) / 86400000); if (age > diff) return 'bad'; if (age > Math.floor(diff / 2)) return 'warn'; return 'ok'; }
+  function ctlToRender(){
+    var body = document.getElementById('ctlToBody');
+    if (!body) return;
+    var st = toStore();
+    var d = ctlToModeNow;
+    var html = '';
+    if (d === 'kits') {
+      if (!st.kits.length) html = '<div class="ctl-to-card"><div class="to-meta">Комплектов пока нет. Добавьте комплект оборудования.</div></div>';
+      st.kits.forEach(function(k, i){
+        var sts = toStatusOf(k, k.days || 30);
+        var lbl = sts === 'ok' ? '✓ в норме' : (sts === 'warn' ? '⚠ скоро ТО' : '✕ нужно ТО');
+        var lastTxt = '';
+        if (k.lastTs) lastTxt = ' · обслуживание: ' + new Date(k.lastTs).toLocaleDateString('ru-RU');
+        html += '<div class="ctl-to-card"><div class="to-name"><span>' + esc(k.name) + '</span><span class="ctl-to-status st-' + sts + '">' + lbl + '</span></div>';
+        html += '<div class="to-meta">' + (k.role || '') + (k.count ? ' · ' + k.count + ' шт' : '') + ' · ТО каждые ' + (k.days || 30) + ' дн' + lastTxt + '</div>';
+        html += '<div style="margin-top:6px;display:flex;gap:8px;align-items:center;"><label style="font-size:12px;color:var(--muted)">Обслужено:</label><input type="date" id="toKitDate_' + i + '" class="ctl-to-sel"><button class="ctl-to-rm" onclick="toKitDone(' + i + ')">✔ отметить</button><span style="flex:1"></span><button class="ctl-to-rm" onclick="toKitRmv(' + i + ')">✕</button></div></div>';
+      });
+      html += '<div class="ctl-to-add"><input id="toKitName" placeholder="Название комплекта"><input id="toKitRole" placeholder="Лаборатория/роль" style="width:180px"><input id="toKitDays" type="number" value="30" title="Периодичность ТО (дней)" style="width:80px"><input id="toKitCount" type="number" value="1" title="Количество" style="width:60px"><button onclick="toKitAdd()">+ Добавить комплект</button></div>';
+    } else if (d === 'consum') {
+      if (!st.consum.length) html = '<div class="ctl-to-card"><div class="to-meta">Расходников пока нет. Добавьте позицию.</div></div>';
+      st.consum.forEach(function(c, i){
+        var warn = c.low !== undefined && c.qty <= c.low;
+        var stlbl = warn ? '⚠ мало' : '✓ есть';
+        var stcls = warn ? 'st-bad' : 'st-ok';
+        html += '<div class="ctl-to-card"><div class="to-name"><span>' + esc(c.name) + '</span><span class="ctl-to-status ' + stcls + '">' + stlbl + '</span></div>';
+        html += '<div class="to-meta">' + esc(c.unit || 'шт') + ' · на складе: ' + c.qty + (c.low !== undefined ? ' · мин: ' + c.low : '') + '</div>';
+        html += '<div style="margin-top:6px;display:flex;gap:8px;align-items:center;"><label style="font-size:12px;color:var(--muted)">Кол-во:</label><input type="number" id="toConsQty_' + i + '" class="ctl-to-sel" value="' + c.qty + '" min="0" style="width:80px"><button class="ctl-to-rm" onclick="toConsUpd(' + i + ')">✔ обновить</button><span style="flex:1"></span><button class="ctl-to-rm" onclick="toConsRmv(' + i + ')">✕</button></div></div>';
+      });
+      html += '<div class="ctl-to-add"><input id="toConsName" placeholder="Название расходника"><input id="toConsUnit" placeholder="шт/м/кг" style="width:90px"><input id="toConsQty" type="number" value="0" min="0" title="Количество" style="width:80px"><input id="toConsLow" type="number" value="0" min="0" title="Мин. остаток" style="width:80px"><button onclick="toConsAdd()">+ Добавить</button></div>';
+    } else {
+      var courses = (typeof COURSE_CONFIG !== 'undefined') ? COURSE_CONFIG : [];
+      if (!courses.length) courses = [{ id: 'lab', label: 'Лаборатории (без ядра)', total: 0 }];
+      html += '<div class="ctl-to-add"><select id="toPlanCourse" class="ctl-to-sel">' + courses.map(function(c){ return '<option value="' + c.id + '">' + esc(c.label) + '</option>'; }).join('') + '</select><input id="toPlanLesson" type="number" min="1" title="Номер занятия" placeholder="№ занятия" style="width:90px"><input id="toPlanKit" placeholder="Что нужно (комплект/расходник)" style="width:230px"><button onclick="toPlanAdd()">+ Привязать</button></div>';
+      var keys = Object.keys(st.plan || {});
+      if (!keys.length) html = '<div class="ctl-to-card"><div class="to-meta">Привязок нет. Укажите: курс → занятие → оборудование.</div></div>' + html;
+      keys.forEach(function(k){
+        var parts = k.split('::');
+        var cid = parts[0], lesson = parts[1];
+        var cname = null;
+        for (var ci = 0; ci < courses.length; ci++) if (courses[ci].id === cid) { cname = courses[ci]; break; }
+        html += '<div class="ctl-to-card"><div class="to-name"><span>' + esc(cname ? cname.label : cid) + ' · занятие ' + esc(lesson) + '</span><span class="ctl-to-status st-ok">' + st.plan[k].length + ' поз.</span></div>';
+        var arr = st.plan[k];
+        for (var j = 0; j < arr.length; j++) {
+          html += '<div class="ctl-to-row"><span style="flex:1">' + esc(arr[j]) + '</span><button class="ctl-to-rm" onclick="toPlanRmv(\'' + k.replace(/'/g, "\\'") + '\',' + j + ')">✕</button></div>';
+        }
+        html += '</div>';
+      });
+    }
+    body.innerHTML = html;
+  }
+function toKitAdd(){ var st = toStore(); var n = document.getElementById('toKitName'); var r = document.getElementById('toKitRole'); var d = document.getElementById('toKitDays'); var c = document.getElementById('toKitCount'); if (!n || !n.value.trim()) return; st.kits.push({ name: n.value.trim(), role: r ? r.value.trim() : '', days: parseInt((d && d.value) || '30', 10) || 30, count: parseInt((c && c.value) || '1', 10) || 1, lastTs: 0 }); toSave(st); if (n) n.value = ''; ctlToRender(); }
+  function toKitDone(i){ var st = toStore(); var el = document.getElementById('toKitDate_' + i); var ts = (el && el.value) ? new Date(el.value + 'T00:00:00').getTime() : Date.now(); if (st.kits[i]) { st.kits[i].lastTs = ts; st.kits[i].last = ''; } toSave(st); ctlToRender(); }
+  function toKitRmv(i){ var st = toStore(); st.kits.splice(i, 1); toSave(st); ctlToRender(); }
+  function toConsAdd(){ var st = toStore(); var n = document.getElementById('toConsName'); var u = document.getElementById('toConsUnit'); var q = document.getElementById('toConsQty'); var l = document.getElementById('toConsLow'); if (!n || !n.value.trim()) return; st.consum.push({ name: n.value.trim(), unit: u ? u.value.trim() : 'шт', qty: parseInt((q && q.value) || '0', 10) || 0, low: (l && l.value !== '') ? (parseInt(l.value, 10) || 0) : undefined }); toSave(st); if (n) n.value = ''; ctlToRender(); }
+  function toConsUpd(i){ var st = toStore(); var el = document.getElementById('toConsQty_' + i); if (st.consum[i] && el) { st.consum[i].qty = parseInt(el.value, 10) || 0; } toSave(st); ctlToRender(); }
+  function toConsRmv(i){ var st = toStore(); st.consum.splice(i, 1); toSave(st); ctlToRender(); }
+  function toPlanAdd(){ var st = toStore(); if (!st.plan) st.plan = {}; var c = document.getElementById('toPlanCourse'); var l = document.getElementById('toPlanLesson'); var k = document.getElementById('toPlanKit'); if (!c || !l || !k || !k.value.trim()) return; var key = c.value + '::' + (parseInt(l.value, 10) || 1); if (!st.plan[key]) st.plan[key] = []; if (st.plan[key].indexOf(k.value.trim()) < 0) st.plan[key].push(k.value.trim()); toSave(st); if (k) k.value = ''; ctlToRender(); }
+  function toPlanRmv(key, j){ var st = toStore(); if (st.plan && st.plan[key]) { st.plan[key].splice(j, 1); if (!st.plan[key].length) delete st.plan[key]; } toSave(st); ctlToRender(); }
+  function esc(s){ return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function ctlToRefresh(){
+    var w = document.getElementById('ctlToWrap');
+    if (!w) return;
+    if (!ctlToAllowed()) { w.style.display = 'none'; return; }
+    w.style.display = 'block';
+    ctlToRender();
+  }
+  function ctlToToggleBtn(){
+    var b = document.getElementById('ctlToBtn');
+    if (!b) return;
+    b.style.display = ctlToAllowed() ? 'inline-block' : 'none';
+  }
   function ctlRenderCalStrip(){
     var el = document.getElementById('ctlCalStrip');
     if (!el) return;
@@ -2248,6 +2367,8 @@ if (typeof TLCore !== 'undefined' && TLCore.on) {
     var vb = document.getElementById('ctlViewBtn');
     if (vb) vb.textContent = ctlViewMode === 'ov' ? '▦ Карточки' : '▦ Обзор';
     ctlSetupScope();
+    ctlToRefresh();
+    ctlToToggleBtn();
   }
   TLCore.on('login', function(){ refreshAdminTabs(); if (isAdminUser()) initControl(); });
   function goLab(num) { switchTab('labs'); setTimeout(function(){ var el = document.getElementById('lab-' + String(num).padStart(2,'0')); if (el) { el.classList.add('open'); el.scrollIntoView({behavior:'smooth', block:'start'}); } }, 120); }
