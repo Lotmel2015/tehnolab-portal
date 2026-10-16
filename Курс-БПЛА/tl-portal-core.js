@@ -172,6 +172,36 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     return { ok: true, user: u };
   }
 
+  /* -------- Самостоятельное редактирование профиля (сам пользователь) -------- */
+  function updateOwnProfile(patch) {
+    var u = currentUser();
+    if (!u || !u.email) return { ok: false, error: 'Нет входа.' };
+    var users = getUsers();
+    var target = users[u.email];
+    if (!target) return { ok: false, error: 'Профиль не найден.' };
+    if (patch && patch.name !== undefined) target.name = String(patch.name || '').trim();
+    if (patch && patch.cls !== undefined) target.cls = String(patch.cls || '').trim();
+    if (patch && patch.school !== undefined) target.school = String(patch.school || '').trim();
+    if (patch && patch.phone !== undefined) target.phone = String(patch.phone || '').trim();
+    if (patch && patch.labs !== undefined) target.labs = Array.isArray(patch.labs) ? patch.labs.slice() : [];
+    saveUsers(users);
+    emit('profile', { email: target.email });
+    return { ok: true, user: target };
+  }
+  function updateOwnPass(cur, next) {
+    var u = currentUser();
+    if (!u || !u.email) return { ok: false, error: 'Нет входа.' };
+    if (u.passHash !== hashPass(String(cur || ''))) return { ok: false, error: 'Текущий пароль неверен.' };
+    var nn = String(next || '');
+    if (nn.length < 4) return { ok: false, error: 'Новый пароль слишком короткий (мин. 4 символа).' };
+    var users = getUsers();
+    var target = users[u.email];
+    if (!target) return { ok: false, error: 'Профиль не найден.' };
+    target.passHash = hashPass(nn);
+    saveUsers(users);
+    return { ok: true };
+  }
+
   /* -------- Публичный профиль (для педагога на странице) -------- */
   function publicProfile(u) {
     if (!u) return null;
@@ -342,8 +372,35 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
       '.tl-labs{display:flex;flex-wrap:wrap;gap:6px;}' +
       '.tl-labs button{background:#0D0F14;border:1px solid #2A2D35;border-radius:999px;color:#8B8FA3;padding:5px 10px;font-size:12px;cursor:pointer;}' +
       '.tl-labs button.on{color:#fff;border-color:#2D7AFF;background:rgba(45,122,255,.18);}' +
-      '#tlCabinetPanel{position:fixed;top:64px;right:16px;z-index:99970;width:300px;background:#161921;border:1px solid #2A2D35;border-radius:12px;color:#EAECEF;padding:18px 20px;box-shadow:0 20px 50px rgba(0,0,0,.45);font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;display:none;}' +
+      '#tlCabinetPanel{position:fixed;inset:0;z-index:99970;background:#161921;color:#EAECEF;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;display:none;overflow:auto;}' +
       '#tlCabinetPanel.open{display:block;}' +
+      '#tlCabinetPanel .tl-cab-frame{max-width:760px;margin:0 auto;padding:28px 24px 60px;}' +
+      '#tlCabinetPanel .tl-cab-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;}' +
+      '#tlCabinetPanel .tl-cab-title{font-size:20px;font-family:"Space Grotesk","Unbounded","Montserrat",system-ui,sans-serif;font-weight:700;}' +
+      '#tlCabinetPanel .tl-cab-cls{background:none;border:1px solid #3A3E47;color:#8B8FA3;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;}' +
+      '#tlCabinetPanel .tl-cab-tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid #24272E;margin-bottom:16px;padding-bottom:10px;}' +
+      '#tlCabinetPanel .tl-cab-tab{background:none;border:1px solid transparent;color:#8B8FA3;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:13.5px;font-weight:600;}' +
+      '#tlCabinetPanel .tl-cab-tab.on{color:#fff;border-color:#2D7AFF;background:rgba(45,122,255,.15);}' +
+      '#tlCabinetPanel .tl-cab-tab:hover{color:#fff;}' +
+      '#tlCabinetPanel .tl-cab-tab{color:#8B8FA3;}' +
+      '#tlCabinetPanel .tl-cab-pane{display:none;}' +
+      '#tlCabinetPanel .tl-cab-pane.on{display:block;}' +
+      '#tlCabinetPanel .tl-cab-role{font-size:12px;color:#2D7AFF;text-transform:uppercase;letter-spacing:.06em;font-weight:700;}' +
+      '#tlCabinetPanel input[type="text"],#tlCabinetPanel input[type="tel"],#tlCabinetPanel input[type="email"],#tlCabinetPanel input[type="password"],#tlCabinetPanel select{width:100%;background:#0D0F14;border:1px solid #2A2D35;border-radius:6px;color:#EAECEF;padding:8px 10px;font-size:13px;}' +
+      '#tlCabinetPanel input:focus,#tlCabinetPanel select:focus{outline:none;border-color:#2D7AFF;}' +
+      '#tlCabinetPanel label{font-size:12px;color:#8B8FA3;display:block;margin:8px 0 3px;}' +
+      '#tlCabinetPanel .tl-btn-save{background:#2D7AFF;border:0;color:#fff;border-radius:6px;padding:9px 18px;font-size:14px;cursor:pointer;font-weight:700;margin-top:10px;}' +
+      '#tlCabinetPanel .tl-btn-save:hover{filter:brightness(1.1);}' +
+      '#tlCabinetPanel .tl-cab-msg{color:#00D68F;font-size:12.5px;margin-top:8px;min-height:16px;}' +
+      '#tlCabinetPanel .tl-cab-err{color:#FF5A5A;font-size:12.5px;margin-top:8px;min-height:16px;}' +
+      '#tlCabinetPanel .tl-hint{color:#8B8FA3;font-size:12px;margin-top:8px;}' +
+      '#tlCabinetPanel .tl-cab-stat{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;}' +
+      '#tlCabinetPanel .tl-cab-stat .st{font-size:13px;color:#8B8FA3;}' +
+      '#tlCabinetPanel .tl-cab-stat .st b{color:#fff;}' +
+      '#tlCabinetPanel .tl-labs-chip{display:inline-block;border:1px solid #3A3E47;padding:5px 10px;border-radius:999px;margin:4px 6px 0 0;font-size:12px;color:#EAECEF;}' +
+      '#tlCabinetPanel .tl-cab-logout{background:transparent;border:1px solid #3A3E47;color:#8B8FA3;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:13px;margin-top:14px;}' +
+      '#tlCabinetPanel .tl-cab-logout:hover{color:#fff;}' +
+      '@media (max-width:640px){#tlCabinetPanel .tl-cab-frame{padding:18px 14px 50px;}#tlCabinetPanel .tl-cab-top{flex-direction:column;align-items:flex-start;}}' +
       '#tlCabinetPanel .tl-cab-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}' +
       '#tlCabinetPanel h3{margin:0;font-size:16px;font-family:"Space Grotesk","Unbounded","Montserrat",system-ui,sans-serif;}' +
       '#tlCabinetPanel .tl-cab-role{font-size:12px;color:#2D7AFF;text-transform:uppercase;letter-spacing:.06em;font-weight:700;}' +
@@ -489,6 +546,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     }
   }
 
+  var CAB_TAB = 'profile';
   function openCabinet() {
     ensureStyle();
     var user = currentUser();
@@ -497,17 +555,171 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     if (!p) {
       p = document.createElement('div');
       p.id = cabinetId;
-      p.innerHTML = '<div class="tl-cab-head"><div><h3 id="tlCabName"></h3><div class="tl-cab-role" id="tlCabRole"></div></div></div>' +
+      p.innerHTML =
+        '<div class="tl-cab-frame">' +
+        '<div class="tl-cab-top"><div><div class="tl-cab-title" id="tlCabName"></div><div class="tl-cab-role" id="tlCabRole"></div></div>' +
+        '<button class="tl-cab-cls" id="tlCabCls">✕ Закрыть</button></div>' +
+        '<div class="tl-cab-tabs" id="tlCabTabs"></div>' +
         '<div id="tlCabBody"></div>' +
         '<div id="tlAdminPanel" style="display:none;"></div>' +
-        '<button class="tl-logout" id="tlCabLogout">Выйти из кабинета</button>';
+        '</div>';
       document.body.appendChild(p);
-      p.querySelector('#tlCabLogout').onclick = function () { closeCabinet(); logout(); renderAuthWidget(); };
+      p.querySelector('#tlCabCls').onclick = function () { closeCabinet(); };
     }
     renderCabinet();
     p.classList.add('open');
   }
   function closeCabinet() { var p = document.getElementById(cabinetId); if (p) p.classList.remove('open'); }
+  function cabTab(t) { CAB_TAB = t || 'profile'; renderCabinet(); }
+  function cabTabsDef() {
+    var u = currentUser();
+    var tabs = [{ id: 'profile', label: 'Профиль' }];
+    if (u) {
+      if (u.role === 'admin') tabs.push({ id: 'users', label: 'Пользователи' }, { id: 'teachers', label: 'Педагоги' });
+      else if (u.role === 'teacher') tabs.push({ id: 'students', label: 'Мои ученики' });
+    }
+    tabs.push({ id: 'courses', label: 'Мои курсы' });
+    return tabs;
+  }
+  function cabRenderTabs() {
+    var el = document.getElementById('tlCabTabs');
+    if (!el) return;
+    el.innerHTML = cabTabsDef().map(function (t) { return '<button class="tl-cab-tab' + (CAB_TAB === t.id ? ' on' : '') + '" onclick="TLCore.cabTab(\'' + t.id + '\')">' + t.label + '</button>'; }).join('');
+  }
+  // Профиль: редактирование полей и смена пароля
+  function cabSaveProfile() {
+    var u = currentUser(); if (!u) return;
+    var upd = { name: (document.getElementById('tlPrName') || {}).value || '', cls: (document.getElementById('tlPrCls') || {}).value || '', school: (document.getElementById('tlPrSchool') || {}).value || '', phone: (document.getElementById('tlPrPhone') || {}).value || '' };
+    updateOwnProfile(upd);
+    renderCabinet();
+    var m = document.getElementById('tlCabMsg'); if (m) m.textContent = '✓ Профиль сохранён.';
+  }
+  function cabSavePass() {
+    var u = currentUser(); if (!u) return;
+    var cur = (document.getElementById('tlPrCurPass') || {}).value || '';
+    var n1 = (document.getElementById('tlPrNewPass') || {}).value || '';
+    var n2 = (document.getElementById('tlPrNewPass2') || {}).value || '';
+    var err = document.getElementById('tlCabPassErr');
+    var msg = document.getElementById('tlCabPassMsg');
+    if (err) err.textContent = ''; if (msg) msg.textContent = '';
+    if (n1 !== n2) { if (err) err.textContent = 'Пароли не совпадают.'; return; }
+    var res = updateOwnPass(cur, n1);
+    if (!res.ok) { if (err) err.textContent = res.error; return; }
+    if (msg) msg.textContent = '✓ Пароль изменён.';
+  }
+  function cabProfileHtml(u) {
+    var labs = (LAB_META || []).map(function (l) { return '<span class="tl-labs-chip">' + l.id + '</span> '; }).join('') || '';
+    var h = '';
+    h += '<label>ФИО</label><input type="text" id="tlPrName" value="' + escapeHtml(u.name || '') + '">';
+    h += '<div style="display:flex;gap:10px;flex-wrap:wrap;"><div style="flex:1;min-width:140px;"><label>Класс / курс (ученик)</label><input type="text" id="tlPrCls" value="' + escapeHtml(u.cls || '') + '"></div><div style="flex:1;min-width:160px;"><label>Школа</label><input type="text" id="tlPrSchool" value="' + escapeHtml(u.school || '') + '"></div></div>';
+    h += '<label>Телефон</label><input type="tel" id="tlPrPhone" value="' + escapeHtml(u.phone || '') + '">';
+    h += '<div style="margin-top:12px;"><span style="font-size:12px;color:#8B8FA3;">Интересует лаборатории:</span><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;" id="tlPrLabs">' + labs + '</div></div>';
+    h += '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"><button class="tl-btn-save" id="tlPrSave" style="margin-top:10px;">Сохранить профиль</button><span class="tl-cab-msg" id="tlCabMsg"></span></div>';
+    return h;
+  }
+  function cabPassHtml() {
+    return '<div style="border-top:1px solid #24272E;margin-top:18px;padding-top:14px;">' +
+      '<div style="font-weight:700;margin-bottom:6px;">Смена пароля</div>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;"><div style="flex:1;min-width:140px;"><label>Текущий пароль</label><input type="password" id="tlPrCurPass"></div><div style="flex:1;min-width:140px;"><label>Новый пароль</label><input type="password" id="tlPrNewPass"></div><div style="flex:1;min-width:140px;"><label>Повторите</label><input type="password" id="tlPrNewPass2"></div></div>' +
+      '<div class="tl-cab-err" id="tlCabPassErr"></div><div class="tl-cab-msg" id="tlCabPassMsg"></div>' +
+      '<button class="tl-btn-save" id="tlPrPassBtn" style="background:#1B1F2A;border:1px solid #3A3E47;color:#fff;">Сменить пароль</button></div>';
+  }
+  function cabCoursesHtml(u) {
+    var ach = getAllAchievements();
+    var h = '<div class="tl-hint">Твой прогресс по курсам объединения. Переходи к занятию, чтобы продолжить.</div>';
+    COURSE_CONFIG.forEach(function (cfg) {
+      var pr = ach.courses[cfg.id] || { done: 0, total: cfg.total };
+      var pct = pr.total ? Math.round(pr.done / pr.total * 100) : 0;
+      var lock = '';
+      if (cfg.parent) { var par = ach.courses[cfg.parent]; var req = cfg.requireLesson || 0; var got = par ? par.done : 0; if (got < req) lock = ' <span style="color:#FFAA00;font-size:11px;">🔒 после ' + req + ' занятий VR</span>'; }
+      h += '<a href="' + cfg.href + '" style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:10px 12px;border:1px solid #2A2D35;border-radius:8px;text-decoration:none;color:#EAECEF;"><span style="font-weight:600;">' + escapeHtml(cfg.label) + lock + '</span><span style="font-size:12px;color:#8B8FA3;white-space:nowrap;">' + pr.done + ' / ' + pr.total + ' · ' + pct + '%</span></a>';
+    });
+    return h;
+  }
+  function cabStudentsHtml(u) {
+    var ts = getStudentsForTeacher();
+    var tsAll = (u.role === 'admin' || u.position === 'zav');
+    var h = '<div class="tl-hint">' + (tsAll ? 'Все ученики объединения по курсам' : 'Твои ученики по курсам (привязка по полю «учитель»)') + '</div>';
+    if (!ts.total) { h += '<div class="tl-hint" style="margin-top:8px;">Учеников пока нет.</div>'; return h; }
+    Object.keys(ts.courses).forEach(function (cid) {
+      var g = ts.courses[cid];
+      var sum = g.students.reduce(function (a, x) { return a + x.progress.done; }, 0);
+      var avg = g.students.length ? Math.round(sum / g.students.length) : 0;
+      h += '<div style="margin-top:10px;padding:10px 12px;border:1px solid #2A2D35;border-radius:8px;">';
+      h += '<div style="display:flex;justify-content:space-between;gap:6px;font-weight:600;font-size:13px;">' + escapeHtml(g.cfg.label) + '<span style="color:#8B8FA3;font-size:11px;">' + g.students.length + ' · ср. ' + avg + '%</span></div>';
+      g.students.forEach(function (x) {
+        var pct = x.progress.total ? Math.round(x.progress.done / x.progress.total * 100) : 0;
+        h += '<div style="display:flex;justify-content:space-between;gap:6px;align-items:center;padding:4px 0;border-bottom:1px dashed #24272E;font-size:12.5px;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escapeHtml(x.profile.name || '—') + (x.profile.klass ? ' <span style="color:#8B8FA3;">' + escapeHtml(String(x.profile.klass)) + '</span>' : '') + '</span><span style="color:#8B8FA3;white-space:nowrap;">' + x.progress.done + '/' + x.progress.total + ' · ' + pct + '%</span></div>';
+      });
+      h += '</div>';
+    });
+    return h;
+  }
+  function cabUsersHtml() {
+    var users = getUsers();
+    var rows = Object.keys(users).map(function (email) {
+      var u2 = users[email];
+      return '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #24272E;font-size:13px;"><span>' + escapeHtml(u2.name || email) + ' <span style="color:#8B8FA3;font-size:11px;">(' + escapeHtml(u2.role || '') + (u2.position ? ' · ' + escapeHtml(POSITIONS[u2.position] || u2.position) : '') + ')</span></span><button class="tl-adm-edit" data-email="' + email + '" style="background:transparent;border:1px solid #3A3E47;color:#8B8FA3;font-size:12px;border-radius:6px;padding:2px 8px;cursor:pointer;">Ред.</button></div>';
+    }).join('');
+    return '<div style="font-weight:700;margin-bottom:6px;">Пользователи портала</div>' + (rows || '<div class="tl-hint">Нет пользователей.</div>');
+  }
+  function cabTeachersHtml() {
+    var reg = getTeacherRegistry();
+    var h = '<div style="font-weight:700;margin-bottom:4px;">Единый реестр педагогов</div>';
+    h += '<div class="tl-hint">Код открывает режим учителя на курсах. Список — для выбора «своего учителя» учеником.</div>';
+    h += '<div style="display:flex;gap:6px;margin-top:8px;"><input type="text" id="tlTeacherCode" value="' + escapeHtml(reg.code) + '" placeholder="Код учителя" style="flex:1;"><button class="tl-btn-save" style="margin:8px 0 0;padding:8px 14px;font-size:12px;" onclick="TLCore.saveTeacherCode()">ОК</button></div>';
+    reg.list.forEach(function (nm, idx) {
+      h += '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;padding:3px 0;border-bottom:1px dashed #24272E;font-size:12.5px;"><span>' + escapeHtml(nm) + '</span><button style="background:transparent;border:1px solid #3A3E47;color:#8B8FA3;border-radius:5px;padding:2px 8px;font-size:11px;cursor:pointer;" onclick="TLCore.removeTeacher(' + idx + ')">✕</button></div>';
+    });
+    h += '<div style="display:flex;gap:6px;margin-top:8px;"><input type="text" id="tlTeacherAdd" placeholder="ФИО педагога" style="flex:1;"><button class="tl-btn-save" style="margin:8px 0 0;padding:8px 14px;font-size:12px;" onclick="TLCore.addTeacherUI()">+</button></div>';
+    return h;
+  }
+  function renderCabinetPane() {
+    var u = currentUser(); if (!u) return;
+    var elBody = document.getElementById('tlCabBody'); if (!elBody) return;
+    var html = '';
+    if (CAB_TAB === 'profile') { html = cabProfileHtml(u) + cabPassHtml(); }
+    else if (CAB_TAB === 'courses') { html = cabCoursesHtml(u); }
+    else if (CAB_TAB === 'students') { html = cabStudentsHtml(u); }
+    else if (CAB_TAB === 'users') { html = cabUsersHtml(); }
+    else if (CAB_TAB === 'teachers') { html = cabTeachersHtml(); }
+    else { html = cabProfileHtml(u) + cabPassHtml(); }
+    elBody.innerHTML = html;
+    // Проводка
+    var saveBtn = document.getElementById('tlPrSave');
+    if (saveBtn) saveBtn.onclick = function () { cabSaveProfile(); };
+    var passBtn = document.getElementById('tlPrPassBtn');
+    if (passBtn) passBtn.onclick = function () { cabSavePass(); };
+    var labChips = elBody.querySelectorAll && elBody.querySelectorAll('#tlPrLabs .tl-labs-chip');
+    if (labChips && labChips.length && !document.getElementById('tlPrLabs').dataset.attached) {
+      document.getElementById('tlPrLabs').dataset.attached = '1';
+      var cur = (u.labs || []).slice();
+      labChips.forEach(function (ch) {
+        var id = ch.textContent.trim();
+        if (cur.indexOf(id) > -1) ch.style.borderColor = '#2D7AFF'; ch.style.color = '#2D7AFF';
+        ch.style.cursor = 'pointer'; ch.title = 'Нажми, чтобы выбрать';
+        ch.onclick = function () {
+          var i = cur.indexOf(id);
+          if (i === -1) { cur.push(id); ch.style.borderColor = '#2D7AFF'; ch.style.color = '#2D7AFF'; }
+          else { cur.splice(i, 1); ch.style.borderColor = '#3A3E47'; ch.style.color = '#EAECEF'; }
+          updateUser(u.email, { labs: cur });
+        };
+      });
+    }
+    var admList = elBody.querySelectorAll ? elBody.querySelectorAll('.tl-adm-edit') : [];
+    admList.forEach(function (b) { b.onclick = function () { adminEdit(b.getAttribute('data-email')); }; });
+  }
+  function renderCabinet() {
+    var u = currentUser(); if (!u) return;
+    var elName = document.getElementById('tlCabName');
+    var elRole = document.getElementById('tlCabRole');
+    if (elName) elName.textContent = u.name || u.email;
+    if (elRole) elRole.textContent = u.role === 'admin' ? 'Администратор' : (u.role === 'teacher' ? 'Педагог / наставник' : 'Обучающийся');
+    cabRenderTabs();
+    renderCabinetPane();
+    var ap = document.getElementById('tlAdminPanel');
+    if (ap) { ap.style.display = 'none'; var isAdmin = (u.role === 'admin'); ap.style.display = isAdmin ? 'block' : 'none'; }
+  }
   
   function courseProgressOf(cfg, user) {
     var uid = user && (user.id || user.email);
@@ -590,88 +802,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     });
     return result;
   }
-  function renderCabinet() {
-    var u = currentUser();
-    if (!u) return;
-    var elName = document.getElementById('tlCabName');
-    var elRole = document.getElementById('tlCabRole');
-    var elBody = document.getElementById('tlCabBody');
-    if (elName) elName.textContent = u.name || u.email;
-    if (elRole) elRole.textContent = u.role === 'admin' ? 'Администратор' : (u.role === 'teacher' ? 'Педагог / наставник' : 'Обучающийся');
-    if (!elBody) return;
-    var labs = (u.labs || []).map(labLabel).join(', ') || '—';
-    var ach = getAllAchievements();
-    var totalPct = ach.totalAll ? Math.round(ach.doneTotal / ach.totalAll * 100) : 0;
-    var html = '';
-    html += '<div class="tl-cab-row"><span>E-mail</span><b>' + escapeHtml(u.email) + '</b></div>';
-    html += '<div class="tl-cab-row"><span>Класс</span><b>' + escapeHtml(u.cls || '—') + '</b></div>';
-    html += '<div class="tl-cab-row"><span>Школа</span><b>' + escapeHtml(u.school || '—') + '</b></div>';
-    html += '<div class="tl-cab-row"><span>Лаборатории</span><b>' + escapeHtml(labs) + '</b></div>';
-    html += '<div style="margin-top:10px;padding:8px 10px;border:1px solid #2A2D35;border-radius:8px;"><span style="font-weight:700;display:block;margin-bottom:4px;">Мои достижения</span>';
-    html += '<div class="tl-cab-row"><span>Всего пройдено занятий</span><b>' + ach.doneTotal + ' из ' + ach.totalAll + '</b></div>';
-    html += '<div style="margin-top:8px;"><div style="background:#2A2D35;border-radius:999px;height:8px;overflow:hidden;"><div style="width:' + totalPct + '%;height:100%;background:#2D7AFF;border-radius:999px;"></div></div><div style="color:#8B8FA3;font-size:11px;margin-top:4px;">Общий прогресс по всем курсам · ' + totalPct + '%</div></div></div>';
-    if (u.role === 'teacher' || u.role === 'admin') {
-      var ts = getStudentsForTeacher();
-      var tsAll = (u.role === 'admin' || u.position === 'zav');
-      html += '<div style="margin-top:12px;padding-top:10px;border-top:1px solid #24272E;">';
-      html += '<div style="font-weight:700;margin-bottom:2px;">' + (tsAll ? 'Ученики объединения' : 'Мои ученики') + '</div>';
-      html += '<div style="color:#8B8FA3;font-size:11px;margin-bottom:6px;">' + (ts.total ? ts.total + ' ученик(ов) · сводка по курсам' : 'нет привязанных учеников') + '</div>';
-      if (ts.total) {
-        Object.keys(ts.courses).forEach(function (cid) {
-          var g = ts.courses[cid];
-          var sum = g.students.reduce(function (a, x) { return a + x.progress.done; }, 0);
-          var avg = g.students.length ? Math.round(sum / g.students.length) : 0;
-          html += '<div style="margin-top:8px;padding:8px 10px;border:1px solid #2A2D35;border-radius:8px;">';
-          html += '<div style="display:flex;justify-content:space-between;gap:6px;font-weight:600;font-size:12.5px;">' + escapeHtml(g.cfg.label) + '<span style="color:#8B8FA3;font-size:11px;">' + g.students.length + ' · ср. ' + avg + '%</span></div>';
-          g.students.forEach(function (x) {
-            var pct = x.progress.total ? Math.round(x.progress.done / x.progress.total * 100) : 0;
-            html += '<div style="display:flex;justify-content:space-between;gap:6px;align-items:center;padding:3px 0;border-bottom:1px dashed #24272E;font-size:12px;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escapeHtml(x.profile.name || '—') + (x.profile.klass ? ' <span style="color:#8B8FA3;">' + escapeHtml(String(x.profile.klass)) + '</span>' : '') + '</span><span style="color:#8B8FA3;white-space:nowrap;">' + x.progress.done + '/' + x.progress.total + ' · ' + pct + '%</span></div>';
-          });
-          html += '</div>';
-        });
-      } else if (u.role === 'teacher') {
-        html += '<div style="color:#8B8FA3;font-size:12px;padding:4px 0;">Ученики курсов привязываются к педагогу по полю «учитель».</div>';
-      }
-      html += '</div>';
-    }
-    if (u.role === 'admin') {
-      var reg = getTeacherRegistry();
-      html += '<div style="margin-top:12px;padding-top:10px;border-top:1px solid #24272E;">';
-      html += '<div style="font-weight:700;">Педагоги и код учителя</div>';
-      html += '<div style="color:#8B8FA3;font-size:11px;margin-bottom:6px;">Единый реестр для всех курсов. Код открывает режим учителя.</div>';
-      html += '<div style="display:flex;gap:6px;"><input id="tlTeacherCode" value="' + escapeHtml(reg.code) + '" style="flex:1;background:#0D0F14;border:1px solid #2A2D35;color:#EAECEF;padding:5px 8px;border-radius:6px;font-size:12px;"><button class="tl-logout" style="width:auto;padding:4px 10px;font-size:12px;margin:0;" onclick="TLCore.saveTeacherCode()">ОК</button></div>';
-      html += '<div style="margin-top:6px;color:#8B8FA3;font-size:11px;">Список педагогов (для выбора учеником):</div>';
-      reg.list.forEach(function (nm, idx) {
-        html += '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;padding:2px 0;border-bottom:1px dashed #24272E;font-size:12px;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escapeHtml(nm) + '</span><button class="tl-logout" style="width:auto;padding:2px 8px;font-size:11px;margin:0;" onclick="TLCore.removeTeacher(' + idx + ')">✕</button></div>';
-      });
-      html += '<div style="display:flex;gap:6px;margin-top:6px;"><input id="tlTeacherAdd" placeholder="ФИО педагога" style="flex:1;background:#0D0F14;border:1px solid #2A2D35;color:#EAECEF;padding:5px 8px;border-radius:6px;font-size:12px;"><button class="tl-logout" style="width:auto;padding:4px 10px;font-size:12px;margin:0;" onclick="TLCore.addTeacher()">+</button></div>';
-      html += '</div>';
-    }
-    COURSE_CONFIG.forEach(function (cfg) {
-      var pr = ach.courses[cfg.id] || { done: 0, total: cfg.total };
-      var pct = pr.total ? Math.round(pr.done / pr.total * 100) : 0;
-      html += '<a href="' + cfg.href + '" style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:8px 10px;border:1px solid #2A2D35;border-radius:8px;text-decoration:none;color:#EAECEF;"><span style="font-weight:600;">' + escapeHtml(cfg.label) + '</span><span style="font-size:12px;color:#8B8FA3;">' + pr.done + ' / ' + pr.total + ' · ' + pct + '%</span></a>';
-    });
-    html += '<div style="margin-top:10px;text-align:right;"><button class="tl-logout" onclick="TLCore.logout();TLCore.refreshUI();" style="background:transparent;border:1px solid #3A3E47;color:#8B8FA3;font-size:12px;border-radius:6px;padding:4px 10px;cursor:pointer;">Выйти из кабинета</button></div>';
-    elBody.innerHTML = html;
-    var ap = document.getElementById('tlAdminPanel');
-    if (ap) {
-      var isAdmin = (u.role === 'admin');
-      ap.style.display = isAdmin ? 'block' : 'none';
-      if (isAdmin) {
-        var users = getUsers();
-        var rows = Object.keys(users).map(function (email) {
-          var p = users[email];
-          return '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #24272E;"><span>' + escapeHtml(p.name || email) + ' <span style="color:#8B8FA3;font-size:11px;">(' + escapeHtml(p.role || '') + ')</span></span><button class="tl-adm-edit" data-email="' + email + '" style="background:transparent;border:1px solid #3A3E47;color:#8B8FA3;font-size:12px;border-radius:6px;padding:2px 8px;cursor:pointer;">Ред.</button></div>';
-        }).join('');
-        ap.innerHTML = '<div style="padding:6px 0;font-weight:700;">Пользователи</div>' + (rows || '<div style="color:#8B8FA3;font-size:12px;">Нет пользователей.</div>');
-        var admlist = ap.querySelectorAll('.tl-adm-edit');
-        admlist.forEach(function (b) { b.onclick = function () { adminEdit(b.getAttribute('data-email')); }; });
-      }
-    }
-  }
-
-  function adminEdit(uid) {
+    function adminEdit(uid) {
     var u = currentUser();
     var ap = document.getElementById('tlAdminPanel');
     if (!ap || !u || u.role !== 'admin') return;
@@ -739,6 +870,8 @@ var API = {
     POSITIONS: POSITIONS,
     listUsers: listUsers,
     updateUser: updateUser,
+    updateOwnProfile: updateOwnProfile,
+    updateOwnPass: updateOwnPass,
     getProgress: getProgress,
     setLessonDone: setLessonDone,
     isLessonDone: isLessonDone,
@@ -759,6 +892,7 @@ var API = {
     authTab: switchTab,
     openCabinet: openCabinet,
     closeCabinet: closeCabinet,
+    cabTab: cabTab,
     adminEdit: adminEdit,
     adminSave: adminSave,
     refreshUI: renderAuthWidget,
