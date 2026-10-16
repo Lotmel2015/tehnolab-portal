@@ -624,6 +624,93 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
       '<div class="tl-cab-err" id="tlCabPassErr"></div><div class="tl-cab-msg" id="tlCabPassMsg"></div>' +
       '<button class="tl-btn-save" id="tlPrPassBtn" style="background:#1B1F2A;border:1px solid #3A3E47;color:#fff;">Сменить пароль</button></div>';
   }
+  function courseProfileOf(cfg, user) {
+    try {
+      var profs = JSON.parse(localStorage.getItem(cfg.profilesKey) || '[]') || [];
+      var uid = user && (user.id || user.email);
+      var p = profs.find(function (x) { return x && (String(x.uid) === String(uid) || String(x.id) === String(uid) || x.email === user.email || (x.name || '').toLowerCase() === (user.name || '').toLowerCase()); });
+      return p || null;
+    } catch (e) { return null; }
+  }
+  function myCourseCode(cfg, user) {
+    var p = courseProfileOf(cfg, user);
+    return p ? (p.code || '') : '';
+  }
+  function quizSummary(cfg, user) {
+    // Квизы TQuiz пишут {idx,score,done} в ключи вида «<prefix>_quiz_<N>»
+    var p = courseProfileOf(cfg, user);
+    if (!p) return { done: 0, best: 0, totalQ: 0 };
+    var uid = p.uid || p.id;
+    var done = 0, best = 0, totalQ = 0;
+    for (var i = 1; i <= (cfg.total || 0); i++) {
+      var key = '';
+      try {
+        if (cfg.mode === 'lesson_l') key = cfg.lessonPrefix + uid + '_quiz_' + i;
+        else key = cfg.lessonPrefix ? cfg.lessonPrefix + uid + '_quiz_' + i : (cfg.id + '_quiz_' + i);
+        if (cfg.mode === 'week_obj') {
+          // у week_obj-курсов префикс задаётся progressPrefix (напр. roboto-course-progress-); quiz-ключи аналогичны
+          var base = cfg.progressPrefix ? cfg.progressPrefix : (cfg.id + '-course-progress-');
+          key = String(uid) + '_quiz_' + i;
+        }
+      } catch (e) {}
+      var q = null; try { q = JSON.parse(localStorage.getItem(key) || 'null'); } catch(e){}
+      if (q && typeof q === 'object' && q.done > 0) {
+        done++;
+        var frac = q.totalQ > 0 ? q.score / q.totalQ : 0;
+        // ключи quiz содержат score и done, но не totalQ; посчитаем best ~ score*100/3 (3 вопроса в квизах)
+        best += q.score;
+        totalQ += 3;
+      }
+    }
+    return { done: done, best: totalQ ? Math.round(best / totalQ * 100) : 0, totalQ: totalQ, passed: done };
+  }
+  function cabExportProgress() {
+    var u = currentUser(); if (!u) return;
+    var out = { app: 'tl-progress', version: 1, exported: new Date().toISOString(), user: { name: u.name, email: u.email, role: u.role }, courses: {} };
+    var ach = getAllAchievements();
+    COURSE_CONFIG.forEach(function (cfg) {
+      var cp = courseProfileOf(cfg, u);
+      var pr = ach.courses[cfg.id] || { done: 0, total: cfg.total };
+      out.courses[cfg.id] = { label: cfg.label, done: pr.done, total: pr.total, uid: cp ? (cp.uid || cp.id || '') : '', code: cp ? (cp.code || '') : '' };
+    });
+    var blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'tl-my-progress-' + String(u.name || 'user').replace(/[^a-zA-Zа-яА-Я0-9]/g, '_') + '.json';
+    a.click();
+    setTimeout(function(){ if (URL.revokeObjectURL) URL.revokeObjectURL(a.href); }, 3000);
+  }
+  function cabImportProgressFile(ev) {
+    var u = currentUser(); if (!u) return;
+    var f = ev.target.files && ev.target.files[0];
+    if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () {
+      try {
+        var d = JSON.parse(rd.result);
+        if (!d || d.app !== 'tl-progress' || !d.courses) { alert('Это не файл прогресса ТЛ.'); return; }
+        // Персонализированная проверка: имя/e-mail должны совпасть или быть пустыми
+        if (d.user && d.user.email && String(d.user.email).toLowerCase() !== String(u.email).toLowerCase()) {
+          if (!confirm('Файл принадлежит другому пользователю (' + d.user.email + '). Импортировать в свой профиль всё равно?')) { return; }
+        }
+        var cnt = 0;
+        COURSE_CONFIG.forEach(function (cfg) {
+          var c = d.courses[cfg.id]; if (!c) return;
+          var uid = c.uid; if (!uid) return;
+          for (var i = 1; i <= (c.done || 0); i++) {
+            try {
+              if (cfg.mode === 'lesson_l') { localStorage.setItem(cfg.lessonPrefix + uid + cfg.progressSuffix + i, '1'); cnt++; }
+              else if (cfg.mode === 'week_obj') { var obj = {}; try { obj = JSON.parse(localStorage.getItem(cfg.progressPrefix + uid) || '{}') || {}; } catch(e){} obj['w' + i] = true; localStorage.setItem(cfg.progressPrefix + uid, JSON.stringify(obj)); cnt++; }
+            } catch (e) {}
+          }
+        });
+        alert('Импортировано отмеченных занятий: ' + cnt);
+        renderCabinet();
+      } catch (e) { alert('Не удалось прочитать файл.'); }
+    };
+    rd.readAsText(f);
+    ev.target.value = '';
+  }
   function cabCoursesHtml(u) {
     var ach = getAllAchievements();
     var h = '<div class="tl-hint">Твой прогресс по курсам объединения. Переходи к занятию, чтобы продолжить.</div>';
@@ -632,8 +719,24 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
       var pct = pr.total ? Math.round(pr.done / pr.total * 100) : 0;
       var lock = '';
       if (cfg.parent) { var par = ach.courses[cfg.parent]; var req = cfg.requireLesson || 0; var got = par ? par.done : 0; if (got < req) lock = ' <span style="color:#FFAA00;font-size:11px;">🔒 после ' + req + ' занятий VR</span>'; }
-      h += '<a href="' + cfg.href + '" style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px;padding:10px 12px;border:1px solid #2A2D35;border-radius:8px;text-decoration:none;color:#EAECEF;"><span style="font-weight:600;">' + escapeHtml(cfg.label) + lock + '</span><span style="font-size:12px;color:#8B8FA3;white-space:nowrap;">' + pr.done + ' / ' + pr.total + ' · ' + pct + '%</span></a>';
+      var code = myCourseCode(cfg, u);
+      var qz = (u.role === 'learner' || u.role === 'teacher') ? quizSummary(cfg, u) : { done: 0 };
+      var next = '';
+      if (pr.done > 0 && pr.done < pr.total) next = ' → занятие ' + (pr.done + 1);
+      h += '<div style="margin-top:8px;padding:10px 12px;border:1px solid #2A2D35;border-radius:8px;">';
+      h += '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;"><span style="font-weight:600;">' + escapeHtml(cfg.label) + lock + '</span><span style="font-size:12px;color:#8B8FA3;white-space:nowrap;">' + pr.done + ' / ' + pr.total + ' · ' + pct + '%</span></div>';
+      if (code) h += '<div style="font-size:12px;color:#8B8FA3;margin-top:4px;">Код доступа: <b style="color:#EAECEF;font-family:monospace;">' + escapeHtml(code) + '</b></div>';
+      if (qz.done) h += '<div style="font-size:12px;color:#8B8FA3;margin-top:2px;">Квизы: пройдено ' + qz.done + ' занятий · средний результат ' + qz.best + '%</div>';
+      h += '<a href="' + cfg.href + '" style="display:inline-block;margin-top:6px;font-size:13px;color:#2D7AFF;text-decoration:none;font-weight:600;">' + (pr.done === 0 ? 'Начать курс →' : (pr.done >= pr.total ? 'Открыть курс (пройден) →' : 'Продолжить' + next + ' →')) + '</a>';
+      h += '</div>';
     });
+    if (u.role === 'learner') {
+      h += '<div style="margin-top:14px;border-top:1px solid #24272E;padding-top:12px;">';
+      h += '<div style="font-weight:700;margin-bottom:4px;">Перенос прогресса между устройствами</div>';
+      h += '<div class="tl-hint">Скачай файл прогресса и импортируй его на другом компьютере — отметки по занятиям восстановятся.</div>';
+      h += '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;"><button class="tl-btn-save" style="padding:8px 14px;font-size:12.5px;margin:0;" onclick="TLCore.cabExportProgress()">⬇ Скачать прогресс</button><label class="tl-btn-save" style="background:#1B1F2A;border:1px solid #3A3E47;color:#fff;padding:8px 14px;font-size:12.5px;border-radius:6px;cursor:pointer;">⬆ Импортировать<input type="file" accept=".json,application/json" style="display:none" onchange="TLCore.cabImportProgressFile(event)"></label></div>';
+      h += '</div>';
+    }
     return h;
   }
   function cabStudentsHtml(u) {
@@ -887,6 +990,8 @@ var API = {
     saveTeacherCode: uiSaveTeacherCode,
     addTeacherUI: uiAddTeacher,
     waitlist: waitlist,
+    cabExportProgress: cabExportProgress,
+    cabImportProgressFile: cabImportProgressFile,
     openAuth: function (tab) { openModal(tab || 'login'); },
     closeAuth: closeModal,
     authTab: switchTab,
