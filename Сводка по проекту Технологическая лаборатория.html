@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Сводка по проекту Технологическая лаборатория — для ассистента</title>
+<style>
+  :root { --bg:#fff; --ink:#1B2A4A; --muted:#5A6B85; --accent:#1F6FE0; --accent-soft:#EAF2FD;
+          --vr:#4D008C; --vr-soft:#F0EBF5; --def:#B45309; --def-soft:#FDF1E1;
+          --pr:#167A4D; --pr-soft:#E7F4EE; --line:#D9E2EF; --code-bg:#F5F7FB; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { max-width:960px; margin:0 auto; padding:2rem 1.25rem 3rem; }
+  header .kicker { color:var(--accent); font-weight:700; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; }
+  header h1 { font-size:1.8rem; line-height:1.2; margin:.2rem 0 .3rem; }
+  header .sub { color:var(--muted); margin:0 0 .4rem; }
+  .meta { color:var(--muted); font-size:.85rem; }
+  .tldr { background:var(--accent-soft); border-left:4px solid var(--accent); padding:.9rem 1.1rem; border-radius:0 6px 6px 0; margin:1.5rem 0; }
+  .tldr b { color:var(--accent); }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:.75rem; margin:1.5rem 0; }
+  .kpi { border:1px solid var(--line); border-radius:10px; padding:.8rem 1rem; background:#fff; }
+  .kpi b { display:block; font-size:1.35rem; color:var(--vr); }
+  .kpi span { color:var(--muted); font-size:.78rem; }
+  h2 { font-size:1.15rem; border-bottom:1px solid var(--line); padding-bottom:.35rem; margin:2rem 0 .75rem; color:var(--ink); }
+  h3 { font-size:1rem; margin:1.2rem 0 .45rem; color:var(--vr); }
+  p { margin:.4rem 0 .8rem; } ul,ol { margin:.3rem 0 .8rem; padding-left:1.4rem; } li { margin:.2rem 0; }
+  table { border-collapse:collapse; width:100%; font-size:.88rem; margin:.6rem 0 1rem; }
+  th,td { padding:.4rem .6rem; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+  th { color:var(--muted); font-weight:600; }
+  code { font-family:ui-monospace,"Cascadia Mono",Consolas,monospace; font-size:.85em; background:var(--code-bg); padding:.08rem .35rem; border-radius:4px; }
+  pre { background:var(--code-bg); border:1px solid var(--line); border-radius:10px; padding:.8rem 1rem; overflow-x:auto; font-size:.8rem; line-height:1.5; }
+  pre code { background:none; padding:0; }
+  .warn { background:var(--def-soft); border-left:4px solid var(--def); padding:.7rem 1rem; border-radius:0 8px 8px 0; margin:1rem 0; }
+  .warn b { color:var(--def); } .ok { background:var(--pr-soft); border-left:4px solid var(--pr); padding:.7rem 1rem; border-radius:0 8px 8px 0; margin:1rem 0; .ok b {color:var(--pr);} }
+  .badge { display:inline-block; font-size:.72rem; font-weight:700; padding:.15rem .55rem; border-radius:999px; }
+  .b-vr { background:var(--vr-soft); color:var(--vr); } .b-ac { background:var(--accent-soft); color:var(--accent); }
+  .b-pr { background:var(--pr-soft); color:var(--pr); } .b-def { background:var(--def-soft); color:var(--def); }
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  @media (max-width:720px){ .cols{ grid-template-columns:1fr; } }
+  footer { color:var(--muted); font-size:.8rem; border-top:1px solid var(--line); margin-top:3rem; padding-top:.75rem; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="kicker">Технологическая лаборатория · Справочник ассистента</p>
+    <h1>Сводка по проекту «Технологическая лаборатория»</h1>
+    <p class="sub">Обобщение деятельности чатов проекта: структура, архитектура, каноны, решённые задачи и подводные камни.</p>
+    <p class="meta">Дата актуализации: 17.10.2026 · Источник: память проекта + анализ файлов + канонический шаблон</p>
+  </header>
+
+  <div class="tldr"><b>Проект.</b> Статический сайт объединения «Технологическая лаборатория» (КГАОУ «Школа космонавтики», Железногорск) + электронные курсы для школьников 8–11 классов. Всё работает на <code>localStorage</code> без сервера, файлы открываются с диска (<code>file://</code>) и с GitHub Pages. Связка «портал → курсы» обеспечивается ядром <code>tl-portal-core.js</code> (ЛК/статистика) и мостом <code>tl-bridge.js</code> (вход и синхронизация прогресса).</div>
+
+  <div class="kpis">
+    <div class="kpi"><b>7</b><span>основных курсов</span></div>
+    <div class="kpi"><b>3</b><span>мини-курса</span></div>
+    <div class="kpi"><b>1</b><span>дочерний курс C#</span></div>
+    <div class="kpi"><b>~1200</b><span>HTML-файлов с уроками</span></div>
+    <div class="kpi"><b>1</b><span>канон сборки курса</span></div>
+  </div>
+
+  <section id="map">
+    <h2>1. Структура проекта</h2>
+    <table>
+      <tr><th>Папка / файл</th><th>Роль</th><th>Объём</th></tr>
+      <tr><td><code>Портал Технологическая лаборатория.html</code> (в <code>ТЛ\ТЛ концепция\</code>)</td><td>Главная страница портала: лента лабораторий, карточки курсов, ЛК, вкладки</td><td>главный файл</td></tr>
+      <tr><td><code>tl-portal-core.js</code> + 8 копий в курсах</td><td>Ядро ЛК: вход, профили, статистика по всем курсам, админ-правки</td><td>идентичны (md5)</td></tr>
+      <tr><td><code>tl-bridge.js</code> в каждом курсе</td><td>Мост «курс ↔ портал»: сессия, синхронизация, <code>?tl_email=</code></td><td>параметризован</td></tr>
+      <tr><td><code>Курс-VR-студия\</code></td><td>Эталон архитектуры (36 занятий) + дочерний доступ к C#</td><td>609 html</td></tr>
+      <tr><td><code>Курс-Проектный-навигатор\</code></td><td>36 занятий «Проектная деятельность с ИИ»</td><td>215 html</td></tr>
+      <tr><td><code>Курс-Blender-3D\</code></td><td>3D-моделирование (Blender)</td><td>63 html</td></tr>
+      <tr><td><code>Курс-БПЛА\</code>, <code>Курс-КОМПАС-3D\</code>, <code>Курс-Робототехника\</code>, <code>Курс-Электроника\</code></td><td>Упрощённые курсы (по канону, 36 занятий каждый)</td><td>по 39 html</td></tr>
+      <tr><td><code>Курс C#\</code></td><td>Дочерний углублённый курс C# (доступ после VR занятий 3–4)</td><td>16 html</td></tr>
+      <tr><td><code>Мини-курс *\</code> (Без гарнитуры, Сети в VR, AR-разработка)</td><td>Мини-курсы по 7 html</td><td>по 7</td></tr>
+      <tr><td><code>Как собрать новый курс по образцу VR.html</code></td><td>Канон сборки: конфиг, 14 шагов, 4 правила</td><td>440 строк</td></tr>
+      <tr><td><code>Мотивационная шкала курсов.html</code>, <code>Обратная связь сотрудников портал и курсы.html</code>, <code>index.html</code></td><td>Справочные / служебные страницы</td><td>—</td></tr>
+    </table>
+  </section>
+
+  <section id="arch">
+    <h2>2. Как устроена логика (архитектура)</h2>
+    <ul>
+      <li><b>Вход через портал.</b> Профили хранятся в общем <code>localStorage</code> портала (<code>tl.users</code>, сессия <code>tl.session</code>). Переход на курс идёт с параметром <code>?tl_email=…</code>; <code>tl-bridge.js</code> создаёт профиль курса по email (двухпутевая синхронизация: общий localStorage на http / URL-параметр на file://).</li>
+      <li><b>Профили курсов.</b> Два вида id-моделей: <code>uid</code> (строковый, для Проектного навигатора, VR и др.) и <code>id</code> (числовой, для 4 упрощённых курсов). Сессия для id-моделей пишется строкой id, а не JSON — критично!</li>
+      <li><b>Прогресс.</b> Два формата: <code>lesson_l</code> (массив булевых или ключ <code>{uid}_l_{n}</code>='1') и <code>week_obj</code> (объект <code>{w1:true,…}</code>). У ПН — <code>pdn-course-progress-{uid}</code> как массив из 36 булевых.</li>
+      <li><b>Блокировка занятий.</b> Последовательная: занятие доступно если <code>num===1 || isDone(uid, num-1)</code>; учитель видит все. Строгая блокировка — через рефлексию (галочку): следующее открывается только после заполнения рефлексии предыдущего.</li>
+      <li><b>Мотивационная шкала.</b> Металлы (Железо…Иридий), баллы: прогресс (до 40) + качество (до 60) = итог 0–100; лидеры среди учеников курса.</li>
+      <li><b>Квизы.</b> Модуль <code>tl-quiz.js</code> + <code>TQuiz.start</code>: 3 вопроса «что / зачем / что при ошибке» в каждом уроке, счёт и сохранение.</li>
+    </ul>
+  </section>
+
+  <section id="canon">
+    <h2>3. Канон сборки курса (жёсткие правила)</h2>
+    <div class="warn"><b>Правило 1.</b> Один префикс ключей localStorage на курс (например <code>rt_</code>). <b>Правило 2.</b> Один inline <code>&lt;script&gt;</code> на страницу. <b>Правило 3.</b> В минифицированном JS только <code>/* */</code>-комментарии, никогда <code>//</code>. <b>Правило 4.</b> Строгая последовательная блокировка следующего шага через рефлексию.</div>
+    <p>Сборка: конфиг JSON → генератор → хаб («Список занятий») → уроки (теория/практика/рефлексия/галочка/квиз) → шкала → проверки.</p>
+    <p>Подключение внешних скриптов — перед последним <code>&lt;/html&gt;</code> (теги <code>&lt;/body&gt;</code>/<code>&lt;/html&gt;</code> встречаются в JS-строках).</p>
+  </section>
+
+  <section id="done">
+    <h2>4. Главные решённые задачи (по чатам)</h2>
+    <ul>
+      <li><b>Болевые точки сотрудников — закрыты все 5 пунктов (окт. 2026):</b>
+        <ul>
+          <li><b>Кабинет педагога:</b> сводка по группам и прогрессу учеников (<code>getStudentsForTeacher</code>, форматы <code>lesson_l</code>/<code>week_obj</code>), блок «Мои ученики» в ЛК; педагог видит своих, админ/завуч — всех.</li>
+          <li><b>Единый реестр педагогов:</b> <code>tl.teachers</code> (код учителя + список), управление в ЛК администратора; курсы читают код/список через <code>TLCore</code> (fallback на прежние значения).</li>
+          <li><b>Журнал ТО для лаборанта:</b> <code>tl-to</code> в панели «Контроль» — комплекты со статусами (в норме/скоро ТО/нужно ТО), расходники с мин. остатком, привязка оборудования к занятиям.</li>
+          <li><b>Дашборд объединения:</b> для завуч/админ — охват учеников, исполнение задач контроля, команда, бюджет, МТБ, доля практики (67%).</li>
+          <li><b>Полный экспорт/импорт JSON:</b> «Экспорт всех»/«Импорт всех» (admin) — все ключи портала + ядра (<code>tl.users</code>, <code>tl.teachers</code>, <code>tl.progress.*</code> и др.), перенос между устройствами.</li>
+        </ul>
+      </li>
+      <li><b>Модернизация личного кабинета (окт. 2026) — полноэкранный ЛК с вкладками:</b>
+        <ul>
+          <li>Вкладки <b>Профиль / Мои курсы / Достижения / Уведомления</b> (+ «Мои ученики» у педагога, «Пользователи»/«Педагоги» у админа).</li>
+          <li>Профиль: редактирование ФИО/класс/школа/телефон/лаборатории (<code>updateOwnProfile</code>), смена пароля (<code>updateOwnPass</code>).</li>
+          <li>Мои курсы: прогресс, «Начать/Продолжить → занятие N», код доступа ученика, сводка по квизам TQuiz, перенос прогресса (<code>cabExportProgress</code>/<code>cabImportProgressFile</code>).</li>
+          <li>Достижения: медали (Новичок→Выпускник), сертификат о прохождении курса (печать, <code>cabPrintCert</code>).</li>
+          <li>Педагог: деталка ученика (прогресс, класс, код, квизы) + «Открыть все занятия» (<code>cabOpenAll</code>); админ: поиск и фильтры пользователей (<code>cabUsersApply</code>).</li>
+        </ul>
+      </li>
+      <li><b>Курс C# дочерний от VR:</b> доступ только после занятий 3–4 VR (Модуль 2), условная ссылка в хабе VR, guard в списке модулей C#, не показывается в общем списке курсов, в ЛК как «↳ Углублённый курс C#».</li>
+      <li><b>Наполнение контентом 4 курсов</b> (БПЛА/КОМПАС/Робототехника/Электроника): 112 уроков, базы <code>content-*.json</code>, генератор <code>fill-lessons.cjs</code>.</li>
+      <li><b>Методички «Что нажать / Что получится»</b> для сложных тем (8 файлов) + двусторонние ссылки урок↔методичка.</li>
+      <li><b>Игры и квизы:</b> «Найди пару» (flipCard) в 4 уроках; интерактивные квизы во всех 112 уроках 4 курсов; мотивационная шкала с лидерами в 4 хабах.</li>
+      <li><b>Портал:</b> карточки-заглушки стали активными ссылками на курсы (LAB.01…LAB.07), названия в фирменных цветах, клик добавляет <code>?tl_email=</code>.</li>
+      <li><b>Регистрация через портал:</b> формы входа убраны из 7 курсов (плашка «Вход через портал»), VR остаётся эталоном с формой; починен критический баг моста (сессия id-моделей пишется строкой).</li>
+      <li><b>Сквозная система ЛК:</b> <code>tl-portal-core.js</code> обобщено на 8 курсов (<code>COURSE_CONFIG</code>, <code>getAllAchievements()</code>, <code>courseProgressOf()</code>, <code>renderCabinet</code>, <code>adminEdit</code>); 8 копий идентичны эталону — при правке не удалять API/renderCabinet/renderAuthWidget.</li>
+      <li><b>Ссылки:</b> проверено 258 URL, заменены заблокированные в РФ (ArtStation/Behance→vk, Canva/Tinkercad→Blender/Яндекс.Документы, YouTube→Stepik Git, домены конкурсов исправлены).</li>
+      <li><b>Проектный навигатор — ремонт доступа:</b> см. раздел 6.</li>
+      <li><b>Сокращение иконок портала:</b> лента лабораторий 7→5 иконок (LAB.01–LAB.05), перенумерованы; карточки курсов не тронуты.</li>
+    </ul>
+  </section>
+
+  <section id="pn">
+    <h2>5. Курс «Проектный навигатор» — ключевые параметры</h2>
+    <table>
+      <tr><th>Параметр</th><th>Значение</th></tr>
+      <tr><td>Хаб</td><td><code>Курс-Проектный-навигатор\index.html</code> — 36 занятий</td></tr>
+      <tr><td>Профили</td><td><code>pdn-course-users</code> (массив), сессия <code>pdn-course-active</code></td></tr>
+      <tr><td>Прогресс</td><td><code>pdn-course-progress-{uid}</code> — массив из 36 булевых</td></tr>
+      <tr><td>Рефлексии</td><td><code>pd_refl_{uid}_{n}</code></td></tr>
+      <tr><td>Код учителя</td><td><code>TEACHER_CODE = "012345678"</code>; <code>BASE_TEACHERS = [Казакевич Константин Михайлович]</code></td></tr>
+      <tr><td>Мост</td><td><code>courseId: 'pn_navigator'</code>, <code>ID_FIELD: 'uid'</code>, <code>PROGRESS_MODE: 'week_obj'</code></td></tr>
+      <tr><td>Teacher mode</td><td>5 кликов по H1 или код учителя; <code>mt_teacher_mode</code></td></tr>
+    </table>
+  </section>
+
+  <section id="fixed">
+    <h2>6. Уроки и подводные камни (что ломалось)</h2>
+    <ul>
+      <li><b>«Занятия не отображаются» (ПН, 13.10.2026):</b> функция отрисовки <code>render()</code> была перекрыта одноимённой функцией мотивационной шкалы — <code>#grid</code> пустой. Лечение: канонический <code>render()</code> (цикл по lessons, блокировка) + шкалу назвать <code>scaleMain</code> и вызывать через <code>window.__scaleRender</code> в конце render(). Из файла также удалены 7 дублей <code>userbar</code> и 3 дубля <code>studentsPanel</code>.</li>
+      <li><b>Массовый дефект адаптивности:</b> CSS-блок «АДАПТИВНОСТЬ…» был вставлен внутрь <code>&lt;script&gt;</code> в ~138 файлах (ломало JS). Починено; при пакетных правках: маркер не должен встречаться внутри <code>&lt;script&gt;</code>, проверять <code>node --check</code>.</li>
+      <li><b>Приложение-10 ПН:</b> потерянная <code>}</code> в JS — пересобран.</li>
+      <li><b>Ссылки без ?uid</b> в ПН — урок не знал профиль; починено.</li>
+      <li><b>«Оголённые атрибуты»:</b> после замены формы на плашку терялся открывающий <code>&lt;div class="userbar"</code> — восстановлен, парность <code>&lt;div&gt;</code> сходится.</li>
+      <li><b>Бэкапы 4 курсов:</b> <code>ТЛ\Бэкап от 2026-10-12\Хабы 4 упрощённых курсов\</code>.</li>
+    </ul>
+  </section>
+
+  <section id="go">
+    <h2>7. Как действовать дальше (рабочие правила)</h2>
+    <ol>
+      <li>Все имена файлов — на русском, без <code>-</code> и <code>_</code> между словами (те же имена тем, что уже используются).</li>
+      <li>Все внешние ссылки — открывающиеся в РФ без VPN (не YouTube/ArtStation/Behance/Canva/Tinkercad и т.п.); проверять каждую.</li>
+      <li>Курсы строить строго по канону VR; VR — эталон. При правках ядра <code>tl-portal-core.js</code> — не терять API/renderCabinet/renderAuthWidget, сверять md5 8 копий.</li>
+      <li>После пакетных правок: <code>node --check</code>/глобальный <code>global-syntax-check.cjs</code> (сейчас 395 файлов, 0 ошибок).</li>
+      <li>Функция отрисовки занятий в хабе — обязана называться <code>render()</code>; шкала — <code>window.__scaleRender</code>; не перекрывать.</li>
+      <li>Перед изменением файла — прочитать; изменения — только по явной просьбе (вопросы «посмотри/изучи» — только чтение).</li>
+      <li>Деструктивные действия (reset, удаление, перезапись) — только после подтверждения пользователя.</li>
+      <li>В ответах — кратко, на русском; служебные скрипты — в <code>C:\Users\Lotmel\AppData\Local\Temp\gigatool</code>.</li>
+    </ol>
+  </section>
+
+  <section id="chats">
+    <h2>8. Структура чатов (рекомендации по распределению работы)</h2>
+    <p>Проект — один, чатов много: главный источник путаницы — несколько чатов, одновременно редактирующих общие файлы (<code>tl-portal-core.js</code> и его 8 копий, <code>Портал Технологическая лаборатория.html</code>).</p>
+    <table>
+      <tr><th>Чат</th><th>Что делает</th><th>Права на файлы</th></tr>
+      <tr><td><b>А. Ядро и портал</b> (основной)</td><td>Портал, ЛК, панель «Контроль», кабинет, реестры, экспорт — всё, что связано с <code>tl-portal-core.js</code> и порталом</td><td>только он меняет общее ядро</td></tr>
+      <tr><td><b>Б. Курсы: контент</b></td><td>Занятия, квизы, игры, методички, наполнение курсов</td><td>только папки <code>Курс-*/</code> (кроме <code>tl-portal-core.js</code> в них)</td></tr>
+      <tr><td><b>В. Методичка/документы</b></td><td>ДООП, КТП, концепции, канон, гранты</td><td><code>ТЛ/</code>, <code>ПД/</code>, <code>*.md</code>, концепции</td></tr>
+      <tr><td><b>Г. Публикация и git</b></td><td>Коммиты, push, чистка мусорных файлов, .gitignore, README</td><td>git-операции (разовые)</td></tr>
+    </table>
+    <p><b>Правила:</b> чат А не пишет контент занятий, чат Б не трогает ядро. Не держать два чата с одинаковой ролью одновременно — работайте последовательно. В конце каждой сессии — коммитить (<code>git add -u && git commit</code>), чтобы состояние было видно другим чатам. Ключевые изменения фиксировать в этой сводке и в памяти проекта.</p>
+  </section>
+
+  <footer>Сводка собрана ассистентом MultiTool · Обновляется по мере работы над проектом.</footer>
+</main>
+</body>
+</html>
