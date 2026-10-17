@@ -754,20 +754,92 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
       h += '<div style="display:flex;justify-content:space-between;gap:6px;font-weight:600;font-size:13px;">' + escapeHtml(g.cfg.label) + '<span style="color:#8B8FA3;font-size:11px;">' + g.students.length + ' · ср. ' + avg + '%</span></div>';
       g.students.forEach(function (x) {
         var pct = x.progress.total ? Math.round(x.progress.done / x.progress.total * 100) : 0;
-        h += '<div style="display:flex;justify-content:space-between;gap:6px;align-items:center;padding:4px 0;border-bottom:1px dashed #24272E;font-size:12.5px;"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escapeHtml(x.profile.name || '—') + (x.profile.klass ? ' <span style="color:#8B8FA3;">' + escapeHtml(String(x.profile.klass)) + '</span>' : '') + '</span><span style="color:#8B8FA3;white-space:nowrap;">' + x.progress.done + '/' + x.progress.total + ' · ' + pct + '%</span></div>';
+        h += '<div style="display:flex;justify-content:space-between;gap:6px;align-items:center;padding:4px 0;border-bottom:1px dashed #24272E;font-size:12.5px;">';
+        h += '<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"><button class="tl-student-det" data-course="' + cid + '" data-uid="' + String(x.profile.uid || x.profile.id || '') + '" style="background:none;border:0;color:#EAECEF;cursor:pointer;font-size:12.5px;text-align:left;padding:0;">' + escapeHtml(x.profile.name || '—') + '</button>' + (x.profile.klass ? ' <span style="color:#8B8FA3;">' + escapeHtml(String(x.profile.klass)) + '</span>' : '') + '</span>';
+        h += '<span style="color:#8B8FA3;white-space:nowrap;">' + x.progress.done + '/' + x.progress.total + ' · ' + pct + '% <button class="tl-student-open" data-course="' + cid + '" data-uid="' + String(x.profile.uid || x.profile.id || '') + '" style="background:transparent;border:1px solid #3A3E47;color:#8B8FA3;border-radius:5px;padding:1px 8px;font-size:11px;cursor:pointer;">Открыть все</button></span>';
+        h += '</div>';
       });
       h += '</div>';
     });
     return h;
   }
-  function cabUsersHtml() {
-    var users = getUsers();
-    var rows = Object.keys(users).map(function (email) {
-      var u2 = users[email];
+  function cabUsersListHtml(arr) {
+    if (!arr || !arr.length) return '<div class="tl-hint" style="margin-top:6px;">Никого не нашлось.</div>';
+    return arr.map(function (u2) {
+      var email = u2.email || '';
       return '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #24272E;font-size:13px;"><span>' + escapeHtml(u2.name || email) + ' <span style="color:#8B8FA3;font-size:11px;">(' + escapeHtml(u2.role || '') + (u2.position ? ' · ' + escapeHtml(POSITIONS[u2.position] || u2.position) : '') + ')</span></span><button class="tl-adm-edit" data-email="' + email + '" style="background:transparent;border:1px solid #3A3E47;color:#8B8FA3;font-size:12px;border-radius:6px;padding:2px 8px;cursor:pointer;">Ред.</button></div>';
     }).join('');
-    return '<div style="font-weight:700;margin-bottom:6px;">Пользователи портала</div>' + (rows || '<div class="tl-hint">Нет пользователей.</div>');
   }
+  function cabUsersApply() {
+    var users = getUsers();
+    var arr = Object.keys(users).map(function (k) { return users[k]; });
+    var q = ((document.getElementById('tlUserSearch') || {}).value || '').toLowerCase().trim();
+    var r = (document.getElementById('tlUserRole') || {}).value || '';
+    var p = (document.getElementById('tlUserPos') || {}).value || '';
+    if (q) arr = arr.filter(function (x) { return (x.name || '').toLowerCase().indexOf(q) > -1 || (x.email || '').toLowerCase().indexOf(q) > -1; });
+    if (r) arr = arr.filter(function (x) { return x.role === r; });
+    if (p) arr = arr.filter(function (x) { return x.position === p; });
+    var list = document.getElementById('tlUserList');
+    if (list) list.innerHTML = cabUsersListHtml(arr);
+  }
+  function cabUsersHtml() {
+    var users = getUsers();
+    var arr = Object.keys(users).map(function (k) { return users[k]; });
+    var h = '<div style="font-weight:700;margin-bottom:6px;">Пользователи портала</div>';
+    h += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;"><input type="text" id="tlUserSearch" placeholder="Поиск по имени или e-mail" style="flex:1;min-width:170px;background:#0D0F14;border:1px solid #2A2D35;color:#EAECEF;border-radius:6px;padding:7px 10px;font-size:12.5px;">';
+    h += '<select id="tlUserRole" style="background:#0D0F14;border:1px solid #2A2D35;color:#EAECEF;border-radius:6px;padding:7px 8px;font-size:12.5px;"><option value="">Все роли</option><option value="learner">Ученик</option><option value="teacher">Педагог</option><option value="admin">Администратор</option></select>';
+    h += '<select id="tlUserPos" style="background:#0D0F14;border:1px solid #2A2D35;color:#EAECEF;border-radius:6px;padding:7px 8px;font-size:12.5px;"><option value="">Все должности</option>' + Object.keys(POSITIONS).map(function (k) { return '<option value="' + k + '">' + escapeHtml(POSITIONS[k]) + '</option>'; }).join('') + '</select>';
+    h += '<button class="tl-btn-save" style="margin:0;padding:7px 14px;font-size:12px;" onclick="TLCore.cabUsersApply()">Применить</button></div>';
+    h += '<div id="tlUserList">' + cabUsersListHtml(arr) + '</div>';
+    return h;
+  }
+  function cabStudentDetailHtml(cid, uid) {
+    var cfg = null;
+    COURSE_CONFIG.forEach(function (c) { if (c.id === cid) cfg = c; });
+    if (!cfg) return '';
+    var profs = [];
+    try { profs = JSON.parse(localStorage.getItem(cfg.profilesKey) || '[]') || []; } catch (e) {}
+    var sp = profs.find(function (x) { return x && String(x.uid || x.id) === String(uid); });
+    if (!sp) return '';
+    var pr = progressForStudentProfile(cfg, sp);
+    var pct = pr.total ? Math.round(pr.done / pr.total * 100) : 0;
+    var code = sp.code || '';
+    var h = '<div style="margin-top:12px;padding:12px;border:1px solid #2D7AFF;border-radius:8px;background:rgba(45,122,255,.07);">';
+    h += '<div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;"><b>' + escapeHtml(sp.name || '—') + '</b><button class="tl-student-back" style="background:transparent;border:1px solid #3A3E47;color:#8B8FA3;border-radius:5px;padding:2px 10px;font-size:11px;cursor:pointer;">← Назад</button></div>';
+    h += '<div style="font-size:12.5px;color:#8B8FA3;margin-top:6px;">' + (sp.klass ? 'Класс: ' + escapeHtml(String(sp.klass)) + ' · ' : '') + (sp.teacher ? 'учитель: ' + escapeHtml(sp.teacher) : '') + (code ? ' · код: <b style="color:#EAECEF;">' + escapeHtml(code) + '</b>' : '') + '</div>';
+    h += '<div style="margin-top:8px;font-size:13px;">Курс: <b>' + escapeHtml(cfg.label) + '</b> — пройдено ' + pr.done + ' из ' + pr.total + ' (' + pct + '%)</div>';
+    h += '<div style="height:6px;background:#2A2D35;border-radius:999px;margin-top:6px;overflow:hidden;"><div style="width:' + pct + '%;height:100%;background:#2D7AFF;border-radius:999px;"></div></div>';
+    var qz = null; try { qz = quizSummary(cfg, { email: sp.email, name: sp.name, id: sp.uid || sp.id }); } catch (e) {}
+    if (qz && qz.done) h += '<div style="font-size:12px;color:#8B8FA3;margin-top:6px;">Квизов пройдено: ' + qz.done + ' · средний результат ' + qz.best + '%</div>';
+    h += '<div style="margin-top:10px;"><button class="tl-student-open2" data-course="' + cid + '" data-uid="' + String(sp.uid || sp.id) + '" style="background:#2D7AFF;border:0;color:#fff;font-size:12.5px;border-radius:6px;padding:7px 14px;cursor:pointer;font-weight:700;">Открыть все занятия</button></div>';
+    h += '</div>';
+    return h;
+  }
+  function cabOpenAll(cid, uid) {
+    var u = currentUser();
+    if (!u || (u.role !== 'admin' && u.role !== 'teacher')) return;
+    var cfg = null;
+    COURSE_CONFIG.forEach(function (c) { if (c.id === cid) cfg = c; });
+    if (!cfg || !uid) return;
+    var done = 0;
+    for (var i = 1; i <= cfg.total; i++) {
+      try {
+        if (cfg.mode === 'lesson_l') { localStorage.setItem(cfg.lessonPrefix + uid + cfg.progressSuffix + i, '1'); done++; }
+        else if (cfg.mode === 'week_obj') { var obj = {}; try { obj = JSON.parse(localStorage.getItem(cfg.progressPrefix + uid) || '{}') || {}; } catch(e){} obj['w' + i] = true; localStorage.setItem(cfg.progressPrefix + uid, JSON.stringify(obj)); done++; }
+      } catch (e) {}
+    }
+    alert('Открыты все занятия курса для ученика ✓ (' + done + ' занятий).');
+    renderCabinet();
+  }
+  function cabShowStudent(cid, uid) {
+    var elBody = document.getElementById('tlCabBody'); if (!elBody || !uid) return;
+    elBody.innerHTML = cabStudentDetailHtml(cid, uid) + '<div style="margin-top:10px;"><button class="tl-btn-save" style="padding:8px 14px;font-size:12.5px;" onclick="TLCore.cabStudents()">← Список учеников</button></div>';
+    var open2 = elBody.querySelectorAll ? elBody.querySelectorAll('.tl-student-open2') : [];
+    open2.forEach(function (b) { b.onclick = function () { cabOpenAll(cid, uid); }; });
+    var back = elBody.querySelectorAll ? elBody.querySelectorAll('.tl-student-back') : [];
+    back.forEach(function (b) { b.onclick = function () { renderCabinet(); }; });
+  }
+  function cabStudents() { CAB_TAB = 'students'; renderCabinet(); }
   function cabTeachersHtml() {
     var reg = getTeacherRegistry();
     var h = '<div style="font-weight:700;margin-bottom:4px;">Единый реестр педагогов</div>';
@@ -924,6 +996,20 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     }
     var admList = elBody.querySelectorAll ? elBody.querySelectorAll('.tl-adm-edit') : [];
     admList.forEach(function (b) { b.onclick = function () { adminEdit(b.getAttribute('data-email')); }; });
+    if (CAB_TAB === 'students') {
+      var detBtns = elBody.querySelectorAll ? elBody.querySelectorAll('.tl-student-det') : [];
+      detBtns.forEach(function (b) { b.onclick = function () { cabShowStudent(b.getAttribute('data-course'), b.getAttribute('data-uid')); }; });
+      var openBtns = elBody.querySelectorAll ? elBody.querySelectorAll('.tl-student-open') : [];
+      openBtns.forEach(function (b) { b.onclick = function () { cabOpenAll(b.getAttribute('data-course'), b.getAttribute('data-uid')); }; });
+      var backBtns = elBody.querySelectorAll ? elBody.querySelectorAll('.tl-student-back') : [];
+      backBtns.forEach(function (b) { b.onclick = function () { renderCabinet(); }; });
+      var open2 = elBody.querySelectorAll ? elBody.querySelectorAll('.tl-student-open2') : [];
+      open2.forEach(function (b) { b.onclick = function () { cabOpenAll(b.getAttribute('data-course'), b.getAttribute('data-uid')); }; });
+    }
+    if (CAB_TAB === 'users') {
+      var searchInput = document.getElementById('tlUserSearch');
+      if (searchInput) searchInput.onkeyup = function (e) { if ((e || {}).key === 'Enter') cabUsersApply(); };
+    }
   }
   function renderCabinet() {
     var u = currentUser(); if (!u) return;
@@ -1106,6 +1192,9 @@ var API = {
     cabExportProgress: cabExportProgress,
     cabImportProgressFile: cabImportProgressFile,
     cabPrintCert: cabPrintCert,
+    cabOpenAll: cabOpenAll,
+    cabUsersApply: cabUsersApply,
+    cabStudents: cabStudents,
     openAuth: function (tab) { openModal(tab || 'login'); },
     closeAuth: closeModal,
     authTab: switchTab,
