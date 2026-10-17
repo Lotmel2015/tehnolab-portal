@@ -579,6 +579,8 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
       else if (u.role === 'teacher') tabs.push({ id: 'students', label: 'Мои ученики' });
     }
     tabs.push({ id: 'courses', label: 'Мои курсы' });
+    tabs.push({ id: 'achieve', label: 'Достижения' });
+    tabs.push({ id: 'notify', label: 'Уведомления' });
     return tabs;
   }
   function cabRenderTabs() {
@@ -777,6 +779,115 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     h += '<div style="display:flex;gap:6px;margin-top:8px;"><input type="text" id="tlTeacherAdd" placeholder="ФИО педагога" style="flex:1;"><button class="tl-btn-save" style="margin:8px 0 0;padding:8px 14px;font-size:12px;" onclick="TLCore.addTeacherUI()">+</button></div>';
     return h;
   }
+  /* ============ Достижения и сертификаты ============ */
+  function medalOf(pct) {
+    if (pct >= 100) return { name: 'Выпускник', icon: '🏆', color: '#FFD700', bg: 'rgba(255,215,0,.16)', border: 'rgba(255,215,0,.5)' };
+    if (pct >= 80) return { name: 'Профи', icon: '🥇', color: '#B9F1FF', bg: 'rgba(185,241,255,.14)', border: 'rgba(185,241,255,.45)' };
+    if (pct >= 60) return { name: 'Финалист', icon: '🥈', color: '#D7E4FF', bg: 'rgba(215,228,255,.14)', border: 'rgba(215,228,255,.45)' };
+    if (pct >= 35) return { name: 'Курсант', icon: '🥉', color: '#FFB84D', bg: 'rgba(255,184,77,.14)', border: 'rgba(255,184,77,.45)' };
+    return { name: 'Новичок', icon: '🚀', color: '#8B8FA3', bg: 'rgba(139,143,163,.12)', border: 'rgba(139,143,163,.4)' };
+  }
+  function cabAchieveHtml(u) {
+    if (u.role === 'teacher' && u.role !== 'admin') {
+      return '<div class="tl-hint">Достижения показываются ученикам. Сводка по ученикам — во вкладке «Мои ученики».</div>';
+    }
+    var ach = getAllAchievements();
+    var totalPct = ach.totalAll ? Math.round(ach.doneTotal / ach.totalAll * 100) : 0;
+    var m = medalOf(totalPct);
+    var h = '';
+    h += '<div style="display:flex;align-items:center;gap:14px;padding:12px;border:1px solid ' + m.border + ';border-radius:10px;background:' + m.bg + ';">';
+    h += '<div style="font-size:38px;">' + m.icon + '</div>';
+    h += '<div><div style="font-weight:700;color:' + m.color + ';font-size:17px;">' + m.name + '</div>' +
+      '<div style="font-size:13px;color:#8B8FA3;">Общий прогресс по всем курсам · ' + ach.doneTotal + ' из ' + ach.totalAll + ' занятий · ' + totalPct + '%</div></div></div>';
+    // Сертификат за каждый полностью пройденный основной курс
+    var doneCourses = [];
+    COURSE_CONFIG.forEach(function (cfg) {
+      if (cfg.parent) return;
+      var pr = ach.courses[cfg.id] || { done: 0, total: cfg.total };
+      if (pr.total && pr.done >= pr.total) doneCourses.push(cfg);
+    });
+    if (doneCourses.length) {
+      h += '<div style="margin-top:12px;padding:12px;border:1px dashed #FFD700;border-radius:10px;background:rgba(255,215,0,.08);">';
+      h += '<div style="font-weight:700;color:#FFD700;">🏆 Сертификат о прохождении курса</div>';
+      h += '<div style="font-size:13px;color:#EAECEF;margin-top:6px;">Ты полностью прошёл(ла): <b>' + doneCourses.map(function (c) { return escapeHtml(c.label); }).join(', ') + '</b>.</div>';
+      h += '<div style="margin-top:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;"><select id="tlCertCourse" style="flex:1;min-width:220px;">' + doneCourses.map(function (c) { return '<option value="' + c.id + '">' + escapeHtml(c.label) + '</option>'; }).join('') + '</select>';
+      h += '<button class="tl-btn-save" style="margin:0;padding:8px 14px;font-size:12.5px;" onclick="TLCore.cabPrintCert()">🖨 Печать сертификата</button></div></div>';
+    } else {
+      h += '<div class="tl-hint" style="margin-top:10px;">Сертификат доступен, когда ты полностью пройдёшь хотя бы один курс.</div>';
+    }
+    // Прогресс по каждому курсу с медалью
+    COURSE_CONFIG.forEach(function (cfg) {
+      if (cfg.parent) return;
+      var pr = ach.courses[cfg.id] || { done: 0, total: cfg.total };
+      var pct = pr.total ? Math.round(pr.done / pr.total * 100) : 0;
+      var mm = medalOf(pct);
+      h += '<div style="display:flex;align-items:center;gap:10px;margin-top:10px;padding:9px 12px;border:1px solid #2A2D35;border-radius:8px;">' +
+        '<span style="font-size:20px;">' + mm.icon + '</span>' +
+        '<div style="flex:1;"><div style="font-size:13px;font-weight:600;">' + escapeHtml(cfg.label) + '</div>' +
+        '<div style="height:6px;background:#2A2D35;border-radius:999px;margin-top:4px;overflow:hidden;"><div style="width:' + pct + '%;height:100%;background:#2D7AFF;border-radius:999px;"></div></div></div>' +
+        '<span style="font-size:12px;color:#8B8FA3;white-space:nowrap;">' + pr.done + '/' + pr.total + ' · ' + mm.name + '</span></div>';
+    });
+    return h;
+  }
+  function cabPrintCert() {
+    var u = currentUser(); if (!u) return;
+    var sel = document.getElementById('tlCertCourse');
+    var cid = sel ? sel.value : '';
+    var course = null;
+    COURSE_CONFIG.forEach(function (x) { if (x.id === cid) course = x; });
+    if (!course) { alert('Выбери курс для сертификата.'); return; }
+    var w = window.open('', '_blank', 'width=720,height=520');
+    if (!w) { alert('Разрешите всплывающие окна для печати сертификата.'); return; }
+    w.document.write('<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><title>Сертификат ТЛ</title><style>' +
+      'body{font-family:Georgia,"Times New Roman",serif;margin:0;padding:48px;text-align:center;color:#1B2A4A;}' +
+      '.frame{border:4px double #2D7AFF;border-radius:14px;padding:36px 28px;}' +
+      'h1{font-size:30px;margin:8px 0;} .sub{letter-spacing:.2em;text-transform:uppercase;color:#5A6B85;font-size:13px;}' +
+      '.name{font-size:34px;font-weight:700;color:#2D7AFF;margin:22px 0;}' +
+      '.course{font-size:24px;font-weight:700;color:#1B2A4A;margin:4px 0 14px;}' +
+      '.txt{font-size:15px;color:#334;max-width:480px;margin:0 auto;line-height:1.5;}' +
+      '.date{margin-top:30px;color:#5A6B85;font-size:13px;}' +
+      '</style></head><body><div class="frame"><div class="sub">Технологическая лаборатория · сертификат</div>' +
+      '<h1>О прохождении курса</h1>' +
+      '<div class="txt">Настоящий сертификат подтверждает, что</div>' +
+      '<div class="name">' + escapeHtml(u.name || '') + '</div>' +
+      '<div class="txt">успешно прошёл(ла) курс</div>' +
+      '<div class="course">' + escapeHtml(course.label) + '</div>' +
+      '<div class="txt">объединения «Технологическая лаборатория»</div>' +
+      '<div class="date">' + new Date().toLocaleDateString('ru-RU') + '</div>' +
+      '</div><script>window.onload=function(){setTimeout(function(){window.print();},300);};<\/script></body></html>');
+    w.document.close();
+  }
+  /* ============ Уведомления ============ */
+  function cabNotifyHtml(u) {
+    var items = [];
+    // Ученику: сколько занятий до конца
+    var ach = getAllAchievements();
+    COURSE_CONFIG.forEach(function (cfg) {
+      if (cfg.parent) return;
+      var pr = ach.courses[cfg.id] || { done: 0, total: cfg.total };
+      if (pr.done === 0) items.push({ icon: '🔓', text: 'Начни курс «' + cfg.label + '»' });
+      else if (pr.done >= pr.total) items.push({ icon: '🏆', text: 'Курс «' + cfg.label + '» пройден полностью!' });
+    });
+    // Педагогу: просроченные задачи / ученики с отставанием
+    try {
+      var lateN = 0;
+      if (typeof CTL_TASKS !== 'undefined' && typeof ctlCurDay !== 'undefined' && typeof ctlPeriodRange === 'function' && typeof ctlStatusForPeriod === 'function') {
+        var days = ctlPeriodRange(ctlCurDay);
+        CTL_TASKS.forEach(function (t, i) { if (ctlStatusForPeriod(i, days) === 'late') lateN++; });
+      }
+      if (lateN) items.push({ icon: '⚠️', text: 'Просроченных задач в контроле: ' + lateN + '. Открой панель «Контроль».' });
+    } catch (e) {}
+    try {
+      if (typeof TLCore !== 'undefined' && TLCore.getStudents) {
+        var ts = TLCore.getStudents();
+        if (ts && ts.total) items.push({ icon: '👨‍🎓', text: 'Учеников в твоих группах: ' + ts.total + '.' });
+      }
+    } catch (e) {}
+    if (!items.length) items.push({ icon: '✅', text: 'Всё в порядке — новых событий нет.' });
+    return items.map(function (it) {
+      return '<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #2A2D35;border-radius:8px;margin-top:8px;"><span style="font-size:18px;">' + it.icon + '</span><span style="font-size:13.5px;">' + escapeHtml(it.text) + '</span></div>';
+    }).join('');
+  }
   function renderCabinetPane() {
     var u = currentUser(); if (!u) return;
     var elBody = document.getElementById('tlCabBody'); if (!elBody) return;
@@ -786,6 +897,8 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     else if (CAB_TAB === 'students') { html = cabStudentsHtml(u); }
     else if (CAB_TAB === 'users') { html = cabUsersHtml(); }
     else if (CAB_TAB === 'teachers') { html = cabTeachersHtml(); }
+    else if (CAB_TAB === 'achieve') { html = cabAchieveHtml(u); }
+    else if (CAB_TAB === 'notify') { html = cabNotifyHtml(u); }
     else { html = cabProfileHtml(u) + cabPassHtml(); }
     elBody.innerHTML = html;
     // Проводка
@@ -992,6 +1105,7 @@ var API = {
     waitlist: waitlist,
     cabExportProgress: cabExportProgress,
     cabImportProgressFile: cabImportProgressFile,
+    cabPrintCert: cabPrintCert,
     openAuth: function (tab) { openModal(tab || 'login'); },
     closeAuth: closeModal,
     authTab: switchTab,
