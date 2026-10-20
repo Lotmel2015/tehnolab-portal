@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Карта проекта — Технологическая лаборатория</title>
+<style>
+  :root{
+    --bg:#0D0F14; --bg-card:#161921; --bg-elev:#1B1F2A; --ink:#EAECEF;
+    --muted:#8B8FA3; --line:#2A2D35; --accent:#2D7AFF; --ok:#00D68F;
+    --warn:#FFAA00; --c06:#AA00FF;
+    --f-display:system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-body:system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+    --max:1080px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.62 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(42,45,53,.28) 1px,transparent 1px),linear-gradient(90deg,rgba(42,45,53,.28) 1px,transparent 1px);background-size:96px 96px}
+  .wrap{position:relative;z-index:1;max-width:var(--max);margin:0 auto;padding:0 28px}
+  .nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 28px;border-bottom:1px solid var(--line);background:rgba(13,15,20,.85);backdrop-filter:blur(10px)}
+  .logo{font-family:var(--f-display);font-weight:700;color:var(--ink);text-decoration:none}
+  .logo .sub{font-family:var(--f-mono);font-size:10px;color:var(--muted);letter-spacing:.1em}
+  .nav .meta{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+  .hero{padding:50px 0 36px;border-bottom:1px solid var(--line)}
+  .kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--warn);margin-bottom:10px}
+  h1{font:700 clamp(30px,4.6vw,42px)/1.08 var(--f-display);margin:0 0 12px;letter-spacing:-.015em}
+  h1 .ac{color:var(--accent)}
+  .lede{color:var(--muted);font-size:16.5px;max-width:72ch;margin:0 0 18px}
+  .tags{display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;padding:4px 10px;border:1px solid var(--line);border-radius:6px;color:var(--muted)}
+  .tag.hl{border-color:var(--ok);color:var(--ok)}
+  .section{padding:30px 0;border-bottom:1px solid var(--line)}
+  .sec-head{margin-bottom:16px}
+  .sec-head .k{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:6px}
+  .sec-head h2{font:600 clamp(21px,2.8vw,27px)/1.15 var(--f-display);margin:0}
+  .map{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:760px){.map{grid-template-columns:1fr}}
+  .mc{background:var(--bg-card);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .mc h3{font:700 16px var(--f-display);margin:0 0 4px;color:var(--accent)}
+  .mc .role{font-family:var(--f-mono);font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+  .mc ul{margin:6px 0 0;padding-left:18px}
+  .mc li{margin-bottom:5px;color:var(--ink);font-size:14px}
+  .mc li .k{font-family:var(--f-mono);font-size:11px;color:var(--ok)}
+  .stat-band{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:6px}
+  .stb{background:var(--bg-elev);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .stb b{font:700 24px var(--f-display);color:var(--accent);display:block}
+  .stb span{font-size:12.5px;color:var(--muted)}
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:520px;margin-top:8px}
+  th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top}
+  th{background:var(--bg-elev);font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  code{font-family:var(--f-mono);font-size:12px;background:var(--bg-elev);padding:1px 5px;border-radius:4px}
+  .pill{display:inline-block;font-family:var(--f-mono);font-size:10.5px;padding:2px 8px;border-radius:20px;border:1px solid var(--line);color:var(--muted)}
+  .pill.ok{color:var(--ok);border-color:rgba(0,214,143,.5)}
+  footer{margin-top:6px;padding:24px 0 36px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line)}
+  @media print{body{background:#fff;color:#111}.grid-bg,.nav{display:none}.wrap{max-width:none;padding:0}.mc,table{border-color:#ccc}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav class="nav">
+  <span class="logo">ТЕХЛАБ <span class="sub">/ КАРТА ПРОЕКТА</span></span>
+  <span class="meta">актуально 20.10.2026</span>
+</nav>
+<main class="wrap">
+  <header class="hero">
+    <div class="kicker">Технологическая лаборатория · структура и состояние</div>
+    <h1>Карта проекта — <span class="ac">Технологическая лаборатория</span></h1>
+    <p class="lede">Сводная карта объединения «Технологическая лаборатория» (КГАОУ «Школа космонавтики», г. Железногорск): структура репозитория по рабочим чатам, каталоги курсов, разделы портала и текущее состояние git.</p>
+    <div class="tags">
+      <span class="tag hl">git: main</span>
+      <span class="tag">repo: Lotmel2015/tehnolab-portal</span>
+      <span class="tag">7 лабораторий</span>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="sec-head"><span class="k">Статус</span><h2>Состояние проекта</h2></div>
+    <div class="stat-band">
+      <div class="stb"><b>865</b><span>файлов в репозитории</span></div>
+      <div class="stb"><b>9</b><span>курсов + 3 мини-курса</span></div>
+      <div class="stb"><b>7</b><span>лабораторий объединения</span></div>
+      <div class="stb"><b>main</b><span>ветка, upstream = origin/main</span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head"><span class="k">Топология</span><h2>Каталоги репозитория</h2></div>
+    <div class="map">
+      <div class="mc">
+        <h3>00_Карта и статус проекта</h3>
+        <div class="role">служебный · сводные документы</div>
+        <ul>
+          <li>Сводка по проекту Технологическая лаборатория.html</li>
+          <li>Сводный конспект проекта.html (обобщение чатов)</li>
+          <li>Карта проекта.html (этот документ)</li>
+        </ul>
+      </div>
+      <div class="mc">
+        <h3>01_Методичка и документы</h3>
+        <div class="role">методические материалы</div>
+        <ul>
+          <li>Канон и методички / <span class="k">«Как собрать новый курс»</span></li>
+          <li>Методички курсов / <span class="k">Мотивационная шкала</span></li>
+        </ul>
+      </div>
+      <div class="mc">
+        <h3>02 Чат А · Ядро и портал</h3>
+        <div class="role">рабочий чат</div>
+        <ul><li>МАНИФЕСТ ЧАТА.md + рабочие файлы портала/ядра</li></ul>
+      </div>
+      <div class="mc">
+        <h3>02 Чат Б · Курсы контент</h3>
+        <div class="role">рабочий чат</div>
+        <ul><li>МАНИФЕСТ ЧАТА.md + контент курсов</li></ul>
+      </div>
+      <div class="mc">
+        <h3>02 Чат В · Методичка и документы</h3>
+        <div class="role">рабочий чат</div>
+        <ul><li>МАНИФЕСТ ЧАТА.md + методические документы</li></ul>
+      </div>
+      <div class="mc">
+        <h3>02 Чат Г · Публикация и git</h3>
+        <div class="role">текущий чат</div>
+        <ul><li>МАНИФЕСТ ЧАТА.md (публикация, git, README, .gitignore)</li></ul>
+      </div>
+      <div class="mc">
+        <h3>03_Отчеты и аналитика</h3>
+        <div class="role">отчёты</div>
+        <ul>
+          <li>Отчеты по проекту: анализ портала, эффективности, обратная связь сотрудников, план улучшений, сводки по курсам, дорожная карта</li>
+        </ul>
+      </div>
+      <div class="mc">
+        <h3>assets</h3>
+        <div class="role">статика</div>
+        <ul><li>icons-all-7.jpg, kompas-clean.jpg</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head"><span class="k">Курсы</span><h2>Электронные курсы объединения</h2></div>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Курс</th><th>Каталог</th><th>Содержимое</th></tr></thead>
+      <tbody>
+        <tr><td>Робототехника (EV3)</td><td>Курс-Робототехника</td><td>28 занятий · index.html · скрипты ТЛ</td></tr>
+        <tr><td>Электроника (Arduino)</td><td>Курс-Электроника</td><td>28 занятий · index.html</td></tr>
+        <tr><td>Blender 3D</td><td>Курс-Blender-3D</td><td>занятия + методички + материалы</td></tr>
+        <tr><td>КОМПАС-3D</td><td>Курс-КОМПАС-3D</td><td>занятия · САПР</td></tr>
+        <tr><td>БПЛА / БАС</td><td>Курс-БПЛА</td><td>занятия · пилотаж</td></tr>
+        <tr><td>VR-студия</td><td>Курс-VR-студия</td><td>модули VR · Unity · Pico 4</td></tr>
+        <tr><td>Углублённый C#</td><td>Курс C#</td><td>6 модулей · часть VR-студии</td></tr>
+        <tr><td>Проектный навигатор</td><td>Курс-Проектный-навигатор</td><td>занятия · портфолио · методички</td></tr>
+        <tr><td>Мини-курс AR</td><td>Мини-курс AR-разработка</td><td>3 модуля</td></tr>
+        <tr><td>Мини-курс Без гарнитуры</td><td>Мини-курс Без гарнитуры</td><td>3 модуля</td></tr>
+        <tr><td>Мини-курс Сети в VR</td><td>Мини-курс Сети в VR</td><td>3 модуля</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sec-head"><span class="k">Портал</span><h2>Разделы портала и инфраструктура</h2></div>
+    <p style="color:var(--muted);font-size:14px;margin:0 0 6px;">Главный файл: <code>ТЛ/ТЛ концепция/Портал Технологическая лаборатория.html</code>. Ядро: <code>tl-portal-core.js</code> (TLCore).</p>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Вкладка</th><th>Панель</th><th>Назначение</th></tr></thead>
+      <tbody>
+        <tr><td>Объединение</td><td>panel-home</td><td>витрина, запись, редирект</td></tr>
+        <tr><td>Программа</td><td>panel-program</td><td>ДООП / пояснительная записка</td></tr>
+        <tr><td>Лаборатории</td><td>panel-labs</td><td>7 лабораторий, модули</td></tr>
+        <tr><td>Мотивация</td><td>panel-motiv</td><td>мотивация, конкурсы</td></tr>
+        <tr><td>Кадры</td><td>panel-staff</td><td>специалисты, должности, статусы</td></tr>
+        <tr><td>Финансирование</td><td>panel-finance</td><td>источники, гранты, ссылки</td></tr>
+        <tr><td>Контроль</td><td>panel-control</td><td>журнал деятельности, задачи, дашборд</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="color:var(--muted);font-size:13px;margin:12px 0 0;">Служебные каталоги вне git: <code>/VR/</code>, <code>/ПД/</code>, <code>/05_Служебные исходники/</code>, <code>.gigatool/</code>, <code>-verify</code>. Грантовые заявки (<code>ТЛ/Грантовые заявки/</code>) — отдельный процесс, в git не публикуются.</p>
+  </section>
+
+  <footer>
+    Карта проекта «Технологическая лаборатория» · сформирована 20.10.2026 чатом «Г · Публикация и git» · обновляется при изменении структуры.
+  </footer>
+</main>
+</body>
+</html>

@@ -7,115 +7,62 @@
 <style>
 :root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--ai:#4D008C;--ai-soft:#F0EBF5;--def:#B45309;--def-soft:#FDF1E1;--pr:#167A4D;--pr-soft:#E7F4EE;--line:#D9E2EF;--vr:#4D008C;--vr-soft:#F0EBF5;}
 *{box-sizing:border-box}body{margin:0;background:#eef1f6;color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.wrap{max-width:860px;margin:0 auto;padding:1rem 1.25rem 3rem}
+.wrap{max-width:900px;margin:0 auto;padding:1rem 1.25rem 3rem}
 nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10;padding:.5rem 1.25rem}
-nav .inner{max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;gap:.3rem .9rem}
+nav .inner{max-width:900px;margin:0 auto;display:flex;flex-wrap:wrap;gap:.3rem .9rem}
 nav a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:600}nav a:hover{color:var(--accent)}
 header.hero{background:linear-gradient(135deg,#1B2A4A 0%,#1F6FE0 65%,#4D008C 130%);color:#fff;border-radius:0 0 18px 18px;padding:1.8rem 1.5rem;margin:0 -1.25rem 1.4rem}
 header.hero h1{font-size:1.5rem;line-height:1.25;margin:0 0 .3rem}header.hero .sub{opacity:.92}.badges{display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap}.badge{font-size:.74rem;font-weight:700;padding:.2rem .6rem;border-radius:999px;background:rgba(255,255,255,.2)}
 .toolbar{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
 .btn{border:0;border-radius:10px;padding:.55rem 1.1rem;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer;background:var(--accent);color:#fff}.btn:hover{filter:brightness(1.06)}
 .btn2{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:.5rem 1rem;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}.btn2:hover{border-color:var(--accent);color:var(--accent)}
-.cards{display:flex;flex-direction:column;gap:.7rem;margin-top:1rem}
-.slot{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.9rem 1.1rem;display:flex;gap:.8rem;align-items:flex-start}
-.slot .check{flex:0 0 1.4rem;height:1.4rem;margin-top:.15rem}
-.slot .body{flex:1}
-.slot .body b{display:block;color:var(--ink)}
-.slot .body .hint{color:var(--muted);font-size:.85rem}
-.slot input[type=text]{width:100%;border:1px solid var(--line);border-radius:8px;padding:.45rem .6rem;font:14px/1.4 system-ui,sans-serif;margin-top:.4rem}
-.slot.done{background:var(--pr-soft);border-color:var(--pr)}
-.slot.done .body b{color:var(--pr)}
-.slot.done input{background:#fff}
+.btn-ghost{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:10px;padding:.5rem 1rem;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer}
+.btn-ghost:hover{color:var(--def);border-color:var(--def)}
+.note{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-size:.92rem;margin:1rem 0}.note b{color:var(--pr)}
+.warn{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-size:.92rem;margin:1rem 0}.warn b{color:var(--def)}
+.sections{display:flex;flex-direction:column;gap:1rem;margin-top:1rem}
+.sec{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.3rem;box-shadow:0 6px 18px rgba(27,42,74,.05)}
+.sec h3{margin:0 0 .5rem;font-size:1rem;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:.35rem}
+.sec .sec-hint{font-size:.83rem;color:var(--muted);margin:-.2rem 0 .6rem}
+.card{display:flex;flex-direction:column;gap:.35rem;margin:.6rem 0;padding:.55rem .7rem;border:1px dashed var(--line);border-radius:10px;background:#fbfcfe}
+.card .head{display:flex;align-items:flex-start;gap:.55rem}
+.card .head input[type=checkbox]{flex:0 0 1.15rem;height:1.15rem;margin-top:.2rem;accent-color:var(--pr)}
+.card .t{font-weight:700;font-size:.92rem}
+.card .src{font-size:.74rem;color:var(--muted)}
+.card .src b{color:var(--pr)}
+.card input[type=text],.card textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:.42rem .6rem;font:14px/1.4 system-ui,sans-serif;margin-top:.25rem;background:#fff}
+.card textarea{resize:vertical;min-height:52px}
+.card.done{background:var(--pr-soft);border-color:var(--pr);border-style:solid}
+.card.done .t{color:var(--pr)}
 .counter{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:.7rem .9rem;margin:1rem 0;font-size:.95rem}.counter b{color:var(--accent)}
-.pdcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.2rem 1.4rem;margin:1rem 0;box-shadow:0 6px 18px rgba(27,42,74,.06)}
-.pdcard h2{font-size:1.05rem;margin:0 0 .6rem;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:.4rem}
-#status{max-width:720px}
-
-/* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== *//* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== */
-img, svg, video, canvas { max-width: 100%; height: auto; }
-pre, code, .code, textarea { max-width: 100%; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
-table { max-width: 100%; }
-.tbl-wrap, .tbl-scroll, .table-wrap, .tw, .asso-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-h1 { word-wrap: break-word; overflow-wrap: break-word; }
-h2, h3, p, li, div, span, a, button, input, select, textarea, label { overflow-wrap: break-word; }
-input, select, textarea, button, a.btn { font-size: 16px; }
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-body { overflow-x: hidden; }
-
-@media (max-width: 900px) {
-  .grid2, .grid3, .duo-grid, .motiv-grid, .cols3, .labs-grid, .rev-grid, .grid { grid-template-columns: 1fr !important; }
-  .refs, .struct, .two-col, .grid2, .grid3 { grid-template-columns: 1fr !important; }
-  .mod.open .mod-b { grid-template-columns: 1fr !important; }
-  .mod-b > .ph, .mod-b .ph { min-height: 180px; }
-  footer .frow, .bar, .nav, .top .bar { flex-wrap: wrap; }
-  .hero { padding: 40px 0 28px; }
-}
-@media (max-width: 640px) {
-  .wrap, main, .page { padding-left: 14px !important; padding-right: 14px !important; }
-  h1 { font-size: 1.7rem !important; }
-  h2 { font-size: 1.35rem !important; }
-  .hero h1 { font-size: 1.8rem !important; line-height: 1.1 !important; }
-  .btns, .cta-row, .final-cta, .actions, .cta .btn { flex-wrap: wrap; }
-  .btn, .btn-lg { width: auto; padding: 11px 16px; }
-  th, td { padding: 8px 6px; font-size: 13px; }
-  .lab-card { min-height: 170px !important; padding: 18px 14px !important; }
-  .card, .rev, .trainer, .mod-h, .step { padding: 14px !important; }
-  .avatar { width: 52px !important; height: 52px !important; font-size: 18px !important; }
-  .lab-strip { gap: 10px; justify-content: center; }
-  .lab-dot { width: 64px; }
-  .lab-dot .ring { width: 44px; height: 44px; }
-  .nav .tabs { width: 100%; justify-content: center; order: 3; overflow-x: auto; }
-  .nav-info { display: none; }
-  .trainer, .mentor { flex-direction: column; align-items: flex-start; }
-  details.lab { padding: 10px 12px; }
-}
-@media (max-width: 420px) {
-  .hero h1 { font-size: 1.5rem !important; }
-  .lab-dot { width: 52px; }
-  .lab-dot .ring { width: 38px; height: 38px; }
-  .lab-dot .lname { font-size: 8px; }
-  .kpi-band, .kpis { grid-template-columns: 1fr 1fr !important; }
-  .kpi b { font-size: 24px !important; }
-}
-/* ==== Курсы: карты, шаги, код, навигация (до 900px) ==== */
-@media (max-width: 900px) {
-.ig-step { min-width: 0 !important; flex: 1 1 calc(50% - .4rem) !important; }
-.ig-steps { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: .45rem !important; }
-.ig-step b { font-size: .8rem !important; }
-.ig-step span { font-size: .72rem !important; }
-.step-card { min-width: 0 !important; }
-.files-panel { width: 100% !important; border-left: 0 !important; border-top: 1px solid var(--line) !important; }
-.edwrap { flex-direction: column !important; }
-.alt-editor { flex-direction: column !important; }
-.alt-sep { display: none !important; }
-.edbox textarea, .edbox pre { min-height: 180px !important; font-size: 13px !important; }
-.role-tabs, .mode-tabs, .mtab, .rtab { flex-wrap: wrap !important; }
-.auth .fields { grid-template-columns: 1fr !important; }
-.nav-crumb, .crumb, .lesson-nav { flex-wrap: wrap !important; }
-}
-@media (max-width: 480px) {
-.ig-steps { grid-template-columns: 1fr !important; }
-.ig-step { flex: 1 1 100% !important; }
-}
+.progress-bar{height:8px;background:#e6e9f0;border-radius:8px;overflow:hidden;margin:.5rem 0}
+.progress-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#1f6fe0,#3f9d52);transition:width .3s}
+.print-hide{display:block}
+@media print{body{background:#fff}.toolbar,.print-hide,nav,header.hero{display:none!important}.sec{box-shadow:none;break-inside:avoid;border:1px solid #ccc}.card{border:1px solid #ccc;background:#fff}.card input,.card textarea{border:1px solid #ccc}}
 </style>
 </head>
 <body>
-<nav><div class="inner"><a href="index.html">← к списку занятий</a><a href="Паспорт проекта.html">Паспорт проекта</a></div></nav>
+<nav><div class="inner"><a href="index.html">← к списку занятий</a><a href="Паспорт проекта.html">📄 Паспорт (авто)</a><a href="Паспорт проекта универсальный.html">✍️ Паспорт (интерактивный)</a></div></nav>
 <header class="hero">
   <h1>Накопительное портфолио</h1>
-  <p class="sub">Собирай доказательства своей работы по ходу курса — по одному элементу за занятие (с 16-го). В конце всё само сложится в паспорт проекта.</p>
-  <div class="badges"><span class="badge">Начинается с занятия 16</span><span class="badge">Автосохранение</span></div>
+  <p class="sub">Собирай все материалы проекта по ходу курса. Всё автоматически попадёт в интерактивный паспорт — заполни любое поле здесь или в паспорте, данные синхронизируются.</p>
+  <div class="badges"><span class="badge">Автосборка из занятий</span><span class="badge">Синхронизация с паспортом</span><span class="badge">Автосохранение</span></div>
 </header>
 <div class="wrap">
-<div class="counter" id="counter">Собрано элементов: 0 из 8</div>
-<div class="toolbar">
+<div class="progress-bar"><i id="progBar"></i></div>
+<div class="counter" id="counter">Заполнено: 0 из 0 разделов</div>
+<div class="toolbar print-hide">
   <button class="btn" onclick="window.print()">🖨 Печать / PDF</button>
-  <button class="btn2" onclick="clearAll()">🗑 Очистить</button>
-  <a class="btn2" href="Паспорт проекта.html">📋 Открыть паспорт проекта →</a>
+  <button class="btn2" onclick="pushToPassport()">🔄 Синхронизировать с паспортом</button>
+  <button class="btn2" onclick="exportJSON()">⬇ Выгрузить JSON</button>
+  <label class="btn2" style="display:inline-block;cursor:pointer">⬆ Загрузить JSON<input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importJSON(this)"></label>
+  <button class="btn-ghost" onclick="clearAll()">🗑 Очистить</button>
 </div>
-<div id="status" class="note" style="display:none"></div>
+<div id="statusMsg" style="display:none;background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.5rem .9rem;margin:.6rem 0;font-size:.9rem"></div>
+<div class="note print-hide" id="syncNote"><b>Как это работает.</b> Если ты заполнил рабочие листы занятий (5, 7, 9–17, 20–27), их данные подтянутся сюда автоматически. То, что напишешь здесь (или в интерактивном паспорте), сохранится в общем хранилище и появится в обеих страницах.</div>
+<div class="warn print-hide" id="needAuth" style="display:none"><b>Войди в профиль</b> на «Списке занятий», чтобы данные привязались к тебе. Без входа портфолио работает на этом устройстве как черновик.</div>
 
-<div class="cards" id="cards"><!-- карточки заполняются скриптом --></div>
+<div id="sections" class="sections"><!-- секции строятся скриптом --></div>
 
 <footer style="color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin:2rem 0 0;padding-top:.8rem">
   <p>Накопительное портфолио · Проектный навигатор · Технологическая лаборатория.</p>
@@ -124,63 +71,256 @@ body { overflow-x: hidden; }
 
 <script>
 (function(){
-  var STORE="pdn-portfolio-v1";
+  'use strict';
+  var STORE="pdn-passport-universal-v1"; // общий с интерактивным паспортом
   var CUKEY="pdn-course-active", PFKEY="pdn-course-users";
-  function me(){ try{ var s=JSON.parse(localStorage.getItem(CUKEY)||"null"); if(!s||!s.uid) return null; var a=JSON.parse(localStorage.getItem(PFKEY)||"[]"); return a.find(function(p){return String(p.uid)===String(s.uid);})||null; }catch(e){ return null; } }
+
+  // ---------- Профиль ----------
+  function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function me(){ try{ var s=JSON.parse(lsGet(CUKEY)||"null"); if(!s||!s.uid) return null; var a=JSON.parse(lsGet(PFKEY)||"[]"); return a.find(function(p){return String(p.uid)===String(s.uid);})||null; }catch(e){ return null; } }
   var user=me();
   var key = STORE + (user ? ("-u"+user.uid) : "");
+  if(!user){ var na=document.getElementById("needAuth"); if(na) na.style.display="block"; }
 
-  // Элементы портфолио: занятие, что добавить, поле сохранения
-  var ITEMS=[
-    {z:16, t:"Что такое прототип / форма продукта", hint:"Запиши форму своего продукта и что такое MVP (занятие 16).", f:"p-form", p:"pdn-z16-form-v1", k:"f-form"},
-    {z:17, t:"Первая версия прототипа", hint:"Что сделал руками: опиши, что собрал (занятие 17).", f:"p-built", p:"pdn-z17-proto-v1", k:"f-built"},
-    {z:20, t:"Введение (актуальность, цель, задачи)", hint:"Скопируй цель из введения, которое написал (занятие 20).", f:"b-goal", p:"pdn-z20-intro-v1", k:"b-goal"},
-    {z:21, t:"Тестирование прототипа", hint:"Что проверил и какие замечания получил (занятие 21).", f:"p-review", p:"pdn-z21-test-v1", k:"f-plan"},
-    {z:24, t:"Основная часть / итог", hint:"Коротко: что создано и какой результат (занятие 24).", f:"g-product", p:"pdn-z24-main-v1", k:"g-product"},
-    {z:26, t:"Презентация (5–7 слайдов)", hint:"Назови файл презентации (занятие 26).", f:"ppt", p:null, k:null},
-    {z:29, t:"Пробная защита", hint:"Как прошло выступление, что улучшить (занятие 29).", f:"defense", p:null, k:null},
-    {z:32, t:"Папка портфолио готова", hint:"Всё собрано и проверено по чек-листу (занятие 32).", f:"done", p:null, k:null}
+  // ---------- Чтение рабочих листов (автосборка) ----------
+  function readSheet(base){
+    var k = user ? (base+"-u"+user.uid) : base;
+    var raw=lsGet(k);
+    try{ return raw?JSON.parse(raw):null; }catch(e){ return null; }
+  }
+  // Карта: поле паспорта ← источник(ы) в рабочих листах
+  function collectFromSheets(){
+    var z3=readSheet("pdn-z3-fivewhy-v1"), z4=readSheet("pdn-z4-task-v1"), z5=readSheet("pdn-z5-smart-v1"),
+        z7=readSheet("pdn-z7-goal-v1"), z9=readSheet("pdn-z9-resources-v1"), z10=readSheet("pdn-z10-gantt-v1"),
+        z11=readSheet("pdn-z11-plangrafik-v1"), z12=readSheet("pdn-z12-risks-v1"), z13=readSheet("pdn-z13-roles-v1"),
+        z14=readSheet("pdn-z14-sources-v1"), z16=readSheet("pdn-z16-form-v1"), z17=readSheet("pdn-z17-proto-v1"),
+        z20=readSheet("pdn-z20-intro-v1"), z21=readSheet("pdn-z21-test-v1"), z24=readSheet("pdn-z24-main-v1"),
+        z25=readSheet("pdn-z25-gost-v1"), z26=readSheet("pdn-z26-prezent-v1"), z27=readSheet("pdn-z27-scenariy-v1");
+    var o = {}, srcOf = {};
+    function pick(field, sources){
+      var arr = sources.filter(Boolean);
+      for (var i=0;i<arr.length;i++){
+        var v = arr[i][field];
+        if (v && String(v).trim()) return String(v).trim();
+      }
+      return "";
+    }
+    o["f-topic"]       = pick("f-topic",[z20,z7,z5,z3,z4]) || pick("t-topic",[z25]);
+    o["f-author"]      = user?user.name:"" || pick("f-name",[z5,z7,z3]) || pick("t-by",[z25]);
+    o["f-class"]       = user&&user.klass?user.klass:"" || pick("f-class",[z5,z3]);
+    o["f-teacher"]     = user&&user.teacher?user.teacher:"" || pick("t-lead",[z25]);
+    o["f-problem"]     = pick("b-problem",[z4]) || pick("b-actual",[z4]) || pick("b-userprob",[z4]) || pick("b-task",[z5]);
+    o["f-goal"]        = pick("b-goal",[z7,z5,z20]);
+    o["f-tasks"]       = pick("b-tasks",[z5,z20]);
+    o["f-result-metric"] = pick("b-result",[z7,z5]);
+    o["f-product-form"]  = pick("f-form",[z16,z17]);
+    o["f-mvp"]         = pick("f-mvp",[z16]);
+    o["f-product-desc"] = pick("f-built",[z17]) || pick("f-works",[z17]) || pick("g-product",[z24]);
+    o["f-tech"]        = pick("f-tool",[z17]);
+    o["f-plan"]        = pick("f-idea",[z11,z10,z9]);
+    o["f-team"]        = pick("f-team",[z11,z13]);
+    o["f-resources"]   = pick("f-idea",[z9]) || pick("f-goal",[z9]);
+    o["f-risks"]       = pick("f-planb",[z12]) || pick("f-goal",[z12]);
+    o["f-result"]      = pick("g-product",[z24]) || pick("g-results",[z24]);
+    o["f-testing"]     = pick("f-plan",[z21]) || pick("f-scenario",[z21]) || pick("f-test",[z17]);
+    o["f-conclusion"]  = pick("g-concl",[z24]) || pick("f-review",[z24]);
+    o["f-sources"]     = pick("f-gost",[z14]) || pick("b-sources",[z20]);
+    o["f-presentation"]= pick("f-link",[z26]) || pick("f-title",[z26,z27]);
+    o["f-attachments"] = "";
+    return { data: o, srcOf: srcOf };
+  }
+
+  // ---------- Разделы портфолио (полный охват паспорта) ----------
+  var SECTIONS=[
+    { title:"1 · Титульные данные", hint:"ФИО, школа, руководитель, тема",
+      items:[
+        { f:"f-topic",      t:"Название проекта", src:"Занятия 5, 7, 20, 25", ph:"Например: «Умная парта»" },
+        { f:"f-author",     t:"Автор (фамилия, имя)", src:"Профиль / Занятие 5", ph:"Иван Петров" },
+        { f:"f-class",      t:"Класс / возраст", src:"Профиль / Занятие 5", ph:"8 класс" },
+        { f:"f-teacher",    t:"Руководитель", src:"Профиль / Занятие 25", ph:"ФИО педагога" },
+        { f:"f-school",     t:"Образовательная организация", src:"Занятие 25", ph:"КГАОУ «Школа космонавтики»" },
+        { f:"f-competition",t:"Конкурс / мероприятие", src:"Занятия 31–32", ph:"НТО, «Большие вызовы», конференция…" },
+        { f:"f-nomination", t:"Номинация / трек", src:"Занятия 31–32", ph:"Например: «Беспилотный транспорт»" },
+        { f:"f-type",       t:"Тип проекта", src:"Занятие 16", ph:"Прикладной / исследовательский / инженерный…" }
+      ]},
+    { title:"2 · Проблема, цель и задачи", hint:"Сердце проекта",
+      items:[
+        { f:"f-problem",     t:"Актуальность / проблема", src:"Занятия 3–5", ph:"Кому неудобно и почему это важно?", area:true },
+        { f:"f-goal",        t:"Цель (по SMART)", src:"Занятия 5, 7, 20", ph:"«Создать… для…, чтобы… к…»", area:true },
+        { f:"f-tasks",       t:"Задачи (3–5)", src:"Занятия 5, 20", ph:"1. Узнать… 2. Сделать… 3. Протестировать…", area:true },
+        { f:"f-result-metric", t:"Измеримый результат", src:"Занятия 5, 7", ph:"«Прототип + тест на 10 учениках»", area:true }
+      ]},
+    { title:"3 · Продукт", hint:"Что ты создаёшь",
+      items:[
+        { f:"f-product-form", t:"Форма продукта", src:"Занятия 16–17", ph:"Модель / программа / устройство…" },
+        { f:"f-mvp",          t:"Минимальная версия (MVP)", src:"Занятие 16", ph:"Что можно показать уже сейчас?" },
+        { f:"f-product-desc", t:"Описание продукта", src:"Занятия 17, 24", ph:"Что это? Как устроено? Чем полезно?", area:true },
+        { f:"f-tech",         t:"Технологии / инструменты", src:"Занятия 17–18", ph:"Arduino, Blender, Unity, Python…" }
+      ]},
+    { title:"4 · План, команда и ресурсы", hint:"Как ты идёшь к цели",
+      items:[
+        { f:"f-plan",      t:"План работы (этапы)", src:"Занятия 10–11", ph:"Этап 1 (окт):…", area:true },
+        { f:"f-team",      t:"Команда / роли", src:"Занятия 11, 13", ph:"Кто за что отвечает", area:true },
+        { f:"f-resources", t:"Ресурсы / бюджет", src:"Занятие 9", ph:"Материалы, оборудование, ПО", area:true },
+        { f:"f-risks",     t:"Риски и план Б", src:"Занятие 12", ph:"Что может пойти не так?", area:true }
+      ]},
+    { title:"5 · Результат и итоги", hint:"Заполняется в конце проекта",
+      items:[
+        { f:"f-result",     t:"Что создано (итог)", src:"Занятие 24", ph:"Готовый продукт", area:true },
+        { f:"f-testing",    t:"Тестирование", src:"Занятия 17, 21", ph:"Кто, сколько человек, что показало", area:true },
+        { f:"f-conclusion", t:"Выводы / самооценка", src:"Занятие 24", ph:"Что узнал, чему научился", area:true },
+        { f:"f-perspective",t:"Перспективы развития", src:"Занятия 35–36", ph:"Что дальше?", area:true },
+        { f:"f-sources",    t:"Источники", src:"Занятия 14, 20", ph:"Книги, сайты, видео", area:true }
+      ]},
+    { title:"6 · Презентация и приложения", hint:"Что покажешь на защите",
+      items:[
+        { f:"f-presentation", t:"Презентация / ссылки", src:"Занятия 26–27", ph:"Ссылка на презентацию, видео", area:true },
+        { f:"f-attachments",  t:"Список приложений", src:"Занятие 32", ph:"Приложение 1 — эскизы…", area:true },
+        { f:"f-defense",      t:"Пробная защита / репетиция", src:"Занятия 28–29", ph:"Как прошло, что улучшить", area:true }
+      ]}
   ];
 
-  var state=[];
-  function load(){ try{ var raw=localStorage.getItem(key); if(raw){ var d=JSON.parse(raw); if(d && Array.isArray(d.items)) state=d.items; } }catch(e){} }
-  function save(){ try{ localStorage.setItem(key, JSON.stringify({items:state, saved:new Date().toISOString()})); updateStatus(); }catch(e){} }
+  function el(id){ return document.getElementById(id); }
 
+  // ---------- Состояние ----------
+  var savedData = {};
+  function load(){
+    var raw=lsGet(key);
+    try{ savedData = raw?JSON.parse(raw):{}; }catch(e){ savedData={}; }
+  }
+  function save(){ lsSet(key, JSON.stringify(savedData)); }
+
+  // ---------- Рендер --------
   function render(){
-    var box=document.getElementById("cards");
-    box.innerHTML="";
-    ITEMS.forEach(function(it,idx){
-      var d=document.createElement("div"); d.className="slot"+(state[idx]&&state[idx].done?" done":"");
-      var chk=document.createElement("input"); chk.type="checkbox"; chk.className="check"; chk.checked=!!(state[idx]&&state[idx].done);
-      chk.addEventListener("change",function(){ if(state[idx]) state[idx].done=chk.checked; else state[idx]={done:chk.checked, note:""}; save(); render(); });
-      var body=document.createElement("div"); body.className="body";
-      var b=document.createElement("b"); b.textContent="Занятие "+it.z+" · "+it.t;
-      var hint=document.createElement("div"); hint.className="hint"; hint.textContent=it.hint;
-      var inp=document.createElement("input"); inp.type="text"; inp.placeholder="Заметка (необязательно)…"; inp.value=(state[idx]&&state[idx].note)||"";
-      inp.addEventListener("input",function(){ if(state[idx]) state[idx].note=inp.value; else state[idx]={done:false,note:inp.value}; save(); });
-      body.appendChild(b); body.appendChild(hint); body.appendChild(inp);
-      d.appendChild(chk); d.appendChild(body);
-      box.appendChild(d);
+    var box=el("sections");
+    var html="";
+    SECTIONS.forEach(function(sec, si){
+      html += '<div class="sec" id="sec'+si+'"><h3>'+sec.title+'</h3><div class="sec-hint">'+sec.hint+'</div>';
+      sec.items.forEach(function(it){
+        var v = savedData[it.f] || "";
+        var doneCls = String(v).trim() ? " done" : "";
+        var tag = it.area ? "textarea" : "input";
+        var valAttr = it.area ? "" : ' value="'+escAttr(v)+'"';
+        var body = it.area ? escText(v) : "";
+        html += '<div class="card'+doneCls+'" data-f="'+it.f+'">'
+          + '<div class="head"><input type="checkbox" '+(String(v).trim()?"checked":"")+' onchange="toggleDone(this,\''+it.f+'\')"><div>'
+          + '<div class="t">'+it.t+'</div>'
+          + '<div class="src">Источник: '+it.src+'</div>'
+          + '</div></div>'
+          + '<'+tag+' data-field="'+it.f+'" placeholder="'+escAttr(it.ph||"")+'"'+valAttr+'>'+body+'</'+tag+'>'
+          + '</div>';
+      });
+      html += '</div>';
+    });
+    box.innerHTML=html;
+    // привязка ввода
+    box.querySelectorAll("[data-field]").forEach(function(inp){
+      inp.addEventListener("input", function(){
+        savedData[inp.getAttribute("data-field")] = inp.value;
+        save(); updateCounter();
+        var card = inp.closest ? inp.closest(".card") : null;
+        if(card) card.classList.toggle("done", !!String(inp.value).trim());
+      });
     });
     updateCounter();
   }
+  function escAttr(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function escText(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  window.toggleDone=function(cb, f){
+    if (cb.checked && !savedData[f]) savedData[f]="✓";
+    else if (!cb.checked && savedData[f]==="✓") savedData[f]="";
+    save(); updateCounter();
+    var card = cb.closest ? cb.closest(".card") : null;
+    if(card) card.classList.toggle("done", cb.checked);
+  };
+
+  // ---------- Счётчик и прогресс ----------
   function updateCounter(){
-    var n=(state||[]).filter(function(s){return s&&s.done;}).length;
-    var c=document.getElementById("counter"); if(c) c.innerHTML="Собрано элементов: <b>"+n+"</b> из "+ITEMS.length;
+    var total=0, filled=0;
+    SECTIONS.forEach(function(sec){ sec.items.forEach(function(it){
+      total++;
+      if (String(savedData[it.f]||"").trim()) filled++;
+    }); });
+    var c=el("counter"); if(c) c.innerHTML="Заполнено: <b>"+filled+"</b> из "+total+" полей";
+    var bar=el("progBar"); if(bar) bar.style.width=(total?Math.round(filled/total*100):0)+"%";
   }
-  function updateStatus(){
-    var st=document.getElementById("status");
-    if(!st) return;
-    var done=(state||[]).filter(function(s){return s&&s.done;}).length;
-    if(done===ITEMS.length){ st.style.display="block"; st.innerHTML="🎉 Всё собрано! Открой <b>паспорт проекта</b> — туда автоматически подтянутся цель, задачи, план и результат."; }
-    else { st.style.display="none"; }
+
+  // ---------- Автосборка из листов (не затирает ручной ввод) ----------
+  function autofill(){
+    var src=collectFromSheets().data;
+    Object.keys(src).forEach(function(f){
+      if ((savedData[f]===undefined || !String(savedData[f]||"").trim()) && src[f]) savedData[f]=src[f];
+    });
+    save();
   }
-  function clearAll(){
-    if(!confirm("Очистить накопительное портфолио?")) return;
-    state=[]; try{ localStorage.removeItem(key); }catch(e){} render(); save();
+
+  // ---------- Синхронизация с паспортом ----------
+  window.pushToPassport=function(){
+    var src=collectFromSheets().data;
+    var merged={};
+    Object.keys(src).forEach(function(f){ merged[f] = String(savedData[f]||"").trim() || src[f] || ""; });
+    // сохраняем все поля паспорта, которые здесь не заполнены, но есть из листов
+    var full = {};
+    try { full = JSON.parse(lsGet(key)||"{}"); } catch(e){}
+    Object.keys(merged).forEach(function(f){ full[f]=merged[f]; });
+    lsSet(key, JSON.stringify(full));
+    showMsg("Данные собраны из занятий и сохранены. Открой интерактивный паспорт — там те же значения.","ok");
+    location.reload();
+  };
+
+  // ---------- Экспорт / импорт ----------
+  window.exportJSON=function(){
+    var full={};
+    try{ full=JSON.parse(lsGet(key)||"{}"); }catch(e){}
+    var blob=new Blob([JSON.stringify(full,null,2)],{type:"application/json"});
+    var a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+    a.download="Накопительное-портфолио-"+(user?user.name:"проект").replace(/\s+/g,"-")+".json";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showMsg("Файл выгружен.","ok");
+  };
+  window.importJSON=function(input){
+    var file=input.files && input.files[0]; if(!file) return;
+    var r=new FileReader();
+    r.onload=function(){
+      try{
+        var d=JSON.parse(r.result);
+        Object.keys(d).forEach(function(f){ if (SECTIONS.some(function(s){return s.items.some(function(it){return it.f===f;})})) savedData[f]=d[f]; });
+        save(); render(); showMsg("Данные загружены.","ok");
+      }catch(e){ showMsg("Не удалось прочитать файл.","err"); }
+    };
+    r.readAsText(file);
+    input.value="";
+  };
+  window.importJSON=window.importJSON;
+
+  // ---------- Очистка ----------
+  window.clearAll=function(){
+    if(!confirm("Очистить портфолио и данные паспорта на этом устройстве?")) return;
+    savedData={};
+    // не удаляем исходные рабочие листы занятий — только общий ключ
+    lsSet(key, "{}");
+    try{ lsSet(key.replace(/^pdn-passport-universal-v1/,"pdn-portfolio-v1"), "[]"); }catch(e){}
+    showMsg("Очищено. Рабочие листы занятий сохранены.","ok");
+    location.reload();
+  };
+
+  function showMsg(t, kind){
+    var m=el("statusMsg"); if(!m) return;
+    m.style.display="block";
+    m.style.background=kind==="ok"?"var(--pr-soft)":"var(--def-soft)";
+    m.style.borderLeftColor=kind==="ok"?"var(--pr)":"var(--def)";
+    m.textContent=t;
+    clearTimeout(m._t);
+    m._t=setTimeout(function(){ m.style.display="none"; },4000);
   }
-  window.clearAll=clearAll;
-  load(); render(); updateStatus();
+
+  // ---------- Старт ----------
+  load();
+  // автосборка из листов один раз (заполняет пустые поля)
+  autofill();
+  save();
+  render();
 })();
 </script>
 </body>
