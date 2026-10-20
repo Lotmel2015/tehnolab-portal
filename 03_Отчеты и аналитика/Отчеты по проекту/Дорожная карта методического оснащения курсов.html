@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дорожная карта методического оснащения курсов «Технологическая лаборатория»</title>
+<style>
+:root { --bg:#0D0F14; --bg-card:#161921; --bg-elev:#1B1F2A; --ink:#EAECEF; --muted:#8B8FA3; --line:#2A2D35; --accent:#2D7AFF; --ok:#00D68F; --warn:#FFAA00; --bad:#FF4D4D; --violet:#AA00FF; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; }
+.wrap { max-width:1080px; margin:0 auto; padding:32px 20px 60px; }
+header.hero { padding:36px 0 22px; border-bottom:1px solid var(--line); margin-bottom:28px; }
+.kicker { font-family:Consolas,monospace; font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:var(--accent); margin-bottom:8px; }
+h1 { font-size:28px; margin:0 0 8px; letter-spacing:-.02em; }
+.lede { color:var(--muted); max-width:860px; font-size:15px; }
+.meta { font-family:Consolas,monospace; font-size:12px; color:var(--muted); margin-top:12px; }
+h2 { font-size:21px; margin:38px 0 14px; padding-bottom:6px; border-bottom:1px solid var(--line); }
+h3 { font-size:16px; margin:20px 0 10px; color:var(--accent); }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:16px 0; }
+.kpi { background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; }
+.kpi b { display:block; font-size:24px; color:var(--accent); }
+.kpi span { font-size:12.5px; color:var(--muted); }
+.card { background:var(--bg-card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:12px 0; }
+.chip { display:inline-block; font-size:11px; font-family:Consolas,monospace; padding:3px 9px; border-radius:999px; margin:2px 3px 2px 0; border:1px solid var(--line); color:var(--muted); }
+.chip.ok { color:var(--ok); border-color:rgba(0,214,143,.45); }
+.chip.warn { color:var(--warn); border-color:rgba(255,170,0,.5); }
+.chip.bad { color:var(--bad); border-color:rgba(255,77,77,.55); }
+.chip.pri { color:var(--violet); border-color:rgba(170,0,255,.5); }
+table { width:100%; border-collapse:collapse; margin:14px 0; font-size:14px; }
+th,td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+th { font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+.priority { display:inline-block; font-weight:700; font-size:11px; padding:2px 8px; border-radius:5px; margin-right:6px; }
+.p-hi { background:rgba(255,77,77,.15); color:var(--bad); } .p-mid { background:rgba(255,170,0,.15); color:var(--warn); } .p-low { background:rgba(0,214,143,.12); color:var(--ok); }
+.stage { border-left:3px solid var(--accent); padding:4px 0 4px 16px; margin:18px 0; }
+.stage.s2 { border-left-color:var(--ok); } .stage.s3 { border-left-color:var(--warn); } .stage.s4 { border-left-color:var(--violet); }
+.stage h3 { margin:0 0 6px; }
+.stage p { margin:0 0 6px; color:var(--muted); font-size:13.5px; }
+.bar { height:10px; border-radius:6px; background:var(--bg-elev); overflow:hidden; margin:6px 0 2px; }
+.bar i { display:block; height:100%; background:var(--accent); }
+.bar.b-ok i { background:var(--ok); } .bar.b-warn i { background:var(--warn); } .bar.b-bad i { background:var(--bad); }
+.course { margin:10px 0; }
+.course .cname { font-weight:700; font-size:14.5px; margin-bottom:2px; }
+.course .cmeta { font-size:12.5px; color:var(--muted); margin-bottom:6px; }
+.tip { background:rgba(45,122,255,.08); border:1px solid rgba(45,122,255,.3); border-radius:10px; padding:12px 16px; margin:14px 0; font-size:13.5px; }
+ul { margin:6px 0 6px 18px; padding:0; }
+li { margin:4px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">Технологическая лаборатория · методический отдел</div>
+  <h1>Дорожная карта методического оснащения курсов</h1>
+  <p class="lede">Стратегия приведения всех курсов объединения к единому, максимально проработанному методическому уровню: методички занятий, рабочие листы, инструкции, памятки по безопасности, входные тесты и документация наставника.</p>
+  <div class="meta">Сформировано: 17.10.2026 · Чат В «Методичка и документы» · Статус: черновик для согласования</div>
+</header>
+
+<div class="grid">
+  <div class="kpi"><b>8</b><span>курсов + 3 мини-курса</span></div>
+  <div class="kpi"><b>54</b><span>методички занятий (HTML)</span></div>
+  <div class="kpi"><b>~35</b><span>инструкций занятий (VR)</span></div>
+  <div class="kpi"><b>34+</b><span>рабочих листов навигатора</span></div>
+</div>
+
+<h2>1. Текущее состояние (аудит 17.10.2026)</h2>
+
+<table>
+  <thead><tr><th>Курс</th><th>Методички занятий</th><th>Рабочие листы</th><th>Инструкции</th><th>По БЖД</th><th>Уровень</th></tr></thead>
+  <tbody>
+    <tr><td>Blender 3D</td><td>28 / 28</td><td>—</td><td>—</td><td>✔</td><td><span class="priority p-hi">ПИЛОТ</span>полный</td></tr>
+    <tr><td>C#</td><td>6 / 6</td><td>—</td><td>—</td><td>—</td><td><span class="priority p-mid">ВЫСОК</span></td></tr>
+    <tr><td>VR-студия</td><td>1 сводная</td><td>самооценка</td><td>35</td><td>✔</td><td><span class="priority p-hi">ПИЛОТ</span></td></tr>
+    <tr><td>Мини-курсы (3)</td><td>9 / 9</td><td>—</td><td>—</td><td>—</td><td><span class="priority p-mid">ВЫСОК</span></td></tr>
+    <tr><td>Проектный-навигатор</td><td>—</td><td>34 + игр</td><td>—</td><td>—</td><td><span class="priority p-mid">ВЫСОК</span></td></tr>
+    <tr><td>БПЛА</td><td><b>28 / 28</b> ✅</td><td>—</td><td>—</td><td>✔</td><td><span class="priority p-mid">ГОТОВО</span></td></tr>
+    <tr><td>КОМПАС-3D</td><td><b>28 / 28</b> ✅</td><td>—</td><td>—</td><td>✔</td><td><span class="priority p-mid">ГОТОВО</span></td></tr>
+    <tr><td>Робототехника</td><td><b>28 / 28</b> ✅</td><td>—</td><td>—</td><td>✔</td><td><span class="priority p-hi">ГОТОВО</span></td></tr>
+    <tr><td>Электроника</td><td><b>28 / 28</b> 🎉</td><td>—</td><td>—</td><td>✔</td><td><span class="priority p-hi">ПИЛОТ ЗАВЕРШЁН</span></td></tr>
+  </tbody>
+</table>
+
+<div class="tip"><b>Ключевой вывод.</b> Курсы с формой «макро‑модулей» (Blender, C#, VR-студия, мини‑курсы) уже имеют развёрнутые методички почти на 100% занятий. В курсах-«рабочих тетрадях» (БПЛА, КОМПАС, Робототехника, Электроника) методички были только на 2 из 28 занятий.</div>
+
+<div class="tip"><b>✅ Пилот Электроники завершён (19.10.2026).</b> Методички доведены с 2 до <b>28/28</b> занятий. В каждый урок добавлена ссылка «Открыть методичку →», линк-чек пройден: 0 битых ссылок, 0 артефактов, все 28 уроков связаны со своими методичками. Формат (шаги «Что делать / Что получится», чек-лист освоения, совет) взят за образец для остальных трёх курсов-«тетрадей».</div>
+
+<h2>2. Целевая модель методического комплекта курса</h2>
+<p>Единый стандарт «Методический комплект курса (ТЛ‑МК‑2026)», чтобы любой курс был одинаково проработан. Для каждого занятия и для курса в целом — набор документов:</p>
+
+<div class="card">
+  <h3>Состав комплекта на курс</h3>
+  <ul>
+    <li><b>На уровне курса:</b> карта курса / программа занятий, входная диагностика, памятка по технике безопасности, план оценки и аттестации, панель наставника (журнал прогресса и экспорт).</li>
+    <li><b>На уровне занятия:</b> файл занятия (теория + практика), <b>методичка занятия</b> (что и как сделать, типичные ошибки), при необходимости <b>рабочий лист</b> (шаблон для заполнения, печать/PDF), <b>инструкция</b> (пошаговое «руками» для аппаратных операций).</li>
+  </ul>
+</div>
+
+<h2>3. Принципы и стандарты качества</h2>
+<div class="card">
+  <ul>
+    <li><b>Единый шаблон методички.</b> Взять за эталон формат Blender/C#/мини-курсов: цель → пошаговые действия → «что должно получиться» → типичные ошибки → «проверь себя». Адаптировать под каждый курс.</li>
+    <li><b>Соответствие занятиям.</b> Методички выпускаются строго под существующие файлы занятий (не придумывать новую структуру без согласования с чатом Б).</li>
+    <li><b>Стиль и токены.</b> Единый визуальный язык (accent #1F6FE0, vr #4D008C, pr #167A4D) по образцу VR-курса.</li>
+    <li><b>Имена файлов.</b> Русские, без «-» и «_» между словами (норма проекта).</li>
+    <li><b>Ссылки.</b> Только открывающиеся в РФ без VPN; каждая проверяется перед публикацией.</li>
+    <li><b>Проверка.</b> После каждой партии — машинный линк-чек (методичка → занятие → приложение → иллюстрации) и визуальная проверка рендера.</li>
+  </ul>
+</div>
+
+<h2>4. Дорожная карта по этапам</h2>
+
+<div class="stage">
+  <h3>Этап 1 · Закрыть критический пробел: методички для 4 курсов-«тетрадей»</h3>
+  <p><span class="priority p-hi">ВЫСОКИЙ</span>Довести методички с 2 до 28 занятий в каждом курсе — БПЛА, КОМПАС-3D, Робототехника, Электроника.</p>
+  <div class="bar b-ok"><i style="width:100%"></i></div>
+  <ul>
+    <li>✅ <b>Электроника — ГОТОВО (19.10.2026): 28/28 методичек</b>, формат-эталон.</li>
+    <li>✅ <b>БПЛА — ГОТОВО (19.10.2026): 28/28 методичек</b> (бирюзовый стиль).</li>
+    <li>✅ <b>КОМПАС-3D — ГОТОВО (19.10.2026): 28/28 методичек</b> (фиолетовый стиль).</li>
+    <li>✅ <b>Робототехника — ГОТОВО (19.10.2026): 28/28 методичек</b> (синий стиль), линк-чек пройден.</li>
+    <li><b>Этап 1 полностью ЗАВЕРШЁН (100%): все 4 курса-«тетради» оснащены методичками.</b></li>
+  </ul>
+</div>
+
+<div class="stage s2">
+  <h3>Этап 2 · Довести до пилотного уровня: VR-студия и C#</h3>
+  <p><span class="priority p-hi">ВЫСОКИЙ</span>Курсы уже сильны; добавить отсутствующие методички — поднять консистентность.</p>
+  <div class="bar b-ok"><i style="width:100%"></i></div>
+  <ul>
+    <li>✅ <b>VR-студия — ГОТОВО (20.10.2026): 36/36 инструкций</b>. Созданы недостающие инструкции занятий 33–36 (аттестация, портфолио, резерв, итоги) с привязкой «Открыть инструкцию →»; исправлены 4 битые ссылки после реструктуризации (путь `VR/` → `05_Служебные исходники/VR/`).</li>
+    <li>✅ <b>C# — ГОТОВО: 6/6 модулей с методичками</b>, все уроки ссылаются на методички, целостность подтверждена.</li>
+    <li>✅ Линк-чеки пройдены: 0 битых ссылок, 0 артефактов в обоих курсах.</li>
+    <li><b>Этап 2 ЗАВЕРШЁН (100%).</b> Дальше — рабочие листы (Этап 3).</li>
+  </ul>
+</div>
+
+<div class="stage s3">
+  <h3>Этап 3 · Дополнить рабочими листами и играми</h3>
+  <p><span class="priority p-mid">СРЕДНИЙ</span>Практико-ориентированные курсы выиграют от интерактивных рабочих листов, как в навигаторе.</p>
+  <div class="bar b-ok"><i style="width:50%"></i></div>
+  <ul>
+    <li>✅ <b>Создан шаблон интерактивных рабочих листов</b> (HTML, localStorage, кнопки «Сохранить/Печать/Очистить») по образцу навигатора.</li>
+    <li>✅ <b>Для каждого из 4 курсов (БПЛА, КОМПАС-3D, Робототехника, Электроника) — по 2 листа</b>: лист самооценки навыков + карточка профессии. Итого 8 листов в корне курсов.</li>
+    <li>✅ Листы привязаны ссылками «Открыть рабочий лист →» к профориентационному и итоговому занятию каждого курса (8 ссылок). Линк-чек чист: 0 битых, 0 артефактов.</li>
+    <li>Осталось при желании: мини-игры/тренажёры (по образцу SMART-игр навигатора) — как отдельная итерация.</li>
+  </ul>
+</div>
+
+<div class="stage s4">
+  <h3>Этап 4 · Полный комплект + документация наставника</h3>
+  <p><span class="priority p-mid">СРЕДНИЙ</span>Финальное выравнивание по стандарту ТЛ‑МК‑2026.</p>
+  <div class="bar b-ok"><i style="width:100%"></i></div>
+  <ul>
+    <li>✅ <b>БЖД:</b> памятки по технике безопасности есть во ВСЕХ курсах. Созданы недостающие: VR-студия, Проектный-навигатор и 3 мини-курса (в т.ч. специфичные — VR, AR, сети).</li>
+    <li>✅ <b>Входная диагностика:</b> анкеты входного тестирования созданы для VR-студии и 3 мини-курсов — теперь есть во всех курсах.</li>
+    <li>✅ <b>Панель наставника/журнал прогресса:</b> единый формат через ядро <code>tl-portal-core.js</code> (роль teacher, «Мои ученики», экспорт/импорт). По решению — мини-курсы оставлены на собственном прогрессе в хабах (не включены в COURSE_CONFIG).</li>
+    <li>✅ <b>Канон актуализирован:</b> «Как собрать новый курс по образцу VR.html» обновлён до версии 2.0 — добавлен стандарт ТЛ‑МК‑2026 (методички, рабочие листы, игры, памятки ТБ, диагностика, конвейер генерации).</li>
+    <li><b>Этап 4 ЗАВЕРШЁН (100%).</b></li>
+  </ul>
+</div>
+
+<h2>5. Приоритеты и сроки</h2>
+<table>
+  <thead><tr><th>№</th><th>Действие</th><th>Приоритет</th><th>Ориентир</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Методички на все 28 занятий: <s>Электроника</s> ✅, <s>БПЛА</s> ✅, <s>КОМПАС-3D</s> ✅, <s>Робототехника</s> ✅</td><td><span class="priority p-hi">ВЫСОКИЙ</span></td><td>✅ ЭТАП 1 ЗАВЕРШЁН (100%)</td></tr>
+    <tr><td>2</td><td>Лик-чек и целостность переходов по всем курсам</td><td><span class="priority p-hi">ВЫСОКИЙ</span></td><td>✅ ВЫПОЛНЕНО</td></tr>
+    <tr><td>3</td><td>Доводка VR/C# до пилотного уровня</td><td><span class="priority p-mid">СРЕДНИЙ</span></td><td>✅ ЭТАП 2 ЗАВЕРШЁН (100%)</td></tr>
+    <tr><td>4</td><td>Рабочие листы и игры для практических курсов</td><td><span class="priority p-mid">СРЕДНИЙ</span></td><td>✅ ЛИСТЫ (8) + ИГРЫ (4) ГОТОВЫ</td></tr>
+    <tr><td>5</td><td>Выравнивание БЖД/диагностики/панели наставника + актуализация канона</td><td><span class="priority p-mid">СРЕДНИЙ</span></td><td>✅ ЭТАП 4 ЗАВЕРШЁН (100%)</td></tr>
+  </tbody>
+</table>
+
+<h2>6. Проверка готовности</h2>
+<div class="card">
+  <ul>
+    <li><b>Автоматическая:</b> линк-чек (все ссылки внутренние ведут на существующие файлы; внешние открываются в РФ без VPN), отсутствие артефактов типа <code class="chip">$12027</code>, отсутствие дублей блоков входа.</li>
+    <li><b>Вручную:</b> открыть каждое занятие → убедиться, что методичка/рабочий лист открываются и соответствуют теме; проверить визуальный рендер (нет наложений, читаемый контраст).</li>
+    <li><b>Сопоставимость:</b> у каждого занятия есть методичка; у курса — полный комплект по ТЛ‑МК‑2026.</li>
+  </ul>
+</div>
+
+<div class="tip"><b>Статус текущих исправлений (17.10.2026).</b> Устранены два выявленных дефекта Проектного-навигатора: артефакт <code class="chip">$12027</code> → <code class="chip">2027</code> (11 вхождений) и дубли блока входа <code class="chip">whoami</code> (36 файлов). После правок навигатор чист: 0 артефактов, 0 дублей, целостность ссылок сохранена.</div>
+
+</div>
+</body>
+</html>

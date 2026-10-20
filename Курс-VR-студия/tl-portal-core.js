@@ -26,6 +26,29 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
   var NS = 'tl.';
   var VERSION = '0.1.0';
 
+  /* ============ Единая точка конфигурации объединения ============
+     Используется порталом и курсами. Если цифры меняются — только здесь. */
+  var TL_CONST = {
+    labsCount: 5,
+    labsLabel: '5 лабораторий',
+    directionsLabel: '7 направлений',
+    directions: [
+      { id: 'LAB.01', name: 'Робототехника', short: 'EV3, сборка и программирование роботов' },
+      { id: 'LAB.02', name: 'Электроника', short: 'платы, схемы, пайка, ESP/Arduino' },
+      { id: 'LAB.03', name: 'Моделирование (Blender 3D + КОМПАС-3D)', short: '3D-модели и инженерная графика' },
+      { id: 'LAB.05', name: 'БАС (беспилотные авиационные системы)', short: 'сборка и пилотирование дронов' },
+      { id: 'LAB.06', name: 'VR (виртуальная реальность)', short: '3D-сцены и разработка VR-приложений' }
+    ],
+    projectProgram: 'Проектный навигатор',
+    projectProgramNote: 'сквозная программа, не отдельная лаборатория',
+    hoursTotal: 784,
+    hoursTheory: 260,
+    hoursPractice: 524,
+    practicePct: 67,
+    practicePctNote: 'доля практики в программе (524/784 ч)',
+    kpiPracticeMin: 65
+  };
+
   function read(key, def) {
     try { var v = localStorage.getItem(NS + key); return v ? JSON.parse(v) : def; }
     catch (e) { return def; }
@@ -369,9 +392,14 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
       '.tl-btn.ghost{background:transparent;border:1px solid #2A2D35;color:#EAECEF;}' +
       '.tl-err{color:#FF5A5A;font-size:13px;min-height:18px;margin-top:6px;}' +
       '.tl-ok{color:#00D68F;font-size:13px;min-height:18px;margin-top:6px;}' +
-      '.tl-labs{display:flex;flex-wrap:wrap;gap:6px;}' +
-      '.tl-labs button{background:#0D0F14;border:1px solid #2A2D35;border-radius:999px;color:#8B8FA3;padding:5px 10px;font-size:12px;cursor:pointer;}' +
+      '.tl-labs{display:flex;flex-wrap:wrap;gap:8px;}' +
+      '.tl-labs button{background:#0D0F14;border:1px solid #2A2D35;border-radius:10px;color:#8B8FA3;padding:8px 11px;font-size:12px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:2px;max-width:230px;flex:1 1 200px;}' +
+      '.tl-labs button .ch-id{font-family:ui-monospace,Consolas,monospace;font-size:10px;color:#2D7AFF;letter-spacing:.06em;}' +
+      '.tl-labs button .ch-name{font-size:12.5px;font-weight:600;color:#EAECEF;line-height:1.25;}' +
+      '.tl-labs button .ch-short{font-size:11px;color:#8B8FA3;line-height:1.3;}' +
       '.tl-labs button.on{color:#fff;border-color:#2D7AFF;background:rgba(45,122,255,.18);}' +
+      '.tl-labs button.on .ch-id{color:#7FB0FF;}' +
+      '.tl-labs button.on .ch-name{color:#fff;}' +
       '#tlCabinetPanel{position:fixed;inset:0;z-index:99970;background:#161921;color:#EAECEF;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;display:none;overflow:auto;}' +
       '#tlCabinetPanel.open{display:block;}' +
       '#tlCabinetPanel .tl-cab-frame{max-width:760px;margin:0 auto;padding:28px 24px 60px;}' +
@@ -397,7 +425,8 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
       '#tlCabinetPanel .tl-cab-stat{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;}' +
       '#tlCabinetPanel .tl-cab-stat .st{font-size:13px;color:#8B8FA3;}' +
       '#tlCabinetPanel .tl-cab-stat .st b{color:#fff;}' +
-      '#tlCabinetPanel .tl-labs-chip{display:inline-block;border:1px solid #3A3E47;padding:5px 10px;border-radius:999px;margin:4px 6px 0 0;font-size:12px;color:#EAECEF;}' +
+      '#tlCabinetPanel .tl-labs-chip{display:inline-block;border:1px solid #3A3E47;padding:5px 10px;border-radius:8px;margin:4px 6px 0 0;font-size:12px;color:#EAECEF;}' +
+      '#tlCabinetPanel .tl-labs-chip b{color:#2D7AFF;font-family:ui-monospace,Consolas,monospace;font-size:10.5px;margin-right:4px;}' +
       '#tlCabinetPanel .tl-cab-logout{background:transparent;border:1px solid #3A3E47;color:#8B8FA3;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:13px;margin-top:14px;}' +
       '#tlCabinetPanel .tl-cab-logout:hover{color:#fff;}' +
       '@media (max-width:640px){#tlCabinetPanel .tl-cab-frame{padding:18px 14px 50px;}#tlCabinetPanel .tl-cab-top{flex-direction:column;align-items:flex-start;}}' +
@@ -418,10 +447,12 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
   }
 
   var LAB_META = [
-    { id: 'LAB.01', name: 'Робототехника' }, { id: 'LAB.02', name: 'Электроника' },
-    { id: 'LAB.03', name: 'Моделирование (Blender + КОМПАС-3D)' },
-    { id: 'LAB.05', name: 'БАС' }, { id: 'LAB.06', name: 'VR-разработка' },
-    { id: 'LAB.07', name: 'Проектная деятельность (программа)' }
+    { id: 'LAB.01', name: 'Робототехника', short: 'EV3, сборка и программирование роботов' },
+    { id: 'LAB.02', name: 'Электроника', short: 'платы, схемы, пайка, ESP/Arduino' },
+    { id: 'LAB.03', name: 'Моделирование (Blender + КОМПАС-3D)', short: '3D-модели и инженерная графика' },
+    { id: 'LAB.05', name: 'БАС', short: 'сборка и пилотирование дронов' },
+    { id: 'LAB.06', name: 'VR-разработка', short: '3D-сцены и разработка VR-приложений' },
+    { id: 'LAB.07', name: 'Проектная деятельность (программа)', short: 'сквозная программа, не отдельная лаборатория' }
   ];
   function labLabel(id) { for (var i = 0; i < LAB_META.length; i++) if (LAB_META[i].id === id) return id + ' · ' + LAB_META[i].name; return id; }
 
@@ -508,8 +539,21 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
       LAB_META.forEach(function (l) {
         var b = document.createElement('button');
         b.type = 'button';
-        b.textContent = l.id;
-        b.title = l.name;
+        b.className = 'tl-lab-chip';
+        b.dataset.lab = l.id;
+        b.title = (l.short ? l.short : l.name);
+        var id = document.createElement('span');
+        id.className = 'ch-id';
+        id.textContent = l.id;
+        var nm = document.createElement('span');
+        nm.className = 'ch-name';
+        nm.textContent = l.name;
+        var sh = document.createElement('span');
+        sh.className = 'ch-short';
+        sh.textContent = l.short || '';
+        b.appendChild(id);
+        b.appendChild(nm);
+        b.appendChild(sh);
         b.onclick = function () {
           var i = sel.indexOf(l.id);
           if (i === -1) sel.push(l.id); else sel.splice(i, 1);
@@ -575,7 +619,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     var u = currentUser();
     var tabs = [{ id: 'profile', label: 'Профиль' }];
     if (u) {
-      if (u.role === 'admin') tabs.push({ id: 'users', label: 'Пользователи' }, { id: 'teachers', label: 'Педагоги' });
+      if (u.role === 'admin') tabs.push({ id: 'users', label: 'Пользователи' }, { id: 'teachers', label: 'Педагоги' }, { id: 'enroll', label: 'Заявки' });
       else if (u.role === 'teacher') tabs.push({ id: 'students', label: 'Мои ученики' });
     }
     tabs.push({ id: 'courses', label: 'Мои курсы' });
@@ -610,7 +654,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     if (msg) msg.textContent = '✓ Пароль изменён.';
   }
   function cabProfileHtml(u) {
-    var labs = (LAB_META || []).map(function (l) { return '<span class="tl-labs-chip">' + l.id + '</span> '; }).join('') || '';
+    var labs = (LAB_META || []).map(function (l) { return '<span class="tl-labs-chip" title="' + escapeHtml(l.short || l.name) + '"><b>' + l.id + '</b> ' + escapeHtml(l.name) + '</span> '; }).join('') || '';
     var h = '';
     h += '<label>ФИО</label><input type="text" id="tlPrName" value="' + escapeHtml(u.name || '') + '">';
     h += '<div style="display:flex;gap:10px;flex-wrap:wrap;"><div style="flex:1;min-width:140px;"><label>Класс / курс (ученик)</label><input type="text" id="tlPrCls" value="' + escapeHtml(u.cls || '') + '"></div><div style="flex:1;min-width:160px;"><label>Школа</label><input type="text" id="tlPrSchool" value="' + escapeHtml(u.school || '') + '"></div></div>';
@@ -851,7 +895,76 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     h += '<div style="display:flex;gap:6px;margin-top:8px;"><input type="text" id="tlTeacherAdd" placeholder="ФИО педагога" style="flex:1;"><button class="tl-btn-save" style="margin:8px 0 0;padding:8px 14px;font-size:12px;" onclick="TLCore.addTeacherUI()">+</button></div>';
     return h;
   }
+  function cabEnrollHtml() {
+    var h = '<div style="font-weight:700;margin-bottom:6px;">Заявки на запись</div>';
+    var arr = [];
+    try {
+      var raw = JSON.parse(localStorage.getItem('tl-enroll-portal') || '[]');
+      if (Array.isArray(raw)) raw.forEach(function (x, i) { arr.push({ src: 'enroll', idx: i, name: x.name || '', phone: x.phone || '', email: x.email || '', lab: x.lab || '', at: x.at || '' }); });
+    } catch (e) {}
+    var wl = read('waitlist', []) || [];
+    wl.forEach(function (x, i) { arr.push({ src: 'waitlist', idx: i, name: x.name || '', phone: '', email: x.email || '', lab: x.label || x.courseId || '', at: x.at || '' }); });
+    if (!arr.length) {
+      return h + '<div class="tl-hint" style="margin-top:8px;">Заявок пока нет. Как только родители оставят заявку в секции «Записаться» на главной, она появится здесь.</div>';
+    }
+    arr.sort(function (a, b) { return (b.at || '').localeCompare(a.at || ''); });
+    h += '<div style="font-size:12.5px;color:#8B8FA3;margin-bottom:6px;">Всего: ' + arr.length + ' · источник: анкета с главной / лист ожидания</div>';
+    arr.forEach(function (it) {
+      var when = '';
+      try { if (it.at) { var d = new Date(it.at); when = d.toLocaleDateString('ru-RU') + ' ' + d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }); } } catch (e) {}
+      h += '<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid #2A2D35;border-radius:8px;margin-top:8px;flex-wrap:wrap;">' +
+        '<div style="flex:1;min-width:180px;"><div style="font-size:13.5px;font-weight:600;">' + escapeHtml(it.name) + '</div>' +
+        '<div style="font-size:12px;color:#8B8FA3;">' + (it.phone ? escapeHtml(it.phone) + ' · ' : '') + (it.email ? escapeHtml(it.email) + ' · ' : '') + (it.lab ? escapeHtml(it.lab) : 'лаборатория не выбрана') + (when ? ' · ' + when : '') + '</div></div>' +
+        '<button style="background:transparent;border:1px solid #2A2D35;color:#EAECEF;border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer;" onclick="TLCore.cabEnrollDone(\'' + it.src + '\',' + it.idx + ')">✓ Связались</button></div>';
+    });
+    return h;
+  }
+  function cabEnrollDone(src, idx) {
+    try {
+      if (src === 'enroll') {
+        var raw = JSON.parse(localStorage.getItem('tl-enroll-portal') || '[]');
+        if (Array.isArray(raw) && raw[idx]) { raw.splice(idx, 1); localStorage.setItem('tl-enroll-portal', JSON.stringify(raw)); }
+      } else {
+        var wl = read('waitlist', []) || [];
+        if (wl[idx]) { wl.splice(idx, 1); write('waitlist', wl); }
+      }
+    } catch (e) {}
+    renderCabinet();
+  }
   /* ============ Достижения и сертификаты ============ */
+  var TL_METALS = [
+    { name: 'Железо', icon: '⚙', need: 5, bg: 'linear-gradient(160deg,#6b7a8c,#39434f)', fg: '#fff' },
+    { name: 'Медь', icon: '◎', need: 15, bg: 'linear-gradient(160deg,#ee7a4b,#b23c1f)', fg: '#fff' },
+    { name: 'Бронза', icon: '⑂', need: 25, bg: 'linear-gradient(160deg,#c98a3d,#7c4e18)', fg: '#fff' },
+    { name: 'Олово', icon: '❆', need: 35, bg: 'linear-gradient(160deg,#9fc2da,#56748e)', fg: '#0f1c28' },
+    { name: 'Серебро', icon: '◐', need: 45, bg: 'linear-gradient(160deg,#eef1f5,#aab4c0)', fg: '#232a36' },
+    { name: 'Золото', icon: '☀', need: 55, bg: 'linear-gradient(160deg,#ffd75e,#c3940f)', fg: '#3a2c00' },
+    { name: 'Платина', icon: '✧', need: 65, bg: 'linear-gradient(160deg,#9aa6b3,#616e7d)', fg: '#fff' },
+    { name: 'Палладий', icon: '❖', need: 75, bg: 'linear-gradient(160deg,#e0c69a,#976f34)', fg: '#2b2006' },
+    { name: 'Родий', icon: '✪', need: 85, bg: 'linear-gradient(160deg,#fbfdff,#c6cdd6)', fg: '#1a2430' },
+    { name: 'Иридий', icon: '✦', need: 93, bg: 'linear-gradient(160deg,#4a5561,#232b34)', fg: '#fff' }
+  ];
+  function tlMetalOf(t) { var m = TL_METALS[0]; for (var i = 0; i < TL_METALS.length; i++) { if (t >= TL_METALS[i].need) m = TL_METALS[i]; } return m; }
+  function tlScaleHtml() {
+    var u = currentUser(); if (!u) return '';
+    var ach = getAllAchievements();
+    var pts = ach.totalAll ? Math.round(ach.doneTotal / ach.totalAll * 100 * 0.4 + 60 * 0.6) : 0;
+    var m = tlMetalOf(pts);
+    var h = '<div style="margin-top:12px;padding:12px;border:1px solid #2A2D35;border-radius:10px;">';
+    h += '<div style="font-weight:700;margin-bottom:8px;">🏆 Мотивационная шкала</div>';
+    h += '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
+    var copy = TL_METALS.slice().reverse();
+    for (var i = 0; i < copy.length; i++) {
+      var st = copy[i];
+      var cur = st.name === m.name;
+      h += '<span style="padding:3px 9px;border-radius:999px;font-size:11.5px;white-space:nowrap;color:' + st.fg + ';background:' + st.bg + (cur ? ';box-shadow:0 0 0 2px #fff, 0 0 0 4px #2D7AFF;' : '') + ';">' + st.icon + ' ' + st.name + ' <span style="opacity:.85;">≥ ' + st.need + ' б.</span></span>';
+    }
+    h += '</div>';
+    h += '<div style="margin-top:10px;font-size:13.5px;color:#EAECEF;">Твой уровень: <b style="color:' + (m.fg === '#fff' ? '#fff' : m.bg) + ';">' + m.icon + ' ' + m.name + '</b> · <b>' + pts + ' баллов</b> <span style="color:#8B8FA3;">(прогресс ' + ach.doneTotal + ' из ' + ach.totalAll + ' занятий · ' + (ach.totalAll ? Math.round(ach.doneTotal / ach.totalAll * 100) : 0) + '%)</span></div>';
+    h += '<div style="font-size:12px;color:#8B8FA3;margin-top:4px;">Расчёт: 40% прогресса + 60% участия (как на курсах). Занимайся — выходи на новый металл!</div>';
+    h += '</div>';
+    return h;
+  }
   function medalOf(pct) {
     if (pct >= 100) return { name: 'Выпускник', icon: '🏆', color: '#FFD700', bg: 'rgba(255,215,0,.16)', border: 'rgba(255,215,0,.5)' };
     if (pct >= 80) return { name: 'Профи', icon: '🥇', color: '#B9F1FF', bg: 'rgba(185,241,255,.14)', border: 'rgba(185,241,255,.45)' };
@@ -871,6 +984,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     h += '<div style="font-size:38px;">' + m.icon + '</div>';
     h += '<div><div style="font-weight:700;color:' + m.color + ';font-size:17px;">' + m.name + '</div>' +
       '<div style="font-size:13px;color:#8B8FA3;">Общий прогресс по всем курсам · ' + ach.doneTotal + ' из ' + ach.totalAll + ' занятий · ' + totalPct + '%</div></div></div>';
+    h += tlScaleHtml();
     // Сертификат за каждый полностью пройденный основной курс
     var doneCourses = [];
     COURSE_CONFIG.forEach(function (cfg) {
@@ -969,6 +1083,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     else if (CAB_TAB === 'students') { html = cabStudentsHtml(u); }
     else if (CAB_TAB === 'users') { html = cabUsersHtml(); }
     else if (CAB_TAB === 'teachers') { html = cabTeachersHtml(); }
+    else if (CAB_TAB === 'enroll') { html = cabEnrollHtml(); }
     else if (CAB_TAB === 'achieve') { html = cabAchieveHtml(u); }
     else if (CAB_TAB === 'notify') { html = cabNotifyHtml(u); }
     else { html = cabProfileHtml(u) + cabPassHtml(); }
@@ -1178,6 +1293,7 @@ var API = {
     setLessonDone: setLessonDone,
     isLessonDone: isLessonDone,
     getAchievements: getAllAchievements,
+    tlScaleHtml: tlScaleHtml,
     getStudents: getStudentsForTeacher,
     getTeacherRegistry: getTeacherRegistry,
     saveTeacherRegistry: saveTeacherRegistry,
@@ -1194,6 +1310,7 @@ var API = {
     cabPrintCert: cabPrintCert,
     cabOpenAll: cabOpenAll,
     cabUsersApply: cabUsersApply,
+    cabEnrollDone: cabEnrollDone,
     cabStudents: cabStudents,
     openAuth: function (tab) { openModal(tab || 'login'); },
     closeAuth: closeModal,
@@ -1211,6 +1328,7 @@ var API = {
     doGuest: function () { closeModal(); toast('Режим гостя: прогресс не сохранится. Лучше войти.'); location.href = location.pathname; }
   };
 global.TLCore = API;
+  global.TL_CONST = TL_CONST;
 
   // Автоподключение, если на странице есть кнопки с data-tl-auth
   if (global.document) {

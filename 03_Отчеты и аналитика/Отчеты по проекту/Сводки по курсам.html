@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Сводки по курсам Технологической лаборатории</title>
+<style>
+  :root { --bg:#fff; --ink:#1B2A4A; --muted:#5A6B85; --accent:#1F6FE0; --accent-soft:#EAF2FD;
+          --vr:#4D008C; --vr-soft:#F0EBF5; --def:#B45309; --def-soft:#FDF1E1;
+          --pr:#167A4D; --pr-soft:#E7F4EE; --line:#D9E2EF; --code-bg:#F5F7FB; --bad:#B3261E; --bad-soft:#FDECEA; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { max-width:1060px; margin:0 auto; padding:2rem 1.4rem 3rem; }
+  header .kicker { color:var(--accent); font-weight:700; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; }
+  header h1 { font-size:1.7rem; line-height:1.2; margin:.2rem 0 .3rem; }
+  .meta { color:var(--muted); font-size:.84rem; }
+  .tldr { background:var(--accent-soft); border-left:4px solid var(--accent); padding:.9rem 1.1rem; border-radius:0 6px 6px 0; margin:1.4rem 0; }
+  .tldr b { color:var(--accent); }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:.7rem; margin:1.4rem 0; }
+  .kpi { border:1px solid var(--line); border-radius:10px; padding:.7rem 1rem; background:#fff; }
+  .kpi b { display:block; font-size:1.35rem; color:var(--vr); }
+  .kpi span { color:var(--muted); font-size:.76rem; }
+  h2 { font-size:1.14rem; border-bottom:1px solid var(--line); padding-bottom:.35rem; margin:2.2rem 0 .7rem; color:var(--ink); }
+  h3 { font-size:1rem; margin:1.3rem 0 .45rem; color:var(--vr); }
+  p { margin:.35rem 0 .7rem; } ul,ol { margin:.3rem 0 .7rem; padding-left:1.35rem; } li { margin:.18rem 0; }
+  table { border-collapse:collapse; width:100%; font-size:.86rem; margin:.5rem 0 1rem; }
+  th,td { padding:.38rem .55rem; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+  th { color:var(--muted); font-weight:600; font-size:.8rem; }
+  code { font-family:ui-monospace,"Cascadia Mono",Consolas,monospace; font-size:.84em; background:var(--code-bg); padding:.06rem .32rem; border-radius:4px; }
+  .ok { background:var(--pr-soft); border-left:4px solid var(--pr); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin:.7rem 0; }
+  .ok b { color:var(--pr); }
+  .warn { background:var(--def-soft); border-left:4px solid var(--def); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin:.7rem 0; }
+  .warn b { color:var(--def); }
+  .bad { background:var(--bad-soft); border-left:4px solid var(--bad); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin:.7rem 0; }
+  .bad b { color:var(--bad); }
+  .course { border:1px solid var(--line); border-radius:14px; padding:1.1rem 1.2rem; margin:1.2rem 0; background:#fdfdfe; }
+  .course h3 { margin-top:0; font-size:1.1rem; }
+  .badge { display:inline-block; font-size:.7rem; font-weight:700; padding:.14rem .5rem; border-radius:999px; vertical-align:middle; }
+  .b-ok { background:var(--pr-soft); color:var(--pr); } .b-warn { background:var(--def-soft); color:var(--def); } .b-bad { background:var(--bad-soft); color:var(--bad); }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:.9rem; }
+  @media (max-width:720px){ .grid2{ grid-template-columns:1fr; } }
+  footer { color:var(--muted); font-size:.8rem; border-top:1px solid var(--line); margin-top:2.6rem; padding-top:.7rem; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="kicker">Технологическая лаборатория · Аудит курсов</p>
+    <h1>Сводки по курсам: устройство, игровые процедуры, переходы, дефекты</h1>
+    <p class="meta">Дата аудита: 17.10.2026 · Проверено: 11 курсов, ~440 HTML-файлов, ~4000 ссылок, 875 внешних URL · Метод: автоматический анализ + headless-тесты</p>
+  </header>
+
+  <div class="tldl"><b>Главный вывод.</b> Курсы работают по общей архитектуре «портал → хаб → уроки» на localStorage. Блокировка занятий, чек-листы, рефлексия и мотивационная шкала — рабочие во всех основных курсах. <b>Главный дефект: интерактивные квизы не работают в 112 уроках 4 упрощённых курсов (БПЛА, КОМПАС, Робототехника, Электроника)</b> — модуль <code>tl-quiz.js</code> подключается битым путём <code>src="tl-quiz.js"</code> из подпапки «Занятие N/», тогда как файл лежит в корне курса. Единичные дефекты: заблокированная ссылка ArtStation в Blender-21 и сломанная JS-ссылка в памятке ПН.</div>
+
+  <div class="kpis">
+    <div class="kpi"><b>11</b><span>курсов проверено</span></div>
+    <div class="kpi"><b>~440</b><span>HTML-файлов</span></div>
+    <div class="kpi"><b>36+28+12+6</b><span>занятий по курсам</span></div>
+    <div class="kpi"><b>4</b><span>курса с нерабочими квизами</span></div>
+    <div class="kpi"><b>112</b><span>уроков с битым подключением квиза</span></div>
+  </div>
+
+  <section id="summary">
+    <h2>Что заложено в курсах (общая архитектура)</h2>
+    <ul>
+      <li><b>Вход</b> — только через портал ТЛ: мост <code>tl-bridge.js</code> создаёт профиль по email из <code>?tl_email=</code> (или из общего localStorage портала) и устанавливает сессию курса.</li>
+      <li><b>Хаб</b> («Список занятий» / «index.html») — рендерит карточки занятий, блокирует следующее до прохождения предыдущего, показывает мотивационную шкалу и (для учителя) список учеников.</li>
+      <li><b>Урок</b> — теория + практика + чек-лист «Что нажать / что получится» + рефлексия (оценка, галочка) + кнопка «Отметить пройденным» + квиз (не везде) + ссылки «← список» / «Следующее занятие →».</li>
+      <li><b>Прогресс</b> — в localStorage: <code>{префикс}-course-progress-{uid/id}</code> как объект <code>{wN:true}</code> (или массив булевых). Форматы согласованы между уроком и хабом.</li>
+      <li><b>Мост в ЛК</b> — при загрузке хаба пересчитывает достижения на портале (<code>TLCore.setLessonDone</code>).</li>
+      <li><b>Квизы/игры/шкала</b> — общие модули <code>tl-quiz.js</code>, <code>tl-scale.js</code> + инлайн-игра «Найди пару».</li>
+    </ul>
+  </section>
+
+  <section id="results">
+    <h2>Результаты проверки по направлениям</h2>
+    <table>
+      <tr><th>Направление</th><th>Результат</th><th>Дефектов</th></tr>
+      <tr><td>Внутренние ссылки (хаб→уроки, назад, следующее, скрипты)</td><td class="ok">4000+ href проверены; битых файловых ссылок нет</td><td><span class="badge b-warn">мелкие</span></td></tr>
+      <tr><td>Подключение скриптов (tl-quiz.js / tl-scale.js / core / bridge)</td><td class="bad">tl-quiz.js подключается битым путём в 112 уроках</td><td><span class="badge b-bad">112</span></td></tr>
+      <tr><td>Внешние URL (доступность в РФ)</td><td class="warn">875 URL; почти все домены отвечают; 1 заблокированный ArtStation, 1 битая JS-ссылка</td><td><span class="badge b-warn">2</span></td></tr>
+      <tr><td>Игровые процедуры: квизы TQuiz</td><td class="bad">модуль исправен (headless-тест), но не загружается из-за пути</td><td><span class="badge b-bad">112</span></td></tr>
+      <tr><td>Игра «Найди пару» (flipCard)</td><td class="ok">работает в 4 уроках (функция и CSS на месте)</td><td><span class="badge b-ok">0</span></td></tr>
+      <tr><td>Шкала TScale с лидерами</td><td class="ok">работает в хабах 8 курсов (вызов TScale.init корректен)</td><td><span class="badge b-ok">0</span></td></tr>
+      <tr><td>Чек-листы «Что нажать»</td><td class="ok">работают во всех уроках всех курсов (35–36 шт. на курс)</td><td><span class="badge b-ok">0</span></td></tr>
+      <tr><td>Рефлексия + блокировка следующего</td><td class="ok">строгая блокировка через рефлексию/чек-лист; click-guard на месте</td><td><span class="badge b-ok">0</span></td></tr>
+      <tr><td>Алгоритмы переходов (вход, возврат, ?uid/?lesson, openAll, reset)</td><td class="warn">в VR/ПН/Blender — handleReturn есть; в 4 упрощённых — проще, но работает через localStorage</td><td><span class="badge b-warn">мелкие</span></td></tr>
+    </table>
+  </section>
+
+  <section id="courses">
+    <h2>Сводки по курсам</h2>
+
+    <div class="course">
+      <h3>1. Курс-VR-студия <span class="badge b-ok">эталон · работает</span></h3>
+      <div class="grid2">
+        <div>
+          <p><b>Структура:</b> 78 HTML / 36 занятий + 41 служебный (инструкции, методички, входное тестирование). Хаб — «Список занятий VR студии.html».</p>
+          <p><b>Заложено:</b> вход через портал (TLBridge/кор TLCore), строгая последовательная блокировка (<code>num===1 || isDone(num-1)</code>), click-guard, чек-листы во всех 36 уроках, рефлексия, мотивационная шкала, возврат <code>?uid/?lesson/?done</code> (handleReturn), <code>?reset=1</code>, <code>openAll</code> для учителя, условный доступ к курсу C# после занятия 4.</p>
+          <p><b>Навигация:</b> 36/36 уроков со ссылкой «Следующее занятие», 36/36 с возвратом к списку.</p>
+        </div>
+        <div>
+          <p><b>Дефекты:</b> нет существенных. Первая ссылка в хабе — URL-кодированная, файл существует (декодируется корректно). Квизов нет по замыслу (там другая форма закрепления). Один якорь <code>##settings</code> в методичке APK (ложное срабатывание — внутри JS).</p>
+          <p class="ok"><b>Вердикт:</b> эталон, работает корректно.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="course">
+      <h3>2. Курс-Проектный-навигатор <span class="badge b-ok">работает</span></h3>
+      <div class="grid2">
+        <div>
+          <p><b>Структура:</b> 86 HTML / 37 уроков + приложения + памятки + входное тестирование. Хаб — index.html.</p>
+          <p><b>Заложено:</b> 36 занятий по проектной деятельности с ИИ; вход через портал; последовательная блокировка; чек-листы в 35 уроках; рефлексия во всех; шкала; книги/памятки; приложения-шаблоны (Гант, матрица рисков и т.д.); навигация «следующее» 37/37, возврат 37/37.</p>
+          <p><b>Мост:</b> <code>courseId pn_navigator</code>, <code>ID_FIELD uid</code>, <code>week_obj</code>.</p>
+        </div>
+        <div>
+          <p><b>Дефекты:</b> в служебной памятке «Временная-шкала-конкурсы-и-занятия.html» JS-шаблон генерирует битую ссылку <code>Сайт: https://undefined</code> (переменная <code>c.site</code> не задана в данных). Это вспомогательный файл, не урок — не влияет на прохождение, но отображается как сломанная ссылка.</p>
+          <p class="warn"><b>Вердикт:</b> работает; 1 косметический дефект в памятке.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="course">
+      <h3>3. Курс-Blender-3D <span class="badge b-warn">работает, 1 ссылка</span></h3>
+      <div class="grid2">
+        <div>
+          <p><b>Структура:</b> 60 HTML / 28 занятий + 31 служебный. Хаб — index.html.</p>
+          <p><b>Заложено:</b> вход через портал; блокировка (<code>num===1||isDone(num-1)</code>); чек-листы во всех 28 уроках; рефлексия во всех; шкала; <code>?reset</code>; <code>openAll</code>; навигация «следующее» 27/28 (у последнего занятия нет следующего — по замыслу), возврат 28/28.</p>
+        </div>
+        <div>
+          <p><b>Дефекты:</b> в занятии 21 «Портфолио, рендеры, рефлексия» есть рабочая ссылка <code>https://www.artstation.com/learning</code> (ArtStation заблокирован в РФ) и текст <code>https://www.behance.net/</code> без ссылки (обёрнут в href на <code>vk.com</code>). Раньше в курсе такие ссылки заменяли на ВК — здесь осталась одна живая.</p>
+          <p class="warn"><b>Вердикт:</b> работает; заменить ArtStation на доступный ресурс.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="course">
+      <h3>4. Курс-БПЛА <span class="badge b-bad">квизы не работают</span></h3>
+      <div class="grid2">
+        <div>
+          <p><b>Структура:</b> 34 HTML / 28 занятий. Хаб — index.html.</p>
+          <p><b>Заложено:</b> вход через портал; блокировка через <code>prevOpen</code> (своя схема, рабочая); чек-листы 28/28; рефлексия 28/28; мотивационная шкала в хабе (TScale.init, ключи верные); квиз «data-q» во всех 28 уроках; игра «Найди пару» в занятии 4 (flipCard определён, CSS есть — работает); ссылки «назад» и «следующее» 28/28; <code>?reset=1</code>, <code>openAll</code>.</p>
+          <p><b>Мост:</b> <code>courseId bpla_course</code>, <code>ID_FIELD id</code>, <code>week_obj</code>, <code>PROGKEY bpla-course-progress-</code>.</p>
+        </div>
+        <div>
+          <p class="bad"><b>Дефект 1 (критичный):</b> во всех 28 уроках модуль квиза подключается как <code>&lt;script src="tl-quiz.js"&gt;</code> — из подпапки «Занятие N/» этот путь битый (файл лежит в корне курса). Модуль не загружается, <code>window.TQuiz</code> не определён, квиз не запускается. Разметка <code>data-q</code> и CSS корректны, сам модуль исправен (проверено headless — рендерит вопрос и варианты).</p>
+          <p><b>Вердикт:</b> исправить путь на <code>../tl-quiz.js</code> во всех 28 уроках — квизы заработают.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="course">
+      <h3>5. Курс-КОМПАС-3D <span class="badge b-bad">квизы не работают</span></h3>
+      <div class="grid2">
+        <div>
+          <p><b>Структура:</b> 34 HTML / 28 занятий. Хаб — index.html.</p>
+          <p><b>Заложено:</b> аналогично БПЛА: вход через портал, <code>prevOpen</code>-блокировка, чек-листы 28/28, рефлексия 28/28, шкала, квизы во всех 28 уроках, игра «Найди пару» в занятии 2 (работает), возврат/следующее 28/28.</p>
+          <p><b>Мост:</b> <code>courseId kompas_course</code>, <code>ID_FIELD id</code>, <code>PROGKEY kompas-course-progress-</code>.</p>
+        </div>
+        <div>
+          <p class="bad"><b>Дефект:</b> тот же битый путь <code>src="tl-quiz.js"</code> в 28 уроках → квизы не работают. Всё остальное — OK.</p>
+          <p><b>Вердикт:</b> исправить путь на <code>../tl-quiz.js</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="course">
+      <h3>6. Курс-Робототехника <span class="badge b-bad">квизы не работают</span></h3>
+      <div class="grid2">
+        <div>
+          <p><b>Структура:</b> 34 HTML / 28 занятий. Хаб — index.html.</p>
+          <p><b>Заложено:</b> вход через портал, <code>prevOpen</code>-блокировка, чек-листы 28/28, рефлексия 28/28, шкала, квизы во всех 28 уроках, игра «Найди пару» в занятии 8 (работает), возврат/следующее 28/28.</p>
+          <p><b>Мост:</b> <code>courseId roboto_course</code>, <code>PROGKEY roboto-course-progress-</code>.</p>
+        </div>
+        <div>
+          <p class="bad"><b>Дефект:</b> битый путь <code>src="tl-quiz.js"</code> в 28 уроках → квизы не работают.</p>
+          <p><b>Вердикт:</b> исправить путь на <code>../tl-quiz.js</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="course">
+      <h3>7. Курс-Электроника <span class="badge b-bad">квизы не работают</span></h3>
+      <div class="grid2">
+        <div>
+          <p><b>Структура:</b> 34 HTML / 28 занятий. Хаб — index.html.</p>
+          <p><b>Заложено:</b> вход через портал, <code>prevOpen</code>-блокировка, чек-листы 28/28, рефлексия 28/28, шкала, квизы 28/28, игра «Найди пару» в занятии 3 (работает), возврат/следующее 28/28.</p>
+          <p><b>Мост:</b> <code>courseId electron_course</code>, <code>PROGKEY electron-course-progress-</code>.</p>
+        </div>
+        <div>
+          <p class="bad"><b>Дефект:</b> битый путь <code>src="tl-quiz.js"</code> в 28 уроках → квизы не работают.</p>
+          <p><b>Вердикт:</b> исправить путь на <code>../tl-quiz.js</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="course">
+      <h3>8. Курс C# (дочерний от VR) <span class="badge b-ok">работает</span></h3>
+      <div class="grid2">
+        <div>
+          <p><b>Структура:</b> 14 HTML / 12 файлов уроков (6 модулей по 2 файла: урок + методичка) + список модулей + страница доступа. Хаб — «Список модулей C#.html».</p>
+          <p><b>Заложено:</b> доступ только после занятий 3–4 VR (guard), вход через мост, рефлексия в 6 уроках, мотивационная шкала, <code>?reset=1</code>. Ссылки на портал и список занятий VR — рабочие.</p>
+        </div>
+        <div>
+          <p><b>Дефекты:</b> нет существенных. «Следующее занятие» есть в 5 из 6 модулей (у последнего нет следующего — по замыслу). Вернуться к списку можно из всех 12 файлов.</p>
+          <p class="ok"><b>Вердикт:</b> работает.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="course">
+      <h3>9. Мини-курс Без гарнитуры <span class="badge b-warn">автономный, без моста</span></h3>
+      <div class="grid2">
+        <div>
+          <p><b>Структура:</b> 7 HTML / 3 модуля (3 урока + 3 методички) + список модулей. Хаб — «Список модулей Без гарнитуры.html».</p>
+          <p><b>Заложено:</b> автономный мини-курс БЕЗ подключения tl-portal-core/tl-bridge (нет входа с портала и шкалы). Рефлексия в уроках есть; ссылка «Следующий модуль» есть (1/3 уроков — у последнего нет).</p>
+        </div>
+        <div>
+          <p><b>Дефекты:</b> <code>href="Модуль '+m.num+'/'+m.fileId+'.html'</code> — JS-шаблон; в хабе собирается динамически. Файлы модулей существуют — ссылки рабочие. Нет интеграции с порталом (по замыслу мини-курс автономный).</p>
+          <p class="warn"><b>Вердикт:</b> работает автономно.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="course">
+      <h3>10. Мини-курс Сети в VR <span class="badge b-warn">автономный, без моста</span></h3>
+      <div class="grid2">
+        <div>
+          <p><b>Структура:</b> 7 HTML / 3 модуля + список модулей.</p>
+          <p><b>Заложено:</b> автономный; рефлексия в 3 уроках; ссылка «Следующий модуль» (2/3). Без входа с портала и шкалы.</p>
+        </div>
+        <div>
+          <p><b>Дефекты:</b> динамический href-шаблон в хабе (рабочий); файлы на месте. Нет интеграции с порталом.</p>
+          <p class="warn"><b>Вердикт:</b> работает автономно.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="course">
+      <h3>11. Мини-курс AR-разработка <span class="badge b-warn">автономный, без моста</span></h3>
+      <div class="grid2">
+        <div>
+          <p><b>Структура:</b> 7 HTML / 3 модуля + список модулей.</p>
+          <p><b>Заложено:</b> автономный; рефлексия в 3 уроках; ссылка «Следующий модуль» (2/3). Без входа с портала и шкалы.</p>
+        </div>
+        <div>
+          <p><b>Дефекты:</b> динамический href-шаблон в хабе (рабочий); файлы на месте. Нет интеграции с порталом.</p>
+          <p class="warn"><b>Вердикт:</b> работает автономно.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="fixes">
+    <h2>Приоритеты исправлений</h2>
+    <ol>
+      <li class="bad"><b>Критично:</b> исправить путь подключения квиза в 112 уроках 4 курсов: <code>src="tl-quiz.js"</code> → <code>src="../tl-quiz.js"</code>. После этого квизы (TQuiz) заработают во всех 112 уроках.</li>
+      <li class="warn"><b>Внешние ссылки:</b> заменить <code>https://www.artstation.com/learning</code> в Blender-21 на доступный в РФ ресурс (например, vk.com альбом или ya.ru) — по правилу проекта «без VPN».</li>
+      <li class="warn"><b>Косметика:</b> в памятке ПН «Временная-шкала-конкурсы-и-занятия» убрать битую JS-ссылку <code>https://'+c.site+'</code> (задать поле <code>site</code> в данных или убрать блок).</li>
+      <li class="warn"><b>Интеграция мини-курсов (опционально):</b> добавить tl-bridge.js в 3 мини-курса, если нужен учёт в ЛК портала.</li>
+    </ol>
+  </section>
+
+  <footer>Аудит выполнен ассистентом MultiTool 17.10.2026 · Все проверки — автоматические (обход файлов, regex, headless-рендер модулей, HTTP-проверка доменов).</footer>
+</main>
+</body>
+</html>

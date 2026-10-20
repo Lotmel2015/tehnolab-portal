@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Паспорт проекта · универсальный шаблон</title>
+<style>
+:root{--bg:#fff;--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--vr:#4D008C;--vr-soft:#F0EBF5;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--line:#D9E2EF;}
+*{box-sizing:border-box}
+body{margin:0;background:#eef1f6;color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:1rem 1.25rem 3rem}
+nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10;padding:.5rem 1.25rem}
+nav .inner{max-width:900px;margin:0 auto;display:flex;flex-wrap:wrap;gap:.3rem .9rem}
+nav a{color:var(--muted);text-decoration:none;font-size:.84rem;font-weight:600}nav a:hover{color:var(--accent)}
+header.hero{background:linear-gradient(135deg,#1B2A4A 0%,#1F6FE0 65%,#4D008C 130%);color:#fff;border-radius:0 0 18px 18px;padding:1.8rem 1.5rem;margin:0 -1.25rem 1.4rem}
+header.hero h1{font-size:1.5rem;line-height:1.25;margin:0 0 .3rem}header.hero .sub{opacity:.92;font-size:.98rem}
+.toolbar{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.btn{border:0;border-radius:10px;padding:.55rem 1.1rem;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer;background:var(--accent);color:#fff}
+.btn:hover{filter:brightness(1.06)}
+.btn2{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:.5rem 1rem;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer}
+.btn2:hover{border-color:var(--accent);color:var(--accent)}
+.btn-ghost{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:10px;padding:.5rem 1rem;font:700 14px/1.2 system-ui,sans-serif;cursor:pointer}
+.btn-ghost:hover{color:var(--def);border-color:var(--def)}
+.note{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-size:.92rem;margin:1rem 0}.note b{color:var(--pr)}
+.warn{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-size:.92rem;margin:1rem 0}.warn b{color:var(--def)}
+.pcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.4rem 1.6rem;margin:1rem 0;box-shadow:0 6px 18px rgba(27,42,74,.06)}
+.pcard h2{font-size:1.1rem;margin:0 0 .8rem;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:.4rem}
+.field{margin:.7rem 0}
+.field label{display:block;font-size:.8rem;font-weight:700;color:var(--muted);margin-bottom:.2rem}
+.field .hint{font-size:.78rem;color:var(--muted);margin-top:.15rem}
+.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:8px;padding:.55rem .7rem;font:15px/1.5 system-ui,sans-serif;background:#fbfcfe;color:var(--ink)}
+.field textarea{resize:vertical;min-height:60px}
+.field input:focus,.field textarea:focus,.field select:focus{outline:2px solid var(--accent);outline-offset:1px;background:#fff}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem}
+@media(max-width:760px){.row,.row3{grid-template-columns:1fr}}
+.tag{display:inline-block;background:var(--vr-soft);color:var(--vr);border-radius:999px;padding:.1rem .6rem;font-size:.74rem;font-weight:700;margin:.15rem}
+.progress-bar{height:8px;background:#e6e9f0;border-radius:8px;overflow:hidden;margin:.4rem 0 .8rem}
+.progress-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#1f6fe0,#3f9d52);transition:width .3s}
+.print-hide{display:block}
+/* ===== Модальное окно «Как заполнять?» ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(20,28,44,.55);z-index:100;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:18px;max-width:760px;width:100%;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(10,20,40,.35)}
+.modal-head{background:linear-gradient(135deg,#1B2A4A,#1F6FE0);color:#fff;padding:1rem 1.4rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.modal-head h2{margin:0;font-size:1.15rem}
+.modal-close{border:0;background:rgba(255,255,255,.18);color:#fff;font-size:1.5rem;line-height:1;width:2rem;height:2rem;border-radius:50%;cursor:pointer;font-weight:700}
+.modal-close:hover{background:rgba(255,255,255,.3)}
+.modal-body{overflow-y:auto;padding:1.2rem 1.5rem;font-size:.93rem;line-height:1.55}
+.modal-body h3{font-size:1rem;color:var(--accent);margin:1.2rem 0 .4rem}
+.modal-body .mini{border:1px solid var(--line);border-radius:10px;padding:.6rem .9rem;margin:.45rem 0;background:#fbfcfe}
+.modal-body .ex{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.5rem .8rem;margin:.4rem 0;font-size:.88rem}
+.modal-body .no{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.5rem .8rem;margin:.4rem 0;font-size:.88rem}
+.modal-body table{border-collapse:collapse;width:100%;font-size:.85rem;margin:.5rem 0}
+.modal-body th,.modal-body td{border-bottom:1px solid var(--line);padding:.4rem .5rem;text-align:left;vertical-align:top}
+.modal-body th{color:var(--muted);font-weight:600}
+@media(max-width:640px){.modal-body{padding:1rem}.modal-head{padding:.8rem 1rem}}
+@media print{body{background:#fff}.toolbar,.print-hide,nav,header.hero,.save-note,.modal-overlay{display:none!important}.pcard{box-shadow:none;break-inside:avoid;border:1px solid #ccc;margin:.5rem 0}.field input,.field textarea,.field select{border:1px solid #ccc;background:#fff}}
+</style>
+</head>
+<body>
+<nav><div class="inner"><a href="index.html">← к списку занятий</a><a href="Паспорт проекта.html">📄 Паспорт (авто)</a><a href="Накопительное портфолио.html">📁 Накопительное портфолио</a></div></nav>
+<header class="hero"><h1>Паспорт проекта · универсальный шаблон</h1><p class="sub">Интерактивный паспорт для перечневых конкурсов, конференций и защит. Заполняй — всё сохраняется в браузере, затем распечатай в PDF или выгрузи в JSON.</p><p id="whoLine" style="opacity:.85;font-size:.85rem;margin:.6rem 0 0">Определяю профиль…</p></header>
+<div class="toolbar print-hide">
+  <button class="btn" onclick="openGuide()">❓ Как заполнять?</button>
+  <button class="btn" onclick="window.print()">🖨 Печать / PDF</button>
+  <button class="btn2" onclick="saveAll();showMsg('Сохранено.','ok')">💾 Сохранить</button>
+  <button class="btn2" onclick="exportJSON()">⬇ Выгрузить JSON</button>
+  <label class="btn2" style="display:inline-block;cursor:pointer">⬆ Загрузить JSON<input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importJSON(this)"></label>
+  <button class="btn-ghost" onclick="clearAll()">🗑 Очистить</button>
+</div>
+<div id="statusMsg" style="display:none;background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.5rem .9rem;margin:.6rem 0;font-size:.9rem"></div>
+
+<!-- ===== Модалка «Как заполнять?» ===== -->
+<div class="modal-overlay" id="guideModal" onclick="if(event.target===this)closeGuide()">
+  <div class="modal">
+    <div class="modal-head"><h2>Как заполнять паспорт проекта</h2><button class="modal-close" onclick="closeGuide()">×</button></div>
+    <div class="modal-body">
+      <div class="mini"><b>Главная мысль проекта.</b> Проект — это не реферат. В реферате ты рассказываешь о чужом, в проекте — делаешь своё и доказываешь, что оно работает. Все разделы паспорта сводятся к одной фразе: <b>«Я сделал продукт, который решает проблему конкретных людей, и доказал, что он работает»</b>.</div>
+
+      <h3>С чего начать</h3>
+      <div class="mini">Если пока нет ни темы, ни продукта — сначала пройди занятия 1–8 курса: там тема, проблема и цель разбираются по шагам. Паспорт удобно заполнять, когда уже есть хотя бы идея. Название и конкурс можно менять в любой момент.</div>
+
+      <h3>1 · Титульный лист</h3>
+      <div class="mini"><b>Название проекта</b> — короткая фраза: <i>что делаешь + для кого</i>.<br>❌ «Мой проект»<br>✅ «Умная парта для первоклассников», «Тренажёр по математике для 5 класса»</div>
+      <div class="mini"><b>Конкурс и номинация</b> — выбери, куда планируешь подавать. Номинация/трек — направление внутри конкурса (у НТО — «Беспилотный транспорт», у «Больших вызовов» — «Когнитивные исследования» и т.п.). Открой памятку конкурса в курсе — там написано.</div>
+      <div class="mini"><b>Тип проекта</b> — что ты в основном делаешь: создаёшь вещь (прикладной/инженерный), изучаешь (исследовательский), делаешь для людей (социальный) и т.д.</div>
+
+      <h3>2 · Проблема, цель и задачи — самое важное</h3>
+      <div class="mini"><b>Проблема / актуальность.</b> Ответь на вопрос: «Кому и что неудобно, и почему это стоит решить?». Назови <u>конкретных людей</u> (первоклассники, учителя, жители двора), опиши <u>что именно не так</u>, добавь <u>почему это важно</u> (цифры, наблюдение).</div>
+      <div class="ex">✅ «Ученики 1 класса носят рюкзаки до 5 кг при норме не более 10% веса ребёнка. Мы взвесили рюкзаки в трёх классах — у 70% вес выше нормы. Нужен способ хранить часть учебников в классе».</div>
+      <div class="no">❌ «Проблема в том, что люди плохо учатся» — слишком общо, непонятно, что делать.</div>
+      <div class="mini"><b>Цель по SMART.</b> Одно предложение по формуле: <b>«Создать ___ для ___, чтобы ___ к ___»</b>.<br>S — конкретно (глагол: создать, разработать), M — измеримо (есть число), A — достижимо, R — связано с проблемой, T — есть срок.</div>
+      <div class="ex">✅ «Создать прототип умной парты для первоклассников, чтобы снизить вес школьного рюкзака, к 15 марта».</div>
+      <div class="mini"><b>Задачи (3–5)</b> — шаги к цели. Схема: <b>узнать → разработать → сделать → протестировать → оформить</b>. У каждой задачи — результат и срок:</div>
+      <div class="ex">«1. Изучить 5 существующих решений (октябрь). 2. Сделать 3 эскиза (ноябрь). 3. Собрать прототип из фанеры (янв–фев). 4. Протестировать на 10 первоклассниках (март). 5. Оформить паспорт и презентацию (апрель)».</div>
+      <div class="mini"><b>Измеримый результат</b> — что посчитать, чтобы понять, что цель достигнута: «прототип + тест на 10 учениках + обзор 5 аналогов».</div>
+
+      <h3>3 · Продукт</h3>
+      <div class="mini">Продукт — то, что покажешь на защите: модель, программа, сайт, устройство, исследование, видеоролик, игра, мероприятие. Главное — он должен быть <b>виден и осязаем</b>, а не «презентация о том, что я изучил».</div>
+      <div class="mini"><b>MVP</b> — минимальная работающая версия: «картонная модель», «кусок кода, который считает», «рисунок и схема». Это версия 0.1, не идеальная — и это нормально.</div>
+
+      <h3>4 · План, команда и ресурсы</h3>
+      <div class="mini"><b>План</b> — 5 этапов по месяцам: 1) изучение (сент–окт), 2) эскизы (ноябрь), 3) создание (дек–фев), 4) тестирование и доработка (март), 5) оформление и защита (апр–май). Черновик подойдёт — уточнишь на занятиях 10–11 (диаграмма Ганта).</div>
+      <div class="mini"><b>Команда</b> — один: «Работаю самостоятельно, помощь педагога на занятиях». Вдвоём/втроём: укажи, кто за что отвечает, иначе в конце выяснится, что делал один.</div>
+      <div class="mini"><b>Риски</b> — что может пойти не так + план Б: «Сломается 3D-принтер → распечатаю в другом месте». 1–2 настоящих риска лучше десяти выдуманных.</div>
+
+      <h3>5 · Результат и итоги (заполняется в конце, после занятий 21–26)</h3>
+      <div class="mini"><b>Тестирование</b> — КТО проверял, СКОЛЬКО человек, ЧТО показало: «8 из 10 первоклассников сказали, что с партой удобнее». Не проводил — так и напиши, что планируешь, и проведи.</div>
+      <div class="mini"><b>Выводы</b> — 2–3 честных предложения: что узнал, чему научился, что бы сделал иначе. Жюри любит честность больше, чем «всё получилось».</div>
+      <div class="mini"><b>Источники</b> — всё, чем пользовался (книги, сайты, видео, консультации). 3–5 достаточно. Записывай их сразу, не дожидаясь конца года.</div>
+
+      <h3>6 · Приложения и чек-лист</h3>
+      <div class="mini">Приложения — доказательства: эскизы, скриншоты, фото прототипа, отзыв тестера, таблица измерений, ссылки. Подпиши каждое: «Приложение 1 — эскизы». Чек-лист внизу не отмечай «для галочки»: о любую галочку могут спросить на защите.</div>
+
+      <h3>Если застрял</h3>
+      <table>
+        <tr><th>Ситуация</th><th>Что делать</th></tr>
+        <tr><td>Не знаю тему</td><td>Занятия 1–2 (карта интересов). Выбирай то, что <b>реально интересно</b>, а не «что легче».</td></tr>
+        <tr><td>Нет проблемы</td><td>Занятие 3 «Пять почему». Что тебя раздражает в жизни/школе? Это почти всегда чья-то проблема.</td></tr>
+        <tr><td>Не выходит цель</td><td>Занятие 5. Подставь слова в шаблон SMART.</td></tr>
+        <tr><td>Непонятен продукт</td><td>Занятие 16. Нарисуй желаемое — потом выберете форму с педагогом.</td></tr>
+        <tr><td>Нет времени</td><td>Сделай MVP. Лучше маленький готовый продукт, чем большой незаконченный.</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="note print-hide"><b>Как пользоваться.</b> Заполняй разделы — данные сохраняются автоматически при каждом вводе. Выбери конкурс из списка, и подсказки подстроятся под его требования. Готовый паспорт распечатывай (кнопка «Печать / PDF») или выгружай в JSON, чтобы перенести на другой компьютер.</div>
+<div class="warn print-hide" id="needAuth" style="display:none"><b>Совет.</b> Если войти в профиль на «Списке занятий» Проектного навигатора, часть полей (имя, класс, руководитель, тема, цель из занятий 5/7) подтянется автоматически в режиме «Авто из занятий».</div>
+
+<div class="progress-bar print-hide"><i id="progBar"></i></div>
+
+<!-- ============ ТИТУЛЬНЫЙ ЛИСТ ============ -->
+<div class="pcard">
+  <h2>1 · Титульный лист</h2>
+  <div class="row">
+    <div class="field"><label for="f-topic">Название проекта *</label><input id="f-topic" placeholder="например: «Умная парта для первоклассников»"><div class="hint">Формула названия: «что делаешь + для кого». «Мой проект» — плохо; «Тренажёр по математике для 5 класса» — хорошо. Название можно менять в любой момент.</div></div>
+    <div class="field"><label for="f-author">Автор (фамилия, имя) *</label><input id="f-author" placeholder="Иван Петров"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label for="f-teacher">Руководитель / наставник</label><input id="f-teacher" placeholder="ФИО педагога"></div>
+    <div class="field"><label for="f-class">Класс / возраст</label><input id="f-class" placeholder="8 класс / 14 лет"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label for="f-school">Образовательная организация</label><input id="f-school" placeholder="КГАОУ «Школа космонавтики», г. Железногорск"></div>
+    <div class="field"><label for="f-date">Дата / год</label><input id="f-date" placeholder="05.10.2026"></div>
+  </div>
+  <div class="row">
+    <div class="field"><label for="f-competition">Конкурс / мероприятие *</label><select id="f-competition">
+      <option value="">— выбери или впиши свой —</option>
+      <option>Национальная технологическая олимпиада (НТО)</option>
+      <option>Всероссийский конкурс «Большие вызовы»</option>
+      <option>Программа «Шаг в будущее»</option>
+      <option>Инженерная олимпиада «Гранит науки»</option>
+      <option>Олимпиада «Физтех»</option>
+      <option>Московская олимпиада школьников (МОШ)</option>
+      <option>Олимпиада «Звезда» (ЮУрГУ)</option>
+      <option>Олимпиада «Ломоносов» (МГУ)</option>
+      <option>Олимпиада «Росатом»</option>
+      <option>«ТехноКубок»</option>
+      <option>Сириус.Лето: начни свой проект</option>
+      <option>Школьная / городская конференция</option>
+    </select></div>
+    <div class="field"><label for="f-nomination">Направление / номинация / трек</label><input id="f-nomination" placeholder="например: «Беспилотный транспорт» или «Исследовательский трек»"><div class="hint">Трек/направление внутри конкурса (у НТО — «Беспилотный транспорт», у «Больших вызовов» — «Когнитивные исследования» и т.п.). Посмотри памятку конкурса в папке «Памятки» курса.</div></div>
+  </div>
+  <div class="field"><label for="f-type">Тип проекта</label><select id="f-type">
+    <option value="">— выбери —</option>
+    <option>Прикладной (создаю продукт)</option>
+    <option>Инженерно-конструкторский</option>
+    <option>Исследовательский</option>
+    <option>Информационный / медиа</option>
+    <option>Социальный</option>
+    <option>Творческий</option>
+  </select><div class="hint">Что ты в основном делаешь: создаёшь вещь (прикладной/инженерный), изучаешь (исследовательский), делаешь материал или событие для людей (информационный/социальный/творческий).</div></div>
+</div>
+
+<!-- ============ ПРОБЛЕМА И ЦЕЛЬ ============ -->
+<div class="pcard">
+  <h2>2 · Проблема, цель и задачи</h2>
+  <div class="field"><label for="f-problem">Актуальность / проблема *</label><textarea id="f-problem" placeholder="Почему это важно? Какая проблема у людей/организации, которую решает проект? Опиши 2–3 предложения."></textarea><div class="hint">Кому неудобно и что именно не так? Назови конкретных людей и добавь «почему» (цифру или наблюдение). Метод «5 почему»: спрашивай себя «почему?» 3–5 раз, пока не дойдёшь до настоящей причины. Пример: «Ученики 1 класса носят рюкзаки до 5 кг при норме 10% веса — у 70% вес выше нормы».</div></div>
+  <div class="field"><label for="f-goal">Цель *</label><textarea id="f-goal" placeholder="По формуле SMART: «Создать ______ для ______, чтобы ______ к ______»"></textarea><div class="hint">Формула: «Создать (продукт) для (кто) , чтобы (польза) к (срок)». S — конкретно («создать», а не «улучшить»), M — измеримо (есть число), A — достижимо, R — связано с проблемой, T — есть срок. Пример: «Создать прототип умной парты для первоклассников, чтобы снизить вес рюкзака, к 15 марта».</div></div>
+  <div class="field"><label for="f-tasks">Задачи (3–5) *</label><textarea id="f-tasks" placeholder="1. Узнать…&#10;2. Разработать…&#10;3. Собрать…&#10;4. Протестировать…&#10;5. Оформить…"></textarea><div class="hint">Шаги к цели по схеме «узнать → разработать → сделать → протестировать → оформить». У каждой задачи — результат и срок: «1. Изучить 5 аналогов (октябрь). 2. Сделать эскизы (ноябрь). 3. Собрать прототип (янв–фев). 4. Протестировать на 10 учениках (март). 5. Оформить (апрель)». Больше 5 задач — сократи; каждая = один понятный результат.</div></div>
+  <div class="field"><label for="f-result-metric">Измеримый результат (критерии успеха)</label><textarea id="f-result-metric" placeholder="Например: прототип + тест на 10 пользователях + обзор 5 аналогов"></textarea><div class="hint">Что можно посчитать, чтобы понять, что цель достигнута: число, процент, количество. «Прототип + тест на 10 учениках + обзор 5 аналогов + фото до/после». Если в цели нет числа — добавь его сюда.</div></div>
+</div>
+
+<!-- ============ ПРОДУКТ ============ -->
+<div class="pcard">
+  <h2>3 · Продукт и его форма</h2>
+  <div class="row">
+    <div class="field"><label for="f-product-form">Форма продукта</label><select id="f-product-form">
+      <option value="">— выбери —</option>
+      <option>Модель / прототип</option>
+      <option>Программа / приложение / сайт</option>
+      <option>Устройство / электроника</option>
+      <option>Инженерная конструкция</option>
+      <option>Исследование (отчёт)</option>
+      <option>Печатный / видео-материал</option>
+      <option>Игра / симулятор</option>
+      <option>Мероприятие / событие</option>
+    </select></div>
+    <div class="field"><label for="f-mvp">Минимальная версия (MVP)</label><input id="f-mvp" placeholder="Что можно показать/потрогать уже сейчас?"></div>
+  </div>
+  <div class="field"><label for="f-product-desc">Описание продукта *</label><textarea id="f-product-desc" placeholder="Что это? Как устроено? Из чего состоит? Чем полезно?"></textarea><div class="hint">Опиши так, будто рассказываешь другу: «Это коробка с датчиком, которая…», «Это страница, где можно…». 3–5 предложений: что это, как устроено, что умеет, чем полезно.</div></div>
+  <div class="field"><label for="f-tech">Технологии / инструменты</label><input id="f-tech" placeholder="Blender, Arduino, Unity, Python…"><div class="hint">Чем пользуешься при создании: программы, конструкторы, материалы. Не знаешь точно — пропусти, заполнишь на занятиях.</div></div>
+</div>
+
+<!-- ============ ПЛАН И РЕСУРСЫ ============ -->
+<div class="pcard">
+  <h2>4 · План, команда и ресурсы</h2>
+  <div class="field"><label for="f-plan">План работы (этапы и сроки)</label><textarea id="f-plan" placeholder="Этап 1 (окт–ноя): исследование и анализ аналогов&#10;Этап 2 (дек): проектирование, эскизы&#10;Этап 3 (янв–фев): создание прототипа&#10;Этап 4 (март): тестирование, доработка&#10;Этап 5 (апр): оформление, защита"></textarea><div class="hint">5 этапов по месяцам: 1) изучение, 2) эскизы/проектирование, 3) создание продукта, 4) тестирование и доработка, 5) оформление и защита. Ориентируйся на диаграмму Ганта из занятий 10–11. Первый черновик не будет идеальным — это нормально.</div></div>
+  <div class="row">
+    <div class="field"><label for="f-team">Команда / роли</label><textarea id="f-team" placeholder="Имя — роль. Кто за что отвечает? (при индивидуальном — «работаю самостоятельно»"></textarea><div class="hint">Один в проекте: «Работаю самостоятельно. Помощь педагога на занятиях курса». Вдвоём/втроём: распиши роли — «Иван — конструктор, Мария — программист, я — руководитель и тестирование», иначе в конце окажется, что всё делал один.</div></div>
+    <div class="field"><label for="f-resources">Ресурсы / бюджет</label><textarea id="f-resources" placeholder="Материалы, оборудование, ПО, консультации. Сколько и что нужно?"></textarea><div class="hint">Что нужно: материалы, оборудование, компьютер, программы, консультации. Точную смету писать не обязательно — это список «чем пользуемся». Не знаешь — напиши примерное, дополнишь.</div></div>
+  </div>
+  <div class="field"><label for="f-risks">Риски и как их снизить</label><textarea id="f-risks" placeholder="Что может пойти не так? План Б."></textarea><div class="hint">«Что может сломаться/не получиться + что сделаю тогда». Пример: «Сломается 3D-принтер → распечатаю в другом месте / заменю деталь на фанеру». Один-два настоящих риска лучше десяти выдуманных.</div></div>
+</div>
+
+<!-- ============ РЕЗУЛЬТАТ ============ -->
+<div class="pcard">
+  <h2>5 · Результат и итоги</h2>
+  <div class="row">
+    <div class="field"><label for="f-result">Что создано (итог)</label><textarea id="f-result" placeholder="Готовый продукт: что именно?"></textarea><div class="hint">Заполняется в конце проекта. Назови продукт точно: «Рабочий прототип + инструкция». Добавь фото в приложения.</div></div>
+    <div class="field"><label for="f-testing">Тестирование / проверка</label><textarea id="f-testing" placeholder="Кто и как проверял? На сколько пользователях? Что показало?"></textarea><div class="hint">КТО проверял, СКОЛЬКО человек, ЧТО показало: «Протестировал на 10 первоклассниках; 8 из 10 сказали, что удобнее». Ещё не проводил — так и напиши, что планируешь, и обязательно проведи.</div></div>
+  </div>
+  <div class="row">
+    <div class="field"><label for="f-conclusion">Выводы / что дал проект</label><textarea id="f-conclusion" placeholder="Что узнал, чему научился, что бы сделал иначе?"></textarea><div class="hint">2–3 честных предложения: что узнал, чему научился, что бы сделал иначе. Жюри ценит честные выводы больше, чем «всё получилось».</div></div>
+    <div class="field"><label for="f-perspective">Перспективы развития</label><textarea id="f-perspective" placeholder="Что дальше? Как улучшить?"></textarea><div class="hint">Одна идея — уже хорошо: «Дальше можно добавить датчик освещённости / сделать приложение / подать на конкурс».</div></div>
+  </div>
+  <div class="field"><label for="f-sources">Источники / литература</label><textarea id="f-sources" placeholder="Список использованных источников (по ГОСТ)."></textarea><div class="hint">Всё, чем пользовался: книги, сайты, видео, консультации. 3–5 достаточно. Записывай источники сразу по ходу работы — к концу года забудешь.</div></div>
+</div>
+
+<!-- ============ ПРИЛОЖЕНИЯ ============ -->
+<div class="pcard">
+  <h2>6 · Приложения и проверка</h2>
+  <div class="row">
+    <div class="field"><label for="f-attachments">Список приложений</label><textarea id="f-attachments" placeholder="Приложение 1 — скетчи&#10;Приложение 2 — скриншоты&#10;Приложение 3 — отзыв тестера"></textarea><div class="hint">Приложения — доказательства работы: эскизы, скриншоты, фото прототипа, отзыв тестера, таблица измерений. Каждое подпиши. Лучше 5 настоящих приложений, чем 10 формальных.</div></div>
+    <div class="field"><label for="f-presentation">Презентация / ссылки</label><textarea id="f-presentation" placeholder="Ссылки на презентацию, видео, репозиторий"></textarea><div class="hint">Ссылки, по которым жюри увидит продукт: презентация, видео, репозиторий, онлайн-версия. Проверь, что ссылки открываются без VPN (правило ТЛ).</div></div>
+  </div>
+  <div class="check">
+    <b>Чек-лист готовности (отметь галочками):</b><br>
+    <label><input type="checkbox" id="chk-topic"> Тема сформулирована и интересна не только мне</label><br>
+    <label><input type="checkbox" id="chk-goal"> Цель по SMART, есть измеримый результат</label><br>
+    <label><input type="checkbox" id="chk-plan"> Есть план с этапами и сроками</label><br>
+    <label><input type="checkbox" id="chk-product"> Продукт существует (прототип / готов)</label><br>
+    <label><input type="checkbox" id="chk-test"> Тестирование проведено</label><br>
+    <label><input type="checkbox" id="chk-refl"> Рефлексия заполнена</label>
+  </div>
+</div>
+
+<footer style="color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2rem;padding-top:.8rem">
+  <p>Паспорт проекта · универсальный шаблон · Технологическая лаборатория. Все данные хранятся локально в браузере ученика.</p>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+  var KEY='pdn-passport-universal-v1';
+  var FIELDS=['f-topic','f-author','f-teacher','f-class','f-school','f-date','f-competition','f-nomination','f-type','f-problem','f-goal','f-tasks','f-result-metric','f-product-form','f-mvp','f-product-desc','f-tech','f-plan','f-team','f-resources','f-risks','f-result','f-testing','f-conclusion','f-perspective','f-sources','f-attachments','f-presentation'];
+  var CHECKS=['chk-topic','chk-goal','chk-plan','chk-product','chk-test','chk-refl'];
+
+  function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function lsSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+  function lsDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+  function el(id){ return document.getElementById(id); }
+  function val(id){ var e=el(id); return e ? e.value : ''; }
+
+  // ---------- Профиль (из курса ПН) ----------
+  var CUKEY="pdn-course-active", PFKEY="pdn-course-users";
+  function me(){ try{ var s=JSON.parse(lsGet(CUKEY)||"null"); if(!s||!s.uid) return null; var a=JSON.parse(lsGet(PFKEY)||"[]"); return a.find(function(p){return String(p.uid)===String(s.uid);})||null; }catch(e){ return null; } }
+  var user=me();
+  var whoLine=el("whoLine");
+  if(whoLine){ whoLine.textContent=user ? ("Профиль: "+user.name+(user.klass?" · "+user.klass:"")+(user.teacher?" · учитель: "+user.teacher:"")) : "Без входа: заполняй вручную — данные сохранятся на этом устройстве."; }
+  if(!user){ el("needAuth").style.display="block"; }
+
+  // ---------- Сохранение ----------
+  function collect(){
+    var d={};
+    FIELDS.forEach(function(id){ d[id]=val(id); });
+    CHECKS.forEach(function(id){ var e=el(id); d[id]=e?e.checked:false; });
+    return d;
+  }
+  function restore(){
+    var raw=lsGet(KEY); if(!raw) return;
+    var d={}; try{ d=JSON.parse(raw); }catch(e){ return; }
+    FIELDS.forEach(function(id){ var e=el(id); if(e && d[id]!==undefined) e.value=d[id]; });
+    CHECKS.forEach(function(id){ var e=el(id); if(e && d[id]!==undefined) e.checked=!!d[id]; });
+  }
+  function saveAll(){ lsSet(KEY, JSON.stringify(collect())); updateProgress(); }
+
+  function showMsg(t, kind){
+    var m=el("statusMsg");
+    if(!m) return;
+    m.style.display="block";
+    m.style.background=kind==="ok" ? "var(--pr-soft)" : "var(--def-soft)";
+    m.style.borderLeftColor=kind==="ok" ? "var(--pr)" : "var(--def)";
+    m.textContent=t;
+    clearTimeout(m._t);
+    m._t=setTimeout(function(){ m.style.display="none"; },3500);
+  }
+
+  // ---------- Автозаполнение из рабочих листов курса (если есть) ----------
+  function importFromLessons(){
+    var uid = user ? user.uid : null;
+    function readJson(base){ var k = uid ? (base+"-u"+uid) : base; var raw=lsGet(k); try{ return raw?JSON.parse(raw):null; }catch(e){ return null; } }
+    var z5=readJson("pdn-z5-smart-v1"), z7=readJson("pdn-z7-goal-v1"), z16=readJson("pdn-z16-form-v1"), z20=readJson("pdn-z20-intro-v1"), z24=readJson("pdn-z24-main-v1");
+    var auto={};
+    if(z7 && (z7["f-topic"]||z20 && z20["f-topic"])) auto["f-topic"] = (z7["f-topic"]||z20["f-topic"]||"");
+    else if(z5 && z5["f-topic"]) auto["f-topic"]=z5["f-topic"];
+    if(user){ auto["f-author"]=user.name||""; auto["f-class"]=user.klass||""; auto["f-teacher"]=user.teacher||""; }
+    if(z5 && z5["f-name"]) auto["f-author"]=auto["f-author"]||z5["f-name"];
+    if(z7 && z7["b-goal"]) auto["f-goal"]=z7["b-goal"];
+    else if(z5 && z5["b-goal"]) auto["f-goal"]=z5["b-goal"];
+    if(z7 && z7["b-result"]) auto["f-result-metric"]=z7["b-result"];
+    if(z24 && z24["g-product"]) auto["f-result"]=z24["g-product"];
+    if(z16 && z16["f-mvp"]) auto["f-mvp"]=z16["f-mvp"];
+    return auto;
+  }
+  // Заполняем незаполненные поля из занятий (не затираем ручной ввод)
+  function autofillOnce(){
+    var auto=importFromLessons();
+    Object.keys(auto).forEach(function(id){
+      var e=el(id);
+      if(e && !String(e.value||"").trim()) e.value=auto[id];
+    });
+    saveAll();
+  }
+
+  // ---------- Экспорт / импорт ----------
+  function exportJSON(){
+    var d=collect(); d.meta={ type:"passport-project-universal", version:1, exported: new Date().toISOString(), author: val("f-author")||(user?user.name:"") };
+    var blob=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});
+    var a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+    a.download="Паспорт-проекта-"+( (val("f-author")||(user?user.name:"проект")).replace(/\s+/g,"-") )+".json";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    showMsg("Файл JSON выгружен.","ok");
+  }
+  window.exportJSON=exportJSON;
+  function importJSON(input){
+    var file=input.files && input.files[0]; if(!file) return;
+    var r=new FileReader();
+    r.onload=function(){
+      try{
+        var d=JSON.parse(r.result);
+        FIELDS.forEach(function(id){ var e=el(id); if(e && d[id]!==undefined) e.value=d[id]; });
+        CHECKS.forEach(function(id){ var e=el(id); if(e && d[id]!==undefined) e.checked=!!d[id]; });
+        saveAll(); showMsg("Паспорт загружен из файла.","ok");
+      }catch(e){ showMsg("Не удалось прочитать файл JSON.","err"); }
+    };
+    r.readAsText(file);
+    input.value="";
+  }
+  window.importJSON=importJSON;
+
+  // ---------- Прогресс заполнения ----------
+  function updateProgress(){
+    var d=collect();
+    var filled=FIELDS.filter(function(id){ return String(d[id]||"").trim(); }).length;
+    var pct=Math.round(filled/FIELDS.length*100);
+    var bar=el("progBar"); if(bar) bar.style.width=pct+"%";
+  }
+
+  // ---------- Очистка ----------
+  function clearAll(){
+    if(!confirm("Очистить весь паспорт на этом устройстве?")) return;
+    FIELDS.forEach(function(id){ var e=el(id); if(e) e.value=""; });
+    CHECKS.forEach(function(id){ var e=el(id); if(e) e.checked=false; });
+    lsDel(KEY); updateProgress();
+    showMsg("Паспорт очищен.","ok");
+  }
+  window.clearAll=clearAll;
+  window.saveAll=saveAll;
+
+  // ---------- Модалка «Как заполнять?» ----------
+  function openGuide(){ var m=el("guideModal"); if(m) m.classList.add("open"); document.body.style.overflow="hidden"; }
+  function closeGuide(){ var m=el("guideModal"); if(m) m.classList.remove("open"); document.body.style.overflow=""; }
+  window.openGuide=openGuide;
+  window.closeGuide=closeGuide;
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape") closeGuide(); });
+
+  // ---------- Автосохранение при вводе ----------
+  FIELDS.forEach(function(id){ var e=el(id); if(e) e.addEventListener("input", function(){ saveAll(); }); });
+  CHECKS.forEach(function(id){ var e=el(id); if(e) e.addEventListener("change", function(){ saveAll(); }); });
+
+  // ---------- Старт ----------
+  restore();
+  autofillOnce();
+  updateProgress();
+})();
+</script>
+</body>
+</html>

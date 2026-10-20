@@ -3,88 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Методичка занятия 11 · Следование по линии (пороговый алгоритм) · Робототехника (LEGO EV3)</title>
+<title>Методичка занятия 11 · Программа «Следование по линии»: один датчик цвета, пороговый алгоритм · Робототехника (LEGO EV3)</title>
 <!-- Сквозная система ТЛ (общий кабинет с порталом) -->
 <script src="../tl-portal-core.js"></script>
 <script src="../tl-bridge.js"></script>
 <script>try { if (window.TLCore) TLCore.init(); if (window.TLBridge) TLBridge.init({ total: 28 }); } catch (e) { console.error("tl-bridge init error", e); }</script>
-<style>:root { --bg:#fff; --ink:#1B2A4A; --muted:#5A6B85; --accent:#1F6FE0; --accent-soft:#EAF2FD; --vr:#4D008C; --vr-soft:#F0EBF5; --line:#D9E2EF; --pr:#167A4D; --pr-soft:#E7F4EE; } * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; } .wrap { max-width:860px; margin:0 auto; padding:2rem 1.25rem 3rem; } header .kicker { color:var(--accent); font-weight:700; font-size:.82rem; text-transform:uppercase; letter-spacing:.05em; } header h1 { font-size:1.6rem; line-height:1.25; margin:.2rem 0 .3rem; } .meta { color:var(--muted); font-size:.9rem; } .lead { background:var(--accent-soft); border-left:4px solid var(--accent); border-radius:0 8px 8px 0; padding:.85rem 1.05rem; margin:1.2rem 0; } h2 { font-size:1.15rem; border-bottom:1px solid var(--line); padding-bottom:.35rem; margin:1.5rem 0 .7rem; } .mt-step { display:flex; gap:.8rem; border:1px solid var(--line); border-radius:12px; padding:.7rem .9rem; background:#fbfcfe; margin-bottom:.6rem; } .mt-num { flex:0 0 2rem; height:2rem; border-radius:50%; background:var(--accent); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; } .mt-body b { display:block; margin-bottom:.25rem; font-size:.98rem; } .mt-body .act { background:var(--accent-soft); border-radius:8px; padding:.45rem .6rem; margin:.25rem 0; font-size:.92rem; } .mt-body .res { background:var(--pr-soft); border-radius:8px; padding:.45rem .6rem; margin:.25rem 0; font-size:.92rem; } .tag-act { display:inline-block; background:var(--accent); color:#fff; font-size:.68rem; font-weight:800; border-radius:6px; padding:.05rem .45rem; margin-right:.4rem; vertical-align:1px; } .tag-res { display:inline-block; background:var(--pr); color:#fff; font-size:.68rem; font-weight:800; border-radius:6px; padding:.05rem .45rem; margin-right:.4rem; vertical-align:1px; } .donecheck { background:var(--pr-soft); border-left:4px solid var(--pr); border-radius:0 8px 8px 0; padding:.7rem .9rem; margin:1rem 0; } .donecheck b { color:var(--pr); } .donecheck ul { margin:.4rem 0 0; padding-left:1.1rem; } .tip { background:var(--vr-soft); border-left:4px solid var(--vr); border-radius:0 8px 8px 0; padding:.7rem .9rem; margin:1rem 0; font-size:.9rem; } .tip b { color:var(--vr); } footer { color:var(--muted); font-size:.82rem; border-top:1px solid var(--line); margin-top:2rem; padding-top:.7rem; } footer a { color:var(--accent); }
-/* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== *//* ===== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ И ПЛАНШЕТОВ ===== */
-img, svg, video, canvas { max-width: 100%; height: auto; }
-pre, code, .code, textarea { max-width: 100%; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
-table { max-width: 100%; }
-.tbl-wrap, .tbl-scroll, .table-wrap, .tw, .asso-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-h1 { word-wrap: break-word; overflow-wrap: break-word; }
-h2, h3, p, li, div, span, a, button, input, select, textarea, label { overflow-wrap: break-word; }
-input, select, textarea, button, a.btn { font-size: 16px; }
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-body { overflow-x: hidden; }
-
-@media (max-width: 900px) {
-  .grid2, .grid3, .duo-grid, .motiv-grid, .cols3, .labs-grid, .rev-grid, .grid { grid-template-columns: 1fr !important; }
-  .refs, .struct, .two-col, .grid2, .grid3 { grid-template-columns: 1fr !important; }
-  .mod.open .mod-b { grid-template-columns: 1fr !important; }
-  .mod-b > .ph, .mod-b .ph { min-height: 180px; }
-  footer .frow, .bar, .nav, .top .bar { flex-wrap: wrap; }
-  .hero { padding: 40px 0 28px; }
-}
-@media (max-width: 640px) {
-  .wrap, main, .page { padding-left: 14px !important; padding-right: 14px !important; }
-  h1 { font-size: 1.7rem !important; }
-  h2 { font-size: 1.35rem !important; }
-  .hero h1 { font-size: 1.8rem !important; line-height: 1.1 !important; }
-  .btns, .cta-row, .final-cta, .actions, .cta .btn { flex-wrap: wrap; }
-  .btn, .btn-lg { width: auto; padding: 11px 16px; }
-  th, td { padding: 8px 6px; font-size: 13px; }
-  .lab-card { min-height: 170px !important; padding: 18px 14px !important; }
-  .card, .rev, .trainer, .mod-h, .step { padding: 14px !important; }
-  .avatar { width: 52px !important; height: 52px !important; font-size: 18px !important; }
-  .lab-strip { gap: 10px; justify-content: center; }
-  .lab-dot { width: 64px; }
-  .lab-dot .ring { width: 44px; height: 44px; }
-  .nav .tabs { width: 100%; justify-content: center; order: 3; overflow-x: auto; }
-  .nav-info { display: none; }
-  .trainer, .mentor { flex-direction: column; align-items: flex-start; }
-  details.lab { padding: 10px 12px; }
-}
-@media (max-width: 420px) {
-  .hero h1 { font-size: 1.5rem !important; }
-  .lab-dot { width: 52px; }
-  .lab-dot .ring { width: 38px; height: 38px; }
-  .lab-dot .lname { font-size: 8px; }
-  .kpi-band, .kpis { grid-template-columns: 1fr 1fr !important; }
-  .kpi b { font-size: 24px !important; }
-}
-/* ==== Курсы: карты, шаги, код, навигация (до 900px) ==== */
-@media (max-width: 900px) {
-.ig-step { min-width: 0 !important; flex: 1 1 calc(50% - .4rem) !important; }
-.ig-steps { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: .45rem !important; }
-.ig-step b { font-size: .8rem !important; }
-.ig-step span { font-size: .72rem !important; }
-.step-card { min-width: 0 !important; }
-.files-panel { width: 100% !important; border-left: 0 !important; border-top: 1px solid var(--line) !important; }
-.edwrap { flex-direction: column !important; }
-.alt-editor { flex-direction: column !important; }
-.alt-sep { display: none !important; }
-.edbox textarea, .edbox pre { min-height: 180px !important; font-size: 13px !important; }
-.role-tabs, .mode-tabs, .mtab, .rtab { flex-wrap: wrap !important; }
-.auth .fields { grid-template-columns: 1fr !important; }
-.nav-crumb, .crumb, .lesson-nav { flex-wrap: wrap !important; }
-}
-@media (max-width: 480px) {
-.ig-steps { grid-template-columns: 1fr !important; }
-.ig-step { flex: 1 1 100% !important; }
-}
-</style>
+<style>:root { --bg:#fff; --ink:#1B2A4A; --muted:#5A6B85; --accent:#1F6FE0; --accent-soft:#EAF2FD; --vr:#4D008C; --vr-soft:#F0EBF5; --line:#D9E2EF; --pr:#167A4D; --pr-soft:#E7F4EE; } * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; } .wrap { max-width:860px; margin:0 auto; padding:2rem 1.25rem 3rem; } header .kicker { color:var(--accent); font-weight:700; font-size:.82rem; text-transform:uppercase; letter-spacing:.05em; } header h1 { font-size:1.5rem; line-height:1.25; margin:.2rem 0 .3rem; } .meta { color:var(--muted); font-size:.9rem; } .lead { background:var(--accent-soft); border-left:4px solid var(--accent); border-radius:0 8px 8px 0; padding:.85rem 1.05rem; margin:1.2rem 0; } h2 { font-size:1.15rem; border-bottom:1px solid var(--line); padding-bottom:.35rem; margin:1.5rem 0 .7rem; } .mt-step { display:flex; gap:.8rem; border:1px solid var(--line); border-radius:12px; padding:.7rem .9rem; background:#fbfcfe; margin-bottom:.6rem; } .mt-num { flex:0 0 2rem; height:2rem; border-radius:50%; background:var(--accent); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; } .mt-body b { display:block; margin-bottom:.25rem; font-size:.98rem; } .mt-body .act { background:var(--accent-soft); border-radius:8px; padding:.45rem .6rem; margin:.25rem 0; font-size:.92rem; } .mt-body .res { background:var(--pr-soft); border-radius:8px; padding:.45rem .6rem; margin:.25rem 0; font-size:.92rem; } .tag-act { display:inline-block; background:var(--accent); color:#fff; font-size:.68rem; font-weight:800; border-radius:6px; padding:.05rem .45rem; margin-right:.4rem; vertical-align:1px; } .tag-res { display:inline-block; background:var(--pr); color:#fff; font-size:.68rem; font-weight:800; border-radius:6px; padding:.05rem .45rem; margin-right:.4rem; vertical-align:1px; } .donecheck { background:var(--pr-soft); border-left:4px solid var(--pr); border-radius:0 8px 8px 0; padding:.7rem .9rem; margin:.9rem 0; font-size:.9rem; } .donecheck b { color:var(--pr); } .donecheck ul { margin:.4rem 0 0; padding-left:1.1rem; } .tip { background:var(--vr-soft); border-left:4px solid var(--vr); border-radius:0 8px 8px 0; padding:.7rem .9rem; margin:.9rem 0; font-size:.9rem; } .tip b { color:var(--vr); } footer { color:var(--muted); font-size:.85rem; border-top:1px solid var(--line); padding-top:.8rem; margin-top:1.5rem; } footer a { color:var(--accent); }</style>
+<style>img,svg,video,canvas{max-width:100%;height:auto}pre,code,.code,textarea{max-width:100%;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word}table{max-width:100%}.tbl-wrap,.tbl-scroll,.table-wrap,.tw{overflow-x:auto}h1{word-wrap:break-word;overflow-wrap:break-word}h2,h3,p,li,div,span,a,button,input,select,textarea,label{overflow-wrap:break-word}body{overflow-x:hidden}@media(max-width:640px){.wrap,main,.page{padding-left:14px!important;padding-right:14px!important}h1{font-size:1.35rem!important}}</style>
 </head>
 <body>
 <main class="wrap">
-<header> <p class="kicker">Технологическая лаборатория · Робототехника (LEGO EV3)</p> <h1>Методичка занятия 11 · Следование по линии (пороговый алгоритм)</h1> <p class="meta">Пошаговая инструкция: что открыть, что нажать, что должно получиться</p>
-</header> <div class="lead"><b>Это методичка для сложной темы.</b> Читай её вместе с уроком: здесь расписано по шагам, что и как делать. Если на каком-то шаге что-то пошло не так — вернись на шаг назад и повтори медленно. Не торопись.</div> <h2>Пошаговый план (делай по порядку)</h2>
-<div class="mt-step"><div class="mt-num">1</div><div class="mt-body"><b>Ставим датчик цвета</b><div class="act"><span class="tag-act">Что нажать</span>Убедись, что датчик цвета смотрит ВНИЗ (на пол) и подключён в порт 3 контроллера. Расстояние от датчика до пола — примерно 1 см (как толщина двух пальцев).</div><div class="res"><span class="tag-res">Что получится</span>Датчик «смотрит» на пол уже видео — видно светодиод-подсветку внутри датчика.</div></div></div><div class="mt-step"><div class="mt-num">2</div><div class="mt-body"><b>Измеряем белый и чёрный</b><div class="act"><span class="tag-act">Что нажать</span>В EV3 Classroom открой блок «Считывание показаний датчика цвета». Положи робота на белую часть поля и запиши число. Потом на чёрную линию и запиши число.</div><div class="res"><span class="tag-res">Что получится</span>У тебя два числа: например, белый = 80, чёрный = 10. Они сильно отличаются — датчик работает.</div></div></div><div class="mt-step"><div class="mt-num">3</div><div class="mt-body"><b>Считаем порог</b><div class="act"><span class="tag-act">Что нажать</span>Сложи два числа и раздели на 2: (80 + 10) / 2 = 45. Число 45 — твой ПОРОГ. Запиши его в тетрадь.</div><div class="res"><span class="tag-res">Что получится</span>Порог готов: если датчик видит ярче 45 — это «белое», темнее — «чёрное».</div></div></div><div class="mt-step"><div class="mt-num">4</div><div class="mt-body"><b>Собираем алгоритм</b><div class="act"><span class="tag-act">Что нажать</span>В EV3 Classroom собери цикл: внутри — блок «Если/иначе». Если яркость > порога — поворот влево на небольшой угол; иначе — вправо. Движение вперёд включено всегда.</div><div class="res"><span class="tag-res">Что получится</span>Программа готова. Логика: робот «ищет» границу между белым и чёрным и едет по ней зигзагом.</div></div></div><div class="mt-step"><div class="mt-num">5</div><div class="mt-body"><b>Тестируем на прямой</b><div class="act"><span class="tag-act">Что нажать</span>Положи робота на чёрную линию (длиной 2 м) так, чтобы датчик был на границе. Запусти программу.</div><div class="res"><span class="tag-res">Что получится</span>Робот поехал по линии, слегка поворачивая влево-вправо. Он «дрожит» — это нормально, так работает пороговый алгоритм.</div></div></div><div class="mt-step"><div class="mt-num">6</div><div class="mt-body"><b>Настраиваем скорость</b><div class="act"><span class="tag-act">Что нажать</span>Если робот слетает с линии — уменьши скорость (например, с 50% до 30%) или уменьши угол поворота.</div><div class="res"><span class="tag-res">Что получится</span>Робот стабильно едет 2 м по линии, не сходя с неё. Ты научился следованию по линии!</div></div></div> <h2>Что должно получиться (чек-лист)</h2>
+<header> <p class="kicker">Технологическая лаборатория · Робототехника (LEGO EV3)</p> <h1>Методичка занятия 11 · Программа «Следование по линии»: один датчик цвета, пороговый алгоритм</h1> <p class="meta">Пошаговая инструкция: что сделать, что должно получиться, как проверить результат</p>
+</header> <div class="lead"><b>Это методичка к занятию #11.</b> Читай её вместе с уроком: здесь расписано по шагам, что и как делать. Выполняй шаги по порядку. Если на каком-то шаге что-то пошло не так — вернись на шаг назад и повтори медленно. Не торопись.</div> <h2>Пошаговый план (делай по порядку)</h2>
+<div class="mt-step"><div class="mt-num">1</div><div class="mt-body"><b>Измеряем показания датчика</b><div class="act"><span class="tag-act">Что делать</span>Измерь показания датчика на чёрном и белом, вычисли порог (среднее).</div><div class="res"><span class="tag-res">Что получится</span>Порог вычислен — граница между чёрным и белым.</div></div></div>
+<div class="mt-step"><div class="mt-num">2</div><div class="mt-body"><b>Собираем программу</b><div class="act"><span class="tag-act">Что делать</span>Собери: моторы вперёд; белый — поворот влево, чёрный — вправо.</div><div class="res"><span class="tag-res">Что получится</span>Пороговый алгоритм следования собран.</div></div></div>
+<div class="mt-step"><div class="mt-num">3</div><div class="mt-body"><b>Тестируем на линии</b><div class="act"><span class="tag-act">Что делать</span>Проверь на прямой линии 2 м — робот должен удержаться на ней.</div><div class="res"><span class="tag-res">Что получится</span>Робот следует по линии, не сходя с неё.</div></div></div>
+<div class="mt-step"><div class="mt-num">4</div><div class="mt-body"><b>Настраиваем</b><div class="act"><span class="tag-act">Что делать</span>Настрой скорость и порог, если робот «теряет» линию.</div><div class="res"><span class="tag-res">Что получится</span>Робот стабильно держит линию 2 м.</div></div></div>
 <div class="donecheck"><b>✓ Тема освоена, когда:</b>
-<ul><li>Датчик цвета подключён в порт 3 и смотрит вниз</li><li>Измерены белый и чёрный, посчитан порог</li><li>Собрана программа с блоком «Если/иначе»</li><li>Робот проехал 2 м по линии без схода</li></ul>
-</div> <div class="tip"><b>Совет.</b> Если робот просто крутится на месте — датчик показывает стабильно один цвет (проверь порт и высоту датчика). Если мчится в сторону — порог посчитан неверно.</div> <footer>Робототехника (LEGO EV3) · занятие 11 · 2026–2027 учебный год. <a href="Занятие-11-программа-следование-по-линии-один-датчик-цвета-пороговый-алгоритм.html">← Вернуться к уроку</a></footer>
+<ul><li>Порог вычислен</li><li>Пороговый алгоритм собран</li><li>Робот едет по линии 2 м</li><li>Скорость и порог настроены</li></ul>
+</div> <div class="tip"><b>Совет.</b> Следование по линии — классика робототехники. Чем ближе порог к реальной границе, тем точнее реакция. Калибруй порог под своё поле.</div> <footer>Робототехника (LEGO EV3) · занятие 11 · 2026–2027 учебный год. <a href="Занятие-11-программа-следование-по-линии-один-датчик-цвета-пороговый-алгоритм.html">← Вернуться к уроку</a></footer>
 </main>
 </body>
 </html>
