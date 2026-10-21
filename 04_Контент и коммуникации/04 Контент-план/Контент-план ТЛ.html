@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Контент-план Технологической лаборатории</title>
+<style>
+  :root{
+    --bg:#0D0F14; --bg-card:#161921; --bg-elev:#1B1F2A; --ink:#EAECEF;
+    --muted:#8B8FA3; --line:#2A2D35; --accent:#2D7AFF; --ok:#00D68F;
+    --warn:#FFAA00; --pink:#E55FA8; --danger:#FF5C5C;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px}
+  header{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:20px}
+  h1{font-size:24px;margin:0}
+  .sub{color:var(--muted);font-size:13.5px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center}
+  .toolbar input,.toolbar select,.toolbar button{background:var(--bg-elev);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 12px;font-size:14px}
+  .toolbar button{cursor:pointer}
+  .toolbar button:hover{border-color:var(--accent)}
+  .btn-ok{background:var(--ok)!important;color:#04261a!important;font-weight:700}
+  .btn-danger{background:var(--danger);color:#fff!important}
+  .bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+  .ch{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer}
+  .ch.on{border-color:var(--accent);color:var(--accent);background:rgba(45,122,255,.12)}
+  .week-nav{display:flex;gap:8px;align-items:center;margin:6px 0 14px}
+  .week-nav button{background:var(--bg-elev);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+  .week-nav .lbl{color:var(--muted);font-size:13px;min-width:150px;text-align:center}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  .day{background:var(--bg-card);border:1px solid var(--line);border-radius:10px;padding:10px;min-height:150px}
+  .day.off{opacity:.42}
+  .day.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+  .dhead{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  .dhead b{color:var(--ink)}
+  .dslot{background:var(--bg-elev);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:7px 8px;margin-bottom:6px;font-size:12.5px;cursor:pointer;position:relative}
+  .dslot:hover{border-color:var(--accent)}
+  .dslot .title{font-weight:600;color:var(--ink);margin-bottom:2px}
+  .dslot .meta{color:var(--muted);font-size:11px}
+  .st{display:inline-block;font-size:10px;padding:1px 7px;border-radius:10px;margin-left:4px;text-transform:uppercase;letter-spacing:.03em}
+  .st.draft{background:rgba(255,170,0,.15);color:var(--warn)}
+  .st.ready{background:rgba(45,122,255,.15);color:var(--accent)}
+  .st.pub{background:rgba(0,214,143,.15);color:var(--ok)}
+  .add{background:var(--accent);border:none;color:#fff;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:14px;font-weight:600}
+  .add:hover{filter:brightness(1.1)}
+  .modal{position:fixed;inset:0;background:rgba(5,7,12,.7);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+  .modal.on{display:flex}
+  .modal-card{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:22px;width:100%;max-width:520px;max-height:90vh;overflow:auto}
+  .modal-card h2{margin:0 0 14px;font-size:18px}
+  .fld{margin-bottom:12px}
+  .fld label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:4px}
+  .fld input,.fld select,.fld textarea{width:100%;background:var(--bg-elev);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:9px 11px;font-size:14px;font-family:inherit}
+  .fld textarea{min-height:84px;resize:vertical}
+  .mrow{display:flex;gap:10px}
+  .mrow .fld{flex:1}
+  .mbtns{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+  .mbtns button{border-radius:8px;padding:9px 16px;font-size:14px;cursor:pointer;border:1px solid var(--line);background:var(--bg-elev);color:var(--ink)}
+  .mbtns .save{background:var(--ok);color:#04261a;font-weight:700;border:none}
+  .mbtns .del{background:transparent;color:var(--danger);border-color:var(--danger);margin-right:auto}
+  .hint{color:var(--muted);font-size:12.5px;margin-top:12px;line-height:1.5}
+  .sum{display:flex;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:13px;margin-bottom:8px}
+  .sum b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Контент-план Технологической лаборатории</h1>
+      <div class="sub">Публикации в чаты групп, мессенджеры и сообщество · данные хранятся в браузере (localStorage)</div>
+    </div>
+    <div class="sum">
+      <span>Записей: <b id="cCount">0</b></span>
+      <span>Черновиков: <b id="cDraft">0</b></span>
+      <span>Готово: <b id="cReady">0</b></span>
+      <span>Опубликовано: <b id="cPub">0</b></span>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <select id="fChannel">
+      <option value="">Все каналы</option>
+      <option>MAX</option><option>VK</option><option>Telegram</option><option>Сферум</option><option>Портал</option>
+    </select>
+    <select id="fAud">
+      <option value="">Все аудитории</option>
+      <option>Школьники</option><option>Родители</option><option>Сотрудники</option>
+    </select>
+    <select id="fType">
+      <option value="">Все рубрики</option>
+      <option>Анонс</option><option>Отчёт</option><option>Достижение</option><option>История успеха</option><option>Дайджест</option><option>Объявление</option><option>Поздравление</option>
+    </select>
+    <select id="fStatus">
+      <option value="">Все статусы</option>
+      <option value="draft">Черновик</option>
+      <option value="ready">Готово</option>
+      <option value="pub">Опубликовано</option>
+    </select>
+    <button class="add" onclick="openModal(null)">+ Запись</button>
+    <button id="btnWeek" class="btn-ok" onclick="toggleWeek()">Неделя / Месяц</button>
+  </div>
+
+  <div class="bar" id="typeBar"></div>
+  <div class="week-nav">
+    <button onclick="shiftWeek(-7)">←</button>
+    <span class="lbl" id="weekLbl"></span>
+    <button onclick="shiftWeek(7)">→</button>
+    <button onclick="goToday()">Сегодня</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="hint">
+    Клик по записи — редактировать. Статусы: <span class="st draft">черновик</span> <span class="st ready">готово</span> <span class="st pub">опубликовано</span>.
+    Данные: ключ <code>ck-plan-v1</code> в localStorage (как и другие данные портала — в браузере, экспорт/импорт ниже).
+  </div>
+  <div class="toolbar" style="margin-top:10px">
+    <button onclick="exportPlan()">Экспорт JSON</button>
+    <button onclick="importPlan()">Импорт JSON</button>
+    <button class="btn-danger" onclick="clearPlan()">Очистить все записи</button>
+  </div>
+  <input type="file" id="fileIn" accept=".json" style="display:none" onchange="onFile(event)">
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <h2 id="mTitle">Новая запись</h2>
+    <div class="fld"><label>Дата</label><input type="date" id="mDate"></div>
+    <div class="mrow">
+      <div class="fld"><label>Канал</label><select id="mChannel"><option>MAX</option><option>VK</option><option>Telegram</option><option>Сферум</option><option>Портал</option></select></div>
+      <div class="fld"><label>Аудитория</label><select id="mAud"><option>Школьники</option><option>Родители</option><option>Сотрудники</option></select></div>
+    </div>
+    <div class="mrow">
+      <div class="fld"><label>Рубрика</label><select id="mType"><option>Анонс</option><option>Отчёт</option><option>Достижение</option><option>История успеха</option><option>Дайджест</option><option>Объявление</option><option>Поздравление</option></select></div>
+      <div class="fld"><label>Статус</label><select id="mStatus"><option value="draft">Черновик</option><option value="ready">Готово</option><option value="pub">Опубликовано</option></select></div>
+    </div>
+    <div class="fld"><label>Заголовок</label><input id="mTitle2" placeholder="Например: Анонс занятия по БПЛА"></div>
+    <div class="fld"><label>Ссылка на черновик / готовый пост (относительный путь)</label><input id="mLink" placeholder="например: 01 Черновики/2026-10-21-анонс-бпла.html"></div>
+    <div class="fld"><label>Заметка</label><textarea id="mNote" placeholder="Что важно: факты, дедлайны, согласования"></textarea></div>
+    <div class="mbtns">
+      <button class="del" id="mDel" onclick="delEntry()">Удалить</button>
+      <button onclick="closeModal()">Отмена</button>
+      <button class="save" onclick="saveEntry()">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY="ck-plan-v1";
+  var ENTRIES=[];
+  var FILTER={ch:"",aud:"",type:"",status:""};
+  var MODE="week"; // week | month
+  var CURSOR=new Date(); CURSOR.setHours(0,0,0,0);
+  var EDIT_ID=null;
+
+  function load(){try{ENTRIES=JSON.parse(localStorage.getItem(KEY)||"[]")||[];}catch(e){ENTRIES=[];}}
+  function save(){localStorage.setItem(KEY,JSON.stringify(ENTRIES));}
+  function uid(){return "e"+Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
+  function fmt(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+
+  function startOfWeek(d){var x=new Date(d);var day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return x;}
+  function addDays(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x;}
+
+  function dayStart(d){return startOfWeek(CURSOR);}
+  function dayEnd(d){return MODE==="week"?addDays(dayStart(),6):addDays(new Date(CURSOR.getFullYear(),CURSOR.getMonth(),1),31);}
+
+  function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+  function stName(s){return s==="draft"?"черновик":s==="ready"?"готово":"опубликовано";}
+
+  function render(){
+    var days=[];
+    if(MODE==="week"){var s=startOfWeek(CURSOR);for(var i=0;i<7;i++)days.push(addDays(s,i));}
+    else{var first=new Date(CURSOR.getFullYear(),CURSOR.getMonth(),1);var n=new Date(CURSOR.getFullYear(),CURSOR.getMonth()+1,0).getDate();for(i=0;i<n;i++)days.push(new Date(first.getFullYear(),first.getMonth(),first.getDate()+i));}
+    var now=new Date();var todayS=fmt(now);
+    var grid=document.getElementById("grid");
+    grid.innerHTML="";
+    days.forEach(function(d){
+      var ds=fmt(d);
+      var cell=document.createElement("div");
+      cell.className="day"+(d.getDay()===0||d.getDay()===6?" off":"")+(ds===todayS?" today":"");
+      var names=["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
+      var head=document.createElement("div");head.className="dhead";
+      head.innerHTML="<b>"+names[(d.getDay()+6)%7]+" "+d.getDate()+"</b><span>"+(d.getMonth()+1)+"</span>";
+      cell.appendChild(head);
+      var matched=ENTRIES.filter(function(e){
+        if(e.date!==ds)return false;
+        if(FILTER.ch&&e.channel!==FILTER.ch)return false;
+        if(FILTER.aud&&e.aud!==FILTER.aud)return false;
+        if(FILTER.type&&e.type!==FILTER.type)return false;
+        if(FILTER.status&&e.status!==FILTER.status)return false;
+        return true;
+      });
+      if(matched.length===0&&ds<todayS&&MODE==="week"){/*пусто*/}
+      matched.sort(function(a,b){return (a.time||"").localeCompare(b.time||"");});
+      matched.forEach(function(e){
+        var slot=document.createElement("div");
+        slot.className="dslot";
+        slot.onclick=function(){openModal(e.id);};
+        slot.innerHTML="<div class='title'>"+esc(e.title)+" <span class='st "+esc(e.status)+"'>"+stName(e.status)+"</span></div>"+
+          "<div class='meta'>"+esc(e.channel)+" · "+esc(e.aud)+" · "+esc(e.type)+"</div>";
+        cell.appendChild(slot);
+      });
+      cell.onclickGridEmpty=null;
+      if(cell.childNodes.length===1){
+        var plus=document.createElement("div");
+        plus.style.cssText="color:var(--muted);font-size:11px;text-align:center;padding:8px 0;cursor:pointer;opacity:.6";
+        plus.textContent="+ добавить";
+        plus.onclick=function(){openModal(null,ds);};
+        cell.appendChild(plus);
+      }
+      grid.appendChild(cell);
+    });
+    var s=startOfWeek(CURSOR),e=MODE==="week"?addDays(s,6):new Date(CURSOR.getFullYear(),CURSOR.getMonth()+1,0);
+    document.getElementById("weekLbl").textContent=(MODE==="week"?"Неделя ":"Месяц ")+fmt(s)+" — "+fmt(e);
+    var c={d:0,r:0,p:0};
+    ENTRIES.forEach(function(x){if(x.status==="draft")c.d++;else if(x.status==="ready")c.r++;else c.p++;});
+    document.getElementById("cCount").textContent=ENTRIES.length;
+    document.getElementById("cDraft").textContent=c.d;
+    document.getElementById("cReady").textContent=c.r;
+    document.getElementById("cPub").textContent=c.p;
+  }
+
+  function buildTypeBar(){
+    var bar=document.getElementById("typeBar");
+    bar.innerHTML="";
+    ["Все","Анонс","Отчёт","Достижение","История успеха","Дайджест","Объявление","Поздравление"].forEach(function(t){
+      var b=document.createElement("button");
+      b.className="ch"+(FILTER.type===(t==="Все"?"":t)?" on":"");
+      b.textContent=t;
+      b.onclick=function(){FILTER.type=t==="Все"?"":t;buildTypeBar();render();};
+      bar.appendChild(b);
+    });
+  }
+
+  function openModal(id,defDate){
+    EDIT_ID=id;
+    var m=id?ENTRIES.find(function(x){return x.id===id;}):null;
+    document.getElementById("mTitle").textContent=m?"Редактировать запись":"Новая запись";
+    document.getElementById("mDate").value=m?m.date:(defDate||fmt(CURSOR));
+    document.getElementById("mChannel").value=m?m.channel:"MAX";
+    document.getElementById("mAud").value=m?m.aud:"Школьники";
+    document.getElementById("mType").value=m?m.type:"Анонс";
+    document.getElementById("mStatus").value=m?m.status:"draft";
+    document.getElementById("mTitle2").value=m?m.title:"";
+    document.getElementById("mLink").value=m?m.link:"";
+    document.getElementById("mNote").value=m?m.note:"";
+    document.getElementById("mDel").style.display=m?"inline-block":"none";
+    document.getElementById("modal").className="modal on";
+  }
+  function closeModal(){document.getElementById("modal").className="modal";}
+  function saveEntry(){
+    var title=document.getElementById("mTitle2").value.trim();
+    if(!title){alert("Введите заголовок");return;}
+    var data={id:EDIT_ID||uid(),date:document.getElementById("mDate").value,channel:document.getElementById("mChannel").value,aud:document.getElementById("mAud").value,type:document.getElementById("mType").value,status:document.getElementById("mStatus").value,title:title,link:document.getElementById("mLink").value.trim(),note:document.getElementById("mNote").value.trim()};
+    if(EDIT_ID){var i=ENTRIES.findIndex(function(x){return x.id===EDIT_ID;});if(i>=0)ENTRIES[i]=data;}
+    else ENTRIES.push(data);
+    save();closeModal();render();
+  }
+  function delEntry(){if(!EDIT_ID)return;var i=ENTRIES.findIndex(function(x){return x.id===EDIT_ID;});if(i>=0){ENTRIES.splice(i,1);save();}closeModal();render();}
+  function shiftWeek(n){CURSOR=addDays(CURSOR,n);render();}
+  function goToday(){CURSOR=new Date();CURSOR.setHours(0,0,0,0);render();}
+  function toggleWeek(){MODE=MODE==="week"?"month":"week";document.getElementById("btnWeek").textContent=MODE==="week"?"Неделя / Месяц":"Месяц / Неделя";render();}
+  function exportPlan(){var blob=new Blob([JSON.stringify(ENTRIES,null,2)],{type:"application/json"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="контент-план-тл.json";a.click();}
+  function importPlan(){document.getElementById("fileIn").click();}
+  function onFile(ev){var f=ev.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var arr=JSON.parse(r.result);if(!Array.isArray(arr))throw 0;ENTRIES=arr;save();render();alert("Импортировано записей: "+arr.length);}catch(e){alert("Не удалось прочитать файл");}};r.readAsText(f);ev.target.value="";}
+  function clearPlan(){if(!confirm("Удалить ВСЕ записи контент-плана? Это действие необратимо."))return;ENTRIES=[];save();render();}
+
+  document.addEventListener("DOMContentLoaded",function(){
+    load();buildTypeBar();render();
+    var fc=document.getElementById("fChannel"),fa=document.getElementById("fAud"),ft=document.getElementById("fType"),fs=document.getElementById("fStatus");
+    fc.onchange=function(){FILTER.ch=fc.value;render();};
+    fa.onchange=function(){FILTER.aud=fa.value;render();};
+    ft.onchange=function(){FILTER.type=ft.value;buildTypeBar();render();};
+    fs.onchange=function(){FILTER.status=fs.value;render();};
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Стиль гайд и матрица каналов ТЛ</title>
+<style>
+  :root{
+    --bg:#0D0F14; --bg-card:#161921; --bg-elev:#1B1F2A; --ink:#EAECEF;
+    --muted:#8B8FA3; --line:#2A2D35; --accent:#2D7AFF; --ok:#00D68F;
+    --warn:#FFAA00; --pink:#E55FA8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px}
+  h1{font-size:26px;margin:0 0 6px}
+  .sub{color:var(--muted);margin-bottom:24px}
+  h2{font-size:19px;border-bottom:1px solid var(--line);padding-bottom:8px;margin:32px 0 14px;color:var(--accent)}
+  h3{font-size:16px;margin:20px 0 8px;color:var(--ok)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top}
+  th{background:var(--bg-elev);font-family:ui-monospace,Consolas,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  code{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;background:var(--bg-elev);padding:1px 6px;border-radius:4px}
+  .card{background:var(--bg-card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:12px 0}
+  .card b{color:var(--accent)}
+  .tag{display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid var(--line);margin:2px 4px 2px 0;color:var(--muted)}
+  .tag.pup{color:var(--ok);border-color:rgba(0,214,143,.5)}
+  .tag.par{color:var(--warn);border-color:rgba(255,170,0,.5)}
+  .tag.staff{color:var(--pink);border-color:rgba(229,95,168,.5)}
+  .todo{background:var(--bg-elev);border-left:4px solid var(--warn);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;color:var(--muted);font-size:13.5px}
+  footer{color:var(--muted);font-size:12px;margin-top:40px;padding-top:14px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Стиль гайд и матрица каналов ТЛ</h1>
+  <p class="sub">Технологическая лаборатория · КГАОУ «Школа космонавтики», Железногорск · контент для школьников, родителей и сотрудников · актуально 21.10.2026</p>
+
+  <h2>1. Голос объединения</h2>
+  <div class="card">
+    <b>Кто мы:</b> 7 лабораторий технической направленности — робототехника, электроника, Blender, КОМПАС-3D, БПЛА, VR-разработка, проектная деятельность. Школьники 8–11 классов (14–18 лет), субботний формат, 65%+ практики, реальные продукты и выход на федеральные конкурсы.
+    <br><br>
+    <b>Ключевое сообщение:</b> «Не просто запишись — начни заниматься прямо сейчас» (слоган портала).
+    <br><br>
+    <b>Три опоры каждого поста:</b> польза (что умеет ребёнок после), факт (цифра, дата, имя), действие (что нужно сделать: записаться, прийти, посмотреть).
+  </div>
+
+  <h2>2. Два тона</h2>
+  <table>
+    <tr><th>Аудитория</th><th>Тон</th><th>Формат</th><th>Примеры</th></tr>
+    <tr>
+      <td><b>Школьники</b></td>
+      <td>Живой, короткий, на «ты», с эмодзи и карточками</td>
+      <td>2–5 предложений + до 3 карточек/фото + ссылка на портал</td>
+      <td>Анонс занятия, «итоги недели», достижения однокурсников, конкурсы</td>
+    </tr>
+    <tr>
+      <td><b>Родители</b></td>
+      <td>Деловой, уважительный, на «вы», с датами и фактами</td>
+      <td>5–8 предложений, официальный стиль, без эмодзи</td>
+      <td>Набор-2026/27, отчёты о занятиях, собрания, достижения с именами</td>
+    </tr>
+    <tr>
+      <td><b>Сотрудники</b></td>
+      <td>Оперативный, деловой</td>
+      <td>Коротко о делах: задачи, сроки, ссылки на материалы</td>
+      <td>Напоминания о задачах, итоги недели, объявления</td>
+    </tr>
+  </table>
+
+  <h2>3. Матрица каналов</h2>
+  <table>
+    <tr><th>Канал</th><th>Аудитория</th><th>Формат</th><th>Частота</th><th>Особенности</th></tr>
+    <tr><td><b>MAX</b> (основной чат мессенджера)</td><td>Школьники</td><td>Короткие анонсы, напоминания, опросы</td><td>2–3 раза в неделю</td><td>Быстрые сообщения; карточки-сетки; ссылки на портал</td></tr>
+    <tr><td><b>VK</b> (сообщество)</td><td>Родители + школьники</td><td>Посты с фото и историями успеха</td><td>2–4 поста в месяц</td><td>Фотоотчёты, достижения, набор, «живой контент»; обязателен #ТехЛаб</td></tr>
+    <tr><td><b>Telegram</b></td><td>Сотрудники + родители</td><td>Оперативные объявления, дайджесты</td><td>По событиям</td><td>Официальные объявления; короткие ссылки</td></tr>
+    <tr><td><b>Сферум</b></td><td>Родители (официально)</td><td>Объявления, собрания, документы</td><td>По событиям</td><td>Официальный тон; подтверждённые факты</td></tr>
+  </table>
+
+  <h2>4. Рубрики контента</h2>
+  <table>
+    <tr><th>Рубрика</th><th>Что это</th><th>Для кого</th><th>Частота</th></tr>
+    <tr><td>Анонс</td><td>Занятие, событие, конкурс, даты набора, дедлайны</td><td>Школьники + родители</td><td>По событиям</td></tr>
+    <tr><td>Отчёт о занятии</td><td>Что делали, что получилось, фото</td><td>Родители + школьники</td><td>Еженедельно (по лабораториям)</td></tr>
+    <tr><td>Достижение</td><td>Победы учеников: НТО, РобоФест, ВсОШ, «Большие вызовы», WRO</td><td>Все</td><td>По факту</td></tr>
+    <tr><td>История успеха</td><td>Профиль ученика: путь от первого занятия до победы</td><td>Родители</td><td>1–2 раза в месяц</td></tr>
+    <tr><td>Дайджест недели</td><td>Сводка: занятия, события, ссылки</td><td>Все</td><td>Еженедельно (пятница)</td></tr>
+    <tr><td>Официальное объявление</td><td>Набор, собрания, изменения расписания</td><td>Родители + сотрудники</td><td>По факту</td></tr>
+    <tr><td>Поздравление</td><td>Праздники, дни рождения</td><td>Школьники</td><td>По факту</td></tr>
+  </table>
+
+  <h2>5. Правила (коротко)</h2>
+  <ul>
+    <li><b>Факты:</b> только из проверенных материалов проекта; даты конкурсов сверять (этапы ВсОШ, НТО, «Большие вызовы»).</li>
+    <li><b>Ссылки:</b> только открывающиеся в РФ без VPN; проверять каждую перед публикацией.</li>
+    <li><b>Файлы:</b> на русском, без «-» и «_» между словами.</li>
+    <li><b>Хэштеги:</b> #ТехЛаб всегда; тематические — по событию (#Робототехника, #БПЛА, #НТО).</li>
+    <li><b>Цвета:</b> фирменные тёмные тона портала (#0D0F14 фон, #2D7AFF акцент), изображения — 1:1 или 16:9.</li>
+    <li><b>Фотографии детей:</b> только с письменного согласия родителей (политика ПДн); без согласия — без лиц.</li>
+    <li><b>Публикация:</b> чат Д готовит текст и отдаёт методисту (владелец задачи «Ведение соцсетей и портала»).</li>
+  </ul>
+
+  <div class="todo">Рабочий поток: черновик в «04_Контент и коммуникации/01 Черновики» → шаблон из «03 Шаблоны» → согласование → готовый пост в «02 Готовые посты» → учет в «04 Контент-план» → публикация методистом.</div>
+
+  <footer>Сформировано чатом «Д · Контент и коммуникации» · 21.10.2026</footer>
+</div>
+</body>
+</html>
