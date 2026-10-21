@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Календарь постов на 3 недели — Технологическая лаборатория</title>
+<style>
+  :root{
+    --bg:#0D0F14; --bg-card:#161921; --bg-elev:#1B1F2A; --ink:#EAECEF;
+    --muted:#8B8FA3; --line:#2A2D35; --accent:#2D7AFF; --ok:#00D68F;
+    --warn:#FFAA00; --pink:#E55FA8; --danger:#FF5C5C;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .wrap{max-width:1120px;margin:0 auto;padding:26px 20px 60px}
+  .kicker{color:var(--accent);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}
+  h1{font-size:26px;margin:6px 0 4px}
+  .sub{color:var(--muted);margin-bottom:20px}
+  h2{font-size:19px;border-bottom:1px solid var(--line);padding-bottom:8px;margin:30px 0 12px;color:var(--accent)}
+  h3{font-size:15.5px;margin:16px 0 6px}
+  .week{background:var(--bg-card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:14px 0}
+  .week-h{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:10px}
+  .week-h b{font-size:16px;color:var(--ok)}
+  .week-h span{color:var(--muted);font-size:12.5px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+  th{background:var(--bg-elev);font-family:ui-monospace,Consolas,monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  td.date{white-space:nowrap;font-weight:700;color:var(--accent);width:86px}
+  .rub{display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;white-space:nowrap}
+  .r-anons{background:rgba(45,122,255,.15);color:var(--accent)}
+  .r-quiz{background:rgba(229,95,168,.15);color:var(--pink)}
+  .r-digest{background:rgba(0,214,143,.15);color:var(--ok)}
+  .r-edu{background:rgba(255,170,0,.15);color:var(--warn)}
+  .r-news{background:rgba(255,92,92,.15);color:var(--danger)}
+  .r-ach{background:rgba(255,255,255,.12);color:var(--ink)}
+  .r-events{background:rgba(0,214,143,.25);color:var(--ok)}
+  .r-question{background:rgba(45,122,255,.25);color:#7FB0FF}
+  .act{color:var(--muted);font-size:12px}
+  .act li{margin:2px 0}
+  .cmd{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;background:var(--bg-elev);padding:2px 7px;border-radius:5px;color:var(--ok);white-space:nowrap}
+  .card{background:var(--bg-card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:13px 16px;margin:12px 0}
+  .card.green{border-left-color:var(--ok)}
+  .card.warn{border-left-color:var(--warn)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .tbl-scroll{overflow-x:auto}
+  .done{color:var(--muted);opacity:.75}
+  footer{color:var(--muted);font-size:12px;margin-top:36px;padding-top:14px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Чат Д · Контент и коммуникации</div>
+  <h1>Календарь постов на 3 недели</h1>
+  <p class="sub">21.10 – 08.11.2026 · с учётом расписания лабораторий (суббота — пиковый день), дедлайна НТО (22.10) и встречи с АО «ИСС» (чт 22.10, 18:15, каб. 301) · в конце — команды и автоматизация</p>
+
+  <div class="card warn">
+    <b>Ближайшие жёсткие даты:</b>
+    <ul style="margin:6px 0 0">
+      <li><b>Чт 22.10, 18:15, каб. 301</b> — встреча с АО «ИСС» (анонс уже отправлен; нужен пост-напоминание днём).</li>
+      <li><b>Чт 22.10</b> — дедлайн регистрации на НТО (ntcontest.ru): пост-призыв вечером, после встречи ИСС — «успей зарегистрироваться».</li>
+      <li>Субботы 24.10 / 31.10 / 07.11 — занятия по расписанию (напоминания + фото-отчёты).</li>
+      <li>Пт 23.10 — итоги первой викторины со сладким призом.</li>
+    </ul>
+  </div>
+
+  <h2>Неделя 1 · 21.10 (ср) – 25.10 (вс)</h2>
+  <div class="week">
+    <div class="week-h"><b>Стартовая неделя</b><span>викторина + ИСС + НТО + первая суббота</span></div>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Дата</th><th>Рубрика</th><th>Тема (про что)</th><th>Предварительно сделать</th><th>Команда</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="date">Ср 21.10<br>18:00</td>
+          <td><span class="rub r-quiz">Викторина</span></td>
+          <td>Старт недельной викторины со сладким призом. Тема: «Спутники и связь» (к встрече с ИСС). Вопрос открытый, ответы до пт 18:00.</td>
+          <td class="act"><ul><li>Подготовить вопрос и 4 варианта</li><li>Назначить приз и правило победителя</li><li>Проверить формулировку</li></ul></td>
+          <td><span class="cmd">«викторина на эту среду: тема спутники»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Чт 22.10<br>12:00</td>
+          <td><span class="rub r-anons">Анонс</span></td>
+          <td>Напоминание о встрече с ИСС сегодня в 18:15, каб. 301 (2 команды · робототехника и БПЛА · проектные темы).</td>
+          <td class="act"><ul><li>Проверить, что расписание суббот не пересекается</li><li>Согласовать с методистом факт встречи</li></ul></td>
+          <td><span class="cmd">«напоминание про ИСС на четверг»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Чт 22.10<br>19:00</td>
+          <td><span class="rub r-news">Призыв</span></td>
+          <td>«Успей до 22.10»: дедлайн регистрации на НТО (ntcontest.ru). После встречи ИСС — «вот темы от предприятия, а НТО — твой шанс».</td>
+          <td class="act"><ul><li>Проверить актуальные сроки на ntcontest.ru</li><li>Ссылка открывается в РФ</li></ul></td>
+          <td><span class="cmd">«пост про дедлайн НТО 22 октября»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Пт 23.10<br>18:00</td>
+          <td><span class="rub r-digest">Итоги + дайджест</span></td>
+          <td>Итоги викторины (победитель, разбор ответа) + дайджест недели: ИСС, НТО, субботние занятия.</td>
+          <td class="act"><ul><li>Собрать ответы участников</li><li>Определить победителя</li></ul></td>
+          <td><span class="cmd">«итоги викторины и дайджест пятницы»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Сб 24.10<br>8:30 / 12:30 / 15:30 / 19:30</td>
+          <td><span class="rub r-news">День занятий</span></td>
+          <td>Напоминание утром + «как идут занятия» в перерывах между сменами + вечером фото/итоги (моделирование 08–16, электроника/БАС 11–13 и 14–16, робототехника и VR 16–20, проект 11–13/15–17).</td>
+          <td class="act"><ul><li>Договориться о фотосъёмке на занятии</li><li>Собрать согласия родителей</li><li>Попросить преподавателей прислать фото/видео</li></ul></td>
+          <td><span class="cmd">«фотоотчёт с субботы»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Вс 25.10<br>17:00</td>
+          <td><span class="rub r-ach">История успеха</span></td>
+          <td>Тихий день: пост «История успеха» (если есть герой) или ничего.</td>
+          <td class="act"><ul><li>Выбрать ученика-героя</li><li>Взять согласие</li></ul></td>
+          <td><span class="cmd">«история успеха ученика»</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <h2>Неделя 2 · 26.10 (пн) – 01.11 (вс)</h2>
+  <div class="week">
+    <div class="week-h"><b>Обычная неделя</b><span>познавательный контент + викторина + суббота</span></div>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Дата</th><th>Рубрика</th><th>Тема (про что)</th><th>Предварительно сделать</th><th>Команда</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="date">Пн 26.10<br>17:30</td>
+          <td><span class="rub r-ach">Достижения</span></td>
+          <td>Достижения прошлой недели (защиты, конкурсы, итоги ИСС) или вводный опрос недели.</td>
+          <td class="act"><ul><li>Собрать результаты с преподавателей</li></ul></td>
+          <td><span class="cmd">«достижения за неделю»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Вт 27.10<br>17:30</td>
+          <td><span class="rub r-edu">Познавательный</span></td>
+          <td>«Знаешь ли ты?»: как устроен спутник (к партнёрству ИСС) или история БПЛА. Мини-факт + картинка.</td>
+          <td class="act"><ul><li>Подготовить факт и картинку (без лиц)</li></ul></td>
+          <td><span class="cmd">«познавательный пост про спутники»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Ср 28.10<br>18:00</td>
+          <td><span class="rub r-quiz">Викторина</span></td>
+          <td>Викторина №2. Тема: «Робототехника» (по материалам курса EV3). Ответы до пт 18:00.</td>
+          <td class="act"><ul><li>Вопрос из банка викторин</li><li>Согласовать приз</li></ul></td>
+          <td><span class="cmd">«викторина про роботов»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Чт 29.10<br>17:30</td>
+          <td><span class="rub r-anons">Анонс</span></td>
+          <td>Анонс субботы: что ждёт в каждой лаборатории 31.10 (по расписанию).</td>
+          <td class="act"><ul><li>Свериться с расписанием (кабинеты, смены)</li><li>Уточнить у преподавателей тему занятия</li></ul></td>
+          <td><span class="cmd">«анонс субботы 31 октября»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Пт 30.10<br>18:00</td>
+          <td><span class="rub r-digest">Итоги + дайджест</span></td>
+          <td>Итоги викторины №2 + дайджест недели + напоминание о субботе.</td>
+          <td class="act"><ul><li>Определить победителя</li><li>Собрать события недели</li></ul></td>
+          <td><span class="cmd">«дайджест на пятницу»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Сб 31.10<br>8:30 / 12:30 / 15:30 / 19:30</td>
+          <td><span class="rub r-news">День занятий</span></td>
+          <td>Напоминание + «как идут занятия» + вечерние фото/итоги (по расписанию субботы).</td>
+          <td class="act"><ul><li>Фотосъёмка + согласия</li><li>Собрать впечатления учеников (1 цитата)</li></ul></td>
+          <td><span class="cmd">«фотоотчёт с субботы»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Вс 01.11<br>17:00</td>
+          <td><span class="rub r-question">Отдых</span></td>
+          <td>Тихий день: мини-опрос «какая тема следующей викторины?» — вовлечение с выбором.</td>
+          <td class="act"><ul><li>Подготовить варианты тем</li></ul></td>
+          <td><span class="cmd">«опрос про темы викторин»</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <h2>Неделя 3 · 02.11 (пн) – 08.11 (вс)</h2>
+  <div class="week">
+    <div class="week-h"><b>Неделя каникул/праздника</b><span>4 ноября — День народного единства (каникулы в школах края)</span></div>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Дата</th><th>Рубрика</th><th>Тема (про что)</th><th>Предварительно сделать</th><th>Команда</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="date">Пн 02.11<br>17:30</td>
+          <td><span class="rub r-edu">Познавательный</span></td>
+          <td>«Что такое хакатон?» — готовим к будущим VR/БПЛА-хакатонам (в ноябре–марте).</td>
+          <td class="act"><ul><li>Подготовить факт-карточку</li></ul></td>
+          <td><span class="cmd">«познавательный про хакатоны»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Вт 03.11<br>17:30</td>
+          <td><span class="rub r-question">Вопрос</span></td>
+          <td>Опрос «на подумать»: «какое устройство ты бы собрал первым?» — разговор в комментариях.</td>
+          <td class="act"><ul><li>Сформулировать вопрос с вариантами</li></ul></td>
+          <td><span class="cmd">«вопрос в чат на вторник»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Ср 04.11<br>11:00</td>
+          <td><span class="rub r-events">Поздравление</span></td>
+          <td>День народного единства: короткое тёплое поздравление (утро), в развлекательном тоне.</td>
+          <td class="act"><ul><li>Заготовить текст заранее</li></ul></td>
+          <td><span class="cmd">«поздравление с 4 ноября»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Чт 05.11<br>17:30</td>
+          <td><span class="rub r-anons">Анонс</span></td>
+          <td>Анонс субботы 07.11 + напоминание, что после каникул возвращаемся к занятиям.</td>
+          <td class="act"><ul><li>Свериться с расписанием</li><li>Уточнить тему у преподавателей</li></ul></td>
+          <td><span class="cmd">«анонс субботы 7 ноября»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Пт 06.11<br>18:00</td>
+          <td><span class="rub r-digest">Дайджест</span></td>
+          <td>Дайджест недели: поздравление, анонс субботы, «впереди хакатоны».</td>
+          <td class="act"><ul><li>Собрать события</li></ul></td>
+          <td><span class="cmd">«дайджест на пятницу»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Сб 07.11<br>8:30 / 12:30 / 15:30 / 19:30</td>
+          <td><span class="rub r-news">День занятий</span></td>
+          <td>Напоминание + «как идут занятия» + фото/итоги (суббота после каникул — важный день возвращения).</td>
+          <td class="act"><ul><li>Фотосъёмка + согласия</li><li>Подготовить «добро пожаловать обратно»</li></ul></td>
+          <td><span class="cmd">«фотоотчёт с субботы»</span></td>
+        </tr>
+        <tr>
+          <td class="date">Вс 08.11<br>17:00</td>
+          <td><span class="rub r-ach">История успеха</span></td>
+          <td>Тихий день: история успеха (победители НТО-регистрации, проекты ИСС) или отдых.</td>
+          <td class="act"><ul><li>Выбрать героя, взять согласие</li></ul></td>
+          <td><span class="cmd">«история успеха»</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <h2>Команды-триггеры (что писать мне)</h2>
+  <div class="card green">
+    <p>Для каждого поста — своя короткая команда, я оформляю в 2 форматах (тезисный + эмоциональный) и сохраняю в черновики.</p>
+    <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Команда</th><th>Что получите</th></tr></thead>
+      <tbody>
+        <tr><td><span class="cmd">«викторина на среду: тема …»</span></td><td>Вопрос + варианты + правила + время старта (ср 18:00)</td></tr>
+        <tr><td><span class="cmd">«анонс субботы DD.MM»</span></td><td>Анонс по всем лабораториям с привязкой к расписанию (время/кабинет)</td></tr>
+        <tr><td><span class="cmd">«итоги викторины + дайджест»</span></td><td>Победитель + разбор ответа + сводка недели (пт 18:00)</td></tr>
+        <tr><td><span class="cmd">«познавательный пост про …»</span></td><td>Факт-карточка «Знаешь ли ты?» (Вт/Чт 17:30)</td></tr>
+        <tr><td><span class="cmd">«достижения за неделю»</span></td><td>Пост с результатами учеников (пн 17:30)</td></tr>
+        <tr><td><span class="cmd">«фотоотчёт с субботы»</span></td><td>Отчёт «как прошло» + фото (сб 19:30, если есть фото)</td></tr>
+        <tr><td><span class="cmd">«вопрос/опрос в чат»</span></td><td>Вопрос с вариантами для вовлечения</td></tr>
+        <tr><td><span class="cmd">«напоминание про … (событие)»</span></td><td>Короткий пост-напоминание о дате/дедлайне</td></tr>
+        <tr><td><span class="cmd">«история успеха»</span></td><td>Лонгрид об ученике (по фактам, с согласия)</td></tr>
+        <tr><td><span class="cmd">«поздравление с …»</span></td><td>Тёплое поздравление к дате</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <h2>Как автоматизировать (мои предложения)</h2>
+  <div class="grid2">
+    <div class="card green">
+      <b>1. Контент-план (HTML, уже есть)</b>
+      <p>Календарь на неделю/месяц с фильтрами, статусами и экспортом. Доработаю: кнопка «Загрузить план на 3 недели» — одним кликом наполняет календарь записями из этого документа (даты, темы, статусы «план»). Дальше просто меняете статусы по мере выполнения.</p>
+    </div>
+    <div class="card">
+      <b>2. Черновики на автомате (скил kontent-kommunikacii)</b>
+      <p>По команде-триггеру («викторина на среду…») я сразу собираю пост в 2 форматах и сохраняю в <code>04_Контент и коммуникации/01 Черновики</code>. Ничего не надо диктовать каждый раз — только факты.</p>
+    </div>
+    <div class="card warn">
+      <b>3. Что нужно от команды (человеческий конвейер)</b>
+      <p>Чтобы посты выходили по календарю, до среды нужно от методиста: фото с занятий (1 раз/неделю, с согласиями), списки команд и результатов, актуальные сроки конкурсов, «призовой фонд» викторин, пресс-релизы ИСС/ГХК. Без медиа посты будут «сухими».</p>
+    </div>
+    <div class="card">
+      <b>4. Ежедневная проверка</b>
+      <p>Каждое утро сверять календарь постов с этим файлом: что сегодня публикуем, что подготовить завтра. Могу делать это по команде <span class="cmd">«что публикуем сегодня?»</span> — выдаю список из плана и напоминаю предварительные действия.</p>
+    </div>
+  </div>
+
+  <footer>Сформировано чатом «Д · Контент и коммуникации» · 21.10.2026 · Календарь на 3 недели (обновляется каждую неделю) · Расписание лабораторий — первоисточник</footer>
+</div>
+</body>
+</html>

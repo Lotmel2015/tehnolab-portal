@@ -90,7 +90,7 @@
     </select>
     <select id="fType">
       <option value="">Все рубрики</option>
-      <option>Анонс</option><option>Отчёт</option><option>Достижение</option><option>История успеха</option><option>Дайджест</option><option>Объявление</option><option>Поздравление</option>
+      <option>Анонс</option><option>Отчёт</option><option>Достижение</option><option>История успеха</option><option>Дайджест</option><option>Объявление</option><option>Поздравление</option><option>Викторина</option><option>Опрос</option><option>Познавательный</option>
     </select>
     <select id="fStatus">
       <option value="">Все статусы</option>
@@ -100,6 +100,11 @@
     </select>
     <button class="add" onclick="openModal(null)">+ Запись</button>
     <button id="btnWeek" class="btn-ok" onclick="toggleWeek()">Неделя / Месяц</button>
+  </div>
+
+  <div class="toolbar" style="margin-top:4px">
+    <button class="btn-ok" onclick="loadPlan3Weeks()">Загрузить план на 3 недели</button>
+    <span style="color:var(--muted);font-size:12.5px">наполняет календарь записями из «Календаря постов» (21.10–08.11)</span>
   </div>
 
   <div class="bar" id="typeBar"></div>
@@ -133,7 +138,7 @@
       <div class="fld"><label>Аудитория</label><select id="mAud"><option>Школьники</option><option>Родители</option><option>Сотрудники</option></select></div>
     </div>
     <div class="mrow">
-      <div class="fld"><label>Рубрика</label><select id="mType"><option>Анонс</option><option>Отчёт</option><option>Достижение</option><option>История успеха</option><option>Дайджест</option><option>Объявление</option><option>Поздравление</option></select></div>
+      <div class="fld"><label>Рубрика</label><select id="mType"><option>Анонс</option><option>Отчёт</option><option>Достижение</option><option>История успеха</option><option>Дайджест</option><option>Объявление</option><option>Поздравление</option><option>Викторина</option><option>Опрос</option><option>Познавательный</option></select></div>
       <div class="fld"><label>Статус</label><select id="mStatus"><option value="draft">Черновик</option><option value="ready">Готово</option><option value="pub">Опубликовано</option></select></div>
     </div>
     <div class="fld"><label>Заголовок</label><input id="mTitle2" placeholder="Например: Анонс занятия по БПЛА"></div>
@@ -269,6 +274,41 @@
   function importPlan(){document.getElementById("fileIn").click();}
   function onFile(ev){var f=ev.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var arr=JSON.parse(r.result);if(!Array.isArray(arr))throw 0;ENTRIES=arr;save();render();alert("Импортировано записей: "+arr.length);}catch(e){alert("Не удалось прочитать файл");}};r.readAsText(f);ev.target.value="";}
   function clearPlan(){if(!confirm("Удалить ВСЕ записи контент-плана? Это действие необратимо."))return;ENTRIES=[];save();render();}
+
+  function loadPlan3Weeks(){
+    if(!confirm("Загрузить план на 3 недели (21.10–08.11)? Существующие записи не удаляются, план добавится к ним."))return;
+    var PLAN=[
+      {date:"2026-10-21",type:"Викторина",title:"Старт викторины «Спутники и связь» (к встрече ИСС)",note:"Приз, правило победителя; ответы до пт 18:00"},
+      {date:"2026-10-22",type:"Анонс",title:"Напоминание: встреча с АО ИСС в 18:15, каб. 301",note:"2 команды: робототехника и БПЛА; проектные темы"},
+      {date:"2026-10-22",type:"Анонс",title:"«Успей до 22.10»: дедлайн регистрации на НТО",note:"ntcontest.ru; ссылка открывается в РФ"},
+      {date:"2026-10-23",type:"Дайджест",title:"Итоги викторины + дайджест недели",note:"Победитель, разбор ответа, события недели"},
+      {date:"2026-10-24",type:"Отчёт",title:"День занятий: напоминание + фото/итоги субботы",note:"Моделирование 08–16, электро/БАС 11–13 и 14–16, робо/VR 16–20, проект 11–13/15–17"},
+      {date:"2026-10-26",type:"Достижение",title:"Достижения прошлой недели / опрос недели",note:"Собрать результаты у преподавателей"},
+      {date:"2026-10-27",type:"Познавательный",title:"«Знаешь ли ты?»: как устроен спутник (ИСС)",note:"Мини-факт + картинка без лиц"},
+      {date:"2026-10-28",type:"Викторина",title:"Викторина №2: Робототехника (EV3)",note:"Вопрос из банка викторин; ответы до пт 18:00"},
+      {date:"2026-10-29",type:"Анонс",title:"Анонс субботы 31.10: что в лабораториях",note:"Свериться с расписанием (кабинеты, смены)"},
+      {date:"2026-10-30",type:"Дайджест",title:"Итоги викторины №2 + дайджест недели",note:"Определить победителя"},
+      {date:"2026-10-31",type:"Отчёт",title:"День занятий: напоминание + фото/итоги субботы",note:"Собрать цитату ученика"},
+      {date:"2026-11-01",type:"Опрос",title:"Мини-опрос: какая тема следующей викторины?",note:"Варианты тем"},
+      {date:"2026-11-02",type:"Познавательный",title:"«Что такое хакатон?» — готовимся к VR/БПЛА-хакатонам",note:"Факт-карточка"},
+      {date:"2026-11-03",type:"Опрос",title:"Опрос «на подумать»: что бы ты собрал первым?",note:"Вопрос с вариантами"},
+      {date:"2026-11-04",type:"Поздравление",title:"Поздравление с Днём народного единства",note:"Утро, тёплое, в развлекательном тоне"},
+      {date:"2026-11-05",type:"Анонс",title:"Анонс субботы 07.11 + возвращение после каникул",note:"Свериться с расписанием"},
+      {date:"2026-11-06",type:"Дайджест",title:"Дайджест недели: поздравление, суббота, хакатоны",note:"Собрать события"},
+      {date:"2026-11-07",type:"Отчёт",title:"День занятий: напоминание + фото/итоги субботы",note:"«Добро пожаловать обратно» после каникул"},
+      {date:"2026-11-08",type:"История успеха",title:"История успеха: победители НТО/проекты ИСС",note:"Согласие родителя на имя/фото"}
+    ];
+    var added=0;
+    PLAN.forEach(function(p){
+      var dup=ENTRIES.some(function(e){return e.date===p.date&&e.type===p.type&&e.title===p.title;});
+      if(dup)return;
+      ENTRIES.push({id:uid(),date:p.date,channel:"MAX",aud:"Школьники",type:p.type,status:"draft",title:p.title,link:"",note:p.note});
+      added++;
+    });
+    save();render();
+    var extra = added < PLAN.length ? " (остальные уже были в плане)" : "";
+    alert("Добавлено записей: " + added + extra + ". Статус у всех — «черновик», меняйте на «готово»/«опубликовано» по мере работы.");
+  }
 
   document.addEventListener("DOMContentLoaded",function(){
     load();buildTypeBar();render();
