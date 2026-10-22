@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Олимпиады и конкурсы — твой шанс поступить без экзаменов · Технологическая лаборатория</title>
+<style>
+:root{--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--good:#167A4D;--good-soft:#E7F4EE;--warn:#B45309;--warn-soft:#FDF1E1;--vr:#4D008C;--vr-soft:#F0EBF5;--line:#D9E2EF;--card:#fff;--shadow:0 1px 2px rgba(27,42,74,.05),0 10px 30px rgba(27,42,74,.08)}
+*{box-sizing:border-box}body{margin:0;background:#f6f8fc;color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 18px 60px}
+header.hero{background:linear-gradient(135deg,#1B2A4A 0%,#1F6FE0 120%);color:#fff;border-radius:0 0 20px 20px;padding:2.6rem 2rem 2.2rem;margin:-28px -18px 2rem}
+header.hero .kicker{font-family:ui-monospace,Consolas,monospace;font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:#BFD8FF;margin-bottom:10px}
+header.hero h1{font-size:2rem;line-height:1.25;margin:0 0 .6rem;letter-spacing:-.02em}
+header.hero .lede{font-size:1.05rem;color:#E4EEFF;max-width:820px;margin:0}
+header.hero .meta{margin-top:1rem;font-size:.82rem;color:#BFD8FF}
+h2{font-size:1.5rem;margin:2.4rem 0 .4rem;color:var(--ink)}h2 .n{color:var(--accent);margin-right:.4rem}
+.lead{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin:1.4rem 0;font-size:1rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:1.4rem 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem;box-shadow:var(--shadow)}
+.kpi b{display:block;font-size:1.9rem;color:var(--accent)}.kpi span{color:var(--muted);font-size:.85rem}
+.lab{border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:var(--shadow);padding:1.4rem 1.4rem 1rem;margin:1.6rem 0}
+.lab h3{margin:0 0 .2rem;font-size:1.2rem;display:flex;align-items:center;gap:.5rem}
+.lab .lsub{color:var(--muted);font-size:.9rem;margin:0 0 .8rem}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:left;padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+tr.hl td{background:var(--accent-soft)}
+a.port{color:var(--accent);font-weight:700;text-decoration:none;white-space:nowrap;border:1px solid var(--accent-soft);background:var(--accent-soft);border-radius:8px;padding:.15rem .6rem;margin-left:.4rem;font-size:.82rem}
+a.port:hover{background:#D6E6FF}
+.chip{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:999px;margin:1px 2px;white-space:nowrap}
+.l1{background:var(--good-soft);color:var(--good)}.l2{background:var(--warn-soft);color:var(--warn)}.l3{background:var(--accent-soft);color:var(--accent)}
+.gir{background:var(--vr-soft);color:var(--vr)}
+.month{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 7px;border-radius:6px;margin:1px 2px;background:#EEF2F8;color:var(--muted)}
+.how{border:1px solid var(--line);border-radius:16px;background:#fff;box-shadow:var(--shadow);padding:1.4rem 1.6rem;margin:1.4rem 0}
+.how ol{margin:.6rem 0;padding-left:1.3rem}.how li{margin:.6rem 0}
+.warn{background:var(--warn-soft);border-left:4px solid var(--warn);border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin:1.4rem 0}
+.tip{background:var(--good-soft);border-left:4px solid var(--good);border-radius:0 10px 10px 0;padding:1rem 1.2rem;margin:1.4rem 0}
+.strat b{color:var(--accent)}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.6rem;padding-top:.9rem}
+/* ===== Таймлайн «Временное дерево» по месяцам ===== */
+.tree{position:relative;margin:1.6rem 0;padding-left:34px}
+.tree::before{content:"";position:absolute;left:12px;top:8px;bottom:8px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--accent),#4D008C,#167A4D,#B45309)}
+.tnode{position:relative;margin:0 0 14px}
+.tnode::before{content:"";position:absolute;left:-28px;top:18px;width:17px;height:17px;border-radius:50%;background:#fff;border:4px solid var(--accent)}
+.tnode.s2::before{border-color:var(--good)}.tnode.s3::before{border-color:var(--vr)}.tnode.s4::before{border-color:var(--warn)}
+.tnode.s1::before,.tnode.s2::before,.tnode.s3::before,.tnode.s4::before{box-shadow:0 0 0 4px rgba(31,111,224,.1)}
+.tnode .mhead{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:.85rem 1.1rem;cursor:pointer;display:flex;align-items:center;gap:.7rem;transition:.15s}
+.tnode .mhead:hover{border-color:var(--accent);transform:translateX(3px)}
+.tnode .mhead .mm{font-weight:800;font-size:1.05rem;color:#fff;background:var(--accent);border-radius:10px;padding:.25rem .6rem;min-width:64px;text-align:center}
+.tnode.s2 .mhead .mm{background:var(--good)}.tnode.s3 .mhead .mm{background:var(--vr)}.tnode.s4 .mhead .mm{background:var(--warn)}
+.tnode .mhead .mt{font-weight:700;font-size:.98rem}
+.tnode .mhead .arrow{margin-left:auto;color:var(--muted);transition:.2s;font-size:1rem}
+.tnode.open .arrow{transform:rotate(90deg)}
+.tnode .mbody{display:none;margin-top:8px;padding:6px 0 2px 12px}
+.tnode.open .mbody{display:block}
+.tevent{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.75rem .95rem;margin:7px 0;box-shadow:var(--shadow)}
+.tevent .tname{font-weight:700;font-size:.95rem;color:var(--ink)}
+.tevent .tdet{color:var(--muted);font-size:.86rem;margin-top:2px}
+.tevent .tstag{display:inline-block;font-size:.72rem;font-weight:700;padding:1px 8px;border-radius:999px;margin:3px 4px 0 0}
+.tnow{background:var(--good-soft);border:1px solid var(--good);color:var(--good);font-weight:700;border-radius:10px;padding:.5rem 1rem;margin:0 0 1.2rem;font-size:.92rem}
+@media(max-width:560px){.tree{padding-left:22px}.tnode::before{left:-16px}.tnode .mhead{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">Технологическая лаборатория · Раздел «Мотивация»</div>
+  <h1>Олимпиады и конкурсы: твой шанс поступить без экзаменов</h1>
+  <p class="lede">Участвуй в инженерных олимпиадах, побеждай и получай право БВИ (поступление без вступительных испытаний) или 100 баллов по предмету. Призовые места вносятся в ГИР — и ты получаешь преимущество при поступлении в вуз.</p>
+  <div class="meta">Сезон 2026/27 · обновлено 22.10.2026 · перечень Минобрнауки, приказ № 521</div>
+</header>
+
+<div class="lead"><b>Что нужно понять за 1 минуту.</b> Есть олимпиады, за победу в которых вузы дают льготы: <b>БВИ</b> (зачисление без экзаменов), <b>100 баллов</b> по профильному предмету или <b>доп. баллы</b> (обычно от 2 до 10). Такие состязания включаются в <b>Перечень олимпиад школьников</b>, а их результаты попадают в <b>ГИР</b> (государственный ресурс о твоих достижениях). Твоя задача — выбрать 2–3 подходящих олимпиады, a подготовку дают лаборатории ТЛ.</div>
+
+<div class="grid">
+  <div class="kpi"><b>1</b><span>призовое место — и есть льгота</span></div>
+  <div class="kpi"><b>4 года</b><span>действует диплом (с 8 класса — запас)</span></div>
+  <div class="kpi"><b>60</b><span>олимпиад в перечне 2026/27</span></div>
+  <div class="kpi"><b>БВИ</b><span>поступление без вступительных</span></div>
+</div>
+
+<div class="warn"><b>Важно.</b> В сезоне 2026/27 перечень олимпиад сократили с 83 до <b>60</b> (приказ № 521). Какую именно льготу даёт диплом — решает <b>вуз</b> (в правилах приёма). <b>Сверяйся с сайтом вуза в год поступления</b>. Хорошая новость: диплом действует <b>4 года</b>, поэтому призовое место в 8–9 классе уже работает.</div>
+
+<h2><span class="n">01</span>Быстрый старт: что сделать прямо сейчас</h2>
+<div class="how">
+  <ol>
+    <li><b>Зарегистрируйся на НТО</b> (самая «наша» олимпиада) — <a href="https://ntcontest.ru/" class="port">ntcontest.ru</a> — профиль под свою лабораторию.</li>
+    <li>Для 8–9 классов добавь ещё <b>1–2 перечневые олимпиады</b> по предмету, который у тебя сильнее (информатика/физика/математика).</li>
+    <li>Спроси преподавателя лаборатории, какой профиль подходит именно твоему проекту — в ТЛ идёт подготовка подо все профили ниже.</li>
+  </ol>
+</div>
+
+<h2><span class="n">1.5</span>Временное дерево: что и когда происходит</h2>
+<div class="how" style="padding:1.1rem 1.4rem"><b>Как читать.</b> Это карта сезона 2026/27 по месяцам. Нажми на месяц, чтобы раскрыть, что подаём, что стартует и что завершается. 🟡 <b>Сейчас</b> — месяц, в котором мы находимся: действуй не откладывая.</div>
+
+<div class="tnow">🟢 Сейчас октябрь 2026 — это главный месяц регистраций: НТО (8–11) и НТО Junior (5–7), «Шаг в будущее», «Звезда», «Гранит науки», «Физтех». Если ещё не зарегистрировался — сделай это в ближайшие 2 недели.</div>
+
+<div class="tree" id="tree">
+  <div class="tnode s1 open">
+    <div class="mhead"><span class="mm">Сен</span><span class="mt">Старт сезона: открываются главные регистрации</span><span class="arrow">▶</span></div>
+    <div class="mbody">
+      <div class="tevent"><span class="tname">ВсОШ — школьный этап</span><span class="tdet">физика, информатика, математика на платформе «Сириус». Участвуй с 5 класса — это твой «полигон».</span><a class="port" href="https://rosolymp.ru/" target="_blank">сайт</a></div>
+      <div class="tevent"><span class="tname">НТО — регистрация открыта (8–11)</span><span class="tdet">профили: Беспилотные авиационные системы, Технологии для виртуального мира, ИИ, робототехника. Регистрация до начала ноября.</span><a class="port" href="https://ntcontest.ru/" target="_blank">сайт</a></div>
+      <div class="tevent"><span class="tname">НТО Junior — регистрация (5–7)</span><span class="tdet">7 сфер, в т.ч. про роботов и летательные аппараты. Отличный первый шаг.</span><a class="port" href="https://junior.ntcontest.ru/" target="_blank">сайт</a></div>
+    </div>
+  </div>
+  <div class="tnode s1">
+    <div class="mhead"><span class="mm">Окт</span><span class="mt">Максимум стартов — регистрируйся сейчас</span><span class="arrow">▶</span></div>
+    <div class="mbody">
+      <div class="tevent"><span class="tname">Инженерная олимпиада школьников — отборочный тур</span><span class="tdet">11 октября, очно в МИФИ и регионах. I уровень — самая щедрая льгота.</span><a class="port" href="https://olymp.mephi.ru/engineering/" target="_blank">сайт</a></div>
+      <div class="tevent"><span class="tname">«Шаг в будущее» — отборочные туры</span><span class="tdet">инженерное дело, информатика (8–11). Регистрация идёт.</span><a class="port" href="https://olymp.bmstu.ru/" target="_blank">сайт</a></div>
+      <div class="tevent"><span class="tname">«Звезда», «Гранит науки», «Физтех», «Ломоносов», МОШ</span><span class="tdet">открывается регистрация на все ключевые перечневые олимпиады осени.</span><a class="port" href="https://olimpiada.ru/" target="_blank">календарь</a></div>
+      <div class="tevent"><span class="tname">«Сириус.Лето» — подача заявки на проект</span><span class="tdet">выбирай проект от вуза/партнёра, тебе дадут наставника.</span><a class="port" href="https://siriusleto.ru/" target="_blank">сайт</a></div>
+    </div>
+  </div>
+  <div class="tnode s2">
+    <div class="mhead"><span class="mm">Ноя</span><span class="mt">Регистрации + первые отборочные туры</span><span class="arrow">▶</span></div>
+    <div class="mbody">
+      <div class="tevent"><span class="tname">ТехноКубок — старт</span><span class="tdet">олимпиада по программированию от VK + ведущих вузов. Новичок I уровня в перечне 2026/27.</span><a class="port" href="https://techno-cup.ru/" target="_blank">сайт</a></div>
+      <div class="tevent"><span class="tname">Innopolis Open — отборочный тур</span><span class="tdet">информатика, ИИ, робототехника (7–11). Первый тур ~1–22 ноября.</span><a class="port" href="https://dovuz.innopolis.university/innopolis-open" target="_blank">сайт</a></div>
+      <div class="tevent"><span class="tname">«Росатом», «Звезда», «Ломоносов» — отбор</span><span class="tdet">стартуют отборочные этапы перечневых олимпиад зимнего цикла.</span></div>
+      <div class="tevent"><span class="tname">«Большие вызовы» — регистрация</span><span class="tdet">для проектов всех лабораторий ТЛ. Заявка до весны.</span><a class="port" href="https://bigchallenges.ru/" target="_blank">сайт</a></div>
+      <div class="tevent"><span class="tname">НТО Junior — финал 5–7 классов</span><span class="tdet">заключительный этап для младших участников.</span></div>
+    </div>
+  </div>
+  <div class="tnode s2">
+    <div class="mhead"><span class="mm">Дек</span><span class="mt">Отборочные туры в разгаре</span><span class="arrow">▶</span></div>
+    <div class="mbody">
+      <div class="tevent"><span class="tname">Инженерная олимпиада — дистанционный отбор</span><span class="tdet">регистрация на org.mephi.ru, дистанционный отборочный тур.</span><a class="port" href="https://olymp.mephi.ru/engineering/" target="_blank">сайт</a></div>
+      <div class="tevent"><span class="tname">МОШ, «Шаг в будущее», «Росатом» — отбор</span><span class="tdet">информатика, физика, инженерные профили.</span></div>
+      <div class="tevent"><span class="tname">НТО — первый (индивидуальный) этап</span><span class="tdet">профильные задания первого отборочного этапа по выбранному профилю.</span></div>
+    </div>
+  </div>
+  <div class="tnode s3">
+    <div class="mhead"><span class="mm">Янв</span><span class="mt">Финалы НТО и заключительные этапы</span><span class="arrow">▶</span></div>
+    <div class="mbody">
+      <div class="tevent"><span class="tname">НТО — финалы профилей</span><span class="tdet">командный финал очно. Победители и призёры — в ГИР, льгота в вузах.</span><a class="port" href="https://ntcontest.ru/" target="_blank">сайт</a></div>
+      <div class="tevent"><span class="tname">Заключительные этапы: «Шаг в будущее», «Звезда», Инженерная</span><span class="tdet">выездные финалы перечневых олимпиад инженерного профиля.</span></div>
+      <div class="tevent"><span class="tname">ВсОШ — региональный этап</span><span class="tdet">если прошёл школьный и муниципальный — регион по физике/информатике/математике.</span></div>
+    </div>
+  </div>
+  <div class="tnode s3">
+    <div class="mhead"><span class="mm">Фев</span><span class="mt">Финалы и «РобоФест»</span><span class="arrow">▶</span></div>
+    <div class="mbody">
+      <div class="tevent"><span class="tname">НТО — финалы (продолжение)</span><span class="tdet">часть профилей завершается в феврале.</span></div>
+      <div class="tevent"><span class="tname">«РобоФест» / «Юный Кулибин»</span><span class="tdet">соревнования роботов и виртуальная робототехника.</span><a class="port" href="https://junior.ntcontest.ru/" target="_blank">НТО Junior</a></div>
+      <div class="tevent"><span class="tname">ВсОШ — финал регионального этапа</span><span class="tdet">переходные баллы в заключительный этап.</span></div>
+    </div>
+  </div>
+  <div class="tnode s3">
+    <div class="mhead"><span class="mm">Мар</span><span class="mt">Главные финалы перечневых олимпиад</span><span class="arrow">▶</span></div>
+    <div class="mbody">
+      <div class="tevent"><span class="tname">«ТехноКубок», Innopolis Open — финалы</span><span class="tdet">заключительные этапы олимпиад по программированию и ИИ.</span></div>
+      <div class="tevent"><span class="tname">«Физтех», «Росатом», «Ломоносов», МОШ — финалы</span><span class="tdet">основной месяц заключительных этапов зимних перечневых олимпиад.</span></div>
+      <div class="tevent"><span class="tname">ВсОШ — заключительный этап</span><span class="tdet">всероссийский финал по предметам.</span></div>
+    </div>
+  </div>
+  <div class="tnode s4">
+    <div class="mhead"><span class="mm">Апр</span><span class="mt">Финал сезона олимпиад</span><span class="arrow">▶</span></div>
+    <div class="mbody">
+      <div class="tevent"><span class="tname">Инженерная олимпиада — финал</span><span class="tdet">очный заключительный этап в МИФИ и площадках.</span><a class="port" href="https://olymp.mephi.ru/engineering/" target="_blank">сайт</a></div>
+      <div class="tevent"><span class="tname">«Шаг в будущее» — финал проекта</span><span class="tdet">защита инженерного проекта.</span></div>
+      <div class="tevent"><span class="tname">ВсОШ — заключительный этап (финал)</span><span class="tdet">главный финал года — БВИ в любой вуз по предмету.</span></div>
+    </div>
+  </div>
+  <div class="tnode s4">
+    <div class="mhead"><span class="mm">Май</span><span class="mt">«Большие вызовы» и итоги</span><span class="arrow">▶</span></div>
+    <div class="mbody">
+      <div class="tevent"><span class="tname">«Большие вызовы» — финал</span><span class="tdet">защита проекта в «Сириусе», путевка в образовательную смену.</span><a class="port" href="https://bigchallenges.ru/" target="_blank">сайт</a></div>
+      <div class="tevent"><span class="tname">Вносим дипломы в ГИР</span><span class="tdet">результаты перечневых олимпиад попадают в «Таланты России».</span><a class="port" href="https://xn--80aayamnhpkade1j.xn--p1ai/" target="_blank">ГИР</a></div>
+    </div>
+  </div>
+</div>
+
+<h2><span class="n">02</span>Олимпиады по твоим лабораториям</h2>
+
+<!-- ЛАБОРАТОРИЯ: РОБОТОТЕХНИКА -->
+<div class="lab">
+  <h3>🤖 Робототехника и программирование</h3>
+  <p class="lsub">Лаборатория робототехники + Электроника (Arduino/ESP) + мини-курс C#</p>
+  <div class="table-wrap"><table>
+    <tr><th>Мероприятие</th><th>Уровень</th><th>Класс</th><th>Когда</th><th>Льгота</th></tr>
+    <tr class="hl"><td><b>Национальная технологическая олимпиада (НТО)</b><br><small>профили: робототехника, ИИ, автономные системы</small><br><a href="https://ntcontest.ru/" class="port">сайт →</a></td><td><span class="chip l2">II</span> / <span class="chip l3">III</span></td><td>8–11</td><td><span class="month m-let">авг–апр</span></td><td><span class="chip gir">ГИР</span> БВИ / 100 баллов</td></tr>
+    <tr><td><b>ТехноКубок</b> (VK + МФТИ, Бауманка, ИТМО)<br><small>программирование</small><br><a href="https://techno-cup.ru/" class="port">сайт →</a></td><td><span class="chip l1">I ур. — новинка</span></td><td>8–11</td><td><span class="month m-noy">ноя–апр</span></td><td>БВИ / 100 баллов</td></tr>
+    <tr><td><b>Innopolis Open</b> (Университет Иннополис)<br><small>информатика, ИИ, робототехника</small><br><a href="https://dovuz.innopolis.university/innopolis-open" class="port">сайт →</a></td><td><span class="chip l3">III</span> <span class="chip l2">II</span></td><td>7–11</td><td><span class="month m-noy">ноя–мар</span></td><td>БВИ / 100 баллов</td></tr>
+    <tr><td><b>Всероссийский чемпионат «Юный Кулибин»</b> / «РобоФест»<br><a href="https://junior.ntcontest.ru/" class="port">НТО Junior</a></td><td>конкурс (ГИР)</td><td>5–11</td><td><span class="month m-noy">ноя–апр</span></td><td><span class="chip gir">ГИР</span> доп. баллы</td></tr>
+    <tr><td><b>ВсОШ</b> — информатика, математика, физика<br><a href="https://rosolymp.ru/" class="port">сайт →</a></td><td><span class="chip l1">I</span></td><td>5–11</td><td><span class="month m-sent">сен–апр</span></td><td><span class="chip gir">ГИР</span> БВИ</td></tr>
+  </table></div>
+</div>
+
+<!-- ЛАБОРАТОРИЯ: БПЛА -->
+<div class="lab">
+  <h3>🚁 Беспилотные авиационные системы (БАС / БПЛА)</h3>
+  <p class="lsub">Лаборатория БПЛА — ровно твой профиль по сборке и пилотированию дронов</p>
+  <div class="table-wrap"><table>
+    <tr><th>Мероприятие</th><th>Уровень</th><th>Класс</th><th>Когда</th><th>Льгота</th></tr>
+    <tr class="hl"><td><b>НТО — профиль «Беспилотные авиационные системы»</b><br><a href="https://ntcontest.ru/" class="port">сайт →</a></td><td><span class="chip gir">в перечне</span></td><td>8–11</td><td><span class="month m-sent">сен–фев</span></td><td><span class="chip gir">ГИР</span> БВИ / 100 баллов</td></tr>
+    <tr><td><b>НТО — профиль «Автономные транспортные системы»</b><br><a href="https://ntcontest.ru/" class="port">сайт →</a></td><td><span class="chip l2">II</span></td><td>9–11</td><td><span class="month m-okt">окт–мар</span></td><td>БВИ / 100 баллов</td></tr>
+    <tr><td><b>НТО Junior</b> — сферы про роботов и летательные аппараты<br><a href="https://junior.ntcontest.ru/" class="port">сайт →</a></td><td>олимпиада</td><td>5–7</td><td><span class="month m-sent">сен–ноя</span></td><td>старт в НТО, профориентация</td></tr>
+    <tr><td><b>ВсОШ</b> — физика, информатика<br><a href="https://rosolymp.ru/" class="port">сайт →</a></td><td><span class="chip l1">I</span></td><td>7–11</td><td><span class="month m-sent">сен–апр</span></td><td><span class="chip gir">ГИР</span> БВИ</td></tr>
+  </table></div>
+</div>
+
+<!-- ЛАБОРАТОРИЯ: МОДЕЛИРОВАНИЕ -->
+<div class="lab">
+  <h3>🛠 Моделирование: Blender 3D + КОМПАС-3D</h3>
+  <p class="lsub">Лаборатория моделирования — инженерная графика и 3D</p>
+  <div class="table-wrap"><table>
+    <tr><th>Мероприятие</th><th>Уровень</th><th>Класс</th><th>Когда</th><th>Льгота</th></tr>
+    <tr class="hl"><td><b>Инженерная олимпиада школьников</b> (МИФИ и др.)<br><small>физика + инженерное дело</small><br><a href="https://olymp.mephi.ru/engineering/" class="port">сайт →</a></td><td><span class="chip l1">I</span></td><td>9–11</td><td><span class="month m-okt">окт–апр</span></td><td>БВИ / 100 баллов по физике</td></tr>
+    <tr><td><b>«Шаг в будущее»</b> (МГТУ им. Баумана)<br><small>инженерное дело, информатика</small><br><a href="https://olymp.bmstu.ru/" class="port">сайт →</a></td><td><span class="chip l2">II</span> / <span class="chip l3">III</span></td><td>8–11</td><td><span class="month m-okt">окт–мар</span></td><td>БВИ / 100 баллов</td></tr>
+    <tr><td><b>«Звезда»</b> — техника и технологии<br><a href="https://zv.susu.ru/" class="port">сайт →</a></td><td><span class="chip l2">II</span> / <span class="chip l3">III</span></td><td>6–11</td><td><span class="month m-noy">ноя–апр</span></td><td>БВИ / 100 баллов</td></tr>
+    <tr><td><b>«Гранит науки»</b> (Горный университет)<br><a href="https://olimpiada.ru/" class="port">на olimpiada.ru</a></td><td><span class="chip l3">III</span></td><td>9–11</td><td><span class="month m-okt">окт–мар</span></td><td>БВИ / 100 баллов</td></tr>
+  </table></div>
+</div>
+
+<!-- ЛАБОРАТОРИЯ: VR/AR -->
+<div class="lab">
+  <h3>🥽 VR / AR разработка и C#</h3>
+  <p class="lsub">VR-студия + мини-курсы AR и Сети в VR</p>
+  <div class="table-wrap"><table>
+    <tr><th>Мероприятие</th><th>Уровень</th><th>Класс</th><th>Когда</th><th>Льгота</th></tr>
+    <tr class="hl"><td><b>НТО — профиль «Технологии для виртуального мира»</b><br><small>VR/AR, геймдев — самый подходящий профиль для VR-студии</small><br><a href="https://ntcontest.ru/" class="port">сайт →</a></td><td><span class="chip l3">III</span></td><td>8–11</td><td><span class="month m-let">авг–апр</span></td><td><span class="chip gir">ГИР</span> БВИ / 100 баллов</td></tr>
+    <tr><td><b>НТО — профиль «Искусственный интеллект»</b><br><a href="https://ntcontest.ru/" class="port">сайт →</a></td><td><span class="chip gir">в перечне</span></td><td>8–11</td><td><span class="month m-okt">окт–фев</span></td><td>БВИ / 100 баллов, трек Сбера</td></tr>
+    <tr><td><b>«Физтех»</b> (МФТИ) — информатика, физика<br><a href="https://olimpiada.ru/" class="port">na olimpiada.ru</a></td><td><span class="chip l1">I</span></td><td>8–11</td><td><span class="month m-okt">окт–апр</span></td><td>БВИ / 100 баллов</td></tr>
+    <tr><td><b>«Росатом»</b> (МИФИ) — физика, информатика<br><a href="https://olymp.mephi.ru/" class="port">сайт →</a></td><td><span class="chip l1">I</span> / <span class="chip l2">II</span></td><td>7–11</td><td><span class="month m-noy">ноя–апр</span></td><td>БВИ / 100 баллов</td></tr>
+    <tr><td><b>МОШ</b> (Московская олимпиада) — информатика, роботехника<br><a href="https://mos.olimpiada.ru/" class="port">сайт →</a></td><td><span class="chip l1">I</span>–<span class="chip l3">III</span></td><td>5–11</td><td><span class="month m-okt">окт–апр</span></td><td>БВИ / 100 баллов</td></tr>
+    <tr><td><b>«Ломоносов»</b> (МГУ) — информатика<br><a href="https://olymp.msu.ru/" class="port">сайт →</a></td><td><span class="chip l1">I</span> / <span class="chip l2">II</span></td><td>7–11</td><td><span class="month m-okt">окт–апр</span></td><td>БВИ / 100 баллов</td></tr>
+  </table></div>
+</div>
+
+<h2><span class="n">03</span>Проектные конкурсы (твой итоговый проект)</h2>
+<div class="lab">
+  <p class="lsub">Для Проектного навигатора и итоговых проектов всех лабораторий</p>
+  <div class="table-wrap"><table>
+    <tr><th>Конкурс</th><th>Класс</th><th>Когда</th><th>Льгота</th></tr>
+    <tr class="hl"><td><b>«Большие вызовы»</b> (Сириус) — научно-технологические проекты<br><a href="https://bigchallenges.ru/" class="port">сайт →</a></td><td>7–11</td><td><span class="month m-noy">ноя–май</span></td><td><span class="chip gir">ГИР</span> доп. баллы до 4–10, путевка в Сириус</td></tr>
+    <tr><td><b>«Сириус.Лето: начни свой проект»</b><br><a href="https://siriusleto.ru/" class="port">сайт →</a></td><td>8–11</td><td><span class="month m-okt">окт–май</span></td><td>старт проекта → «Большие вызовы»</td></tr>
+    <tr><td><b>«Шаг в будущее»</b> (проектный трек)<br><a href="https://olymp.bmstu.ru/" class="port">сайт →</a></td><td>8–11</td><td><span class="month m-okt">окт–апр</span></td><td><span class="chip gir">ГИР</span> доп. баллы, БВИ по профилю</td></tr>
+    <tr><td><b>Всероссийские конкурсы Минпросвещения</b> (перечень № 598)<br><a href="https://olimpiada.ru/" class="port">na olimpiada.ru</a></td><td>5–11</td><td>весь год</td><td><span class="chip gir">ГИР</span> доп. баллы</td></tr>
+  </table></div>
+</div>
+
+<h2><span class="n">04</span>Что выбрать по классу</h2>
+<div class="how strat">
+  <ul>
+    <li><b>8 класс</b> → НТО, «Шаг в будущее», «Звезда», ТехноКубок. Цель — <b>диплом в ГИР</b>, он будет действовать до 11 класса.</li>
+    <li><b>9 класс</b> → добавляй «Гранит науки», МОШ, «Росатом», Innopolis Open, Инженерную олимпиаду. Уже реально взять I–II уровень.</li>
+    <li><b>10–11 класс</b> → Инженерная олимпиада (I ур.), «Физтех», «Ломоносов», «Росатом», НТО, ВсОШ, «Большие вызовы». Это <b>БВИ в год поступления</b>.</li>
+  </ul>
+</div>
+
+<div class="tip"><b>Совет преподавателя ТЛ.</b> Инженерные профили (НТО «Беспилотные системы», «Технологии для виртуального мира», Инженерная олимпиада) обычно <b>менее конкурентны</b>, чем классическая математика, но дают такие же льготы. Именно к ним тебя и готовят лаборатории ТЛ — это твой честный шанс на призовое место. Перед подачей заявки сверь уровень диплома и льготу на сайте олимпиады и в правилах приёма выбранного вуза.</div>
+
+<div class="lead"><b>Где искать всё и сразу.</b> Сводный календарь олимпиад с уровнями — <a href="https://olimpiada.ru/" class="port">olimpiada.ru</a>; официальный перечень и дипломы — <a href="https://rsr-olymp.ru/" class="port">rsr-olymp.ru</a>; всероссийская олимпиада — <a href="https://rosolymp.ru/" class="port">rosolymp.ru</a>; твои достижения в ГИР — <a href="https://xn--80aayamnhpkade1j.xn--p1ai/" class="port">Таланты России</a>. Начни прямо сейчас — регистрация на НТО уже идёт.</div>
+
+<footer>Технологическая лаборатория · раздел «Мотивация» · сезон 2026/27. Льготы по каждому диплому устанавливает принимающий вуз — сверяйся с его правилами приёма. Перечень олимпиад: приказ Минобрнауки № 521 от 31.08.2026. Сформировано 22.10.2026.</footer>
+</div>
+<script>
+(function(){
+  var heads=document.querySelectorAll('#tree .mhead');
+  for(var i=0;i<heads.length;i++){
+    heads[i].addEventListener('click',function(){
+      this.parentNode.classList.toggle('open');
+    });
+  }
+  // авто-раскрытие месяца, соответствующего текущему
+  var now=new Date().getMonth(); // 0=янв … 9=окт
+  var mmm=['Сен','Окт','Ноя','Дек','Янв','Фев','Мар','Апр','Май'];
+  // коды: сен=0…апр=7, май=8 (схема слева направо). сопоставим
+  var cur=null;
+  if(now>=8&&now<=11){ cur = now===8?'Сен':(now===9?'Окт':(now===10?'Ноя':'Дек')); }
+  else if(now>=0&&now<=4){ var a=['Янв','Фев','Мар','Апр','Май']; cur=a[now]; }
+  if(cur){
+    var nodes=document.querySelectorAll('#tree .tnode');
+    for(var j=0;j<nodes.length;j++){
+      var mm=nodes[j].querySelector('.mm');
+      if(mm && mm.textContent===cur) nodes[j].classList.add('open');
+    }
+  }
+})();
+</script>
+</body>
+</html>

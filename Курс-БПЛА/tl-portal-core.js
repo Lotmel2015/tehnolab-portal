@@ -602,13 +602,22 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
       p.innerHTML =
         '<div class="tl-cab-frame">' +
         '<div class="tl-cab-top"><div><div class="tl-cab-title" id="tlCabName"></div><div class="tl-cab-role" id="tlCabRole"></div></div>' +
-        '<button class="tl-cab-cls" id="tlCabCls">✕ Закрыть</button></div>' +
+        '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">' +
+        '<button class="tl-cab-cls" id="tlCabLogout" title="Выйти и зайти под другим аккаунтом">Выйти</button>' +
+        '<button class="tl-cab-cls" id="tlCabCls">✕ Закрыть</button></div></div>' +
         '<div class="tl-cab-tabs" id="tlCabTabs"></div>' +
         '<div id="tlCabBody"></div>' +
         '<div id="tlAdminPanel" style="display:none;"></div>' +
         '</div>';
       document.body.appendChild(p);
       p.querySelector('#tlCabCls').onclick = function () { closeCabinet(); };
+      var lg = p.querySelector('#tlCabLogout');
+      if (lg) lg.onclick = function () {
+        closeCabinet();
+        logout();
+        renderAuthWidget();
+        openModal('login');
+      };
     }
     renderCabinet();
     p.classList.add('open');
