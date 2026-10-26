@@ -108,6 +108,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     users[email] = profile;
     saveUsers(users);
     setSession({ email: email, role: profile.role });
+    if (global.TLCloud && TLCloud.enabled && TLCloud.pushUser) TLCloud.pushUser(profile);
     return { ok: true, user: currentUser() };
   }
 
@@ -326,6 +327,10 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     else delete p[String(lessonId)];
     write('progress.' + cid, p);
     emit('progress', { courseId: cid, lessonId: lessonId, done: !!done });
+    if (global.TLCloud && TLCloud.enabled && TLCloud.pushProgress) {
+      var u = currentUser();
+      if (u) TLCloud.pushProgress(cid, u.id || u.email, p);
+    }
     return p;
   }
   function isLessonDone(courseId, lessonId) {
@@ -842,7 +847,8 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     h += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;"><input type="text" id="tlUserSearch" placeholder="Поиск по имени или e-mail" style="flex:1;min-width:170px;background:#0D0F14;border:1px solid #2A2D35;color:#EAECEF;border-radius:6px;padding:7px 10px;font-size:12.5px;">';
     h += '<select id="tlUserRole" style="background:#0D0F14;border:1px solid #2A2D35;color:#EAECEF;border-radius:6px;padding:7px 8px;font-size:12.5px;"><option value="">Все роли</option><option value="learner">Ученик</option><option value="teacher">Педагог</option><option value="admin">Администратор</option></select>';
     h += '<select id="tlUserPos" style="background:#0D0F14;border:1px solid #2A2D35;color:#EAECEF;border-radius:6px;padding:7px 8px;font-size:12.5px;"><option value="">Все должности</option>' + Object.keys(POSITIONS).map(function (k) { return '<option value="' + k + '">' + escapeHtml(POSITIONS[k]) + '</option>'; }).join('') + '</select>';
-    h += '<button class="tl-btn-save" style="margin:0;padding:7px 14px;font-size:12px;" onclick="TLCore.cabUsersApply()">Применить</button></div>';
+    h += '<button class="tl-btn-save" style="margin:0;padding:7px 14px;font-size:12px;" onclick="TLCore.cabUsersApply()">Применить</button>';
+    h += '<button class="tl-btn-save" style="margin:0;padding:7px 14px;font-size:12px;background:#1B6FD0;" onclick="TLCore.cabCloudSync()">Синхронизировать с облаком</button><span id="tlCloudMsg" style="font-size:12px;color:#8B8FA3;margin-left:8px;"></span></div>';
     h += '<div id="tlUserList">' + cabUsersListHtml(arr) + '</div>';
     return h;
   }
@@ -893,6 +899,17 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     back.forEach(function (b) { b.onclick = function () { renderCabinet(); }; });
   }
   function cabStudents() { CAB_TAB = 'students'; renderCabinet(); }
+  function cabCloudSync() {
+    var msg = document.getElementById('tlCloudMsg');
+    if (msg) msg.textContent = 'Синхронизация…';
+    syncFromCloud(function (res) {
+      if (msg) {
+        if (res && res.ok) msg.textContent = '✓ Готово: импортировано ' + (res.imported || 0) + ' профилей.';
+        else msg.textContent = (res && res.error ? res.error : 'Облако недоступно.');
+      }
+      renderCabinet();
+    });
+  }
   function cabTeachersHtml() {
     var reg = getTeacherRegistry();
     var h = '<div style="font-weight:700;margin-bottom:4px;">Единый реестр педагогов</div>';
@@ -1228,6 +1245,61 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     });
     return result;
   }
+  /* Синхронизация с Firebase: подтянуть удалённые профили и прогресс в localStorage.
+     Используется педагогом/админом в разделе «Инструменты синхронизации». */
+  function syncFromCloud(cb) {
+    var u = currentUser();
+    if (!u || !(u.role === 'admin' || u.role === 'teacher')) { if (cb) cb({ ok: false, error: 'Доступно администратору или педагогу.' }); return; }
+    if (!global.TLCloud || !TLCloud.enabled) { if (cb) cb({ ok: false, error: 'Облачная синхронизация не настроена (Firebase недоступен).' }); return; }
+    TLCloud.fetchAll(function (data) {
+      var imported = 0;
+      // Профили в users → локальная база пользователей (не перезаписываем пароли/сессию)
+      try {
+        var users = getUsers();
+        (data.users || []).forEach(function (sp) {
+          var email = String(sp.email || '').trim().toLowerCase();
+          if (!email) return;
+          var cur = users[email] || {};
+          users[email] = {
+            id: cur.id || 'u' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+            role: sp.role === 'admin' ? 'admin' : (sp.role === 'teacher' ? 'teacher' : 'learner'),
+            name: sp.name || cur.name || '',
+            cls: sp.cls || cur.cls || '',
+            school: sp.school || cur.school || '',
+            phone: sp.phone || cur.phone || '',
+            email: email,
+            labs: Array.isArray(sp.labs) ? sp.labs : (cur.labs || []),
+            createdAt: sp.createdAt || cur.createdAt || new Date().toISOString(),
+            passHash: cur.passHash || null
+          };
+          imported++;
+        });
+        saveUsers(users);
+      } catch (e) {}
+      // Прогресс в localStorage (совместимые ключи)
+      try {
+        Object.keys(data.progress || {}).forEach(function (cid) {
+          var cfg = null;
+          COURSE_CONFIG.forEach(function (c) { if (c.id === cid) cfg = c; });
+          if (!cfg) return;
+          (data.progress[cid] || []).forEach(function (row) {
+            if (!row || !row.uid) return;
+            var uid = String(row.uid);
+            if (cfg.mode === 'lesson_l') {
+              Object.keys(row.lessons || {}).forEach(function (lid) {
+                try { if (row.lessons[lid]) localStorage.setItem(cfg.lessonPrefix + uid + cfg.progressSuffix + lid, '1'); } catch (e) {}
+              });
+            } else if (cfg.mode === 'week_obj') {
+              var obj = {}; try { obj = JSON.parse(localStorage.getItem(cfg.progressPrefix + uid) || '{}') || {}; } catch (e) {}
+              Object.keys(row.lessons || {}).forEach(function (lid) { if (row.lessons[lid]) obj['w' + lid] = true; });
+              try { localStorage.setItem(cfg.progressPrefix + uid, JSON.stringify(obj)); } catch (e) {}
+            }
+          });
+        });
+      } catch (e) {}
+      if (cb) cb({ ok: true, imported: imported });
+    });
+  }
     function adminEdit(uid) {
     var u = currentUser();
     var ap = document.getElementById('tlAdminPanel');
@@ -1283,7 +1355,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
   function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 var API = {
     version: VERSION,
-    init: function (opts) { opts = opts || {}; ensureAdmin(); ensureStyle(); renderAuthWidget(); if (opts.onAuthChange) on('login', opts.onAuthChange), on('logout', opts.onAuthChange); emit('ready', { user: currentUser() }); return API; },
+    init: function (opts) { opts = opts || {}; ensureAdmin(); ensureStyle(); renderAuthWidget(); if (opts.onAuthChange) on('login', opts.onAuthChange), on('logout', opts.onAuthChange); emit('ready', { user: currentUser() }); try { if (global.TLCloud && TLCloud.enabled) { var u = currentUser(); if (u && (u.role === 'admin' || u.role === 'teacher')) { setTimeout(function () { try { syncFromCloud(); } catch (e) {} }, 1200); } } } catch (e) {} return API; },
     register: register,
     login: login,
     logout: logout,
@@ -1304,6 +1376,8 @@ var API = {
     getAchievements: getAllAchievements,
     tlScaleHtml: tlScaleHtml,
     getStudents: getStudentsForTeacher,
+    syncFromCloud: syncFromCloud,
+    cabCloudSync: cabCloudSync,
     getTeacherRegistry: getTeacherRegistry,
     saveTeacherRegistry: saveTeacherRegistry,
     teacherList: teacherList,

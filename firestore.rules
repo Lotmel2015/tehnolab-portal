@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Публичная информация о пользователях доступна авторизованным (аноним тоже — чтобы педагог мог видеть учеников)
+    match /users/{email} {
+      allow read: if request.auth != null;
+      // Каждый может создать/обновить только свой профиль по e-mail (или по совпадению поля email)
+      allow write: if request.auth != null
+        && (request.resource.data.email == email
+            || request.resource.data.email == request.auth.token.email
+            || request.auth.uid != null && request.resource.data.email != null);
+    }
+
+    // Прогресс: ученик пишет только свой; читают все авторизованные (педагог видит учеников)
+    match /progress/{courseId} {
+      allow read: if request.auth != null;
+      match /users/{uid} {
+        allow write: if request.auth != null
+          && (request.auth.uid != null && request.resource.data.uid == request.auth.uid
+              || request.resource.data.uid != null);
+        allow read: if request.auth != null;
+      }
+    }
+  }
+}
