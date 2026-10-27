@@ -7,7 +7,7 @@
 <!-- Сквозная система ТЛ (общий кабинет с порталом) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script> <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script> <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script> <script src="tl-firebase.js"></script> <script src="tl-portal-core.js"></script>
 <script src="tl-bridge.js"></script>
-<script>try { if (window.TLCore) TLCore.init(); if (window.TLBridge) TLBridge.init({ total: 28 }); } catch (e) { console.error("tl-bridge init error", e); }</script>
+<script>try { if (window.TLCore) TLCore.init(); if (window.TLBridge) TLBridge.init({ total: 28 }); if (window.TL_CONST && window.TL_CONST.scaleEnabled === true) { var sw = document.getElementById('scaleWrap'); if (sw) { sw.style.display = ''; sw.removeAttribute('data-scale-off'); } } } catch (e) { console.error("tl-bridge init error", e); }</script>
 <style>
   :root { --bg:#fff; --ink:#1B2A4A; --muted:#5A6B85; --accent:#B45309; --accent-soft:#FDF1E1; --vr:#4D008C; --vr-soft:#F0EBF5; --pr:#167A4D; --pr-soft:#E7F4EE; --line:#D9E2EF; }
   * { box-sizing:border-box; }
@@ -250,7 +250,7 @@ body { overflow-x: hidden; }
     <button class="btn2" onclick="openAll()">Открыть все (режим педагога)</button>
   </div>
 
-  <details class="scale-wrap" id="scaleWrap" open>
+  <details class="scale-wrap" id="scaleWrap" open style="display:none" data-scale-off="1">
     <summary><span>🏅 Мотивационная шкала · Blender 3D</span><span class="sc-chev">▾</span></summary>
     <div class="scale-body">
       <div class="units"><span><b>Итоговый балл</b> — 0–100 баллов (прогресс + качество)</span><span><b>Прогресс</b> — % пройденных занятий из 28</span><span><b>Качество</b> — 0–100 баллов (см. ниже)</span></div>

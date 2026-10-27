@@ -46,7 +46,10 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     hoursPractice: 524,
     practicePct: 67,
     practicePctNote: 'доля практики в программе (524/784 ч)',
-    kpiPracticeMin: 65
+    kpiPracticeMin: 65,
+    /* Мотивационная шкала законсервирована (27.10.2026): отображение отключено,
+       код сохранён для возможного возобновления. true — снова включить. */
+    scaleEnabled: false
   };
 
   function read(key, def) {
@@ -89,8 +92,8 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
   /* -------- Регистрация / вход / выход -------- */
   function register(data) {
     var email = String(data.email || '').trim().toLowerCase();
-    if (!email || !data.pass) return { ok: false, error: 'Укажите e-mail и пароль.' };
-    if (getUserByEmail(email)) return { ok: false, error: 'Пользователь с таким e-mail уже зарегистрирован. Выполните вход.' };
+    if (!email || !data.pass) return { ok: false, error: 'Укажите логин и пароль.' };
+    if (getUserByEmail(email)) return { ok: false, error: 'Пользователь с таким логином уже зарегистрирован. Выполните вход.' };
     var profile = {
       id: uid(),
       role: data.role === 'teacher' ? 'teacher' : 'learner',
@@ -490,7 +493,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     var r = document.getElementById('tlFormReg');
     if (f) f.style.display = mode === 'login' ? 'block' : 'none';
     if (r) r.style.display = mode === 'reg' ? 'block' : 'none';
-    if (mode === 'reg') syncRoleFields();
+    if (mode === 'reg' && typeof syncRoleFields === 'function') syncRoleFields();
   }
   function buildModal() {
     var d = document.createElement('div');
@@ -511,21 +514,15 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
       '<button class="tl-btn" type="submit">Войти</button>' +
       '</form>' +
       '<form id="tlFormReg" style="display:none" onsubmit="return TLCore.doRegister(event)">' +
-      '<div class="tl-field"><label>ФИО</label><input type="text" id="tlRegName" required></div>' +
-      '<div class="tl-field"><label>Роль</label><select id="tlRegRole">' +
-      '<option value="learner">Ученик (обучающийся)</option>' +
+      '<div class="tl-field"><label>Кто ты?</label><select id="tlRegRole">' +
+      '<option value="learner">Ученик</option>' +
       '<option value="teacher">Педагог / наставник</option>' +
       '</select></div>' +
-      '<div id="tlRegLearnerFields">' +
-      '<div class="tl-row">' +
-      '<div class="tl-field"><label>Класс / курс</label><input type="text" id="tlRegCls" placeholder="Например: 9 «А»"></div>' +
-      '<div class="tl-field"><label>Школа</label><input type="text" id="tlRegSchool" placeholder="СОШ №…"></div>' +
-      '</div>' +
-      '<div class="tl-field"><label>Телефон родителя (необязательно)</label><input type="tel" id="tlRegPhone"></div>' +
-      '</div>' +
+      '<div id="tlRegNameWrap"><div class="tl-field"><label id="tlRegNameLbl">Имя (как к тебе обращаться)</label><input type="text" id="tlRegName" required placeholder="Например: Маша"></div></div>' +
+      '<div id="tlRegLearnerFields"><div class="tl-field"><label>Класс / курс</label><input type="text" id="tlRegCls" placeholder="Например: 9 «А»"></div></div>' +
       '<div class="tl-field"><label>Выбери лаборатории (можно несколько)</label><div class="tl-labs" id="tlRegLabs"></div></div>' +
       '<div class="tl-row">' +
-      '<div class="tl-field"><label>E-mail</label><input type="email" id="tlRegEmail" required></div>' +
+      '<div class="tl-field"><label>Логин (ник или e-mail)</label><input type="text" id="tlRegEmail" required placeholder="например: masha2026 или masha@mail.ru"></div>' +
       '</div>' +
       '<div class="tl-row">' +
       '<div class="tl-field"><label>Пароль</label><input type="password" id="tlRegPass" required></div>' +
@@ -573,26 +570,22 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     syncRoleFields();
   }
 
+  function syncRoleFields() {
+    var role = document.getElementById('tlRegRole');
+    if (!role) return;
+    var isTeacher = role.value === 'teacher';
+    var nameWrap = document.getElementById('tlRegNameWrap');
+    var learner = document.getElementById('tlRegLearnerFields');
+    var nameLbl = document.getElementById('tlRegNameLbl');
+    var nameInput = document.getElementById('tlRegName');
+    if (nameLbl) nameLbl.textContent = isTeacher ? 'ФИО' : 'Имя (как к тебе обращаться)';
+    if (nameInput) nameInput.placeholder = isTeacher ? 'Например: Иванова Анна Сергеевна' : 'Например: Маша';
+    if (learner) learner.style.display = isTeacher ? 'none' : 'block';
+  }
+
   function selectedLabs() {
     var labBox = document.getElementById('tlRegLabs');
     return labBox && labBox._tlSelected ? labBox._tlSelected : [];
-  }
-
-  function syncRoleFields() {
-    var role = document.getElementById('tlRegRole');
-    var learner = document.getElementById('tlRegLearnerFields');
-    if (!role || !learner) return;
-    var isTeacher = role.value === 'teacher';
-    learner.style.display = isTeacher ? 'none' : 'block';
-    // если педагог — очищаем нерелевантные поля
-    if (isTeacher) {
-      var cls = document.getElementById('tlRegCls');
-      var school = document.getElementById('tlRegSchool');
-      var phone = document.getElementById('tlRegPhone');
-      if (cls) cls.value = '';
-      if (school) school.value = '';
-      if (phone) phone.value = '';
-    }
   }
 
   var CAB_TAB = 'profile';
@@ -670,9 +663,11 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
   function cabProfileHtml(u) {
     var labs = (LAB_META || []).map(function (l) { return '<span class="tl-labs-chip" title="' + escapeHtml(l.short || l.name) + '"><b>' + l.id + '</b> ' + escapeHtml(l.name) + '</span> '; }).join('') || '';
     var h = '';
-    h += '<label>ФИО</label><input type="text" id="tlPrName" value="' + escapeHtml(u.name || '') + '">';
-    h += '<div style="display:flex;gap:10px;flex-wrap:wrap;"><div style="flex:1;min-width:140px;"><label>Класс / курс (ученик)</label><input type="text" id="tlPrCls" value="' + escapeHtml(u.cls || '') + '"></div><div style="flex:1;min-width:160px;"><label>Школа</label><input type="text" id="tlPrSchool" value="' + escapeHtml(u.school || '') + '"></div></div>';
-    h += '<label>Телефон</label><input type="tel" id="tlPrPhone" value="' + escapeHtml(u.phone || '') + '">';
+    h += '<label>Имя</label><input type="text" id="tlPrName" value="' + escapeHtml(u.name || '') + '">';
+    h += '<div style="display:flex;gap:10px;flex-wrap:wrap;"><div style="flex:1;min-width:140px;"><label>Класс / курс (ученик)</label><input type="text" id="tlPrCls" value="' + escapeHtml(u.cls || '') + '"></div></div>';
+    if (u.role === 'teacher' || u.role === 'admin') {
+      h += '<div style="display:flex;gap:10px;flex-wrap:wrap;"><div style="flex:1;min-width:160px;"><label>Школа</label><input type="text" id="tlPrSchool" value="' + escapeHtml(u.school || '') + '"></div><div style="flex:1;min-width:160px;"><label>Телефон</label><input type="tel" id="tlPrPhone" value="' + escapeHtml(u.phone || '') + '"></div></div>';
+    }
     h += '<div style="margin-top:12px;"><span style="font-size:12px;color:#8B8FA3;">Интересует лаборатории:</span><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;" id="tlPrLabs">' + labs + '</div></div>';
     h += '<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"><button class="tl-btn-save" id="tlPrSave" style="margin-top:10px;">Сохранить профиль</button><span class="tl-cab-msg" id="tlCabMsg"></span></div>';
     return h;
@@ -972,6 +967,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
   ];
   function tlMetalOf(t) { var m = TL_METALS[0]; for (var i = 0; i < TL_METALS.length; i++) { if (t >= TL_METALS[i].need) m = TL_METALS[i]; } return m; }
   function tlScaleHtml() {
+    if (TL_CONST && TL_CONST.scaleEnabled === false) return '';
     var u = currentUser(); if (!u) return '';
     var ach = getAllAchievements();
     var pts = ach.totalAll ? Math.round(ach.doneTotal / ach.totalAll * 100 * 0.4 + 60 * 0.6) : 0;
@@ -1406,7 +1402,7 @@ var API = {
     refreshUI: renderAuthWidget,
     on: on,
     _publicProfile: publicProfile,
-    doRegister: function (e) { if (e && e.preventDefault) e.preventDefault(); var email = (document.getElementById('tlRegEmail') || {}).value || ''; var pass = (document.getElementById('tlRegPass') || {}).value || ''; var pass2 = (document.getElementById('tlRegPass2') || {}).value || ''; var errEl = document.getElementById('tlRegErr'); if (pass !== pass2) { if (errEl) errEl.textContent = 'Пароли не совпадают.'; return false; } var name = (document.getElementById('tlRegName') || {}).value || ''; var data = { name: name, cls: (document.getElementById('tlRegCls') || {}).value, school: (document.getElementById('tlRegSchool') || {}).value, phone: (document.getElementById('tlRegPhone') || {}).value, role: (document.getElementById('tlRegRole') || {}).value, email: email, pass: pass, labs: selectedLabs() }; var res = register(data); if (!res.ok) { if (errEl) errEl.textContent = res.error; return false; } if (errEl) errEl.textContent = ''; closeModal(); renderCabinet(); renderAuthWidget(); emit('login', res.user); toast('Добро пожаловать, ' + (name || email) + '!'); return false; },
+    doRegister: function (e) { if (e && e.preventDefault) e.preventDefault(); var email = (document.getElementById('tlRegEmail') || {}).value || ''; var pass = (document.getElementById('tlRegPass') || {}).value || ''; var pass2 = (document.getElementById('tlRegPass2') || {}).value || ''; var errEl = document.getElementById('tlRegErr'); if (pass !== pass2) { if (errEl) errEl.textContent = 'Пароли не совпадают.'; return false; } var name = (document.getElementById('tlRegName') || {}).value || ''; var roleSel = document.getElementById('tlRegRole'); var role = (roleSel && roleSel.value === 'teacher') ? 'teacher' : 'learner'; var data = { name: name, cls: role === 'learner' ? ((document.getElementById('tlRegCls') || {}).value || '') : '', school: '', phone: '', role: role, email: email, pass: pass, labs: selectedLabs() }; var res = register(data); if (!res.ok) { if (errEl) errEl.textContent = res.error; return false; } if (errEl) errEl.textContent = ''; closeModal(); renderCabinet(); renderAuthWidget(); emit('login', res.user); toast('Добро пожаловать, ' + (name || email) + '!'); return false; },
     doLogin: function (e) { if (e && e.preventDefault) e.preventDefault(); var email = (document.getElementById('tlLoginEmail') || {}).value || ''; var pass = (document.getElementById('tlLoginPass') || {}).value || ''; var res = login(email, pass); var errEl = document.getElementById('tlLoginErr'); if (!res.ok) { if (errEl) errEl.textContent = res.error; return false; } if (errEl) errEl.textContent = ''; closeModal(); renderCabinet(); renderAuthWidget(); emit('login', res.user); toast('Вы вошли в личный кабинет.'); return false; },
     doGuest: function () { closeModal(); toast('Режим гостя: прогресс не сохранится. Лучше войти.'); location.href = location.pathname; }
   };

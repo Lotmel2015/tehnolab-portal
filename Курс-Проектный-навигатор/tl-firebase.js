@@ -31,11 +31,30 @@
       cloud.db = firebase.firestore(cloud.app);
       try { cloud.db.settings({}); } catch (e) {}
       cloud.enabled = true;
+      cloud.pending = [];
       cloud.auth.signInAnonymously().then(function (r) {
         cloud.uid = r.user.uid;
         cloud.ready = true;
+        flush();
       }).catch(function () { cloud.ready = false; });
     } catch (e) { cloud.enabled = false; }
+  }
+
+  function flush() {
+    if (!cloud.enabled || !cloud.ready || !cloud.db) return;
+    var q = (cloud.pending || []).slice();
+    cloud.pending = [];
+    q.forEach(function (job) {
+      try {
+        if (job.kind === 'user') {
+          cloud.db.collection('users').doc(docId(job.data.email)).set(job.data, { merge: true });
+        } else if (job.kind === 'progress') {
+          cloud.db.collection('progress').doc(String(job.courseId)).collection('users')
+            .doc(String(job.uid).replace(/[^a-zA-Z0-9._-]/g, '_') || 'u')
+            .set({ uid: String(job.uid), lessons: job.lessons, total: job.total, at: new Date().toISOString() }, { merge: true });
+        }
+      } catch (e) { cloud.pending.push(job); }
+    });
   }
 
   function safeEmail(e) { return String(e || '').trim().toLowerCase(); }
@@ -55,7 +74,11 @@
       createdAt: profile.createdAt || new Date().toISOString()
     };
     if (!d.email) return;
-    try { cloud.db.collection('users').doc(docId(d.email)).set(d, { merge: true }); } catch (e) {}
+    if (cloud.ready) {
+      try { cloud.db.collection('users').doc(docId(d.email)).set(d, { merge: true }); } catch (e) {}
+    } else {
+      cloud.pending.push({ kind: 'user', data: d });
+    }
   }
 
   /* Прогресс пользователя по курсу → Firestore progress/{courseId}/users/{uid}
@@ -65,11 +88,16 @@
     var obj = {};
     Object.keys(map || {}).forEach(function (k) { if (map[k] && map[k].done) obj[k] = true; });
     var total = Object.keys(obj).length;
-    try {
-      cloud.db.collection('progress').doc(String(courseId)).collection('users')
-        .doc(String(uid).replace(/[^a-zA-Z0-9._-]/g, '_') || 'u')
-        .set({ uid: String(uid), lessons: obj, total: total, at: new Date().toISOString() }, { merge: true });
-    } catch (e) {}
+    var job = { kind: 'progress', courseId: String(courseId), uid: String(uid), lessons: obj, total: total };
+    if (cloud.ready) {
+      try {
+        cloud.db.collection('progress').doc(String(courseId)).collection('users')
+          .doc(String(uid).replace(/[^a-zA-Z0-9._-]/g, '_') || 'u')
+          .set({ uid: String(uid), lessons: obj, total: total, at: new Date().toISOString() }, { merge: true });
+      } catch (e) { cloud.pending.push(job); }
+    } else {
+      cloud.pending.push(job);
+    }
   }
 
   /* Выгрузка с сервера: все профили + прогресс курсов.

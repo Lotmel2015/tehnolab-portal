@@ -27,6 +27,9 @@
   function render(cfg) {
     var wrap = document.getElementById('scaleWrap');
     if (!wrap) return;
+    // Мотивационная шкала законсервирована (27.10.2026): отображение отключено.
+    if (global.TL_CONST && global.TL_CONST.scaleEnabled === false) { wrap.style.display = 'none'; return; }
+    wrap.style.display = '';
     var profiles = lsJ(cfg.profilesKey) || [];
     var students = profiles.filter(function (p) { return p.role !== 'teacher'; });
     wrap.innerHTML = '';
