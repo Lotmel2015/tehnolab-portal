@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Карточка промптов ученику · Час MultiTool</title>
+<style>
+@page{size:A4 portrait;margin:7mm 8mm}
+:root{--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--line:#D3DCEA;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--vr:#4D008C;--vr-soft:#F0EBF5}
+*{box-sizing:border-box}
+body{margin:0;background:#eef1f6;color:var(--ink);font:11pt/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.sheet{width:210mm;min-height:297mm;margin:14px auto;background:#fff;padding:9mm 10mm;box-shadow:0 8px 26px rgba(27,42,74,.14)}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;border-bottom:2px solid var(--accent);padding-bottom:5px;margin-bottom:7px}
+.head h1{margin:0;font-size:15pt;line-height:1.15}
+.head .sub{font-size:8.5pt;color:var(--muted);margin-top:2px}
+.head .meta{text-align:right;font-size:8pt;color:var(--muted);line-height:1.5;white-space:nowrap}
+.head .meta b{color:var(--ink)}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;background:var(--pr-soft);border-left:3px solid var(--pr);border-radius:0 6px 6px 0;padding:5px 9px;margin-bottom:7px;font-size:8.6pt}
+.rules span{display:block}
+.rules b{color:var(--pr)}
+table{width:100%;border-collapse:collapse;font-size:8.4pt;line-height:1.32}
+th{background:#F2F6FC;color:var(--muted);font-size:7.4pt;text-transform:uppercase;letter-spacing:.03em;text-align:left;padding:3px 4px;border:1px solid var(--line)}
+td{border:1px solid var(--line);padding:3px 4px;vertical-align:top}
+td.n{width:14px;text-align:center;font-weight:700;color:var(--accent)}
+td.w{width:26px;text-align:center;color:var(--muted);font-size:7.6pt}
+td.s{width:74px;font-weight:700;font-size:8pt}
+td.p{font-family:"Cascadia Mono",Consolas,monospace;font-size:7.9pt;color:#14233d}
+td.r{width:74px;color:var(--muted);font-size:7.6pt}
+tr.s2 td{background:#FAF7FE}
+tr.s2 td.n{color:var(--vr)}
+.sec td{background:#1B2A4A;color:#fff;font-weight:700;font-size:8pt;letter-spacing:.02em;padding:2px 5px}
+.box{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:7px}
+.pane{border:1px solid var(--line);border-radius:6px;padding:5px 8px;font-size:8.4pt}
+.pane b{display:block;color:var(--accent);font-size:8.4pt;margin-bottom:2px}
+.pane ul{margin:2px 0 0;padding-left:1.05rem}
+.pane li{margin:1px 0}
+.write{margin-top:7px;border:1px dashed var(--accent);border-radius:6px;padding:5px 8px;font-size:8.4pt}
+.write .line{border-bottom:1px solid var(--line);height:12px;margin:3px 0}
+.write .k{color:var(--muted);font-size:7.8pt}
+.keys{margin-top:4px;font-size:7.2pt;line-height:1.35;color:var(--muted);font-family:"Cascadia Mono",Consolas,monospace;word-spacing:.05em}
+.keys b{color:var(--ink);font-family:system-ui,sans-serif;font-size:7.6pt}
+.foot{display:flex;justify-content:space-between;gap:1rem;margin-top:6px;font-size:7.6pt;color:var(--muted);border-top:1px solid var(--line);padding-top:4px}
+.tools{max-width:210mm;margin:0 auto;padding:0 10mm;display:flex;gap:.5rem;flex-wrap:wrap}
+.btn{border:0;border-radius:9px;padding:.5rem 1rem;font:700 13px system-ui;cursor:pointer;background:var(--accent);color:#fff}
+.btn2{border:1px solid #c9d4e5;background:#fff;color:var(--ink);border-radius:9px;padding:.5rem 1rem;font:700 13px system-ui;cursor:pointer}
+@media print{
+  body{background:#fff;font-size:9pt}
+  .sheet{width:auto;min-height:0;margin:0;padding:0;box-shadow:none}
+  .tools{display:none}
+  .head h1{font-size:12.5pt}
+  .head .sub,.head .meta{font-size:7.4pt}
+  .rules{font-size:7.3pt;padding:3px 8px;margin-bottom:5px}
+  table{font-size:7.2pt;line-height:1.22}
+  th{font-size:6.6pt;padding:2px 3px}
+  td{padding:2px 3px}
+  td.p{font-size:7pt}
+  td.s{font-size:7.2pt;width:66px}
+  td.r{font-size:6.8pt;width:66px}
+  td.w{font-size:6.8pt}
+  .sec td{font-size:7pt;padding:1.5px 4px}
+  .box{gap:6px;margin-top:5px}
+  .pane{font-size:7.2pt;padding:4px 7px}
+  .pane b{font-size:7.4pt}
+  .write{margin-top:5px;padding:4px 7px;font-size:7.2pt}
+  .write .line{height:9px;margin:2px 0}
+  .write .k{font-size:7pt}
+  .keys{font-size:6.8pt}
+  .foot{font-size:6.8pt;margin-top:4px}
+  tr{break-inside:avoid;page-break-inside:avoid}
+  .box,.write{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="tools">
+  <button class="btn" onclick="window.print()">Печать / PDF</button>
+  <button class="btn2" onclick="location.href='Список%20модулей%20Проектная%20деятельность%20с%20ИИ.html'">← Мини-курс (полная методичка)</button>
+</div>
+
+<div class="sheet">
+
+  <div class="head">
+    <div>
+      <h1>Час MultiTool: от идеи до паспорта проекта</h1>
+      <div class="sub">Карточка ученика · промпты по порядку · 8–11 класс · конкурс «Большие вызовы»</div>
+    </div>
+    <div class="meta">
+      Класс: <b>_______</b><br>
+      Тема: <b>___________________</b><br>
+      Направление: <b>_______________</b>
+    </div>
+  </div>
+
+  <div class="rules">
+    <span><b>1.</b> ИИ предлагает — ты решаешь. Выбор всегда за тобой.</span>
+    <span><b>2.</b> Один вопрос за раз: отвечай своими словами, не копируй.</span>
+    <span><b>3.</b> Чего не знаешь — пиши <b>[НУЖНО УТОЧНИТЬ]</b> и уточняй после часа.</span>
+    <span><b>4.</b> Перед паспортом объясни проект вслух за 60 секунд.</span>
+  </div>
+
+  <table>
+    <tr><th></th><th></th><th>Шаг</th><th>Промпт — отправь в чат</th><th>Куда записать</th></tr>
+
+    <tr class="sec"><td colspan="5">Сессия 1 · замысел → паспорт (60 минут)</td></tr>
+
+    <tr>
+      <td class="n">0</td><td class="w">5′</td>
+      <td class="s">Настройка чата</td>
+      <td class="p">Ты наставник проектной лаборатории. Работаешь со школьником 8–11 класса, у которого есть только идея. Один вопрос за сообщение, порциями 5–7 строк. Не пиши за меня. Не выдумывай цифры, факты и источники — помечай [НУЖНО УТОЧНИТЬ]. Предлагай 2–3 варианта, выбираю я. В конце сессии выдай JSON с ключами f-* (список под таблицей).</td>
+      <td class="r">Инструкция проекта (полная версия — шаг 0 мини-курса)</td>
+    </tr>
+
+    <tr>
+      <td class="n">1</td><td class="w">8′</td>
+      <td class="s">Замысел</td>
+      <td class="p">Я ученик ___ класса, у меня есть только идея: «___». Задай мне 5 вопросов по одному, чтобы понять, что мне интересно и что я умею. Потом предложи 3 направления проекта: реалистичное, поинтереснее, рискованное. Ничего не придумывай за меня.</td>
+      <td class="r">Выбранное направление + почему</td>
+    </tr>
+
+    <tr>
+      <td class="n">2</td><td class="w">8′</td>
+      <td class="s">Проблема</td>
+      <td class="p">Задавай по одному вопросу «почему?», не больше пяти, пока не дойдём до проверяемой причины. Назови, кто конкретно страдает, как часто и в чём неудобство. Предложи, как проверить это за неделю: опрос 10 человек, наблюдение, замер.</td>
+      <td class="r">Проблема (2 · Проблема)</td>
+    </tr>
+
+    <tr>
+      <td class="n">3</td><td class="w">8′</td>
+      <td class="s">Цель</td>
+      <td class="p">Сформулируй цель по SMART: «создать (продукт) для (кто), чтобы (польза) к (срок)». Дай 3 варианта. Помоги выбрать то, что можно посчитать. Проверь: есть число и срок, цель не подменяет средство.</td>
+      <td class="r">Цель + измеримый результат</td>
+    </tr>
+
+    <tr>
+      <td class="n">4</td><td class="w">6′</td>
+      <td class="s">Задачи</td>
+      <td class="p">Разбей цель на 3–5 задач по схеме: узнать, разработать, сделать, протестировать, оформить. У каждой — результат и месяц. Если больше пяти — сократи и объясни что убрал. Задача без результата — переформулируй.</td>
+      <td class="r">Задачи (3–5)</td>
+    </tr>
+
+    <tr>
+      <td class="n">5</td><td class="w">7′</td>
+      <td class="s">Продукт</td>
+      <td class="p">Помоги выбрать форму продукта: устройство, программа, макет, модель, исследование, инструкция. Предложи минимальную версию на 2–3 месяца. Опиши продукт в 4 предложения, как будто рассказываю другу.</td>
+      <td class="r">Продукт · форма · MVP</td>
+    </tr>
+
+    <tr>
+      <td class="n">6</td><td class="w">8′</td>
+      <td class="s">План и риски</td>
+      <td class="p">Составь план по месяцам: изучение, проектирование, создание, тестирование, оформление. Добавь ресурсы, два настоящих риска с ответом «что сделаю тогда» и роли. Бюджет не выдумывай.</td>
+      <td class="r">План · ресурсы · риски</td>
+    </tr>
+
+    <tr>
+      <td class="n">7</td><td class="w">10′</td>
+      <td class="s">Сборка</td>
+      <td class="p">Собери паспорт из 6 разделов: титул, проблема и цель и задачи, продукт, план и команда и ресурсы, результат, приложения. В конце выдай JSON с теми же ключами f-*. Чего нет — пустая строка.</td>
+      <td class="r">JSON → «Загрузить JSON» в паспорте</td>
+    </tr>
+
+    <tr class="sec"><td colspan="5">Сессия 2 · паспорт → конкурс «Большие вызовы» (45 минут)</td></tr>
+
+    <tr class="s2">
+      <td class="n">8</td><td class="w">12′</td>
+      <td class="s">Положение</td>
+      <td class="p">Прикрепил положение конкурса и памятку. Разбери как юрист для школьника: кто участвует и в каком формате; направления; этапы и сроки; что загружается в заявку и какой объём; критерии и их вес; что дисквалифицирует. Таблица: требование | пункт | где в паспорте | чего нет | что сделать. Короткие цитаты с номером пункта, ничего не додумывай.</td>
+      <td class="r">Карта требований</td>
+    </tr>
+
+    <tr class="s2">
+      <td class="n">9</td><td class="w">10′</td>
+      <td class="s">Пересборка</td>
+      <td class="p">Пересобери мой паспорт под требования положения: структура, объём, обязательные разделы. Сохрани мои формулировки и мой голос, не переписывай «умным» языком. Скажи списком, что изменил и почему. Чего нет — [НУЖНО УТОЧНИТЬ].</td>
+      <td class="r">Паспорт v2</td>
+    </tr>
+
+    <tr class="s2">
+      <td class="n">10</td><td class="w">15′</td>
+      <td class="s">Жюри</td>
+      <td class="p">Ты эксперт жюри этого конкурса. Оцени паспорт по каждому критерию положения по шкале 0–3, с обоснованием в строку и конкретной правкой. Сначала три главные слабости, потом сильные стороны. Вердикт: прошёл бы заочную экспертизу и почему.</td>
+      <td class="r">3 правки, внесённые в паспорт</td>
+    </tr>
+
+    <tr class="s2">
+      <td class="n">11</td><td class="w">8′</td>
+      <td class="s">Подача</td>
+      <td class="p">Собери чек-лист подачи: что загрузить, в каком формате, что проверить (ссылки, объём, подписи, согласия, фото). Дай пять вопросов защиты с короткими ответами. В конце задай мне три вопроса на понимание: в чём проблема, почему решение работает, что сделал сам.</td>
+      <td class="r">Чек-лист + вопросы защиты</td>
+    </tr>
+  </table>
+
+  <div class="keys"><b>JSON-ключи для импорта в паспорт:</b> f-topic · f-problem · f-goal · f-tasks · f-result-metric · f-product-form · f-mvp · f-product-desc · f-tech · f-plan · f-team · f-resources · f-risks</div>
+
+  <div class="box">
+    <div class="pane"><b>Перед подачей — проверить</b>
+      <ul>
+        <li>Тема: «что делаю + для кого», не «мой проект»</li>
+        <li>В цели есть число и срок</li>
+        <li>Продукт существует хотя бы как макет или эскиз</li>
+        <li>Пропуски помечены и понятно, где их взять</li>
+        <li>Ссылки открываются без обходных путей</li>
+      </ul>
+    </div>
+    <div class="pane"><b>Три ловушки часа</b>
+      <ul>
+        <li>Чат пишет «красиво» за тебя → «Задай мне вопрос, я отвечу сам»</li>
+        <li>Чат придумал цифру → «Пометь [НУЖНО УТОЧНИТЬ] и скажи, где взять»</li>
+        <li>Не можешь пересказать абзац → переписываешь его своими словами</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="write">
+    <span class="k">Опорные факты для защиты (заполни после часа)</span>
+    <div class="line"></div>
+    <span class="k">Проблема числом · метрика успеха · срок</span>
+    <div class="line"></div>
+    <span class="k">Что уточнить до подачи (минимум один факт)</span>
+  </div>
+
+  <div class="foot">
+    <span>Технологическая лаборатория · «Проектный навигатор» · 2026/2027</span>
+    <span>Полная методичка: «Список%20модулей%20Проектная%20деятельность%20с%20ИИ.html» · требования сверяй с действующим положением</span>
+  </div>
+
+</div>
+</body>
+</html>
+
