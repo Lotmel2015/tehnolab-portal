@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Логика курса «ВсОШ по труду (технологии)» · Технологическая лаборатория</title>
+<style>
+:root{--ink:#1B2A4A;--muted:#5A6B85;--line:#D9E2EF;--accent:#1F6FE0;--accent-soft:#EAF2FD;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--vr:#4D008C;--vr-soft:#F0EBF5;--bg:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:2.2rem 1.25rem 3rem}
+header .kicker{color:var(--accent);font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em}
+header h1{font-size:1.7rem;line-height:1.25;margin:.25rem 0 .4rem}
+header .sub{color:var(--muted);font-size:1rem;margin:0 0 .5rem}
+.meta{color:var(--muted);font-size:.85rem}
+.tldr{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:.95rem 1.15rem;margin:1.4rem 0}
+.tldr b{color:var(--accent)}
+h2{font-size:1.15rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;margin:1.8rem 0 .7rem}
+table{border-collapse:collapse;width:100%;font-size:.88rem;margin:.6rem 0;background:#fff}
+th,td{border:1px solid var(--line);padding:.45rem .55rem;text-align:left;vertical-align:top}
+th{background:#F2F6FC;color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.03em}
+tr.part td{background:var(--accent-soft);font-weight:700;color:var(--accent)}
+.card{border:1px solid var(--line);border-radius:12px;padding:.85rem 1rem;background:#fbfcfe;margin:.8rem 0}
+.note{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}
+.note b{color:var(--def)}
+.ok{color:var(--pr);font-weight:700}
+footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.2rem;padding-top:.8rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">Технологическая лаборатория · олимпиадная подготовка · профиль ТТиТТ</div>
+  <h1>Логика курса «ВсОШ по труду (технологии)»</h1>
+  <p class="sub">Что проходим на занятиях, зачем и какой результат — для ученика, учителя и администратора. 34 занятия по 2 часа (68 часов), 2026/27 учебный год.</p>
+  <div class="meta">Версия 1.0 · сформировано 29.10.2026 · основа: концепция курса и программа олимпиадного модуля (68 ч, вариант А)</div>
+</header>
+
+<div class="tldr"><b>Суть курса.</b> Курс готовит школьников 8–11 классов к олимпиаде «ВсОШ по труду (технологии)» по профилю <b>ТТиТТ</b>. Маршрут: <b>входная диагностика → теория (ЕСКД, машиноведение, материаловедение, электротехника, автоматика и IoT) → практики (3D-моделирование и печать, Arduino, БПЛА, промышленный дизайн, лазерная резка, дерево- и металлообработка) → тренировочные туры → защита собственного проекта</b>. Результат — ученик готов к муниципальному и региональному этапам и защищает проект по критериям олимпиады.</div>
+
+<h2>1. Разделы и занятия</h2>
+<table>
+  <thead><tr><th>Раздел</th><th>Занятия</th><th>Что даёт</th></tr></thead>
+  <tbody>
+    <tr><td><b>1. Введение и диагностика</b></td><td>1–2</td><td>Знакомство с олимпиадой, входная диагностика (40 заданий), карта пробелов, индивидуальный маршрут</td></tr>
+    <tr><td><b>2. Теоретическая база</b></td><td>3–15</td><td>ЕСКД и расчёты по чертежу, машиноведение и передачи, материаловедение (древесина, металлы, полимеры), электротехника и электроника, автоматика и IoT</td></tr>
+    <tr><td><b>3. 3D-моделирование и печать</b></td><td>16–20</td><td>Эскиз, КОМПАС-3D, моделирование по образцу, подготовка к печати в Cura + тренировочный тур</td></tr>
+    <tr><td><b>4. Автоматизированные технические системы (Arduino)</b></td><td>21–24</td><td>Схемы и скетчи, потенциометр и ШИМ, сервопривод и сборка по ТЗ + тренировочный тур</td></tr>
+    <tr><td><b>5. Программирование полётного задания БПЛА</b></td><td>25–27</td><td>Основы БАС и ТБ, симулятор, полётное задание (2 попытки)</td></tr>
+    <tr><td><b>6. Промышленный дизайн</b></td><td>28–29</td><td>Дизайн-анализ, серия скетчей + тренировочный тур</td></tr>
+    <tr><td><b>7. Материальные практики</b></td><td>30–32</td><td>Лазерная резка и гравировка (ЛГМ), ручная деревообработка, ручная металлообработка (база партнёра)</td></tr>
+    <tr><td><b>8. Проект и тренировочный тур</b></td><td>33–34</td><td>Репетиция защиты проекта (6 минут + вопросы), финальный теоретический тур (120 минут), итоговый протокол</td></tr>
+  </tbody>
+</table>
+
+<h2>2. Контроль и результат</h2>
+<div class="card">
+  <table>
+    <thead><tr><th>Контроль</th><th>Формат</th><th>Порог</th></tr></thead>
+    <tbody>
+      <tr><td>Входная диагностика (занятие 1)</td><td>40 заданий</td><td>определяет базовый поток или олимпийскую группу</td></tr>
+      <tr><td>Тренировочные туры (занятия 20, 24, 29)</td><td>практика на время по протоколу</td><td>фиксация баллов + план исправления</td></tr>
+      <tr><td>Защита проекта (занятие 33)</td><td>6 минут + вопросы жюри</td><td>по критериям олимпиады (до 35 баллов)</td></tr>
+      <tr><td>Итоговый тур (занятие 34)</td><td>теория 120 минут</td><td>≥70% по каждому разделу — переход к варианту Б</td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="note"><b>Проект ведётся параллельно.</b> Над проектом ученик работает весь год (по «Проектному навигатору»), а на занятии 33 — репетирует защиту. Часы курса — только фиксация результата.</div>
+
+<h2>3. Требования к базу</h2>
+<div class="card">
+  <table>
+    <thead><tr><th>Практика</th><th>Оборудование</th><th>Статус</th></tr></thead>
+    <tbody>
+      <tr><td>3D-моделирование и печать</td><td>ПК, КОМПАС-3D, Blender, Cura, FDM-принтер, PLA</td><td class="ok">Есть (LAB.03)</td></tr>
+      <tr><td>ЛГМ</td><td>Laser machine 4060, вытяжка, фанера</td><td class="ok">Есть</td></tr>
+      <tr><td>Ручная деревообработка</td><td>Верстак, ножовка, рубанок, стамески, шлифмашина</td><td class="ok">Есть (мастерская)</td></tr>
+      <tr><td>АТС (Arduino)</td><td>Arduino UNO, макетная плата, компоненты, мультиметр</td><td class="ok">Есть (LAB.02)</td></tr>
+      <tr><td>БПЛА</td><td>Квадрокоптер, симулятор (Liftoff/VelociDrone), полётная зона</td><td class="ok">Есть (LAB.04)</td></tr>
+      <tr><td>Металлообработка</td><td>Слесарный верстак, тиски, напильники, сверлильный станок</td><td>Через партнёра</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2>4. Как читать прогресс в кабинете</h2>
+<div class="card">
+  <p>Прогресс ученика по курсу отображается в личном кабинете учителя и администратора во вкладке «Мои ученики»/«Пользователи» — курс «ВсОШ по труду (технологии)», занятий 34. Каждое занятие считается пройденным, когда ученик заполнил рефлексию и нажал «Отметить занятие пройденным». Занятия открываются последовательно; для учителя открыты все сразу.</p>
+  <p>Документы комплекта: <a href="../../../ВсОШ по труду/Методичка по подготовке к ВСОШ по труду.html" target="_blank" rel="noopener">Методичка по подготовке</a> · <a href="../../../ВсОШ по труду/Чек лист учителя по сопровождению ВСОШ по труду.html" target="_blank" rel="noopener">Чек-лист учителя</a> · <a href="../../../ВсОШ по труду/Маршрут к диплому ВСОШ по труду.html" target="_blank" rel="noopener">Маршрут к диплому</a> · <a href="../../../ВсОШ по труду/Памятка школьнику по ВСОШ по труду.html" target="_blank" rel="noopener">Памятка школьнику</a></p>
+</div>
+
+<footer>Логика курса «ВсОШ по труду (технологии)» · Технологическая лаборатория · 29.10.2026 · профиль ТТиТТ, 68 ч (34 занятия)</footer>
+</div>
+</body>
+</html>

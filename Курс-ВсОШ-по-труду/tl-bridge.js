@@ -93,6 +93,7 @@
         return ls(uid + '_l_' + n) === '1';
       }
       var obj = lsJ(PROGRESS_KEY_PREFIX + uid) || {};
+      if (Array.isArray(obj)) return !!obj[n - 1];
       return !!obj['w' + n];
     } catch (e) { return false; }
   }

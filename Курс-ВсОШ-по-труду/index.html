@@ -52,7 +52,7 @@ table { max-width: 100%; }
   <p class="sub" style="color:var(--muted);font-size:.92rem;">Занятия открываются по порядку: следующее — после того, как ты отметишь предыдущее пройденным. Для учителя открыты все.</p>
   <div class="lessons" id="grid"></div>
 
-  <div class="tldr" style="margin-top:1.6rem;"><b>Документы курса.</b> <a href="Методичка по подготовке к ВСОШ по труду.html" target="_blank" rel="noopener">Методичка для ученика и учителя</a> · <a href="Чек лист учителя по сопровождению ВСОШ по труду.html" target="_blank" rel="noopener">Чек-лист учителя</a> · <a href="Маршрут к диплому ВСОШ по труду.html" target="_blank" rel="noopener">Маршрут к диплому</a> · <a href="Памятка школьнику по ВСОШ по труду.html" target="_blank" rel="noopener">Памятка школьнику</a></div>
+  <div class="tldr" style="margin-top:1.6rem;"><b>Документы курса.</b> <a href="../../ВсОШ по труду/Методичка по подготовке к ВСОШ по труду.html" target="_blank" rel="noopener">Методичка для ученика и учителя</a> · <a href="../../ВсОШ по труду/Чек лист учителя по сопровождению ВСОШ по труду.html" target="_blank" rel="noopener">Чек-лист учителя</a> · <a href="../../ВсОШ по труду/Маршрут к диплому ВСОШ по труду.html" target="_blank" rel="noopener">Маршрут к диплому</a> · <a href="../../ВсОШ по труду/Памятка школьнику по ВСОШ по труду.html" target="_blank" rel="noopener">Памятка школьнику</a></div>
 </main> <script>
 /* Главный скрипт курса: роли ученик/учитель + последовательный доступ */
 const lessons = [
@@ -114,9 +114,9 @@ function saveUsers(a){ try{ localStorage.setItem(PFKEY,JSON.stringify(a)); }catc
 function sessionUser(){ try{ var s=JSON.parse(localStorage.getItem(CUKEY)||"null"); return s; }catch(e){ return null; } }
 function setSession(s){ try{ localStorage.setItem(CUKEY,JSON.stringify(s)); }catch(e){} }
 function me(){ var s=sessionUser(); if(!s || !s.uid) return null; return getUsers().find(function(p){ return String(p.uid)===String(s.uid); }) || null;
-} function getProgress(uid){ var a=[]; try{ a=JSON.parse(localStorage.getItem(PROGKEY+uid)||"[]"); }catch(e){ a=[]; } if(!Array.isArray(a))a=[]; while(a.length<34)a.push(false); return a; }
-function setProgress(uid,lesson,done){ var a=getProgress(uid); a[lesson-1]=!!done; try{ localStorage.setItem(PROGKEY+uid,JSON.stringify(a)); }catch(e){} }
-function isDone(uid,n){ return !!getProgress(uid)[n-1]; }
+} function getProgress(uid){ var o={}; try{ var raw=JSON.parse(localStorage.getItem(PROGKEY+uid)||"null"); if(Array.isArray(raw)){ for(var i=0;i<raw.length;i++){ if(raw[i]) o['w'+(i+1)]=true; } } else if(raw&&typeof raw==="object"){ o=raw; } }catch(e){ o={}; } return o; }
+function setProgress(uid,lesson,done){ var o=getProgress(uid); if(done) o['w'+lesson]=true; else delete o['w'+lesson]; try{ localStorage.setItem(PROGKEY+uid,JSON.stringify(o)); }catch(e){} }
+function isDone(uid,n){ return !!getProgress(uid)['w'+n]; }
 window.__roleTab = function(r){ if(r==="student"){ var a=document.getElementById("tab-student"); if(a)a.style.display=""; var b=document.getElementById("tab-teacher"); if(b)b.style.display="none"; } else { var a=document.getElementById("tab-student"); if(a)a.style.display="none"; var b=document.getElementById("tab-teacher"); if(b)b.style.display=""; }
 };
 function genCode(){ var code; do { code = String(Math.floor(1000 + Math.random()*9000)); code = code + "/" + Math.random().toString(36).slice(2,6).toUpperCase(); } while (false); return code; }
@@ -147,7 +147,7 @@ function render(){ var u=me(); var grid=document.getElementById("grid"); if(!gri
 (function(){var PFKEY="vsh-trade-users",MODE="vsh",TOTAL=34,METALS=[{"name":"Железо","icon":"⚙","need":5,"bg":"linear-gradient(160deg,#6b7a8c,#39434f)","fg":"#fff"},{"name":"Медь","icon":"◎","need":15,"bg":"linear-gradient(160deg,#ee7a4b,#b23c1f)","fg":"#fff"},{"name":"Бронза","icon":"⑂","need":25,"bg":"linear-gradient(160deg,#c98a3d,#7c4e18)","fg":"#fff"},{"name":"Олово","icon":"❆","need":35,"bg":"linear-gradient(160deg,#9fc2da,#56748e)","fg":"#0f1c28"},{"name":"Серебро","icon":"◐","need":45,"bg":"linear-gradient(160deg,#eef1f5,#aab4c0)","fg":"#232a36"},{"name":"Золото","icon":"☀","need":55,"bg":"linear-gradient(160deg,#ffd75e,#c3940f)","fg":"#3a2c00"},{"name":"Платина","icon":"✧","need":65,"bg":"linear-gradient(160deg,#9aa6b3,#616e7d)","fg":"#fff"},{"name":"Палладий","icon":"❖","need":75,"bg":"linear-gradient(160deg,#e0c69a,#976f34)","fg":"#2b2006"},{"name":"Родий","icon":"✪","need":85,"bg":"linear-gradient(160deg,#fbfdff,#c6cdd6)","fg":"#1a2430"},{"name":"Иридий","icon":"✦","need":93,"bg":"linear-gradient(160deg,#4a5561,#232b34)","fg":"#fff"}];
 function ls(k){try{return localStorage.getItem(k);}catch(e){return null;}}function lsA(k){try{return JSON.parse(ls(k)||"null");}catch(e){return null;}}
 function profiles(){return lsA(PFKEY)||[];}
-function isProg(uid,n){var a=lsA("vsh-trade-progress-"+uid);return !!(a&&a[n-1]);}
+function isProg(uid,n){var raw=lsA("vsh-trade-progress-"+uid);if(Array.isArray(raw))return !!(raw&&raw[n-1]);return !!(raw&&raw["w"+n]);}
 function reflOf(uid,n){return lsA("vsh_refl_"+uid+"_"+n);}
 function compute(uid){var dc=0,sr=0,wr=0,dd=0,dt=0,bn=0,bl=[20,24,29,34];for(var n=1;n<=TOTAL;n++){if(isProg(uid,n))dc++;var r=reflOf(uid,n);if(r){wr++;var rt=parseFloat(r.rating);if(!isNaN(rt))sr+=rt;if(r.done===true||r.done==="true")dd++;dt++;}if(bl.indexOf(n)>=0&&isProg(uid,n))bn++;}var prog=Math.round(dc/TOTAL*100);var avg=wr?sr/wr:0;var q=Math.min(100,Math.round(Math.min(1,avg/5)*40+(wr?Math.min(1,dd/Math.max(1,dt))*30:0)+Math.min(1,bn/bl.length)*30));var total=Math.min(100,Math.round(prog*0.4)+Math.round(q*0.6));return{prog:prog,quality:q,total:total};}
 function metalOf(t){var m=METALS[0];for(var i=0;i<METALS.length;i++){if(t>=METALS[i].need)m=METALS[i];}return m;}

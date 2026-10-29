@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Занятие 15 · Автоматика, робототехника, IoT · ВсОШ по труду</title>
+<!-- Сквозная система ТЛ (общий кабинет с порталом) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script> <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script> <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script> <script src="../tl-firebase.js"></script> <script src="../tl-portal-core.js"></script>
+<script src="../tl-bridge.js"></script>
+<script>try { if (window.TLCore) TLCore.init(); if (window.TLBridge) TLBridge.init({ total: 34 }); } catch (e) { console.error("tl-bridge init error", e); }</script>
+<style> :root { --bg: #ffffff; --ink: #1B2A4A; --muted: #5A6B85; --accent: #1F6FE0; --accent-soft: #EAF2FD; --ai: #4D008C; --ai-soft: #F0EBF5; --def: #B45309; --def-soft: #FDF1E1; --pr: #167A4D; --pr-soft: #E7F4EE; --line: #D9E2EF; --up: #167A4D; --vr: #4D008C; --vr-soft: #F0EBF5;} * { box-sizing: border-box; } body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; } .wrap { max-width: 900px; margin: 0 auto; padding: 2.2rem 1.25rem 3rem; } nav { position: sticky; top: 0; background: rgba(255,255,255,.94); border-bottom: 1px solid var(--line); backdrop-filter: blur(6px); z-index: 10; } nav .inner { max-width: 900px; margin: 0 auto; padding: .55rem 1.25rem; display: flex; flex-wrap: wrap; gap: .4rem .9rem; } nav a { color: var(--muted); text-decoration: none; font-size: .86rem; font-weight: 600; } nav a:hover { color: var(--accent); } header .kicker { color: var(--accent); font-weight: 700; font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; } header h1 { font-size: 2rem; line-height: 1.2; margin: .2rem 0 .3rem; } header .sub { font-size: 1.02rem; color: var(--muted); margin: 0 0 .5rem; } .meta { color: var(--muted); font-size: .85rem; } .badges { margin-top: .9rem; display: flex; flex-wrap: wrap; gap: .4rem; } .badge { font-size: .78rem; font-weight: 700; padding: .22rem .6rem; border-radius: 999px; } .b-ai { background: var(--ai-soft); color: var(--ai); } .b-def { background: var(--def-soft); color: var(--def); } .b-pr { background: var(--pr-soft); color: var(--pr); } .b-ac { background: var(--accent-soft); color: var(--accent); } .tldr { background: var(--accent-soft); border-left: 4px solid var(--accent); padding: .95rem 1.15rem; border-radius: 0 8px 8px 0; margin: 1.6rem 0; } .tldr b { color: var(--accent); } .lesson-ig { margin: 1.2rem 0; } .ig-card { border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.15rem; background: #fbfcfe; } .ig-card h3 { margin: 0 0 .6rem; font-size: .98rem; color: var(--accent); } .ig-steps { display: flex; flex-wrap: wrap; gap: .6rem; } .ig-step { flex: 1 1 calc(33% - .6rem); min-width: 200px; border: 1px solid var(--line); border-radius: 10px; padding: .6rem .7rem; background: #fff; } .ig-step .step-n { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; font-size: .8rem; margin-bottom: .35rem; } .ig-step b { display: block; font-size: .9rem; } .ig-step span { color: var(--muted); font-size: .8rem; } section.block { margin: 1.3rem 0; } section.block h2 { font-size: 1.05rem; border-bottom: 1px solid var(--line); padding-bottom: .35rem; margin: 0 0 .6rem; } .list-card { border: 1px solid var(--line); border-radius: 12px; padding: .85rem 1.1rem; background: #fff; } .list-card ul { margin: .3rem 0 .4rem; padding-left: 1.15rem; } .list-card li { margin: .3rem 0; } .task-box { background: var(--pr-soft); border: 1px solid var(--pr); border-radius: 12px; padding: .9rem 1.1rem; margin: 1rem 0; } .task-box b { color: var(--pr); } .cheat-box { background: var(--def-soft); border: 1px solid var(--def); border-radius: 12px; padding: .9rem 1.1rem; margin: 1rem 0; } .cheat-box b { color: var(--def); } .reflection { background: var(--vr-soft); border: 1px solid var(--vr); border-radius: 14px; padding: 1.1rem 1.2rem; margin: 1.2rem 0; } .reflection h3 { margin-top: 0; color: var(--vr); } .reflection label { display: block; margin: .5rem 0 .2rem; font-weight: 600; font-size: .92rem; color: var(--ink); } .reflection textarea { width: 100%; min-height: 56px; border: 1px solid var(--line); border-radius: 8px; padding: .45rem .6rem; font: 14px/1.5 system-ui, sans-serif; resize: vertical; color: var(--ink); } .reflection textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; } .reflection .ratings { display: flex; flex-wrap: wrap; gap: .6rem; margin: .2rem 0 .5rem; } .reflection .ratings label { display: inline-flex; align-items: center; gap: .25rem; font-weight: 500; margin: 0; } .reflection .check { display: flex; align-items: center; gap: .5rem; margin: .9rem 0 .8rem; font-weight: 600; } .refl-btn { font: 700 15px/1.2 system-ui, sans-serif; border: none; border-radius: 10px; padding: .6rem 1.1rem; cursor: pointer; margin-right: .5rem; } .refl-btn.primary { background: var(--vr); color: #fff; } .refl-btn.primary:hover { filter: brightness(1.08); } .refl-btn.ghost { background: #fff; color: var(--vr); border: 2px solid var(--vr); } .refl-btn.ghost:hover { background: var(--vr-soft); } #reflMsg, #reflSaveMsg { color: var(--muted); font-size: .85rem; margin-top: .5rem; } .next-box { border: 1px dashed var(--pr); border-radius: 12px; padding: .8rem 1rem; margin: 1.2rem 0 .4rem; display: flex; justify-content: space-between; align-items: center; gap: .7rem; flex-wrap: wrap; background: #fff; } .next-box a { font-weight: 800; color: var(--pr); text-decoration: none; font-size: 1rem; } .next-box span { color: var(--muted); font-size: .85rem; } .whoami { background: var(--vr-soft); border: 1px solid var(--vr); border-radius: 12px; padding: .6rem 1rem; margin-bottom: 1.2rem; font-size: .9rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem; } .whoami span { font-weight: 700; color: var(--vr); } .whoami a { color: var(--muted); font-size: .85rem; text-decoration: none; } .entrybox { background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; padding: .75rem 1rem; margin: .9rem 0 .3rem; } .entrybox .e-title { font-weight: 700; color: var(--accent); margin-bottom: .3rem; } .entrybox label { font-size: .92rem; } .entrybox textarea { width: 100%; box-sizing: border-box; border: 1px solid var(--line); border-radius: 8px; padding: .4rem .6rem; font: 14px/1.4 system-ui, sans-serif; resize: vertical; min-height: 36px; color: var(--ink); } .entrybox textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; } .entrybox .e-row { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin-top: .35rem; } .entrybox .e-btn { border: none; border-radius: 8px; padding: .4rem .9rem; cursor: pointer; background: var(--accent); color: #fff; font-weight: 600; font-size: .9rem; } .entrybox .e-btn:hover { filter: brightness(1.08); } .entrybox .e-save { color: var(--pr); font-size: .85rem; font-weight: 600; } footer { color: var(--muted); font-size: .8rem; border-top: 1px solid var(--line); margin-top: 2rem; padding-top: .8rem; }
+/* ===== АДАПТИВНОСТЬ ===== */
+img, svg, video, canvas { max-width: 100%; height: auto; }
+pre, code, .code, textarea { max-width: 100%; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+table { max-width: 100%; }
+h1, h2, h3, p, li, div, span, a, button, input, select, textarea, label { overflow-wrap: break-word; }
+input, select, textarea, button, a.btn { font-size: 16px; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overflow-x: hidden; }
+@media (max-width: 900px) { .ig-steps { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: .45rem !important; } .ig-step { min-width: 0 !important; } }
+@media (max-width: 640px) { .wrap, main, .page { padding-left: 14px !important; padding-right: 14px !important; } h1 { font-size: 1.7rem !important; } h2 { font-size: 1.35rem !important; } .ig-steps { grid-template-columns: 1fr !important; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+<div class="whoami"><span id="whoText">Загружаю профиль…</span> <a href="../index.html">← список занятий / смена ученика</a></div>
+<header>
+  <p class="kicker">Технологическая лаборатория · ВсОШ по труду (технологии) · профиль ТТиТТ</p>
+  <h1>Занятие 15 · Автоматика, робототехника, IoT</h1>
+  <p class="sub">Приводы, обратная связь, протоколы и умный дом</p>
+  <p class="meta">Декабрь 2026 · 2 академических часа</p>
+  <div class="badges"><span class="badge b-ac">Теория</span><span class="badge b-def">Кейс по выбору протокола</span><span class="badge b-pr">Итог: решённый кейс умного дома</span><span class="badge b-def" id="stateBadge">Статус: не пройдено</span></div>
+</header>
+<div class="tldr"><b>Главное.</b> Что такое автоматика и обратная связь, какие бывают приводы, как устройства «разговаривают» по Wi-Fi, Zigbee и Bluetooth, и как устроен умный дом.</div>
+<div class="lesson-ig">
+  <div class="ig-card" aria-label="Карта занятия">
+    <h3>Карта занятия</h3>
+    <div class="ig-steps"><div class="ig-step"><span class="step-n">1</span><b>Автоматика</b><span>Датчик → контроллер → исполнительное устройство</span></div><div class="ig-step"><span class="step-n">2</span><b>Приводы</b><span>Электродвигатели, сервоприводы, шаговые моторы</span></div><div class="ig-step"><span class="step-n">3</span><b>Обратная связь</b><span>Замкнутый контур, регулятор, примеры</span></div><div class="ig-step"><span class="step-n">4</span><b>IoT и умный дом</b><span>Wi-Fi, Zigbee, Bluetooth; протоколы и кейс</span></div></div>
+  </div>
+</div>
+<div class="entrybox" id="entryWrap">
+  <div class="e-title">Старт занятия</div>
+  <label for="entryText">Запиши одной фразой: что ты уже знаешь по теме занятия (или чего ждёшь от него)?</label>
+  <textarea id="entryText" placeholder="Например: я видел(а), как печатают на 3D-принтере, но сам(а) не пробовал(а)"></textarea>
+  <div class="e-row"><button class="e-btn" type="button" onclick="saveEntry()">Сохранить</button><span class="e-save" id="entrySave"></span></div>
+</div>
+<section class="block">
+  <h2>Разбираем тему</h2>
+  <div class="list-card"><ul><li>Автоматика: датчик измеряет, контроллер обрабатывает, исполнительное устройство действует (например, сервопривод).</li><li>Обратная связь — замыкание контура: система сравнивает фактический результат с желаемым и подстраивается (термостат).</li><li>Типы приводов: коллекторный двигатель, сервопривод (позиционный), шаговый (точное позиционирование).</li><li>IoT-протоколы: Wi-Fi (данные, 2,4/5 ГГц), Zigbee (сеть ячеек, экономный), Bluetooth (короткий радиус).</li></ul></div>
+</section>
+<section class="block">
+  <h2>Задание на занятии</h2>
+  <div class="list-card"><ul><li>Нарисуй схему умного дома: датчики → контроллер → исполнительные устройства.</li><li>Выбери протокол для: термостата, системы из 30 датчиков, умной колонки.</li><li>Реши кейс: как автоматизировать полив растений с обратной связью.</li></ul></div>
+</section>
+<div class="task-box"><b>Результат занятия:</b> Решённый кейс по автоматике и IoT со схемой</div>
+<div class="cheat-box"><b>Шпаргалка / критерии:</b><ul><li>Zigbee — для множества маломощных датчиков, Wi-Fi — для «тяжёлых» данных (камеры).</li><li>Обратная связь обязательна для точного управления; без неё — «разомкнутый контур».</li><li>Сервопривод удерживает угол, шаговый мотор — точные шаги, коллекторный — скорость.</li></ul></div>
+<div class="next-box" id="nextBox"><a id="nextLink" href="Занятие 16/Занятие-16-технический-эскиз.html">Следующее занятие →</a><span id="nextStatus">Заполни рефлексию, чтобы открыть следующее занятие.</span></div>
+<div class="reflection" id="reflect">
+  <h3>Рефлексия занятия</h3>
+  <label for="r1">Что нового я узнал(а) сегодня?</label>
+  <textarea id="r1" placeholder="Твои слова…"></textarea>
+  <label for="r2">Что получилось? Что я сделал(а) сам(а)?</label>
+  <textarea id="r2" placeholder="Твои слова…"></textarea>
+  <label for="r3">Что было сложно и как я это преодолел(а)?</label>
+  <textarea id="r3" placeholder="Твои слова…"></textarea>
+  <div class="ratings" id="ratingWrap">
+    <span style="font-weight:600;font-size:.92rem;">Насколько было интересно?</span>
+    <label><input type="radio" name="rating" value="5"> 5 — супер</label>
+    <label><input type="radio" name="rating" value="4"> 4 — хорошо</label>
+    <label><input type="radio" name="rating" value="3"> 3 — нормально</label>
+    <label><input type="radio" name="rating" value="2"> 2 — скучно</label>
+    <label><input type="radio" name="rating" value="1"> 1 — не понравилось</label>
+  </div>
+  <div class="check"><input type="checkbox" id="doneCheck"> Я выполнил(а) практическое задание и домашнюю работу</div>
+  <button class="refl-btn primary" type="button" onclick="completeLesson()">Отметить занятие пройденным</button>
+  <div id="reflSaveMsg"></div>
+</div>
+<footer>ВсОШ по труду (технологии) · курс Технологической лаборатории · 2026/27 учебный год · занятие 15 из 34</footer>
+</main>
+<script>
+/* Канонический скрипт занятия «ВсОШ по труду»: профиль+блокировка+рефлексия */
+(function(){
+  var CUKEY="vsh-trade-active", PFKEY="vsh-trade-users", PROGKEY="vsh-trade-progress-";
+  function qp(n){ try{ return new URLSearchParams(window.location.search).get(n); } catch(e){ return null; } }
+  function currentUid(){ try{ var s=JSON.parse(localStorage.getItem(CUKEY)||"null"); if(s&&s.uid) return s.uid; }catch(e){} var q=qp("uid")||qp("user")||qp("u"); return q||null; }
+  function me(){ var id=currentUid(); if(!id) return null; try{ var arr=JSON.parse(localStorage.getItem(PFKEY)||"[]"); return arr.find(function(p){ return String(p.uid)===String(id); })||null; }catch(e){ return null; } }
+  var user=me();
+  var LESSON=15;
+  var KEY=user?("vsh_refl_"+user.uid+"_"+LESSON):null;
+  var reflKey=KEY||("vsh_anon_l_"+("0"+LESSON).slice(-2));
+  function lessonComplete(){ return user && localStorage.getItem(KEY)==="1"; }
+  function getProgress(uid){ var o={}; try{ var raw=JSON.parse(localStorage.getItem(PROGKEY+uid)||"null"); if(Array.isArray(raw)){ for(var i=0;i<raw.length;i++){ if(raw[i]) o["w"+(i+1)]=true; } } else if(raw&&typeof raw==="object"){ o=raw; } }catch(e){ o={}; } return o; }
+  function setProgress(uid,lesson,done){ var o=getProgress(uid); if(done) o["w"+lesson]=true; else delete o["w"+lesson]; try{ localStorage.setItem(PROGKEY+uid,JSON.stringify(a)); }catch(e){} }
+  var badge=document.getElementById("stateBadge"), who=document.getElementById("whoText"), nextLink=document.getElementById("nextLink"), nextStatus=document.getElementById("nextStatus");
+  function showWho(){ if(user&&who){ who.textContent=user.name+(user.klass?(" · "+user.klass+" класс"):""); } else if(who){ who.textContent="Войди в профиль на «Списке занятий», чтобы сохранять прогресс."; } }
+  function refreshState(){
+    var isDone = lessonComplete();
+    if(badge){ if(isDone){ badge.textContent="Статус: занятие пройдено ✓"; badge.style.background="var(--pr-soft)"; badge.style.color="var(--pr)"; } else { badge.textContent="Статус: не пройдено"; badge.style.background="var(--def-soft)"; badge.style.color="var(--def)"; } }
+    if(nextLink){ nextLink.style.setProperty("pointer-events", isDone?"auto":"none","important"); nextLink.style.opacity=isDone?"1":".45"; nextLink.setAttribute("aria-disabled", isDone?"false":"true"); if(nextStatus){ nextStatus.textContent = isDone ? "Занятие пройдено — следующее открыто. Удачи!" : "Заполни рефлексию и нажми «Отметить занятие пройденным»."; } }
+  }
+  function saveDraft(){ if(!KEY) return; try{ var r={r1:"",r2:"",r3:""}; ["r1","r2","r3"].forEach(function(id){ var el=document.getElementById(id); if(el) r[id]=el.value; }); var rating=document.querySelector('input[name="rating"]:checked'); var done=document.getElementById("doneCheck"); localStorage.setItem(KEY+"_draft", JSON.stringify({ r1:r.r1, r2:r.r2, r3:r.r3, rating:rating?rating.value:"", done:done?done.checked:false })); }catch(e){} }
+  ["r1","r2","r3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener("input", saveDraft); });
+  var doneC=document.getElementById("doneCheck"); if(doneC) doneC.addEventListener("change", saveDraft);
+  var rWrap=document.getElementById("ratingWrap"); if(rWrap) rWrap.addEventListener("change", saveDraft);
+  try{ var saved = KEY ? (JSON.parse(localStorage.getItem(KEY+"_draft")||"null")||JSON.parse(localStorage.getItem(KEY)||"null")) : null; if(saved){ ["r1","r2","r3"].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=saved[id]||""; }); if(saved.rating){ var el=document.querySelector('input[name="rating"][value="'+saved.rating+'"]'); if(el) el.checked=true; } if(document.getElementById("doneCheck")) document.getElementById("doneCheck").checked=!!(saved.done||saved.r1||saved.r2||saved.r3); } }catch(e){}
+  window.saveEntry = function(){
+    var t=(document.getElementById("entryText")||{}).value||""; var m=document.getElementById("entrySave");
+    try{ var eid=(user?user.uid:"anon")+"_"+LESSON; localStorage.setItem("vsh_entry_"+eid, JSON.stringify({t:t, at:new Date().toISOString()})); }catch(e){}
+    if(m){ m.textContent="Сохранено ✓"; setTimeout(function(){ m.textContent=""; }, 2500); }
+  };
+  try{ var es=localStorage.getItem("vsh_entry_"+(user?user.uid:"anon")+"_"+LESSON); if(es){ var et=document.getElementById("entryText"); if(et) et.value=JSON.parse(es).t||""; } }catch(e){}
+  window.completeLesson = function(){
+    var msg=document.getElementById("reflSaveMsg");
+    if(!user){ if(msg){ msg.textContent="Сначала войди в профиль на «Списке занятий» курса."; msg.style.color="var(--def)"; } return; }
+    var r1=((document.getElementById("r1")||{}).value||""), r2=((document.getElementById("r2")||{}).value||""), r3=((document.getElementById("r3")||{}).value||"");
+    var missing=[]; if(!r1.trim())missing.push("«Что нового я узнал»"); if(!r2.trim())missing.push("«Что получилось»"); if(!r3.trim())missing.push("«Что было сложно»");
+    if(missing.length){ if(msg){ msg.textContent="Заполни все поля рефлексии: "+missing.join(", ")+"."; msg.style.color="var(--def)"; msg.style.fontWeight="700"; } var rbl=document.getElementById("reflect"); if(rbl) rbl.scrollIntoView({behavior:"smooth", block:"center"}); return; }
+    var done=document.getElementById("doneCheck").checked; if(!done){ if(msg){ msg.textContent="Отметь «Я выполнил(а) практическое задание и домашнюю работу»."; msg.style.color="var(--def)"; } return; }
+    try{ localStorage.setItem(KEY,"1"); setProgress(user.uid, LESSON, true); }catch(e){}
+    if(msg){ msg.textContent="Занятие отмечено пройденным: "+user.name+"."; msg.style.color="var(--pr)"; msg.style.fontWeight=""; }
+    refreshState();
+  };
+  if(nextLink){ nextLink.addEventListener("click", function(ev){ if(!lessonComplete()){ ev.preventDefault(); ev.stopPropagation(); var box=document.getElementById("reflSaveMsg"); if(box){ box.textContent="Это занятие ещё не пройдено. Заполни все поля рефлексии и нажми «Отметить занятие пройденным»."; box.style.color="var(--def)"; box.style.fontWeight="700"; } var rbl=document.getElementById("reflect"); if(rbl) rbl.scrollIntoView({behavior:"smooth", block:"center"}); } }); }
+  showWho(); refreshState();
+})();
+</script>
+</body>
+</html>
