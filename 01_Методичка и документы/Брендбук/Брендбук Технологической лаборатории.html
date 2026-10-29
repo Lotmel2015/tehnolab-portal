@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Брендбук Технологической лаборатории</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  :root {
+    --bg: #0D0F14;
+    --panel: #151922;
+    --panel2: #1C2130;
+    --line: #2A3141;
+    --ink: #E8EDF7;
+    --muted: #8C97AB;
+    --blue: #2D7AFF;
+    --green: #00D68F;
+    --amber: #FFAA00;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.62 "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  header.top {
+    padding: 56px 0 44px;
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(880px 320px at 14% 0%, rgba(45,122,255,.22), transparent 70%),
+      radial-gradient(680px 260px at 86% 8%, rgba(0,214,143,.10), transparent 70%),
+      var(--bg);
+  }
+  .eyebrow {
+    font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    color: #6E8BB8; margin-bottom: 18px;
+  }
+  h1 { margin: 0 0 16px; font-size: clamp(28px, 4vw, 44px); line-height: 1.14; letter-spacing: -0.015em; }
+  .lead { margin: 0; max-width: 70ch; color: #A9B4C7; font-size: 17px; }
+
+  .cover { display: flex; align-items: center; gap: 28px; margin-top: 32px; flex-wrap: wrap; }
+  .cover .mark-big { width: 132px; height: 132px; flex: 0 0 auto; }
+  .cover .cover-text { color: var(--muted); font-size: 14px; }
+  .cover .cover-text b { color: var(--ink); display: block; font-size: 16px; margin-bottom: 4px; }
+
+  nav.toc {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(13,15,20,.94);
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(8px);
+  }
+  nav.toc .wrap { display: flex; gap: 6px; overflow-x: auto; padding-top: 10px; padding-bottom: 10px; }
+  nav.toc a {
+    flex: 0 0 auto; color: var(--muted); text-decoration: none; font-size: 13px;
+    padding: 6px 11px; border-radius: 999px; border: 1px solid transparent; white-space: nowrap;
+  }
+  nav.toc a:hover { color: var(--ink); border-color: var(--line); background: var(--panel); }
+
+  main { padding: 44px 0 80px; }
+  section { margin-bottom: 60px; scroll-margin-top: 64px; }
+  h2 { margin: 0 0 8px; font-size: clamp(21px, 2.4vw, 28px); letter-spacing: -0.01em; }
+  h2 .num { color: #4A74B8; font-weight: 600; margin-right: 10px; }
+  .sub { margin: 0 0 24px; color: var(--muted); font-size: 14.5px; max-width: 84ch; }
+  h3 { margin: 26px 0 10px; font-size: 16px; letter-spacing: .01em; color: #C4CEE0; }
+
+  .mk { display: block; }
+  .mk-small path { fill: currentColor; }
+
+  .tile {
+    border: 1px solid var(--line); border-radius: 16px; background: var(--panel);
+    padding: 22px; display: flex; flex-direction: column; gap: 12px;
+  }
+  .tile .cap { font-size: 13px; color: var(--muted); }
+  .tile .cap b { color: var(--ink); display: block; font-size: 14px; margin-bottom: 2px; }
+  .tile .stage { display: flex; align-items: center; justify-content: center; min-height: 150px; border-radius: 12px; }
+  .stage.dark { background: #0A0C11; border: 1px solid #232A38; }
+  .stage.light { background: #F5F7FB; border: 1px solid #DDE3EE; }
+  .stage.paper { background: #FFFFFF; border: 1px solid #DDE3EE; }
+  .stage.ink { background: #111418; border: 1px solid #232A38; }
+
+  .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+  .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
+
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .fact { border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; background: var(--panel); }
+  .fact .k { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6E8BB8; margin-bottom: 6px; }
+  .fact .v { color: #D6DEEB; font-size: 14.5px; }
+
+  table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 14px; }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+  th, td { padding: 11px 14px; text-align: left; border-bottom: 1px solid #232A38; }
+  th { background: #1A1F2B; color: #B9C4D6; font-weight: 600; font-size: 13px; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.dim { color: var(--muted); }
+
+  .swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; }
+  .sw { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--panel); }
+  .sw .chip { height: 82px; }
+  .sw .info { padding: 12px 14px; }
+  .sw .name { font-size: 14px; font-weight: 600; }
+  .sw .hex { font-family: "Consolas", "Courier New", monospace; font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .sw .role { font-size: 12.5px; color: #7F8BA0; margin-top: 6px; }
+
+  .no-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .no {
+    border: 1px solid #3A2A2A; background: #171314; border-radius: 14px; padding: 16px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .no .demo { width: 56px; height: 56px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; }
+  .no .txt { font-size: 13.5px; color: #C9BFC0; }
+  .no .txt b { display: block; color: #FF8F8F; font-size: 13px; margin-bottom: 3px; }
+
+  .note {
+    border: 1px solid var(--line); background: var(--panel); border-radius: 14px;
+    padding: 16px 18px; color: #A9B4C7; font-size: 14.5px; margin-top: 18px;
+  }
+  .note b { color: var(--ink); }
+  .note.good { border-color: #17593F; background: #0C2A20; }
+  .note.good b { color: var(--green); }
+
+  ul.plain { margin: 0; padding-left: 20px; color: #B9C4D6; font-size: 14.5px; }
+  ul.plain li { margin: 6px 0; }
+
+  code {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 13px; background: #1C2130; border: 1px solid var(--line);
+    border-radius: 6px; padding: 1px 6px; color: #C9D6EA;
+  }
+
+  .files { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .file { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; background: var(--panel); font-size: 13.5px; }
+  .file .fn { color: var(--ink); font-weight: 600; margin-bottom: 3px; }
+  .file .fd { color: var(--muted); font-size: 12.5px; }
+
+  footer { border-top: 1px solid var(--line); padding: 22px 0 44px; color: #6E7A90; font-size: 13px; }
+
+  @media (max-width: 560px) {
+    .wrap { padding: 0 16px; }
+    header.top { padding: 40px 0 32px; }
+    main { padding: 30px 0 56px; }
+    section { margin-bottom: 44px; }
+    .cover .mark-big { width: 96px; height: 96px; }
+  }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    nav.toc { display: none; }
+    header.top { background: #fff; border-color: #ccc; }
+    .lead, .sub, .tile .cap, .sw .hex, .sw .role, .file .fd, footer { color: #444; }
+    .tile, .fact, .note, .file, .sw { background: #fff; border-color: #ccc; }
+    .stage.dark { background: #0D0F14; }
+    section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="tl-mark-dark" viewBox="0 0 100 100">
+    <path d="M50.00 7.00L48.62 9.39L45.86 9.39L47.24 11.78L45.86 14.17L43.10 14.17L41.72 11.78L40.35 14.17L37.59 14.17L38.97 16.56L37.59 18.94L40.35 18.94L41.72 21.33L40.35 23.72L37.59 23.72L38.97 26.11L37.59 28.50L34.83 28.50L33.45 26.11L32.07 28.50L29.31 28.50L27.93 26.11L29.31 23.72L26.55 23.72L25.17 21.33L23.79 23.72L21.04 23.72L22.42 26.11L21.04 28.50L18.28 28.50L16.90 26.11L15.52 28.50L12.76 28.50L14.14 30.89L12.76 33.28L15.52 33.28L16.90 35.67L15.52 38.06L12.76 38.06L14.14 40.44L12.76 42.83L15.52 42.83L16.90 45.22L18.28 42.83L21.04 42.83L22.42 45.22L21.04 47.61L23.79 47.61L25.17 50.00L23.79 52.39L21.04 52.39L22.42 54.78L21.04 57.17L18.28 57.17L16.90 54.78L15.52 57.17L12.76 57.17L14.14 59.56L12.76 61.94L15.52 61.94L16.90 64.33L15.52 66.72L12.76 66.72L14.14 69.11L12.76 71.50L15.52 71.50L16.90 73.89L18.28 71.50L21.04 71.50L22.42 73.89L21.04 76.28L23.79 76.28L25.17 78.67L26.55 76.28L29.31 76.28L27.93 73.89L29.31 71.50L32.07 71.50L33.45 73.89L34.83 71.50L37.59 71.50L38.97 73.89L37.59 76.28L40.35 76.28L41.72 78.67L40.35 81.06L37.59 81.06L38.97 83.44L37.59 85.83L40.35 85.83L41.72 88.22L43.10 85.83L45.86 85.83L47.24 88.22L45.86 90.61L48.62 90.61L50.00 93.00L51.38 90.61L54.14 90.61L52.76 88.22L54.14 85.83L56.90 85.83L58.28 88.22L59.65 85.83L62.41 85.83L61.03 83.44L62.41 81.06L59.65 81.06L58.28 78.67L59.65 76.28L62.41 76.28L61.03 73.89L62.41 71.50L65.17 71.50L66.55 73.89L67.93 71.50L70.69 71.50L72.07 73.89L70.69 76.28L73.45 76.28L74.83 78.67L76.21 76.28L78.96 76.28L77.58 73.89L78.96 71.50L81.72 71.50L83.10 73.89L84.48 71.50L87.24 71.50L85.86 69.11L87.24 66.72L84.48 66.72L83.10 64.33L84.48 61.94L87.24 61.94L85.86 59.56L87.24 57.17L84.48 57.17L83.10 54.78L81.72 57.17L78.96 57.17L77.58 54.78L78.96 52.39L76.21 52.39L74.83 50.00L76.21 47.61L78.96 47.61L77.58 45.22L78.96 42.83L81.72 42.83L83.10 45.22L84.48 42.83L87.24 42.83L85.86 40.44L87.24 38.06L84.48 38.06L83.10 35.67L84.48 33.28L87.24 33.28L85.86 30.89L87.24 28.50L84.48 28.50L83.10 26.11L81.72 28.50L78.96 28.50L77.58 26.11L78.96 23.72L76.21 23.72L74.83 21.33L73.45 23.72L70.69 23.72L72.07 26.11L70.69 28.50L67.93 28.50L66.55 26.11L65.17 28.50L62.41 28.50L61.03 26.11L62.41 23.72L59.65 23.72L58.28 21.33L59.65 18.94L62.41 18.94L61.03 16.56L62.41 14.17L59.65 14.17L58.28 11.78L56.90 14.17L54.14 14.17L52.76 11.78L54.14 9.39L51.38 9.39Z" fill="none" stroke="#2D7AFF" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <polygon points="74.45,50.00 62.23,71.18 37.77,71.18 25.55,50.00 37.77,28.82 62.23,28.82" fill="#0D0F14" stroke="#2D7AFF" stroke-width="1.3" stroke-linejoin="round"/>
+    <text x="50" y="58.80" text-anchor="middle" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="24.45" font-weight="800" letter-spacing="-0.73" fill="#E8EDF7">ТЛ</text>
+  </symbol>
+  <symbol id="tl-mark-light" viewBox="0 0 100 100">
+    <path d="M50.00 7.00L48.62 9.39L45.86 9.39L47.24 11.78L45.86 14.17L43.10 14.17L41.72 11.78L40.35 14.17L37.59 14.17L38.97 16.56L37.59 18.94L40.35 18.94L41.72 21.33L40.35 23.72L37.59 23.72L38.97 26.11L37.59 28.50L34.83 28.50L33.45 26.11L32.07 28.50L29.31 28.50L27.93 26.11L29.31 23.72L26.55 23.72L25.17 21.33L23.79 23.72L21.04 23.72L22.42 26.11L21.04 28.50L18.28 28.50L16.90 26.11L15.52 28.50L12.76 28.50L14.14 30.89L12.76 33.28L15.52 33.28L16.90 35.67L15.52 38.06L12.76 38.06L14.14 40.44L12.76 42.83L15.52 42.83L16.90 45.22L18.28 42.83L21.04 42.83L22.42 45.22L21.04 47.61L23.79 47.61L25.17 50.00L23.79 52.39L21.04 52.39L22.42 54.78L21.04 57.17L18.28 57.17L16.90 54.78L15.52 57.17L12.76 57.17L14.14 59.56L12.76 61.94L15.52 61.94L16.90 64.33L15.52 66.72L12.76 66.72L14.14 69.11L12.76 71.50L15.52 71.50L16.90 73.89L18.28 71.50L21.04 71.50L22.42 73.89L21.04 76.28L23.79 76.28L25.17 78.67L26.55 76.28L29.31 76.28L27.93 73.89L29.31 71.50L32.07 71.50L33.45 73.89L34.83 71.50L37.59 71.50L38.97 73.89L37.59 76.28L40.35 76.28L41.72 78.67L40.35 81.06L37.59 81.06L38.97 83.44L37.59 85.83L40.35 85.83L41.72 88.22L43.10 85.83L45.86 85.83L47.24 88.22L45.86 90.61L48.62 90.61L50.00 93.00L51.38 90.61L54.14 90.61L52.76 88.22L54.14 85.83L56.90 85.83L58.28 88.22L59.65 85.83L62.41 85.83L61.03 83.44L62.41 81.06L59.65 81.06L58.28 78.67L59.65 76.28L62.41 76.28L61.03 73.89L62.41 71.50L65.17 71.50L66.55 73.89L67.93 71.50L70.69 71.50L72.07 73.89L70.69 76.28L73.45 76.28L74.83 78.67L76.21 76.28L78.96 76.28L77.58 73.89L78.96 71.50L81.72 71.50L83.10 73.89L84.48 71.50L87.24 71.50L85.86 69.11L87.24 66.72L84.48 66.72L83.10 64.33L84.48 61.94L87.24 61.94L85.86 59.56L87.24 57.17L84.48 57.17L83.10 54.78L81.72 57.17L78.96 57.17L77.58 54.78L78.96 52.39L76.21 52.39L74.83 50.00L76.21 47.61L78.96 47.61L77.58 45.22L78.96 42.83L81.72 42.83L83.10 45.22L84.48 42.83L87.24 42.83L85.86 40.44L87.24 38.06L84.48 38.06L83.10 35.67L84.48 33.28L87.24 33.28L85.86 30.89L87.24 28.50L84.48 28.50L83.10 26.11L81.72 28.50L78.96 28.50L77.58 26.11L78.96 23.72L76.21 23.72L74.83 21.33L73.45 23.72L70.69 23.72L72.07 26.11L70.69 28.50L67.93 28.50L66.55 26.11L65.17 28.50L62.41 28.50L61.03 26.11L62.41 23.72L59.65 23.72L58.28 21.33L59.65 18.94L62.41 18.94L61.03 16.56L62.41 14.17L59.65 14.17L58.28 11.78L56.90 14.17L54.14 14.17L52.76 11.78L54.14 9.39L51.38 9.39Z" fill="none" stroke="#2D7AFF" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <polygon points="74.45,50.00 62.23,71.18 37.77,71.18 25.55,50.00 37.77,28.82 62.23,28.82" fill="#FFFFFF" stroke="#2D7AFF" stroke-width="1.3" stroke-linejoin="round"/>
+    <text x="50" y="58.80" text-anchor="middle" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="24.45" font-weight="800" letter-spacing="-0.73" fill="#0D0F14">ТЛ</text>
+  </symbol>
+  <symbol id="tl-mark-black" viewBox="0 0 100 100">
+    <path d="M50.00 7.00L48.62 9.39L45.86 9.39L47.24 11.78L45.86 14.17L43.10 14.17L41.72 11.78L40.35 14.17L37.59 14.17L38.97 16.56L37.59 18.94L40.35 18.94L41.72 21.33L40.35 23.72L37.59 23.72L38.97 26.11L37.59 28.50L34.83 28.50L33.45 26.11L32.07 28.50L29.31 28.50L27.93 26.11L29.31 23.72L26.55 23.72L25.17 21.33L23.79 23.72L21.04 23.72L22.42 26.11L21.04 28.50L18.28 28.50L16.90 26.11L15.52 28.50L12.76 28.50L14.14 30.89L12.76 33.28L15.52 33.28L16.90 35.67L15.52 38.06L12.76 38.06L14.14 40.44L12.76 42.83L15.52 42.83L16.90 45.22L18.28 42.83L21.04 42.83L22.42 45.22L21.04 47.61L23.79 47.61L25.17 50.00L23.79 52.39L21.04 52.39L22.42 54.78L21.04 57.17L18.28 57.17L16.90 54.78L15.52 57.17L12.76 57.17L14.14 59.56L12.76 61.94L15.52 61.94L16.90 64.33L15.52 66.72L12.76 66.72L14.14 69.11L12.76 71.50L15.52 71.50L16.90 73.89L18.28 71.50L21.04 71.50L22.42 73.89L21.04 76.28L23.79 76.28L25.17 78.67L26.55 76.28L29.31 76.28L27.93 73.89L29.31 71.50L32.07 71.50L33.45 73.89L34.83 71.50L37.59 71.50L38.97 73.89L37.59 76.28L40.35 76.28L41.72 78.67L40.35 81.06L37.59 81.06L38.97 83.44L37.59 85.83L40.35 85.83L41.72 88.22L43.10 85.83L45.86 85.83L47.24 88.22L45.86 90.61L48.62 90.61L50.00 93.00L51.38 90.61L54.14 90.61L52.76 88.22L54.14 85.83L56.90 85.83L58.28 88.22L59.65 85.83L62.41 85.83L61.03 83.44L62.41 81.06L59.65 81.06L58.28 78.67L59.65 76.28L62.41 76.28L61.03 73.89L62.41 71.50L65.17 71.50L66.55 73.89L67.93 71.50L70.69 71.50L72.07 73.89L70.69 76.28L73.45 76.28L74.83 78.67L76.21 76.28L78.96 76.28L77.58 73.89L78.96 71.50L81.72 71.50L83.10 73.89L84.48 71.50L87.24 71.50L85.86 69.11L87.24 66.72L84.48 66.72L83.10 64.33L84.48 61.94L87.24 61.94L85.86 59.56L87.24 57.17L84.48 57.17L83.10 54.78L81.72 57.17L78.96 57.17L77.58 54.78L78.96 52.39L76.21 52.39L74.83 50.00L76.21 47.61L78.96 47.61L77.58 45.22L78.96 42.83L81.72 42.83L83.10 45.22L84.48 42.83L87.24 42.83L85.86 40.44L87.24 38.06L84.48 38.06L83.10 35.67L84.48 33.28L87.24 33.28L85.86 30.89L87.24 28.50L84.48 28.50L83.10 26.11L81.72 28.50L78.96 28.50L77.58 26.11L78.96 23.72L76.21 23.72L74.83 21.33L73.45 23.72L70.69 23.72L72.07 26.11L70.69 28.50L67.93 28.50L66.55 26.11L65.17 28.50L62.41 28.50L61.03 26.11L62.41 23.72L59.65 23.72L58.28 21.33L59.65 18.94L62.41 18.94L61.03 16.56L62.41 14.17L59.65 14.17L58.28 11.78L56.90 14.17L54.14 14.17L52.76 11.78L54.14 9.39L51.38 9.39Z" fill="none" stroke="#111418" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <polygon points="74.45,50.00 62.23,71.18 37.77,71.18 25.55,50.00 37.77,28.82 62.23,28.82" fill="#FFFFFF" stroke="#111418" stroke-width="1.3" stroke-linejoin="round"/>
+    <text x="50" y="58.80" text-anchor="middle" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="24.45" font-weight="800" letter-spacing="-0.73" fill="#111418">ТЛ</text>
+  </symbol>
+  <symbol id="tl-mark-white" viewBox="0 0 100 100">
+    <path d="M50.00 7.00L48.62 9.39L45.86 9.39L47.24 11.78L45.86 14.17L43.10 14.17L41.72 11.78L40.35 14.17L37.59 14.17L38.97 16.56L37.59 18.94L40.35 18.94L41.72 21.33L40.35 23.72L37.59 23.72L38.97 26.11L37.59 28.50L34.83 28.50L33.45 26.11L32.07 28.50L29.31 28.50L27.93 26.11L29.31 23.72L26.55 23.72L25.17 21.33L23.79 23.72L21.04 23.72L22.42 26.11L21.04 28.50L18.28 28.50L16.90 26.11L15.52 28.50L12.76 28.50L14.14 30.89L12.76 33.28L15.52 33.28L16.90 35.67L15.52 38.06L12.76 38.06L14.14 40.44L12.76 42.83L15.52 42.83L16.90 45.22L18.28 42.83L21.04 42.83L22.42 45.22L21.04 47.61L23.79 47.61L25.17 50.00L23.79 52.39L21.04 52.39L22.42 54.78L21.04 57.17L18.28 57.17L16.90 54.78L15.52 57.17L12.76 57.17L14.14 59.56L12.76 61.94L15.52 61.94L16.90 64.33L15.52 66.72L12.76 66.72L14.14 69.11L12.76 71.50L15.52 71.50L16.90 73.89L18.28 71.50L21.04 71.50L22.42 73.89L21.04 76.28L23.79 76.28L25.17 78.67L26.55 76.28L29.31 76.28L27.93 73.89L29.31 71.50L32.07 71.50L33.45 73.89L34.83 71.50L37.59 71.50L38.97 73.89L37.59 76.28L40.35 76.28L41.72 78.67L40.35 81.06L37.59 81.06L38.97 83.44L37.59 85.83L40.35 85.83L41.72 88.22L43.10 85.83L45.86 85.83L47.24 88.22L45.86 90.61L48.62 90.61L50.00 93.00L51.38 90.61L54.14 90.61L52.76 88.22L54.14 85.83L56.90 85.83L58.28 88.22L59.65 85.83L62.41 85.83L61.03 83.44L62.41 81.06L59.65 81.06L58.28 78.67L59.65 76.28L62.41 76.28L61.03 73.89L62.41 71.50L65.17 71.50L66.55 73.89L67.93 71.50L70.69 71.50L72.07 73.89L70.69 76.28L73.45 76.28L74.83 78.67L76.21 76.28L78.96 76.28L77.58 73.89L78.96 71.50L81.72 71.50L83.10 73.89L84.48 71.50L87.24 71.50L85.86 69.11L87.24 66.72L84.48 66.72L83.10 64.33L84.48 61.94L87.24 61.94L85.86 59.56L87.24 57.17L84.48 57.17L83.10 54.78L81.72 57.17L78.96 57.17L77.58 54.78L78.96 52.39L76.21 52.39L74.83 50.00L76.21 47.61L78.96 47.61L77.58 45.22L78.96 42.83L81.72 42.83L83.10 45.22L84.48 42.83L87.24 42.83L85.86 40.44L87.24 38.06L84.48 38.06L83.10 35.67L84.48 33.28L87.24 33.28L85.86 30.89L87.24 28.50L84.48 28.50L83.10 26.11L81.72 28.50L78.96 28.50L77.58 26.11L78.96 23.72L76.21 23.72L74.83 21.33L73.45 23.72L70.69 23.72L72.07 26.11L70.69 28.50L67.93 28.50L66.55 26.11L65.17 28.50L62.41 28.50L61.03 26.11L62.41 23.72L59.65 23.72L58.28 21.33L59.65 18.94L62.41 18.94L61.03 16.56L62.41 14.17L59.65 14.17L58.28 11.78L56.90 14.17L54.14 14.17L52.76 11.78L54.14 9.39L51.38 9.39Z" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <polygon points="74.45,50.00 62.23,71.18 37.77,71.18 25.55,50.00 37.77,28.82 62.23,28.82" fill="#0D0F14" stroke="#FFFFFF" stroke-width="1.3" stroke-linejoin="round"/>
+    <text x="50" y="58.80" text-anchor="middle" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="24.45" font-weight="800" letter-spacing="-0.73" fill="#FFFFFF">ТЛ</text>
+  </symbol>
+  <symbol id="tl-mark-t" viewBox="0 0 100 100">
+    <path d="M50.00 7.00L48.62 9.39L45.86 9.39L47.24 11.78L45.86 14.17L43.10 14.17L41.72 11.78L40.35 14.17L37.59 14.17L38.97 16.56L37.59 18.94L40.35 18.94L41.72 21.33L40.35 23.72L37.59 23.72L38.97 26.11L37.59 28.50L34.83 28.50L33.45 26.11L32.07 28.50L29.31 28.50L27.93 26.11L29.31 23.72L26.55 23.72L25.17 21.33L23.79 23.72L21.04 23.72L22.42 26.11L21.04 28.50L18.28 28.50L16.90 26.11L15.52 28.50L12.76 28.50L14.14 30.89L12.76 33.28L15.52 33.28L16.90 35.67L15.52 38.06L12.76 38.06L14.14 40.44L12.76 42.83L15.52 42.83L16.90 45.22L18.28 42.83L21.04 42.83L22.42 45.22L21.04 47.61L23.79 47.61L25.17 50.00L23.79 52.39L21.04 52.39L22.42 54.78L21.04 57.17L18.28 57.17L16.90 54.78L15.52 57.17L12.76 57.17L14.14 59.56L12.76 61.94L15.52 61.94L16.90 64.33L15.52 66.72L12.76 66.72L14.14 69.11L12.76 71.50L15.52 71.50L16.90 73.89L18.28 71.50L21.04 71.50L22.42 73.89L21.04 76.28L23.79 76.28L25.17 78.67L26.55 76.28L29.31 76.28L27.93 73.89L29.31 71.50L32.07 71.50L33.45 73.89L34.83 71.50L37.59 71.50L38.97 73.89L37.59 76.28L40.35 76.28L41.72 78.67L40.35 81.06L37.59 81.06L38.97 83.44L37.59 85.83L40.35 85.83L41.72 88.22L43.10 85.83L45.86 85.83L47.24 88.22L45.86 90.61L48.62 90.61L50.00 93.00L51.38 90.61L54.14 90.61L52.76 88.22L54.14 85.83L56.90 85.83L58.28 88.22L59.65 85.83L62.41 85.83L61.03 83.44L62.41 81.06L59.65 81.06L58.28 78.67L59.65 76.28L62.41 76.28L61.03 73.89L62.41 71.50L65.17 71.50L66.55 73.89L67.93 71.50L70.69 71.50L72.07 73.89L70.69 76.28L73.45 76.28L74.83 78.67L76.21 76.28L78.96 76.28L77.58 73.89L78.96 71.50L81.72 71.50L83.10 73.89L84.48 71.50L87.24 71.50L85.86 69.11L87.24 66.72L84.48 66.72L83.10 64.33L84.48 61.94L87.24 61.94L85.86 59.56L87.24 57.17L84.48 57.17L83.10 54.78L81.72 57.17L78.96 57.17L77.58 54.78L78.96 52.39L76.21 52.39L74.83 50.00L76.21 47.61L78.96 47.61L77.58 45.22L78.96 42.83L81.72 42.83L83.10 45.22L84.48 42.83L87.24 42.83L85.86 40.44L87.24 38.06L84.48 38.06L83.10 35.67L84.48 33.28L87.24 33.28L85.86 30.89L87.24 28.50L84.48 28.50L83.10 26.11L81.72 28.50L78.96 28.50L77.58 26.11L78.96 23.72L76.21 23.72L74.83 21.33L73.45 23.72L70.69 23.72L72.07 26.11L70.69 28.50L67.93 28.50L66.55 26.11L65.17 28.50L62.41 28.50L61.03 26.11L62.41 23.72L59.65 23.72L58.28 21.33L59.65 18.94L62.41 18.94L61.03 16.56L62.41 14.17L59.65 14.17L58.28 11.78L56.90 14.17L54.14 14.17L52.76 11.78L54.14 9.39L51.38 9.39Z" fill="none" stroke="#2D7AFF" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <polygon points="74.45,50.00 62.23,71.18 37.77,71.18 25.55,50.00 37.77,28.82 62.23,28.82" fill="#0D0F14" stroke="#2D7AFF" stroke-width="1.3" stroke-linejoin="round"/>
+    <text x="50" y="60.12" text-anchor="middle" font-family="Segoe UI, Arial, Helvetica, sans-serif" font-size="28.12" font-weight="800" letter-spacing="0" fill="#E8EDF7">Т</text>
+  </symbol>
+  <symbol id="tl-mark-small" viewBox="0 0 100 100">
+    <path d="M50.00 14.00L39.61 32.00L18.82 32.00L29.22 50.00L18.82 68.00L39.61 68.00L50.00 86.00L60.39 68.00L81.18 68.00L70.78 50.00L81.18 32.00L60.39 32.00Z" fill="currentColor"/>
+  </symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow">Фирменный стиль · версия 1.0 · 2026</div>
+    <h1>Брендбук Технологической лаборатории</h1>
+    <p class="lead">Знак, палитра, типографика и правила применения. Документ фиксирует один основной логотип — снежинку Коха с монограммой ТЛ — и порядок его использования на портале, в курсах, методичках и печати.</p>
+
+    <div class="cover">
+      <svg class="mark-big mk" style="--s:#2D7AFF;--h:#0D0F14;--t:#E8EDF7" role="img" aria-label="Основной знак Технологической лаборатории"><use href="#tl-mark"/></svg>
+      <div class="cover-text">
+        <b>Технологическая лаборатория</b>
+        объединение · дополнительное образование<br>
+        Красноярский край
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#znak">1. Знак</a>
+    <a href="#postroenie">2. Построение</a>
+    <a href="#versii">3. Версии</a>
+    <a href="#razmery">4. Размеры</a>
+    <a href="#cveta">5. Цвета</a>
+    <a href="#shrift">6. Типографика</a>
+    <a href="#kompoziciya">7. Компоновка</a>
+    <a href="#zaprety">8. Запреты</a>
+    <a href="#primenenie">9. Применение</a>
+    <a href="#fajly">10. Файлы</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section id="znak">
+    <h2><span class="num">01</span>Знак</h2>
+    <p class="sub">Снежинка Коха третьего порядка с шестиугольной монограммой ТЛ в центре. Фрактал читается как инженерная метафора: простое правило, повторённое несколько раз, даёт сложную и точную структуру.</p>
+
+    <div class="grid2">
+      <div class="tile">
+        <div class="stage dark">
+          <svg class="mk" style="width:190px;height:190px" role="img" aria-label="Знак на тёмном фоне"><use href="#tl-mark-dark"/></svg>
+        </div>
+        <div class="cap"><b>Основная версия</b>Для тёмного фона: портал, презентации, экраны.</div>
+      </div>
+      <div class="tile">
+        <div class="stage light">
+          <svg class="mk" style="width:190px;height:190px" role="img" aria-label="Знак на светлом фоне"><use href="#tl-mark-light"/></svg>
+        </div>
+        <div class="cap"><b>Для светлого фона</b>Документы, бланки, методички на белом.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="postroenie">
+    <h2><span class="num">02</span>Как построен знак</h2>
+    <p class="sub">Три решения, которые нельзя менять произвольно: порядок итерации, положение монограммы и её размер относительно впадин контура.</p>
+
+    <div class="facts">
+      <div class="fact">
+        <div class="k">Основа</div>
+        <div class="v">Кривая Коха, порядок 3 — 192 сегмента. Порядок 2 слишком прост, порядок 4 нечитаем в малом размере.</div>
+      </div>
+      <div class="fact">
+        <div class="k">Монограмма</div>
+        <div class="v">Гексагон с буквами ТЛ, набранными жирным начертанием. Вершины гексагона направлены точно во впадины контура.</div>
+      </div>
+      <div class="fact">
+        <div class="k">Вписывание</div>
+        <div class="v">Радиус гексагона равен 98,5 % расстояния до контура: знак собирается в целое, ни один луч не обрезан.</div>
+      </div>
+      <div class="fact">
+        <div class="k">Кегль букв</div>
+        <div class="v">Монограмма занимает 100 % радиуса гексагона — это предел, при котором буквы ещё не касаются граней. Высота заглавной — 17,6 единиц при размере знака 100.</div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Почему монограмма именно во впадинах.</b> Если поставить гексагон крупнее, он перекрывает лучи и оставляет «пеньки» — знак выглядит сломанным. Если мельче — монограмма теряется. Вписывание во впадины даёт максимальный размер без единого повреждённого луча.
+    </div>
+  </section>
+
+  <section id="versii">
+    <h2><span class="num">03</span>Версии знака</h2>
+    <p class="sub">Пять файлов закрывают все случаи: цветные версии для экрана, монохром для печати и гравировки, малый знак для иконок.</p>
+
+    <div class="grid3">
+      <div class="tile">
+        <div class="stage dark"><svg class="mk" style="width:120px;height:120px"><use href="#tl-mark-dark"/></svg></div>
+        <div class="cap"><b>Основная · тёмный фон</b>Синий контур, монограмма светлая.</div>
+      </div>
+      <div class="tile">
+        <div class="stage light"><svg class="mk" style="width:120px;height:120px"><use href="#tl-mark-light"/></svg></div>
+        <div class="cap"><b>Основная · светлый фон</b>Тот же контур, монограмма тёмная.</div>
+      </div>
+      <div class="tile">
+        <div class="stage paper"><svg class="mk" style="width:120px;height:120px"><use href="#tl-mark-black"/></svg></div>
+        <div class="cap"><b>Монохром чёрный</b>Печать в один цвет, факсимиле, копии.</div>
+      </div>
+      <div class="tile">
+        <div class="stage ink"><svg class="mk" style="width:120px;height:120px"><use href="#tl-mark-white"/></svg></div>
+        <div class="cap"><b>Монохром белый</b>Тёмные фоны, гравировка, металл.</div>
+      </div>
+      <div class="tile">
+        <div class="stage dark"><svg class="mk t" style="width:120px;height:120px"><use href="#tl-mark-t"/></svg></div>
+        <div class="cap"><b>Одна Т</b>Для 32–48 px: одна буква вдвое крупнее двух, поэтому читается там, где «ТЛ» сливается.</div>
+      </div>
+      <div class="tile">
+        <div class="stage dark"><svg class="mk-small" style="width:64px;height:64px;color:#2D7AFF"><use href="#tl-mark-small"/></svg></div>
+        <div class="cap"><b>Малый знак</b>Звезда Коха первого порядка, без монограммы. Для 16–32 px.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="razmery">
+    <h2><span class="num">04</span>Размеры и охранное поле</h2>
+    <p class="sub">Монограмма читается только с 48 px, поэтому малые размеры решаются упрощённым знаком. Охранное поле — не менее 25 % высоты знака со всех сторон.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Размер</th><th>Версия</th><th>Что видно</th><th>Где применять</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>16–24 px</td><td>Малый знак</td><td>Силуэт звезды, букв нет</td><td>favicon, иконка вкладки</td></tr>
+          <tr><td>24–32 px</td><td>Малый знак</td><td>Звезда с ровными лучами</td><td>шапка портала, иконки, чипы</td></tr>
+          <tr><td>32–48 px</td><td>Одна Т</td><td>Буква 6,5–9,7 px</td><td>заголовки курсов, аватарки</td></tr>
+          <tr><td>48–64 px</td><td>Основной с ТЛ</td><td>Буквы 8,4–11,3 px</td><td>шапки документов, слайды</td></tr>
+          <tr><td>от 64 px</td><td>Основной с ТЛ</td><td>Все детали, буквы от 11 px</td><td>презентации, обложки</td></tr>
+          <tr><td>от 12 мм</td><td>Монохром с ТЛ</td><td>Все детали в один цвет</td><td>печать, штамп, гравировка</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note good">
+      <b>Правило шапки.</b> В шапке портала знак стоит в размере 26 px — это версия без монограммы. Рядом идёт полное название, поэтому уточнять ТЛ внутри знака не нужно.
+    </div>
+  </section>
+
+  <section id="cveta">
+    <h2><span class="num">05</span>Цвета</h2>
+    <p class="sub">Палитра фиксирована: три акцента кодируют три обещания объединения, тёмный графит работает фоном.</p>
+
+    <div class="swatches">
+      <div class="sw">
+        <div class="chip" style="background:#2D7AFF"></div>
+        <div class="info"><div class="name">Импульс</div><div class="hex">#2D7AFF</div><div class="role">Основной контур знака, ссылки, акценты</div></div>
+      </div>
+      <div class="sw">
+        <div class="chip" style="background:#00D68F"></div>
+        <div class="info"><div class="name">Рост</div><div class="hex">#00D68F</div><div class="role">Успех, выполнено, положительная динамика</div></div>
+      </div>
+      <div class="sw">
+        <div class="chip" style="background:#FFAA00"></div>
+        <div class="info"><div class="name">Запуск</div><div class="hex">#FFAA00</div><div class="role">Внимание, предупреждение, дедлайны</div></div>
+      </div>
+      <div class="sw">
+        <div class="chip" style="background:#0D0F14;border-bottom:1px solid #2A3141"></div>
+        <div class="info"><div class="name">Графит</div><div class="hex">#0D0F14</div><div class="role">Основной фон, заливка монограммы</div></div>
+      </div>
+      <div class="sw">
+        <div class="chip" style="background:#151922"></div>
+        <div class="info"><div class="name">Панель</div><div class="hex">#151922</div><div class="role">Карточки, блоки, поверхности</div></div>
+      </div>
+      <div class="sw">
+        <div class="chip" style="background:#E8EDF7"></div>
+        <div class="info"><div class="name">Текст</div><div class="hex">#E8EDF7</div><div class="role">Основной текст и монограмма</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shrift">
+    <h2><span class="num">06</span>Типографика</h2>
+    <p class="sub">Системный шрифт без засечек: он есть на любом компьютере и не требует загрузки файлов, поэтому документы открываются одинаково везде.</p>
+
+    <div class="grid2">
+      <div class="tile">
+        <div style="font-size:30px;font-weight:700;letter-spacing:-0.01em;">Технологическая лаборатория</div>
+        <div class="cap"><b>Заголовки · 700</b>Segoe UI, system-ui, Arial. Межбуквенное −0,01 em.</div>
+      </div>
+      <div class="tile">
+        <div style="font-size:15px;color:#A9B4C7;">Основной текст: 15–16 px, межстрочный 1,62. Для документов — 12 pt с интерлиньяжем 1,15.</div>
+        <div class="cap"><b>Текст · 400</b>Без засечек, выключка по левому краю.</div>
+      </div>
+      <div class="tile">
+        <div style="font-family:Consolas,'Courier New',monospace;font-size:13px;color:#8C97AB;letter-spacing:.08em;text-transform:uppercase;">Объединение · LAB.01 · КОМПАС-3D</div>
+        <div class="cap"><b>Служебные подписи · моно</b>Метки, коды лабораторий, подписи к полям.</div>
+      </div>
+      <div class="tile" style="align-items:center;">
+        <svg class="mk" style="width:110px;height:110px"><use href="#tl-mark-dark"/></svg>
+        <div class="cap"><b>Монограмма</b>Буквы ТЛ набираются тем же шрифтом, начертание 800, размер 100 % радиуса гексагона — предел без касания граней, трекинг −0,03 em. Для 32–48 px — одна буква Т.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kompoziciya">
+    <h2><span class="num">07</span>Компоновка с названием</h2>
+    <p class="sub">Два закреплённых варианта. Расстояние от знака до текста — не менее 10 % высоты знака, выравнивание по центру знака.</p>
+
+    <div class="grid2">
+      <div class="tile">
+        <div class="stage dark" style="justify-content:flex-start;gap:14px;padding:18px;">
+          <svg class="mk" style="width:56px;height:56px;flex:0 0 auto"><use href="#tl-mark-dark"/></svg>
+          <div>
+            <div style="font-family:'Consolas','Courier New',monospace;font-size:10px;letter-spacing:.1em;color:#8C97AB;">объединение</div>
+            <div style="font-weight:700;font-size:17px;letter-spacing:.02em;">Технологическая лаборатория</div>
+          </div>
+        </div>
+        <div class="cap"><b>Горизонтальная</b>Шапка портала, бланки, подписи в документах.</div>
+      </div>
+      <div class="tile">
+        <div class="stage dark" style="flex-direction:column;gap:12px;">
+          <svg class="mk" style="width:84px;height:84px"><use href="#tl-mark-dark"/></svg>
+          <div style="text-align:center;">
+            <div style="font-weight:700;font-size:15px;letter-spacing:.02em;">Технологическая лаборатория</div>
+            <div style="font-family:'Consolas','Courier New',monospace;font-size:10px;letter-spacing:.1em;color:#8C97AB;margin-top:3px;">объединение</div>
+          </div>
+        </div>
+        <div class="cap"><b>Вертикальная</b>Обложки, титульные листы, аватарки, соцсети.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="zaprety">
+    <h2><span class="num">08</span>Запреты</h2>
+    <p class="sub">Всё, что ломает узнаваемость знака. Эти правила важнее «красивости»: знак должен оставаться одним и тем же в портфолио, на слайде и на печати.</p>
+
+    <div class="no-list">
+      <div class="no">
+        <div class="demo"><svg class="mk" style="width:56px;height:56px;transform:rotate(-14deg)"><use href="#tl-mark-dark"/></svg></div>
+        <div class="txt"><b>Не наклонять</b>Знак стоит строго вертикально.</div>
+      </div>
+      <div class="no">
+        <div class="demo"><svg class="mk" style="width:56px;height:56px;transform:scaleY(.62)"><use href="#tl-mark-dark"/></svg></div>
+        <div class="txt"><b>Не растягивать</b>Пропорции только 1:1.</div>
+      </div>
+      <div class="no">
+        <div class="demo"><svg class="mk" style="width:56px;height:56px;filter:hue-rotate(75deg) saturate(1.6)"><use href="#tl-mark-dark"/></svg></div>
+        <div class="txt"><b>Не перекрашивать</b>Только палитра брендбука.</div>
+      </div>
+      <div class="no">
+        <div class="demo"><svg class="mk" style="width:56px;height:56px;opacity:.42"><use href="#tl-mark-dark"/></svg></div>
+        <div class="txt"><b>Не снижать контраст</b>Никакой прозрачности ниже 60 %.</div>
+      </div>
+      <div class="no">
+        <div class="demo" style="background:#0A0C11;border-radius:10px;"><svg class="mk" style="width:56px;height:56px;opacity:.55"><use href="#tl-mark-dark"/></svg></div>
+        <div class="txt"><b>Не менять монограмму</b>Другой шрифт, курсив или строчные буквы запрещены.</div>
+      </div>
+      <div class="no">
+        <div class="demo"><svg class="mk-small" style="width:56px;height:56px;color:#2D7AFF"><use href="#tl-mark-small"/></svg></div>
+        <div class="txt"><b>Не путать версии</b>Малый знак годится только до 32 px.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="primenenie">
+    <h2><span class="num">09</span>Применение</h2>
+    <p class="sub">Единый порядок для портала, курсов, методичек и печати.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Носитель</th><th>Версия</th><th>Размер</th><th>Особенности</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Шапка портала</td><td>Основной без монограммы</td><td>26 px</td><td>Клик ведёт на главную, цвет контура <code>#2D7AFF</code></td></tr>
+          <tr><td>favicon</td><td>Малый знак</td><td>16–32 px</td><td>Силуэт на графитовом скруглении</td></tr>
+          <tr><td>Заголовки курсов</td><td>Основной без монограммы</td><td>32–40 px</td><td>Слева от названия курса</td></tr>
+          <tr><td>Методички, Word</td><td>Монохром чёрный</td><td>от 48 px / 15 мм</td><td>На белом фоне, без градиентов</td></tr>
+          <tr><td>Презентации</td><td>Основной</td><td>от 64 px</td><td>На титульном слайде и в углу</td></tr>
+          <tr><td>Печать, гравировка</td><td>Монохром</td><td>от 12 мм</td><td>Один цвет, без тонких обводок</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <b>Порядок внедрения.</b> Сначала портал и favicon (сделано). Затем шапки курсов и хабы — один знак в одном размере на всех страницах. Последними — методички и документы: там используется монохром, потому что цветной знак в печати теряет детали.
+    </div>
+  </section>
+
+  <section id="fajly">
+    <h2><span class="num">10</span>Файлы</h2>
+    <p class="sub">Все версии лежат в одном месте: <code>assets/логотип/</code>. Формат SVG — его можно увеличивать без потери качества и вставлять прямо в HTML.</p>
+
+    <div class="files">
+      <div class="file"><div class="fn">Знак ТЛ основной для тёмного фона.svg</div><div class="fd">Портал, презентации, экраны</div></div>
+      <div class="file"><div class="fn">Знак ТЛ основной для светлого фона.svg</div><div class="fd">Документы на белом</div></div>
+      <div class="file"><div class="fn">Знак ТЛ монохром чёрный.svg</div><div class="fd">Печать в один цвет</div></div>
+      <div class="file"><div class="fn">Знак ТЛ монохром белый.svg</div><div class="fd">Тёмные фоны, гравировка</div></div>
+      <div class="file"><div class="fn">Знак ТЛ с одной Т 32 48 px.svg</div><div class="fd">Средние размеры: заголовки курсов, аватарки</div></div>
+      <div class="file"><div class="fn">Знак ТЛ малый 16 32 px.svg</div><div class="fd">Иконки и favicon</div></div>
+      <div class="file"><div class="fn">favicon.svg</div><div class="fd">Иконка портала, лежит рядом с ним</div></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    Брендбук Технологической лаборатории · версия 1.0 · 2026 · знак построен на кривой Коха третьего порядка
+  </div>
+</footer>
+
+</body>
+</html>

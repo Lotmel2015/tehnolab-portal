@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Подготовка к ВсОШ «Труд (технология)» · для школьника</title>
+<style>
+:root{--ink:#1B2A4A;--muted:#5A6B85;--accent:#1F6FE0;--accent-soft:#EAF2FD;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--vr:#4D008C;--vr-soft:#F0EBF5;--line:#D9E2EF;--bg:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:#eef1f6;color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:1.2rem 1.25rem 3rem}
+nav{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);z-index:10;padding:.5rem 1.25rem}
+nav .inner{max-width:980px;margin:0 auto;display:flex;flex-wrap:wrap;gap:.3rem .9rem}
+nav a{color:var(--muted);text-decoration:none;font-size:.83rem;font-weight:600}nav a:hover{color:var(--accent)}
+header.hero{background:linear-gradient(135deg,#1B2A4A 0%,#1F6FE0 65%,#4D008C 130%);color:#fff;border-radius:0 0 18px 18px;padding:1.8rem 1.5rem;margin:0 -1.25rem 1.4rem}
+header.hero .kicker{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;opacity:.85;margin-bottom:.3rem}
+header.hero h1{font-size:1.55rem;line-height:1.25;margin:0 0 .35rem}
+header.hero .sub{opacity:.93;font-size:.98rem;max-width:48rem}
+.params{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-top:1rem}
+.params div{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:.45rem .6rem}
+.params b{display:block;font-size:.95rem;line-height:1.25}
+.params span{font-size:.72rem;opacity:.85}
+@media(max-width:760px){.params{grid-template-columns:repeat(2,1fr)}}
+h2.sec{font-size:1.15rem;margin:1.9rem 0 .6rem}
+h2.sec i{color:var(--accent);font-style:normal;font-weight:700;margin-right:.4rem}
+h3{font-size:1rem;margin:1.1rem 0 .4rem;color:var(--accent)}
+p{margin:.5rem 0}
+ul,ol{margin:.4rem 0 .6rem;padding-left:1.25rem}
+li{margin:.22rem 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1.2rem 1.45rem;margin:.9rem 0;box-shadow:0 6px 18px rgba(27,42,74,.05)}
+.card h3:first-child{margin-top:0}
+table{width:100%;border-collapse:collapse;font-size:.87rem;margin:.6rem 0;background:#fff}
+th,td{border:1px solid var(--line);padding:.45rem .55rem;text-align:left;vertical-align:top}
+th{background:#F2F6FC;color:var(--muted);font-size:.77rem;text-transform:uppercase;letter-spacing:.02em}
+tbody tr:nth-child(even) td{background:#FBFCFE}
+.note{background:var(--pr-soft);border-left:4px solid var(--pr);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-size:.92rem;margin:.8rem 0}.note b{color:var(--pr)}
+.warn{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-size:.92rem;margin:.8rem 0}.warn b{color:var(--def)}
+.violet{background:var(--vr-soft);border-left:4px solid var(--vr);border-radius:0 8px 8px 0;padding:.6rem .9rem;font-size:.92rem;margin:.8rem 0}.violet b{color:var(--vr)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem;margin:.8rem 0}
+.step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem 1.15rem;box-shadow:0 4px 12px rgba(27,42,74,.05)}
+.step .num{display:inline-flex;align-items:center;justify-content:center;min-width:2rem;height:2rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:.9rem;margin-bottom:.5rem}
+.step:nth-child(2) .num{background:var(--vr)}
+.step:nth-child(3) .num{background:var(--pr)}
+.step:nth-child(4) .num{background:var(--def)}
+.step b{display:block;font-size:.95rem;margin-bottom:.2rem}
+.step span{font-size:.85rem;color:var(--muted)}
+.badge{display:inline-block;font-size:.7rem;font-weight:700;padding:.15rem .55rem;border-radius:999px}
+.b-ac{background:var(--accent-soft);color:var(--accent)}
+.b-pr{background:var(--pr-soft);color:var(--pr)}
+.b-def{background:var(--def-soft);color:var(--def)}
+.b-vr{background:var(--vr-soft);color:var(--vr)}
+.route{display:flex;flex-direction:column;gap:.5rem;margin:.7rem 0}
+.route-row{display:flex;gap:.7rem;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.75rem 1rem}
+.route-row .dot{flex:0 0 1.1rem;height:1.1rem;margin-top:.25rem;border-radius:50%;background:var(--accent)}
+.route-row:nth-child(2) .dot{background:var(--vr)}
+.route-row:nth-child(3) .dot{background:var(--pr)}
+.route-row:nth-child(4) .dot{background:var(--def)}
+.route-row b{display:block}
+.route-row span{color:var(--muted);font-size:.9rem}
+.quest{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;margin:.5rem 0;display:flex;gap:.7rem;align-items:flex-start}
+.quest .icon{font-size:1.2rem}
+footer{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);margin-top:2.4rem;padding-top:.9rem}
+@media print{body{background:#fff;font-size:10.5pt}nav{display:none}header.hero{margin:0;border-radius:0;background:none;color:var(--ink);padding:0}.card,.step,.route-row{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<nav><div class="inner"><a href="#main">Суть</a><a href="#why">Зачем</a><a href="#route">Как устроен</a><a href="#practic">Практики</a><a href="#project">Проект</a><a href="#test">Проверь себя</a><a href="#start">Как начать</a></div></nav>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">Технологическая лаборатория · олимпиадная подготовка</div>
+  <h1>Подготовка к ВсОШ «Труд (технология)»</h1>
+  <p class="sub">Курс для школьника, который хочет побеждать на олимпиадах по технологии: от идеи — к уверенному выступлению на муниципальном и региональном этапах.</p>
+  <div class="params">
+    <div><b>8–11 класс</b><span>приоритет 8–10</span></div>
+    <div><b>68 или 102 ч</b><span>2 занятия в неделю</span></div>
+    <div><b>30+ практик</b><span>3D, Arduino, дроны, дизайн</span></div>
+    <div><b>Проект обязателен</b><span>тема сезона 2026/27</span></div>
+  </div>
+</header>
+
+<h2 class="sec" id="main"><i>1.</i>Что это за олимпиада и зачем она тебе</h2>
+<div class="card">
+  <p><b>ВсОШ «Труд (технология)»</b> — это главная олимпиада страны по технологии. Она проводится в <b>четыре этапа</b>: школьный, муниципальный, региональный и заключительный. С 2025/26 года она идёт по <b>двум профилям</b>: «Техника, технологии и техническое творчество» (ТТиТТ) и «Культура дома, дизайн и технологии» (КДДиТ).</p>
+  <p>Наш курс готовит по профилю <b>ТТиТТ</b> — это твои сильные стороны: 3D-моделирование, электроника и Arduino, беспилотники, промышленный дизайн. Робототехника LEGO и VR в этой олимпиаде больше <b>не входят</b> — они ушли в олимпиаду по информатике, поэтому здесь мы занимаемся «взрослыми» инженерными практиками.</p>
+  <div class="violet"><b>Важно.</b> В олимпиаде — <b>три тура</b>: теория (≈120 минут), практика (работа руками и в программах) и <b>защита твоего собственного проекта</b> (до 10 минут). Проект готовится заранее — это твой пропуск к высоким баллам.</div>
+  <p><b>Баллы в 2026/27</b> распределяются примерно так: теория — до 30, практика — до 40, защита проекта — до 30. Итог — 100 баллов. Подробности каждый год обновляются в требованиях ЦПМК — мы следим за ними на занятиях.</p>
+</div>
+
+<h2 class="sec" id="why"><i>2.</i>Почему это стоит твоего времени</h2>
+<div class="card">
+  <div class="route">
+    <div class="route-row"><div class="dot"></div><div><b>Дипломы и льготы</b><span>Призёры и победители регионального и заключительного этапов получают дипломы, которые дают бонусы при поступлении, а победители финала — право поступления без экзаменов по профилю (БВИ).</span></div></div>
+    <div class="route-row"><div class="dot"></div><div><b>Настоящие навыки</b><span>Ты научишься строить 3D-модели, собирать устройства на Arduino, программировать полёты дронов и защищать свои идеи. Это пригодится и в учёбе, и в будущей профессии.</span></div></div>
+    <div class="route-row"><div class="dot"></div><div><b>Портфолио и уверенность</b><span>Опыт публичной защиты и работы «на время» прокачивает стрессоустойчивость и умение объяснять сложное простыми словами.</span></div></div>
+    <div class="route-row"><div class="dot"></div><div><b>Команда и поддержка</b><span>Ты занимаешься в группе с такими же ребятами, у тебя есть наставник и доступ к оборудованию лаборатории — ты не один.</span></div></div>
+  </div>
+</div>
+
+<h2 class="sec" id="route"><i>3.</i>Как устроен курс: две траектории</h2>
+<div class="card">
+  <table>
+    <thead><tr><th>Траектория</th><th>Кто подойдёт</th><th>Объём</th><th>Цель на год</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge b-ac">Базовый поток</span></td><td>Пробуешь себя или начинаешь с нуля</td><td>68 ч (2 ч/нед)</td><td>Уверенное выступление и призовое место на <b>муниципальном этапе</b></td></tr>
+      <tr><td><span class="badge b-vr">Олимпийская группа</span></td><td>Готов бороться за место в сборной</td><td>102 ч + летний интенсив 30 ч</td><td><b>Региональный этап</b> и выход на финал</td></tr>
+    </tbody>
+  </table>
+  <p>В начале курса мы проводим <b>входную диагностику</b>. Она не для оценок — она помогает выбрать траекторию и показать, на что обратить внимание. Если пройдёшь диагностику на 50% и больше и захочешь большего — сможешь попасть в олимпийскую группу.</p>
+  <div class="note"><b>Тренировочные туры.</b> В олимпийской группе 5–6 раз за год мы прогоняем <b>полный формат олимпиады</b>: 120 минут теории → случайная практика → защита проекта. Это то, чего чаще всего не хватает школьникам: опыт «как это бывает на самом деле».</div>
+</div>
+
+<h2 class="sec" id="practic"><i>4.</i>Чему ты научишься: практики профиля ТТиТТ</h2>
+<div class="card">
+  <p>Практический тур — это 6–7 конкретных заданий. В нашей лаборатории есть оборудование почти под все:</p>
+  <table>
+    <thead><tr><th style="width:30%">Практика</th><th>Что ты делаешь</th><th style="width:26%">У нас в ТЛ</th></tr></thead>
+    <tbody>
+      <tr><td><b>3D-моделирование и печать</b></td><td>Рисуешь технический эскиз, строишь 3D-модель в КОМПАС-3D, готовишь к печати и печатаешь на принтере</td><td><span class="badge b-pr">Готово</span> КОМПАС-3D, Blender, принтер</td></tr>
+      <tr><td><b>Программирование полёта БПЛА</b></td><td>Пишешь полётное задание в блочной среде и выполняешь его на квадрокоптере в полётной зоне (2 попытки)</td><td><span class="badge b-pr">Готово</span> Квадрокоптер, симулятор</td></tr>
+      <tr><td><b>Автоматизированные технические системы (Arduino)</b></td><td>Собираешь устройство на Arduino Uno и программируешь его: кнопки, светодиоды, сервопривод, потенциометр</td><td><span class="badge b-pr">Почти готово</span> Arduino, паяльная станция</td></tr>
+      <tr><td><b>Промышленный дизайн</b></td><td>Проектируешь дизайн-объект: анализ, скетчи, поиск формы — по критериям жюри</td><td><span class="badge b-ac">Частично</span> Графика, проектирование</td></tr>
+      <tr><td><b>Обработка на лазерном станке</b></td><td>Готовишь макет и режешь/гравируешь изделие из фанеры на лазерной машине</td><td><span class="badge b-pr">Готово</span> Станок Laser machine 4060</td></tr>
+      <tr><td><b>Ручная деревообработка</b></td><td>Размечаешь, пилишь, строгаешь, шлифуешь — делаешь изделие из древесины по карте контроля</td><td><span class="badge b-pr">Готово</span> Столярная мастерская</td></tr>
+      <tr><td><b>Обработка металла (ручная/механическая)</b></td><td>Слесарные операции: разметка, резка, опиливание, сверление (на базе партнёра)</td><td><span class="badge b-def">Через партнёра</span> Договор с мастерской</td></tr>
+    </tbody>
+  </table>
+  <div class="warn"><b>Честно про границы.</b> Профиль «Культура дома, дизайн и технологии» (шитьё) мы не ведём — у нас нет швейного оборудования. Если тебе интересно именно это направление, подскажем профильные программы.</div>
+</div>
+
+<h2 class="sec" id="theory"><i>5.</i>Теория: не скучно, а по делу</h2>
+<div class="card">
+  <p>Теоретический тур проверяет, понимаешь ли ты, <b>как устроена техника</b>. Мы проходим эти блоки (примерно 26 часов в базовом потоке):</p>
+  <div class="steps">
+    <div class="step"><span class="num">1</span><b>Черчение и ЕСКД</b><span>линии, виды, разрезы, размеры, сборочный чертёж</span></div>
+    <div class="step"><span class="num">2</span><b>Машиноведение</b><span>передачи, подшипники, станки, режимы резания</span></div>
+    <div class="step"><span class="num">3</span><b>Материаловедение</b><span>древесина, стали, полимеры — свойства и марки</span></div>
+    <div class="step"><span class="num">4</span><b>Электротехника</b><span>закон Ома, цепи, мощность, датчики</span></div>
+    <div class="step"><span class="num">5</span><b>Автоматика и IoT</b><span>приводы, обратная связь, умный дом, протоколы</span></div>
+    <div class="step"><span class="num">6</span><b>Экономика изделия</b><span>себестоимость, материалы, расчёты</span></div>
+  </div>
+  <p>Каждая тема закрепляется <b>задачами прошлых лет</b> и расчётными сериями — мы разбираем ключи, а не просто «проходим материал».</p>
+</div>
+
+<h2 class="sec" id="project"><i>6.</i>Твой проект — твой главный козырь</h2>
+<div class="card">
+  <p>Проект — обязательная часть олимпиады, и он даёт до трети всех баллов (в защите). Мы ведём его <b>параллельно со всем курсом</b>, по шагам «Проектного навигатора»:</p>
+  <div class="route">
+    <div class="route-row"><div class="dot"></div><div><b>Тема сезона 2026/27</b><span>«Технологии прошлого — традиции будущего» — проекты, соединяющие традиции и современные технологии.</span></div></div>
+    <div class="route-row"><div class="dot"></div><div><b>Сентябрь–октябрь</b><span>Идея, проблема, цель по SMART — паспорт проекта.</span></div></div>
+    <div class="route-row"><div class="dot"></div><div><b>Ноябрь–февраль</b><span>MVP, прототип, тестирование — руками, по плану.</span></div></div>
+    <div class="route-row"><div class="dot"></div><div><b>Февраль–апрель</b><span>Доработка, пояснительная записка, презентация, репетиция защиты.</span></div></div>
+  </div>
+  <p>На защите ты объясняешь проект за 6–10 минут и отвечаешь на вопросы жюри. Мы тренируем это на каждом тренировочном туре.</p>
+</div>
+
+<h2 class="sec" id="timeline"><i>7.</i>Календарь сезона 2026/27</h2>
+<div class="card">
+  <table>
+    <thead><tr><th>Срок</th><th>Этап</th><th>Что делаем мы</th></tr></thead>
+    <tbody>
+      <tr><td><b>До 1 ноября 2026</b></td><td>Школьный этап</td><td>Проверяем у оператора, заявляем участников (5–11 кл.)</td></tr>
+      <tr><td><b>Ноябрь–декабрь 2026</b></td><td>Муниципальный этап</td><td>Интенсив по практике + проект</td></tr>
+      <tr><td><b>8–9 февраля 2027</b></td><td>Региональный этап</td><td>Сборы, тренировочные туры, разбор архива</td></tr>
+      <tr><td><b>Март–апрель 2027</b></td><td>Заключительный этап</td><td>Подготовка финалистов, разбор результатов</td></tr>
+      <tr><td><b>С сентября 2027</b></td><td>Новый набор</td><td>Системный старт с 5–7 классов — ранний старт даёт результат</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="sec" id="test"><i>8.</i>Проверь себя: подходит ли тебе курс</h2>
+<div class="card">
+  <p>Ответь «да» хотя бы на 3 из 5 — курс точно для тебя:</p>
+  <div class="quest"><span class="icon">🔧</span><div><b>Тебе нравится что-то делать руками</b><span> — паять, печатать на 3D-принтере, разбирать и собирать.</span></div></div>
+  <div class="quest"><span class="icon">🖥</span><div><b>Тебя затягивают программы</b><span> — 3D, модели, чертежи, написание кода для устройств.</span></div></div>
+  <div class="quest"><span class="icon">🚁</span><div><b>Дроны и автоматика заходят</b><span> — интересно, как они устроены и как ими управлять.</span></div></div>
+  <div class="quest"><span class="icon">🎤</span><div><b>Тебе не страшно выступать</b><span> — или ты хочешь этому научиться: защита — треть баллов.</span></div></div>
+  <div class="quest"><span class="icon">🏆</span><div><b>Ты хочешь диплом олимпиады</b><span> — ради льгот при поступлении и будущей профессии.</span></div></div>
+</div>
+<div class="card" style="background:var(--pr-soft);border-left:4px solid var(--pr);">
+  <b>🏆 Попробуй прямо сейчас: тренажёр с заданиями</b>
+  <p>Реши пробные задания в авторском банке Технологической лаборатории — мгновенная проверка, разбор «за что балл», режим полного тура на 120 минут. Отсюда же удобно делать ежедневную рутину «5 заданий в день».</p>
+  <p><a href="Банк заданий ВсОШ труд.html" style="display:inline-block;background:var(--pr);color:#fff;font-weight:700;padding:.6rem 1.3rem;border-radius:10px;text-decoration:none;">Открыть банк заданий →</a></p>
+</div>
+
+<h2 class="sec" id="start"><i>9.</i>Как начать</h2>
+<div class="card">
+  <div class="steps">
+    <div class="step"><span class="num">1</span><b>Запишись</b><span>Скажи педагогу «хочу в олимпиадную группу по технологии» — и мы включим тебя.</span></div>
+    <div class="step"><span class="num">2</span><b>Пройди диагностику</b><span>Входной тест (40 заданий). Это карта твоих сильных и слабых сторон, а не «оценка».</span></div>
+    <div class="step"><span class="num">3</span><b>Выбери траекторию</b><span>Базовый поток или олимпийская группа — решим вместе по результатам.</span></div>
+    <div class="step"><span class="num">4</span><b>Веди проект</b><span>С первой недели начинаем твой проект — он станет твоим козырем весной.</span></div>
+  </div>
+  <div class="note"><b>Где узнать больше.</b> Оператор ВсОШ в Красноярском крае — КГАОУ «Школа космонавтики» (Железногорск), региональный центр «Спутник», горячая линия ВсОШ +7 (391) 219-55-61. Мы помогаем с регистрацией и документами.</div>
+</div>
+
+<footer>
+  Концепция курса «Олимпиадная подготовка к ВсОШ по труду (технологии)» · профиль ТТиТТ · Технологическая лаборатория · 2026/2027 учебный год.<br>
+  Составлено по материалам исследования ВсОШ по технологии от 28.10.2026 и программ олимпиадного модуля (68 ч) и карты курса (68/102 ч).
+</footer>
+
+</div>
+</body>
+</html>

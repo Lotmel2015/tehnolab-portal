@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Банк заданий ВсОШ по труду (технологии) · авторский тренажёр</title>
+<style>
+  :root{--ink:#1B2A4A;--muted:#5A6B85;--line:#D9E2EF;--accent:#1F6FE0;--accent-soft:#EAF2FD;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--bad:#B91C1C;--bad-soft:#FCE8E8;--bg:#fff}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .wrap{max-width:960px;margin:0 auto;padding:1.6rem 1rem 3rem}
+  header .kicker{color:var(--accent);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+  header h1{font-size:1.55rem;line-height:1.2;margin:.2rem 0 .3rem}
+  header .sub{color:var(--muted);font-size:.95rem;margin:0 0 .5rem}
+  .pill{display:inline-block;font-size:.68rem;font-weight:700;border-radius:999px;padding:.08rem .5rem;margin-right:.25rem}
+  .pill.lvl1{background:var(--accent-soft);color:var(--accent)}
+  .pill.lvl2{background:var(--pr-soft);color:var(--pr)}
+  .pill.lvl3{background:var(--def-soft);color:var(--def)}
+  .controls{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center;margin:.9rem 0;padding:.75rem .9rem;border:1px solid var(--line);border-radius:12px;background:#fafbfd}
+  .controls select,.controls button,.controls input{padding:.45rem .7rem;border:1px solid var(--line);border-radius:8px;font-size:.88rem;background:#fff}
+  .controls button{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700;cursor:pointer}
+  .controls button.ghost{background:#fff;color:var(--accent);border-color:var(--accent)}
+  .controls label{font-size:.8rem;color:var(--muted);display:flex;gap:.3rem;align-items:center}
+  .stats{font-size:.85rem;color:var(--muted);margin:.3rem 0}
+  .streak{font-size:.85rem;font-weight:700;color:var(--def);margin:.2rem 0}
+  .qcard{border:1px solid var(--line);border-radius:12px;padding:.85rem 1rem;margin:.65rem 0;background:#fbfcfe}
+  .qcard .head{display:flex;justify-content:space-between;gap:.5rem;align-items:center;font-size:.75rem;color:var(--muted);margin-bottom:.3rem;flex-wrap:wrap}
+  .qcard .head b{color:var(--accent)}
+  .qcard .stem{font-size:.97rem}
+  .qcard .opts{display:flex;flex-direction:column;gap:.3rem;margin:.55rem 0}
+  .qcard .opts label{display:flex;gap:.5rem;align-items:center;border:1px solid var(--line);border-radius:8px;padding:.42rem .6rem;cursor:pointer;font-size:.9rem;background:#fff}
+  .qcard .opts label:hover{background:var(--accent-soft)}
+  .qcard input[type=number],.qcard input[type=text]{width:100%;max-width:360px;border:1px solid var(--line);border-radius:8px;padding:.42rem .55rem;font-size:.94rem}
+  .qcard .act{margin-top:.45rem}
+  .qcard .fb{font-size:.88rem;margin-top:.35rem;padding:.45rem .65rem;border-radius:8px;display:none}
+  .qcard .fb.ok{display:block;background:var(--pr-soft);color:var(--pr)}
+  .qcard .fb.no{display:block;background:var(--bad-soft);color:var(--bad)}
+  .qcard .sol{font-size:.84rem;color:var(--muted);margin-top:.3rem;display:none}
+  .qcard .sol.show{display:block}
+  #chkSum{font-size:.85rem;color:var(--pr);margin:.4rem 0}
+  #proto{white-space:pre-wrap;font-family:ui-monospace,Consolas,monospace;font-size:.74rem;background:#f4f6fa;border:1px solid var(--line);border-radius:8px;padding:.6rem;margin:.8rem 0;display:none}
+  footer{color:var(--muted);font-size:.78rem;border-top:1px solid var(--line);margin-top:2rem;padding-top:.8rem}
+  @media print{body{font-size:10.5pt}.wrap{max-width:none;padding:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">Технологическая лаборатория · олимпиада «Труд (технология)» · ТТиТТ</div>
+  <h1>Банк заданий — авторский тренажёр</h1>
+  <div class="sub">Методика: эффект самопроверки (сначала решай — потом смотри разбор) · интерливинг (перемешивание разделов) · интервальные повторения ошибок (SM-2) · вес 0,5/1/1,5/2, частичного кредита нет</div>
+  <div>
+    <span class="pill lvl1">база</span><span class="pill lvl2">средний</span><span class="pill lvl3">олимп.</span>
+  </div>
+</header>
+
+<div class="streak" id="streakEl"></div>
+
+<div class="controls">
+  <select id="sectionSel">
+    <option value="">Все разделы</option>
+    <option>1. ЕСКД и графика</option>
+    <option>2. Машиноведение</option>
+    <option>3. Материаловедение</option>
+    <option>4. Электротехника</option>
+    <option>5. Автоматика и IoT</option>
+    <option>6. Технологии/ЛГМ/3D</option>
+    <option>7. Экономика</option>
+    <option>9. Общая часть</option>
+  </select>
+  <label><input type="checkbox" id="interleaveChk"> интерливинг</label>
+  <button onclick="modeTrain()">Тренировка</button>
+  <button onclick="modeTour()">Полный тур 120′</button>
+  <button class="ghost" onclick="modeErrors()">☐ Ошибки</button>
+  <button class="ghost" onclick="exportProto()">Экспорт протокола</button>
+</div>
+<div class="stats" id="runStats"></div>
+<div id="chkSum"></div>
+<div id="cards"></div>
+<div id="proto"></div>
+
+<footer>
+  Авторский банк Технологической лаборатории · скелет: 16 заданий-типов; наполнение до 300–500 по архивам ВсОШ · формат ответа по весам 0,5/1/1,5/2 без частичного кредита.<br>
+  Источники-оригиналы: vserosolimp.edsoo.ru/tehnologiya · olimpiada.ru/activity/92/tasks · vos.olimpiada.ru
+</footer>
+</div>
+
+<script>
+"use strict";
+var BANK=[
+ {id:"esdk1", sec:"1. ЕСКД и графика", lvl:2, w:2, type:"num", q:"Деталь: прямоугольник 40×30 мм с полукругом радиуса 10 мм на стороне 40. Определите площадь одной стороны (см²) с точностью до десятых; π≈3,14. (данные учебные)", ans:1357, tol:0.5, sol:"S = 40·30 + (3,14·100)/2 = 1200 + 157 = 1357,0."}
+ ,{id:"esdk2", sec:"1. ЕСКД и графика", lvl:1, w:1, type:"mc", q:"Какой линией изображается видимый контур детали на чертеже?", opts:["Штриховой","Сплошной толстой основной","Штрихпунктирной тонкой","Сплошной тонкой"], ans:1, sol:"Видимый контур — сплошная толстая основная линия."}
+ ,{id:"esdk3", sec:"1. ЕСКД и графика", lvl:2, w:1.5, type:"mc", q:"Знак шероховатости с указанием Rz 40 показывает…", opts:["Допуск формы","Среднее арифметическое отклонение Ra","Высоту неровностей профиля по десяти точкам Rz","Базу отсчёта"], ans:2, sol:"Rz — высота неровностей профиля по десяти точкам; Ra — среднее арифметическое отклонение."}
+ ,{id:"esdk4", sec:"1. ЕСКД и графика", lvl:3, w:2, type:"num", q:"По фрагменту чертежа (учебные данные): фаска детали 1,2 мм, диаметр второй ступени 18 мм. Сколько всего фасок на двух торцах детали?", ans:2, tol:0.01, sol:"Фаска — на каждом торце по одной: итого 2."}
+ ,{id:"mash1", sec:"2. Машиноведение", lvl:2, w:2, type:"mc", q:"Ведущая шестерня 20 зубьев, ведомая 60. Передаточное число равно…", opts:["0,33","2","3","4"], ans:2, sol:"i = z₂/z₁ = 60/20 = 3."}
+ ,{id:"mash2", sec:"2. Машиноведение", lvl:1, w:1, type:"mc", q:"Какое приспособление на токарном станке поддерживает длинную заготовку у задней бабки?", opts:["Люнет","Лафет","Пиноль","Резцедержатель"], ans:0, sol:"Люнет — опора для длинных валов."}
+ ,{id:"mat1", sec:"3. Материаловедение", lvl:2, w:2, type:"mc", q:"Для чего в полимер PCTG вводят гликолевую модификацию?", opts:["Увеличить ударную вязкость и технологичность","Снизить температуру плавления до 90 °C","Сделать материал горючим","Обеспечить электроизоляцию"], ans:0, sol:"Гликолевая модификация повышает ударную вязкость и технологичность."}
+ ,{id:"mat2", sec:"3. Материаловедение", lvl:2, w:1.5, type:"mc", q:"Какая из сталей — конструкционная углеродистая обыкновенного качества?", opts:["Ст3","У8","08Х18Н10","Р6М5"], ans:0, sol:"Ст3 — конструкционная углеродистая; У8 — инструментальная; 08Х18Н10 — коррозионностойкая; Р6М5 — быстрорежущая."}
+ ,{id:"el1", sec:"4. Электротехника", lvl:3, w:2, type:"num", q:"ЭДС ε = 6 В, при внешнем R = 1 Ом ток I = 3 А. Определите ток короткого замыкания (А).", ans:6, tol:0.01, sol:"r = ε/I − R = 6/3 − 1 = 1 Ом; Iкз = ε/r = 6/1 = 6 А."}
+ ,{id:"el2", sec:"4. Электротехника", lvl:1, w:1, type:"mc", q:"Три резистора по 6 Ом параллельно. Общее сопротивление…", opts:["18 Ом","6 Ом","2 Ом","36 Ом"], ans:2, sol:"1/R = 3/6 = 1/2 → R = 2 Ом."}
+ ,{id:"iot1", sec:"5. Автоматика и IoT", lvl:2, w:1.5, type:"mc", q:"Каждую из 50 датчиков «Умного дома» нужно подключить. Какой протокол подходит лучше всего?", opts:["Wi-Fi","Ethernet","Bluetooth","Zigbee Mesh"], ans:3, sol:"Zigbee Mesh — низкопотребляющий self-организующийся сетевой протокол для десятков узлов."}
+ ,{id:"iot2", sec:"5. Автоматика и IoT", lvl:2, w:1, type:"mc", q:"Что используется для построения карты местности автономным автомобилем?", opts:["Лидар, камеры, радары, GPS","Только камера","Только лазерная указка","Барометр и гигрометр"], ans:0, sol:"Лидар/камеры/радары + спутник — типовой SLAM-набор."}
+ ,{id:"tech1", sec:"6. Технологии/ЛГМ/3D", lvl:2, w:1.5, type:"mc", q:"Зачем сушат филамент перед FDM-печатью?", opts:["Убрать влагу и пузыри, поднять адгезию слоёв","Ускорить печать","Сделать цвет ярче","Снизить температуру стола"], ans:0, sol:"Гигроскопичный пластик с влагой даёт пузыри и плохую межслойную адгезию."}
+ ,{id:"tech2", sec:"6. Технологии/ЛГМ/3D", lvl:2, w:1, type:"mc", q:"Почему для продольного и поперечного распила древесины — разные диски?", opts:["Разные число и форма зубьев","Это маркетинговый миф","Только разный диаметр","Одинаковые, нужно лишь сменить угол стола"], ans:0, sol:"Продольные — зубья с наклоном вперёд, поперечные — подрезают волокна с поднутрением."}
+ ,{id:"eco1", sec:"7. Экономика", lvl:2, w:2, type:"num", q:"Зарплата 80 000 ₽, индексация 12 %, НДФЛ 13 %. Сколько на руки (₽, целое)?", ans:77952, tol:0.5, sol:"80 000·1,12 = 89 600; ·0,87 = 77 952."}
+ ,{id:"com1", sec:"9. Общая часть", lvl:1, w:1, type:"mc", q:"Какая профессия — инженерно-техническая?", opts:["Повар","Электромонтажник","Инженер-конструктор","Парикмахер"], ans:2, sol:"Инженер-конструктор — проектирование; электромонтажник — рабочая, не инженерная."}
+ ,{id:"com2", sec:"9. Общая часть", lvl:1, w:0.5, type:"mc", q:"Техносфера — это…", opts:["Преобразованная человеком часть биосферы","Сфера услуг","Атмосфера","Только океан"], ans:0, sol:"Техносфера — преобразованная человеком часть биосферы."}
+,{id:"esdk5", sec:"1. ЕСКД и графика", lvl:2, w:1.5, type:"mc", q:"Какой масштаб соответствует УМЕНЬШЕНИЮ изображения детали?", opts:["2:1","1:1","1:2","10:1"], ans:2, sol:"Масштаб меньше единицы — уменьшение: 1:2."}
+,{id:"esdk6", sec:"1. ЕСКД и графика", lvl:1, w:1, type:"mc", q:"Как обозначается на чертеже диаметр?", opts:["R","Ø","S","□"], ans:1, sol:"Ø — диаметр; R — радиус; S — толщина; □ — квадрат."}
+,{id:"esdk7", sec:"1. ЕСКД и графика", lvl:2, w:1.5, type:"mc", q:"Какое изображение получается при мысленном рассечении детали плоскостью и показе того, что в секущей плоскости и за ней?", opts:["Разрез","Сечение","Выносной элемент","Вид сбоку"], ans:0, sol:"Разрез показывает и то, что в плоскости, и то, что за ней; сечение — только то, что в плоскости."}
+,{id:"esdk8", sec:"1. ЕСКД и графика", lvl:1, w:1, type:"mc", q:"Какой линией изображают осевые и центровые линии?", opts:["Сплошной толстой","Штрихпунктирной тонкой","Штриховой","Волнистой"], ans:1, sol:"Осевые — штрихпунктирные тонкие."}
+,{id:"esdk9", sec:"1. ЕСКД и графика", lvl:3, w:2, type:"num", q:"По чертежу (учебные данные): деталь — втулка Ø24×30 мм с отверстием Ø14 мм. Определите площадь поперечного сечения кольца (мм²). π≈3,14.", ans:298.3, tol:0.5, sol:"S = (π·12²) − (π·7²) = 452,16 − 153,86 = 298,3 мм²."}
+,{id:"mash3", sec:"2. Машиноведение", lvl:2, w:1.5, type:"mc", q:"Какая передача способна обеспечить строго синхронное вращение валов?", opts:["Ременная","Фрикционная","Зубчатая","Цепная"], ans:2, sol:"Только зубчатая — жёсткое зацепление без проскальзывания."}
+,{id:"mash4", sec:"2. Машиноведение", lvl:3, w:2, type:"num", q:"Ведущий шкив 120 мм, ведомый 360 мм. Определите передаточное число ременной передачи.", ans:3, tol:0.01, sol:"i = D₂/D₁ = 360/120 = 3."}
+,{id:"mash5", sec:"2. Машиноведение", lvl:1, w:1, type:"mc", q:"Деталь, передающая вращение и крутящий момент между соосными валами, — это…", opts:["Подшипник","Муфта","Шпонка","Резьба"], ans:1, sol:"Муфта соединяет валы и передаёт момент; подшипник — опора."}
+,{id:"mash6", sec:"2. Машиноведение", lvl:2, w:1.5, type:"mc", q:"Каким инструментом нарезают внутреннюю метрическую резьбу?", opts:["Плашка","Метчик","Резец","Развёртка"], ans:1, sol:"Метчик — внутренняя резьба, плашка — наружная."}
+,{id:"mat3", sec:"3. Материаловедение", lvl:1, w:1, type:"mc", q:"Какой материал относится к конструкционным древесным?", opts:["ДСП","Оргстекло","Текстолит","Поликарбонат"], ans:0, sol:"ДСП — древесно-стружечная плита, композит на основе древесины."}
+,{id:"mat4", sec:"3. Материаловедение", lvl:2, w:1.5, type:"mc", q:"Какое свойство древесины нужно учитывать при сушке пиломатериала?", opts:["Гигроскопичность и усушка","Электропроводность","Теплопроводность","Магнитная проницаемость"], ans:0, sol:"Древесина гигроскопична: впитывает влагу, при сушке усыхает и может растрескиваться."}
+,{id:"mat5", sec:"3. Материаловедение", lvl:3, w:2, type:"mc", q:"Как называется обработка стали, повышающая её твёрдость (нагрев + резкое охлаждение)?", opts:["Отжиг","Закалка","Отпуск","Нормализация"], ans:1, sol:"Закалка — нагрев выше критической точки + быстрое охлаждение → высокая твёрдость."}
+,{id:"mat6", sec:"3. Материаловедение", lvl:2, w:1.5, type:"mc", q:"Какой полимер чаще всего используется для FDM-печати прототипов? (базовый, дешёвый)", opts:["PLA","Nylon","PP","PETG"], ans:0, sol:"PLA — прост в печати, экологичен, подходит для прототипов; остальные требовательнее."}
+,{id:"el3", sec:"4. Электротехника", lvl:2, w:1.5, type:"num", q:"Два резистора 10 Ом и 15 Ом соединены последовательно, напряжение 50 В. Определите силу тока (А).", ans:2, tol:0.01, sol:"R = 10+15 = 25 Ом; I = U/R = 50/25 = 2 А."}
+,{id:"el4", sec:"4. Электротехника", lvl:1, w:1, type:"mc", q:"Какой прибор измеряет силу тока?", opts:["Вольтметр","Амперметр","Омметр","Гигрометр"], ans:1, sol:"Амперметр — сила тока (включается последовательно)."}
+,{id:"el5", sec:"4. Электротехника", lvl:3, w:2, type:"num", q:"Лампа мощностью 60 Вт работает 5 часов. Сколько электроэнергии (Вт·ч) она потребит?", ans:300, tol:0.5, sol:"A = P·t = 60·5 = 300 Вт·ч."}
+,{id:"el6", sec:"4. Электротехника", lvl:2, w:1.5, type:"mc", q:"Какое устройство преобразует переменный ток в постоянный?", opts:["Трансформатор","Выпрямитель","Генератор","Затвор"], ans:1, sol:"Выпрямитель (диодный мост) преобразует AC→DC; трансформатор меняет напряжение без выпрямления."}
+,{id:"iot3", sec:"5. Автоматика и IoT", lvl:2, w:1.5, type:"mc", q:"Какой датчик измеряет расстояние по отражённому лучу света?", opts:["Термистор","Ультразвуковой","Фоторезистор","Лидар (лазерный)"], ans:3, sol:"Лидар — лазерный радар: время/фаза отражения света → расстояние."}
+,{id:"iot4", sec:"5. Автоматика и IoT", lvl:1, w:1, type:"mc", q:"Что делает датчик освещённости в системах «умный дом»?", opts:["Включает свет по команде","Регулирует свет по уровню освещённости","Считает фотоны","Определяет направление ветра"], ans:1, sol:"Датчик освещённости измеряет уровень света и отдаёт команду на автоматическую регулировку."}
+,{id:"iot5", sec:"5. Автоматика и IoT", lvl:3, w:2, type:"mc", q:"«Обратная связь» в автоматическом контуре управления — это…", opts:["Запрет повторных команд","Возврат сигнала с выхода на вход системы","Дублирование питания","Ручной режим"], ans:1, sol:"Обратная связь — передача сигнала с выхода на вход для коррекции управления (например, термостат)."}
+,{id:"tech3", sec:"6. Технологии/ЛГМ/3D", lvl:1, w:1, type:"mc", q:"Какое расширение файла для 3D-печати обычно используют после нарезки в слайсере?", opts:["G-code","DOCX","STP","PSD"], ans:0, sol:"Слайсер выдаёт G-code — программу для 3D-принтера."}
+,{id:"tech4", sec:"6. Технологии/ЛГМ/3D", lvl:2, w:1.5, type:"mc", q:"Что называется «адгезией» слоя при 3D-печати?", opts:["Сцепление слоёв пластика между собой и с платформой","Цвет материала","Скорость печати","Толщина слоя"], ans:0, sol:"Адгезия — сцепление слоёв; плохая адгезия → отслоение и дефекты."}
+,{id:"tech5", sec:"6. Технологии/ЛГМ/3D", lvl:2, w:1.5, type:"mc", q:"При лазерной резке фанеры толщина материала влияет на…", opts:["Скорость и мощность резки","Цвет луча","Только на цену","Не влияет"], ans:0, sol:"Чем толще материал, тем ниже скорость и/или выше мощность — иначе сквозной рез не получается."}
+,{id:"eco2", sec:"7. Экономика", lvl:1, w:1, type:"mc", q:"Себестоимость изделия — это…", opts:["Цена в магазине","Сумма затрат на производство","Прибыль","Налог"], ans:1, sol:"Себестоимость — затраты на производство (материалы, труд, амортизация и т.д.)."}
+,{id:"eco3", sec:"7. Экономика", lvl:3, w:2, type:"num", q:"Материалы — 1200 ₽, работа — 800 ₽, накладные — 30% от суммы прямых затрат. Себестоимость (₽)?", ans:2600, tol:0.5, sol:"Прямые = 1200+800 = 2000; накладные = 0,3·2000 = 600; итого 2600 ₽."}
+,{id:"com3", sec:"9. Общая часть", lvl:1, w:1, type:"mc", q:"Что относится к «альтернативной энергетике»?", opts:["Солнечные панели и ветрогенераторы","Только нефть и газ","Угольные ТЭС","Атомные реакторы"], ans:0, sol:"Альтернативные (возобновляемые) источники — солнце, ветер, вода."}
+,{id:"com4", sec:"9. Общая часть", lvl:1, w:0.5, type:"mc", q:"Что такое экологичность изделия?", opts:["Минимальное вредное воздействие на природу при производстве и утилизации","Низкая цена","Красивый вид","Большой срок службы без ограничений"], ans:0, sol:"Экологичность — минимальное воздействие на окружающую среду на всех этапах жизненного цикла."}
+,{id:"esdk10", sec:"1. ЕСКД и графика", lvl:1, w:1, type:"mc", q:"Какой формат — наибольший по размеру?", opts:["A4","A3","A2","A1"], ans:3, sol:"Чем меньше номер формата, тем больше лист: A1 больше A2 > A3 > A4."}
+,{id:"esdk11", sec:"1. ЕСКД и графика", lvl:2, w:1.5, type:"mc", q:"Разрез, при котором секущая плоскость проходит вдоль длинной оси детали, называется…", opts:["Поперечный","Продольный","Наклонный","Местный"], ans:1, sol:"Продольный разрез идёт вдоль оси; поперечный — перпендикулярно."}
+,{id:"esdk12", sec:"1. ЕСКД и графика", lvl:2, w:1.5, type:"mc", q:"Каким условным знаком обозначается допуск формы «плоскостность»?", opts:["Черта, залитая как параллелограмм","Круг","Квадрат","Треугольник"], ans:0, sol:"Плоскостность в ГЕОМЕТРИЧЕСКИХ допусках — параллелограмм (наклонная черта)."}
+,{id:"esdk13", sec:"1. ЕСКД и графика", lvl:3, w:2, type:"num", q:"Деталь: цилиндр Ø30×50 мм. Определите площадь боковой поверхности (мм²). π≈3,14.", ans:4710, tol:5, sol:"S_бок = π·d·h = 3,14·30·50 = 4710 мм²."}
+,{id:"mash7", sec:"2. Машиноведение", lvl:1, w:1, type:"mc", q:"Какой механизм преобразует вращение в возвратно-поступательное?", opts:["Кривошипно-шатунный","Зубчатая передача","Планетарная передача","Червячная передача"], ans:0, sol:"Кривошипно-шатунный (в двигателях, насосах) даёт поступательное движение."}
+,{id:"mash8", sec:"2. Машиноведение", lvl:2, w:1.5, type:"mc", q:"Для чего нужен подшипник?", opts:["Уменьшить трение в опоре вала","Передавать вращение с изменением направления","Нарезать резьбу","Соединять детали неразъёмно"], ans:0, sol:"Подшипник — опора вала: качение/скольжение снижает трение."}
+,{id:"mash9", sec:"2. Машиноведение", lvl:2, w:1.5, type:"num", q:"Червячная передача: червяк однозаходный, колесо 40 зубьев. Передаточное число?", ans:40, tol:0.01, sol:"У однозаходного червяка i = z_колеса = 40."}
+,{id:"mash10", sec:"2. Машиноведение", lvl:1, w:1, type:"mc", q:"Крепёжная деталь с резьбой и головкой под гаечный ключ — это…", opts:["Гайка","Болт","Шпилька","Пружина"], ans:1, sol:"Болт — стержень с головкой и резьбой; гайка — навинчивается; шпилька — без головки."}
+,{id:"mat7", sec:"3. Материаловедение", lvl:2, w:1.5, type:"mc", q:"Какой металл самый лёгкий из конструкционных?", opts:["Алюминий","Сталь","Медь","Титан"], ans:0, sol:"Алюминий ≈ 2,7 г/см³ — заметно легче стали (7,8) и меди (8,9)."}
+,{id:"mat8", sec:"3. Материаловедение", lvl:2, w:1.5, type:"mc", q:"Древесина какой породы используется для резьбы и поделок (мягкая, однородная)?", opts:["Липа","Дуб","Берёза","Бук"], ans:0, sol:"Липа — мягкая, однородная, идеальна для резьбы."}
+,{id:"mat9", sec:"3. Материаловедение", lvl:3, w:2, type:"mc", q:"Что происходит со сталью при закалке и последующем низком отпуске (по свойствам)?", opts:["Рост твёрдости, снижение пластичности, рост хрупкости","Полная потеря прочности","Увеличение пластичности","Появление коррозии"], ans:0, sol:"Закалка увеличивает твёрдость, отпуск снимает внутренние напряжения; твёрдость высокая, пластичность низкая."}
+,{id:"mat10", sec:"3. Материаловедение", lvl:1, w:1, type:"mc", q:"Термопластичный полимер (многократно перерабатываемый при нагреве) — это…", opts:["PLA","Бакелит","Эпоксидная смола (затвердевшая)","Полимербетон"], ans:0, sol:"PLA — термопласт: плавится при нагреве и перерабатывается."}
+,{id:"el7", sec:"4. Электротехника", lvl:1, w:1, type:"mc", q:"Какая величина измеряется в вольтах?", opts:["Сила тока","Напряжение","Сопротивление","Мощность"], ans:1, sol:"Вольт — единица напряжения (разности потенциалов)."}
+,{id:"el8", sec:"4. Электротехника", lvl:2, w:1.5, type:"num", q:"Резистор 20 Ом, ток 0,5 А. Напряжение (В)?", ans:10, tol:0.01, sol:"U = I·R = 0,5·20 = 10 В."}
+,{id:"el9", sec:"4. Электротехника", lvl:2, w:1.5, type:"mc", q:"Какой элемент «выпрямляет» переменный ток?", opts:["Диод","Конденсатор","Резистор","Транзистор (усилитель)"], ans:0, sol:"Диод пропускает ток в одном направлении — основа выпрямителя."}
+,{id:"el10", sec:"4. Электротехника", lvl:3, w:2, type:"mc", q:"Конденсатор в цепи постоянного тока (установившись)…", opts:["Ток не проводит, накапливает заряд","Проводит как провод","Короткое замыкание","Превращает ток в тепло"], ans:0, sol:"Постоянный ток конденсатор не пропускает, он заряжается и «блокирует» цепь."}
+,{id:"iot6", sec:"5. Автоматика и IoT", lvl:2, w:1.5, type:"mc", q:"Какой протокол обычно используют для умных датчиков из-за малого энергопотребления?", opts:["Zigbee","Ethernet","USB","HDMI"], ans:0, sol:"Zigbee — низкопотребляющий протокол для IoT."}
+,{id:"iot7", sec:"5. Автоматика и IoT", lvl:3, w:2, type:"mc", q:"Что такое «интернет вещей» (IoT)?", opts:["Сеть физических устройств, обменивающихся данными через интернет","Обычный сайт","Виды кабелей","Операционная система"], ans:0, sol:"IoT — подключённые к сети устройства (датчики, бытовая техника), обменивающиеся данными."}
+,{id:"tech6", sec:"6. Технологии/ЛГМ/3D", lvl:2, w:1.5, type:"mc", q:"Чем опасна работа на лазерном станке без вытяжки?", opts:["Выделением вредных газов при горении","Поломкой лазера","Шумом","Ничем"], ans:0, sol:"При резке выделяются дым и газы — обязательна вытяжка и проветривание."}
+,{id:"tech7", sec:"6. Технологии/ЛГМ/3D", lvl:3, w:2, type:"mc", q:"Почему при FDM-печати для «свисающих» элементов включают поддержки?", opts:["Без них пластик не успевает затвердеть и проваливается","Чтобы ускорить печать","Для цвета","Поддержки не нужны"], ans:0, sol:"Свисающие участки печатаются «в воздухе» и провисают — поддержки держат их."}
+,{id:"eco4", sec:"7. Экономика", lvl:1, w:1, type:"mc", q:"Прибыль предприятия — это…", opts:["Выручка минус себестоимость","Только выручка","Только налоги","Зарплата директора"], ans:0, sol:"Прибыль = выручка − себестоимость (− налоги и прочие расходы)."}
+,{id:"eco5", sec:"7. Экономика", lvl:2, w:1.5, type:"num", q:"Себестоимость 2000 ₽, наценка 25 %. Цена (₽)?", ans:2500, tol:0.5, sol:"Цена = 2000·1,25 = 2500 ₽."}
+,{id:"com5", sec:"9. Общая часть", lvl:1, w:1, type:"mc", q:"Что относится к профессиям будущего (по атласу профессий)?", opts:["Оператор БПЛА","Телефонист","Машинистка","Наборщик текста"], ans:0, sol:"Оператор беспилотных авиасистем — востребованная профессия нового типа."}
+,{id:"com6", sec:"9. Общая часть", lvl:1, w:1, type:"mc", q:"Какая технология относится к аддитивным (добавляющим)?", opts:["3D-печать","Токарная обработка","Литьё в форму","Фрезеровка"], ans:0, sol:"Аддитивное производство — послойное добавление материала (3D-печать)."}
+,{id:"creative1", sec:"9. Общая часть", lvl:3, w:2, type:"mc", q:"Творческое задание (модель): для настольного органайзера методом FDM-печати выберите подходящий полимер с прочностью и устойчивостью к нагрузкам.", opts:["PETG","PLA (дешёвый, хрупкий под нагрузкой)","Баббит","Резина"], ans:0, sol:"PETG — прочнее и термостойче PLA, оптимален для функциональных изделий."}
+];
+var cards=[], mode="train", started=0, timer=null;
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function norm(s){return String(s).replace(/\s+/g,"").replace(",",".");}
+function lvlLbl(l){return l===1?'база':l===2?'средний':'олимп.';}
+function showCards(){
+ var s="";
+ cards.forEach(function(c,i){
+  s+='<div class="qcard" data-id="'+String(c.id)+'" data-ans="'+esc(c.ans)+'" data-w="'+c.w+'">'+
+   '<div class="head"><b>'+esc(c.sec)+'</b><span><span class="pill lvl'+c.lvl+'">'+lvlLbl(c.lvl)+'</span> вес '+c.w+'</span></div>'+
+   '<div class="stem">'+esc(c.q)+'</div>';
+  if(c.type==="num"){ s+='<input type="number" step="any" class="inp">'; }
+  else{
+   s+='<div class="opts">';
+   c.opts.forEach(function(o,j){ s+='<label><input type="radio" name="q'+i+'" value="'+j+'"> '+esc(o)+'</label>'; });
+   s+='</div>';
+  }
+  s+='<div class="act"><button onclick="checkOne(this)">Ответить</button></div>'+
+   '<div class="fb"></div><div class="sol">'+esc(c.sol)+'</div></div>';
+ });
+ document.getElementById("cards").innerHTML=s;
+ var total=cards.reduce(function(a,c){return a+c.w;},0);
+ document.getElementById("runStats").textContent="В наборе: "+cards.length+" заданий · максимум "+total+" баллов · режим: "+(mode==="tour"?"полный тур (проверка после завершения)":"тренировка");
+}
+function checkOne(btn){
+ var cardEl=btn.closest(".qcard"); var fb=cardEl.querySelector(".fb"); var solEl=cardEl.querySelector(".sol");
+ var key=norm(cardEl.dataset.ans); var w=Number(cardEl.dataset.w);
+ var raw=cardEl.querySelector(".inp, input[type=radio]:checked");
+ var val=(raw && raw.type==="radio") ? Number(raw.value) : norm(raw ? raw.value : "");
+ var isNum=!!cardEl.querySelector("input[type=number]");
+ var ok = isNum ? (Math.abs(Number(val)-Number(key))<=0.5) : (val===key);
+ record(cardEl.dataset.id, ok, w);
+ fb.className="fb "+(ok?"ok":"no");
+ var ansTxt=isNum ? key : (function(){var c=cards.filter(function(x){return String(x.id)===cardEl.dataset.id;})[0]; return c?c.opts[Number(key)]:key;})();
+ fb.textContent=ok?("Верно · +"+w+" балла"):("Неверно · 0. Правильный ответ: "+ansTxt);
+ solEl.classList.add("show");
+}
+function checkAll(){
+ var boxes=document.querySelectorAll(".qcard .act button");
+ boxes.forEach(function(b){checkOne(b);});
+}
+function pick(sec){
+ var pool=BANK.filter(function(c){return !sec||c.sec===sec;});
+ if(document.getElementById("interleaveChk").checked && !sec){
+  pool=BANK.slice(); // перемешаем
+ }
+ var picked=pool.slice();
+ // интерливинг: перемешивание разделов, а не блоков
+ for(var i=picked.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=picked[i];picked[i]=picked[j];picked[j]=t;}
+ cards=picked;
+}
+function modeTrain(){
+ if(timer){clearInterval(timer); timer=null;}
+ mode="train"; pick(document.getElementById("sectionSel").value); showCards();
+}
+function modeTour(){
+ if(timer){clearInterval(timer); timer=null;}
+ mode="tour"; started=Date.now(); pick("");
+ // произвольные 8-10 заданий из всех разделов, перемешанные
+ var tmp=BANK.slice(); for(var i=tmp.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=tmp[i];tmp[i]=tmp[j];tmp[j]=t;}
+ cards=tmp.slice(0,10);
+ document.getElementById("sectionSel").value="";
+ document.getElementById("interleaveChk").checked=true;
+ showCards();
+ document.getElementById("runStats").textContent="Полный тур: 120 минут, 10 заданий, проверка — после завершения. Работайте без подсмотра правильных ответов (они скрыты).";
+ startTimer();
+}
+function startTimer(){
+ var el=document.createElement("div"); el.id="timerBox"; el.style.cssText="font-weight:700;color:var(--bad);margin:.4rem 0;";
+ document.getElementById("runStats").parentNode.insertBefore(el, document.getElementById("runStats"));
+ timer=setInterval(function(){
+  var left=7200-Math.floor((Date.now()-started)/1000);
+  if(left<=0){clearInterval(timer); el.textContent="Время вышло! Проверьте ответы."; checkAll(); return;}
+  var mm=Math.floor(left/60), ss=left%60; el.textContent="Осталось: "+mm+":"+(ss<10?"0":"")+ss;
+ },1000);
+}
+function modeErrors(){
+ var seen=JSON.parse(localStorage.getItem("tlv_err")||"{}");
+ var wrong=Object.keys(seen).filter(function(k){return seen[k].last===0;});
+ var cardP=BANK.filter(function(c){return wrong.indexOf(String(c.id))>-1;});
+ cards = cardP.length?cardP:BANK.slice(0,5);
+ mode="train"; showCards();
+ if(!cardP.length) document.getElementById("runStats").textContent="Ошибок нет — отличный результат! Показаны первые 5 заданий.";
+}
+function record(id, ok, w){
+ var cur=new Date().toISOString().slice(0,10);
+ var st=JSON.parse(localStorage.getItem("tlv_stat")||"{}");
+ if(!st[id]) st[id]={ok:0,no:0};
+ if(ok) st[id].ok++; else st[id].no++;
+ var err=JSON.parse(localStorage.getItem("tlv_err")||"{}");
+ err[id]={last:ok?1:0,at:cur};
+ localStorage.setItem("tlv_stat",JSON.stringify(st));
+ localStorage.setItem("tlv_err",JSON.stringify(err));
+ var streak=JSON.parse(localStorage.getItem("tlv_streak")||"{}");
+ var lastDay=streak.last||"";
+ streak.days=streak.days||0;
+ if(lastDay!==cur){ var y=new Date(); y.setDate(y.getDate()-1); var yD=y.toISOString().slice(0,10);
+   if(lastDay===yD) streak.days++; else streak.days=1;
+   streak.last=cur; }
+ localStorage.setItem("tlv_streak",JSON.stringify(streak));
+ document.getElementById("streakEl").textContent="🔥 Серия дней: "+streak.days;
+ drawSummary();
+}
+function drawSummary(){
+ var st=JSON.parse(localStorage.getItem("tlv_stat")||"{}");
+ var bySec={}; var tot={ok:0,no:0};
+ BANK.forEach(function(c){ if(!bySec[c.sec]) bySec[c.sec]={ok:0,no:0}; });
+ Object.keys(st).forEach(function(id){
+  var c=BANK.filter(function(x){return String(x.id)===id;})[0]; if(!c) return;
+  bySec[c.sec].ok+=st[id].ok; bySec[c.sec].no+=st[id].no;
+  tot.ok+=st[id].ok; tot.no+=st[id].no;
+ });
+ var s="<b>Статистика по разделам:</b> ";
+ Object.keys(bySec).forEach(function(k){
+  var t=bySec[k]; var pct=t.ok+t.no?Math.round(t.ok/(t.ok+t.no)*100):0;
+  s+=k+" — "+(t.ok+t.no)+" ("+pct+"%) · ";
+ });
+ s+="всего верно "+tot.ok+", ошибок "+tot.no;
+ document.getElementById("chkSum").innerHTML=s;
+}
+function exportProto(){
+  var lines=["Протокол: "+new Date().toLocaleString(),"Режим: "+mode,"Разделы: "+cards.map(function(c){return c.sec;}).join(", ")];
+  var score=0,total=0;
+  document.querySelectorAll(".qcard").forEach(function(el){
+   var fb=el.querySelector(".fb");
+   var got = fb.className.indexOf("ok")>-1;
+   if(got){ score+=Number(el.dataset.w); }
+   total+=Number(el.dataset.w);
+   lines.push((got?"+":"-")+" "+el.dataset.w+" · "+el.querySelector(".head b").textContent+" · "+el.querySelector(".stem").textContent.slice(0,60));
+  });
+  lines.push("Балл: "+score+"/"+total);
+  document.getElementById("proto").textContent=lines.join("\n");
+  document.getElementById("proto").style.display="block";
+ }
+window.addEventListener("DOMContentLoaded",function(){
+ var st=JSON.parse(localStorage.getItem("tlv_streak")||"{}");
+ document.getElementById("streakEl").textContent="🔥 Серия дней: "+(st.days||0);
+ drawSummary(); modeTrain();
+});
+</script>
+</body>
+</html>

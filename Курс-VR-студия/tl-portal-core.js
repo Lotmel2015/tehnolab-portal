@@ -628,6 +628,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     if (u) {
       if (u.role === 'admin') tabs.push({ id: 'users', label: 'Пользователи' }, { id: 'teachers', label: 'Педагоги' }, { id: 'enroll', label: 'Заявки' });
       else if (u.role === 'teacher') tabs.push({ id: 'students', label: 'Мои ученики' });
+      if (u.role === 'admin' || u.role === 'teacher') tabs.push({ id: 'logic', label: 'Логика курсов' });
     }
     tabs.push({ id: 'courses', label: 'Мои курсы' });
     tabs.push({ id: 'achieve', label: 'Достижения' });
@@ -792,6 +793,41 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
       h += '<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;"><button class="tl-btn-save" style="padding:8px 14px;font-size:12.5px;margin:0;" onclick="TLCore.cabExportProgress()">⬇ Скачать прогресс</button><label class="tl-btn-save" style="background:#1B1F2A;border:1px solid #3A3E47;color:#fff;padding:8px 14px;font-size:12.5px;border-radius:6px;cursor:pointer;">⬆ Импортировать<input type="file" accept=".json,application/json" style="display:none" onchange="TLCore.cabImportProgressFile(event)"></label></div>';
       h += '</div>';
     }
+    return h;
+  }
+  function tlRootUp() {
+    try {
+      var p = decodeURIComponent(window.location.pathname || '');
+      var segs = p.split('/').filter(function (s) { return s && s.trim() !== ''; });
+      segs.pop();
+      for (var i = segs.length - 1; i >= 0; i--) {
+        var s = segs[i];
+        if (/^Курс-/.test(s) || /^Курс /.test(s) || /^Мини курс/.test(s) || s === 'ТЛ' || /^0\d_/.test(s)) {
+          var up = '';
+          for (var j = i; j < segs.length; j++) up += '../';
+          return up;
+        }
+      }
+      return '';
+    } catch (e) { return ''; }
+  }
+  function cabLogicHtml(u) {
+    var items = [
+      { lab: 'Проектный навигатор', desc: 'От идеи до защиты: паспорт проекта на каждом занятии', rel: 'Курс-Проектный-навигатор/Вспомогательные материалы/Логика курса Проектный навигатор.html' },
+      { lab: 'Электроника', desc: 'От закона Ома до Arduino и итогового устройства', rel: 'Курс-Электроника/Вспомогательные материалы/Логика курса Электроника.html' },
+      { lab: 'БАС (БПЛА)', desc: 'От законодательства и сборки дрона до зачётного полёта', rel: 'Курс-БПЛА/Вспомогательные материалы/Логика курса БАС (БПЛА).html' },
+      { lab: 'КОМПАС-3D', desc: 'От ЕСКД и 2D-чертежей до 3D-моделей и сборок', rel: 'Курс-КОМПАС-3D/Вспомогательные материалы/Логика курса КОМПАС-3D.html' },
+      { lab: 'Робототехника', desc: 'От конструирования EV3 до соревнований и аттестации', rel: 'Курс-Робототехника/Вспомогательные материалы/Логика курса Робототехника.html' },
+      { lab: 'VR-студия', desc: 'От C# и Unity до командного VR-проекта для PICO 4 Ultra', rel: 'Курс-VR-студия/Вспомогательные материалы/Логика курса VR-студия.html' }
+    ];
+    var up = tlRootUp();
+    var h = '<div class="tl-hint">Логика каждого курса: что проходим на занятиях, зачем и какой результат. Просмотри до начала курса.</div>';
+    h += items.map(function (it) {
+      return '<div style="margin-top:8px;padding:10px 12px;border:1px solid #2A2D35;border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">' +
+        '<div><div style="font-weight:600;color:#EAECEF;">' + escapeHtml(it.lab) + '</div><div style="font-size:12px;color:#8B8FA3;margin-top:2px;">' + escapeHtml(it.desc) + '</div></div>' +
+        '<a href="' + up + it.rel + '" target="_blank" rel="noopener" style="display:inline-block;font-size:13px;color:#2D7AFF;text-decoration:none;font-weight:600;white-space:nowrap;">Открыть логику курса →</a>' +
+        '</div>';
+    }).join('');
     return h;
   }
   function cabStudentsHtml(u) {
@@ -1102,6 +1138,7 @@ var COURSE_CONFIG = [{"id":"vr_studio","label":"VR-студия","total":36,"pro
     var html = '';
     if (CAB_TAB === 'profile') { html = cabProfileHtml(u) + cabPassHtml(); }
     else if (CAB_TAB === 'courses') { html = cabCoursesHtml(u); }
+    else if (CAB_TAB === 'logic') { html = cabLogicHtml(u); }
     else if (CAB_TAB === 'students') { html = cabStudentsHtml(u); }
     else if (CAB_TAB === 'users') { html = cabUsersHtml(); }
     else if (CAB_TAB === 'teachers') { html = cabTeachersHtml(); }

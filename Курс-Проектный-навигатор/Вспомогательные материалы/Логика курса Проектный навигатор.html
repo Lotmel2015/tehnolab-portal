@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Логика курса · Проектный навигатор</title>
+<style> :root { --bg:#fff; --ink:#1B2A4A; --muted:#5A6B85; --accent:#1F6FE0; --accent-soft:#EAF2FD; --vr:#4D008C; --vr-soft:#F0EBF5; --def:#B45309; --def-soft:#FDF1E1; --pr:#167A4D; --pr-soft:#E7F4EE; --line:#D9E2EF; } * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; } .wrap { max-width:1000px; margin:0 auto; padding:2rem 1.25rem 3rem; } header .kicker { color:var(--accent); font-weight:700; font-size:.85rem; text-transform:uppercase; letter-spacing:.04em; } header h1 { font-size:2rem; line-height:1.2; margin:.2rem 0 .3rem; } header .sub { font-size:1.02rem; color:var(--muted); margin:0 0 .6rem; } .tldr { background:var(--accent-soft); border-left:4px solid var(--accent); padding:.95rem 1.15rem; border-radius:0 8px 8px 0; margin:1.5rem 0; } .tldr b { color:var(--accent); } .muted { color:var(--muted); font-size:.88rem; } .note { background:var(--def-soft); border-left:4px solid var(--def); border-radius:0 8px 8px 0; padding:.75rem .95rem; font-size:.92rem; margin:.9rem 0; } .note b { color:var(--def); } .tip { background:var(--pr-soft); border-left:4px solid var(--pr); border-radius:0 8px 8px 0; padding:.75rem .95rem; font-size:.92rem; margin:.9rem 0; } .tip b { color:var(--pr); } .remember { background:var(--vr-soft); border-left:4px solid var(--vr); border-radius:0 8px 8px 0; padding:.75rem .95rem; margin:1rem 0; } .remember b { color:var(--vr); } .warn { background:#FDE9D9; border-left:4px solid #B45309; border-radius:0 8px 8px 0; padding:.75rem .95rem; font-size:.92rem; margin:.9rem 0; } .warn b { color:var(--def); } h2 { font-size:1.35rem; border-bottom:1px solid var(--line); padding-bottom:.4rem; margin:2.4rem 0 .9rem; } h2 .n { color:var(--accent); margin-right:.45rem; } h3 { font-size:1.08rem; margin:1.4rem 0 .5rem; color:var(--ink); } table { width:100%; border-collapse:collapse; margin:1rem 0; font-size:.9rem; background:#fff; } th, td { border:1px solid var(--line); padding:.5rem .65rem; text-align:left; vertical-align:top; } th { background:var(--accent-soft); color:var(--ink); } td code, th code { background:var(--accent-soft); padding:.05em .3em; border-radius:4px; font-size:.88em; } code { background:var(--accent-soft); padding:.1em .35em; border-radius:4px; font-size:.88em; color:#26324b; } .pass { color:var(--pr); font-weight:600; } .passcode { font-family:ui-monospace, Consolas, monospace; background:var(--pr-soft); padding:.08em .35em; border-radius:5px; font-size:.85em; color:var(--pr); white-space:nowrap; } .modtag { display:inline-block; font-size:.72rem; font-weight:700; border-radius:999px; padding:.1rem .6rem; margin-right:.3rem; } .m1 { background:var(--accent-soft); color:var(--accent); } .m2 { background:var(--pr-soft); color:var(--pr); } .m3 { background:var(--vr-soft); color:var(--vr); } .m4 { background:#FFF2CC; color:#8a6100; } .typetag { display:inline-block; font-size:.72rem; font-weight:600; border-radius:6px; padding:.08rem .5rem; margin-left:.3rem; vertical-align:middle; } .t-theory { background:var(--accent-soft); color:var(--accent); } .t-practice { background:var(--pr-soft); color:var(--pr); } .t-ai { background:#E9D5FF; color:#5B21B6; } .t-guard { background:#FDE9D9; color:var(--def); } .t-test { background:#F1F3F5; color:#495057; } .t-final { background:var(--vr-soft); color:var(--vr); } .steps-band { display:flex; gap:.9rem; flex-wrap:wrap; margin:1.2rem 0; } .kpi { border:1px solid var(--line); border-radius:14px; padding:.8rem 1.1rem; text-align:center; min-width:120px; flex:1; background:#fbfcfe; } .kpi b { display:block; font-size:1.5rem; color:var(--accent); } .kpi span { font-size:.8rem; color:var(--muted); } .chevron { color:var(--muted); font-size:.9rem; } .flow { display:flex; flex-wrap:wrap; align-items:center; gap:.4rem .6rem; margin:1rem 0; font-size:.9rem; } .flow .node { background:var(--accent-soft); border:1px solid var(--line); border-radius:10px; padding:.4rem .8rem; font-weight:600; } .flow .node b { color:var(--accent); } .flow .arrow { color:var(--muted); } footer { color:var(--muted); font-size:.8rem; border-top:1px solid var(--line); margin-top:2.8rem; padding-top:.8rem; } a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; } .links { display:grid; gap:.5rem; margin:1rem 0; } .link-row { border:1px solid var(--line); border-radius:10px; padding:.55rem .75rem; font-size:.9rem; background:#fff; display:flex; justify-content:space-between; align-items:center; gap:.6rem; flex-wrap:wrap; } .link-row a { color:var(--accent); font-weight:600; text-decoration:none; word-break:break-all; } .link-row a:hover { text-decoration:underline; } @media print { nav { display:none; } table, .flow { break-inside:avoid; } }
+/* ===== АДАПТИВНОСТЬ ===== */
+img, svg, video, canvas { max-width:100%; height:auto; }
+pre, code, .code, textarea { max-width:100%; overflow-x:auto; white-space:pre-wrap; word-wrap:break-word; }
+table { max-width:100%; }
+.tbl-wrap, .tbl-scroll, .table-wrap, .tw, .asso-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+h1 { word-wrap:break-word; overflow-wrap:break-word; }
+h2, h3, p, li, div, span, a, button, input, select, textarea, label { overflow-wrap:break-word; }
+html { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body { overflow-x:hidden; }
+@media (max-width:900px){ .grid2,.grid3,.duo-grid,.motiv-grid,.cols3,.labs-grid,.rev-grid,.grid { grid-template-columns:1fr !important; } footer .frow,.bar,.nav,.top .bar { flex-wrap:wrap; } }
+@media (max-width:640px){ .wrap,main,.page { padding-left:14px !important; padding-right:14px !important; } h1 { font-size:1.7rem !important; } h2 { font-size:1.35rem !important; } th,td { padding:8px 6px; font-size:13px; } .flow { flex-direction:column; align-items:flex-start; } .flow .arrow { transform:rotate(90deg); align-self:center; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+<header>
+<p class="kicker">Технологическая лаборатория · Проектный навигатор</p>
+<h1>Логика курса «Проектный навигатор»</h1>
+<p class="sub">Общая карта: что проходим на каждом занятии, зачем это нужно и какой кусок «Паспорта проекта» заполняем в результате. Один взгляд на весь год — от идеи до защиты.</p>
+<div class="tldr"><b>Главное.</b> Курс состоит из <b>4 модулей</b> и <b>36 занятий</b>. Модуль 1 (занятия 1–8) — рождается <b>идея</b>: тема, проблема, цель, задачи. Модуль 2 (9–15) — <b>план</b>: ресурсы, сроки, риски, команда. Модуль 3 (16–30) — <b>продукт и текст</b>: прототип, тестирование, введение, ГОСТ, презентация. Модуль 4 (31–36) — <b>защита и итоги</b>: конкурс, портфолио, конференция, рефлексия. Параллельно идёт сквозная работа с <b>«Паспортом проекта»</b>: на каждом занятии заполняется 1–3 его поля — так к финалу паспорт готов сам собой.</div>
+<div class="steps-band">
+  <div class="kpi"><b>36</b><span>занятий</span></div>
+  <div class="kpi"><b>4</b><span>модуля</span></div>
+  <div class="kpi"><b>28</b><span>полей паспорта</span></div>
+  <div class="kpi"><b>1</b><span>паспорт проекта</span></div>
+</div>
+</header>
+
+<section id="logic">
+<h2><span class="n">01</span>Общая логика курса</h2>
+<div class="flow">
+  <span class="node"><b>Модуль 1</b> · Идея</span><span class="arrow">→</span>
+  <span class="node"><b>Модуль 2</b> · План</span><span class="arrow">→</span>
+  <span class="node"><b>Модуль 3</b> · Продукт и текст</span><span class="arrow">→</span>
+  <span class="node"><b>Модуль 4</b> · Защита и итоги</span>
+</div>
+<p>Каждый модуль заканчивается <b>защитой</b> (промежуточной контрольной точкой): ученик публично объясняет, что сделал на этом этапе. Это тренирует навык говорить о своём проекте и помогает педагогу видеть прогресс.</p>
+<div class="remember"><b>Сквозная идея.</b> Курс построен так, что каждый шаг — это не «домашка», а строчка будущего паспорта. Занятие → материал + практика → поле в паспорте. К концу года ученик не «пишет паспорт», а просто собирает уже заполненные фрагменты.</div>
+</section>
+
+<section id="modules">
+<h2><span class="n">02</span>Модули и их роль</h2>
+<table>
+<tr><th>Модуль</th><th>Занятия</th><th>Что происходит</th><th>Что рождается в итоге</th></tr>
+<tr><td><span class="modtag m1">Модуль 1</span><br>Идея</td><td>1–8</td><td>Определяем интерес, находим проблему, ставим цель по SMART, формулируем задачи, защищаем идею</td><td>Тема + проблема + цель + задачи проекта (черновик паспорта, разделы 1–2)</td></tr>
+<tr><td><span class="modtag m2">Модуль 2</span><br>План</td><td>9–15</td><td>Считаем ресурсы, строим диаграмму Ганта и план-график, предугадываем риски, распределяем роли, ищем источники, защищаем план</td><td>План работы, команда, ресурсы, риски, источники (разделы 4 и 6 паспорта)</td></tr>
+<tr><td><span class="modtag m3">Модуль 3</span><br>Продукт и текст</td><td>16–30</td><td>Выбираем форму продукта и MVP, делаем прототип, тестируем и дорабатываем, пишем введение и основную часть, оформляем по ГОСТ, готовим презентацию и защиту, проходим аттестацию</td><td>Продукт (прототип), текст работы, презентация, результаты тестирования (разделы 3 и 5 паспорта)</td></tr>
+<tr><td><span class="modtag m4">Модуль 4</span><br>Защита и итоги</td><td>31–36</td><td>Готовимся к конкурсу (НТО Junior), собираем портфолио, выступаем на школьной конференции, рефлексируем год</td><td>Портфолио, выступление, итоги года, цели на следующий уровень</td></tr>
+</table>
+<div class="note"><b>Важно про защиту.</b> Защиты стоят на «стыках» модулей: занятие 8 (идея), 15 (план), 23 (первые результаты), 29 (пробная), 33 (конференция). Это «контрольные точки», по которым видно, идёт ли проект вперёд.</div>
+</section>
+
+<section id="passport">
+<h2><span class="n">03</span>Что берётся в «Паспорт проекта»</h2>
+<p>Ниже — таблица всех 36 занятий: тема, тип, что делаем и какие поля паспорта заполняем. Поля паспорта показаны <span class="passcode">машинным именем</span>, чтобы было видно, где именно хранится результат.</p>
+<div class="tbl-wrap">
+<table>
+<tr><th>№</th><th>Занятие</th><th>Тип</th><th>Что делаем / для чего</th><th>Что берём в паспорт</th></tr>
+<tr><td>1</td><td>Входное тестирование</td><td><span class="typetag t-test">Диагностика</span></td><td>Узнаём свой уровень, группу и понимаем, с чего начать</td><td>— (стартовая точка, профиль ученика)</td></tr>
+<tr><td>2</td><td>Что такое проект. Карта интересов</td><td><span class="typetag t-theory">Теория + практика</span></td><td>Разбираемся, что делает дело проектом; строим карту интересов и выбираем область</td><td><span class="pass">Название проекта</span> <span class="passcode">f-name</span></td></tr>
+<tr><td>3</td><td>Проблема. «Пять почему»</td><td><span class="typetag t-theory">Теория + практика</span></td><td>Учимся находить настоящую проблему через «Пять почему»</td><td><span class="pass">Актуальность / проблема</span> <span class="passcode">f-problem</span></td></tr>
+<tr><td>4</td><td>Проектная задача</td><td><span class="typetag t-theory">Теория + практика</span></td><td>Понятно описываем проблему и тех, для кого она важна (портрет пользователя)</td><td><span class="pass">Актуальность / проблема</span> <span class="passcode">f-problem</span></td></tr>
+<tr><td>5</td><td>Цель по SMART</td><td><span class="typetag t-theory">Теория + практика</span></td><td>Ставим цель, которую можно проверить (SMART)</td><td><span class="pass">Цель</span> <span class="passcode">f-goal</span></td></tr>
+<tr><td>6</td><td>ИИ: первый промпт</td><td><span class="typetag t-ai">ИИ-блок</span></td><td>Учимся давать ИИ понятные задания — проверяем и уточняем идею</td><td>— (уточнение темы; может помочь с <span class="passcode">f-topic</span>)</td></tr>
+<tr><td>7</td><td>Цель и задачи</td><td><span class="typetag t-practice">Практика</span></td><td>Превращаем цель в задачи (3–5) и проверяем их</td><td><span class="pass">Задачи (3–5)</span> <span class="passcode">f-tasks</span>, <span class="pass">Измеримый результат</span> <span class="passcode">f-result-metric</span></td></tr>
+<tr><td>8</td><td>Защита проектной идеи</td><td><span class="typetag t-guard">Защита</span></td><td>Тренируемся за 1 минуту объяснить свою идею</td><td>— (контрольная точка; проверяем f-name, f-problem, f-goal)</td></tr>
+<tr><td>9</td><td>Ресурсы проекта</td><td><span class="typetag t-theory">Теория + практика</span></td><td>Считаем, что нужно проекту (материалы, время, люди, бюджет)</td><td><span class="pass">Ресурсы / бюджет</span> <span class="passcode">f-resources</span></td></tr>
+<tr><td>10</td><td>Диаграмма Ганта</td><td><span class="typetag t-practice">Практика</span></td><td>Рисуем план на время</td><td><span class="pass">План работы (этапы и сроки)</span> <span class="passcode">f-plan</span></td></tr>
+<tr><td>11</td><td>План-график</td><td><span class="typetag t-practice">Практика</span></td><td>Собираем всё в план-график с этапами, сроками, ответственными и контрольными точками</td><td><span class="pass">План работы (этапы и сроки)</span> <span class="passcode">f-plan</span></td></tr>
+<tr><td>12</td><td>Риски проекта</td><td><span class="typetag t-practice">Практика</span></td><td>Заранее думаем, что может пойти не так, и придумываем план Б</td><td><span class="pass">Риски и как их снизить</span> <span class="passcode">f-risks</span></td></tr>
+<tr><td>13</td><td>Команда и роли</td><td><span class="typetag t-practice">Практика</span></td><td>Распределяем роли в команде / определяем «работаю сам»</td><td><span class="pass">Команда / роли</span> <span class="passcode">f-team</span></td></tr>
+<tr><td>14</td><td>Источники информации</td><td><span class="typetag t-practice">Практика</span></td><td>Ищем 3–5 надёжных источников</td><td><span class="pass">Источники / литература</span> <span class="passcode">f-sources</span></td></tr>
+<tr><td>15</td><td>Защита плана</td><td><span class="typetag t-guard">Защита</span></td><td>Защищаем план перед группой</td><td>— (контрольная точка; проверяем f-plan, f-resources, f-risks, f-team)</td></tr>
+<tr><td>16</td><td>Что такое прототип</td><td><span class="typetag t-theory">Теория + практика</span></td><td>Выбираем форму продукта, понимаем, что такое MVP</td><td><span class="pass">Форма продукта</span> <span class="passcode">f-product-form</span>, <span class="pass">Минимальная версия (MVP)</span> <span class="passcode">f-mvp</span></td></tr>
+<tr><td>17</td><td>Первая версия прототипа</td><td><span class="typetag t-practice">Практика</span></td><td>Собираем первую рабочую версию своими руками</td><td><span class="pass">Описание продукта</span> <span class="passcode">f-product-desc</span></td></tr>
+<tr><td>18</td><td>ИИ: иллюстрация</td><td><span class="typetag t-ai">ИИ-блок</span></td><td>Создаём ИИ-иллюстрацию для постера/презентации</td><td>— (материал для f-attachments / f-presentation)</td></tr>
+<tr><td>19</td><td>Сбор материалов. Тезисный план</td><td><span class="typetag t-practice">Практика</span></td><td>Группируем материалы, составляем план работы над текстом</td><td>— (структура будущего текста; помогает f-plan)</td></tr>
+<tr><td>20</td><td>Введение</td><td><span class="typetag t-practice">Практика</span></td><td>Пишем введение: актуальность, цель, задачи</td><td><span class="pass">Актуальность / проблема</span> <span class="passcode">f-problem</span>, <span class="pass">Цель</span> <span class="passcode">f-goal</span>, <span class="pass">Задачи</span> <span class="passcode">f-tasks</span> (финальная формулировка)</td></tr>
+<tr><td>21</td><td>Тестирование прототипа</td><td><span class="typetag t-practice">Практика</span></td><td>Тестируем прототип на людях, собираем замечания</td><td><span class="pass">Тестирование / проверка</span> <span class="passcode">f-testing</span></td></tr>
+<tr><td>22</td><td>Доработка</td><td><span class="typetag t-practice">Практика</span></td><td>Исправляем прототип по обратной связи</td><td><span class="pass">Что создано (итог)</span> <span class="passcode">f-result</span></td></tr>
+<tr><td>23</td><td>Промежуточная презентация</td><td><span class="typetag t-guard">Защита</span></td><td>Показываем первые результаты за 3 минуты</td><td>— (контрольная точка; проверяем f-product-form, f-mvp, f-product-desc)</td></tr>
+<tr><td>24</td><td>Основная часть</td><td><span class="typetag t-practice">Практика</span></td><td>Пишем основную часть работы</td><td>— (текст работы, не входит в паспорт напрямую)</td></tr>
+<tr><td>25</td><td>Оформление по ГОСТ</td><td><span class="typetag t-practice">Практика</span></td><td>Оформляем текст по ГОСТ</td><td>— (форматирование текста работы)</td></tr>
+<tr><td>26</td><td>Презентация 5–7 слайдов</td><td><span class="typetag t-practice">Практика</span></td><td>Собираем презентацию с минимумом текста</td><td><span class="pass">Презентация / ссылки</span> <span class="passcode">f-presentation</span></td></tr>
+<tr><td>27</td><td>Подготовка защиты</td><td><span class="typetag t-practice">Практика</span></td><td>Готовим сценарий защиты на 5 минут</td><td>— (текст выступления)</td></tr>
+<tr><td>28</td><td>Репетиция защиты</td><td><span class="typetag t-practice">Практика</span></td><td>Репетируем выступление, боремся со страхом сцены</td><td>— (навык выступления)</td></tr>
+<tr><td>29</td><td>Пробная защита</td><td><span class="typetag t-guard">Защита</span></td><td>Выступаем перед группой до настоящей защиты</td><td>— (контрольная точка; проверяем f-result, f-testing, f-conclusion)</td></tr>
+<tr><td>30</td><td>Промежуточная аттестация</td><td><span class="typetag t-test">Аттестация</span></td><td>Сверяем итоги за полугодие</td><td>— (проверка заполненности паспорта)</td></tr>
+<tr><td>31</td><td>Подготовка к НТО Junior</td><td><span class="typetag t-practice">Практика</span></td><td>Решаем задания НТО Junior</td><td>— (конкурсный трек; помогает выбрать f-competition)</td></tr>
+<tr><td>32</td><td>Портфолио для конкурса</td><td><span class="typetag t-practice">Практика</span></td><td>Собираем портфолио: паспорт, текст, презентация, скриншоты, отзывы</td><td><span class="pass">Конкурс / мероприятие</span> <span class="passcode">f-competition</span>, <span class="pass">Направление / номинация</span> <span class="passcode">f-nomination</span>, <span class="pass">Список приложений</span> <span class="passcode">f-attachments</span></td></tr>
+<tr><td>33</td><td>Школьная конференция</td><td><span class="typetag t-guard">Защита</span></td><td>Защищаем проект перед комиссией</td><td>— (главная защита года; весь паспорт финально проверяется)</td></tr>
+<tr><td>34</td><td>Рефлексия «Плюс/Минус»</td><td><span class="typetag t-test">Рефлексия</span></td><td>Подводим итоги года</td><td><span class="pass">Выводы / что дал проект</span> <span class="passcode">f-conclusion</span>, <span class="pass">Перспективы развития</span> <span class="passcode">f-perspective</span></td></tr>
+<tr><td>35</td><td>ИИ-рефлексия</td><td><span class="typetag t-ai">ИИ-блок</span></td><td>Анализируем, как помог ИИ, разбираем плагиат</td><td>— (этический блок; помогает честно оформить f-sources)</td></tr>
+<tr><td>36</td><td>Итоговое занятие</td><td><span class="typetag t-final">Итог</span></td><td>Получаем сертификаты, ставим цели на следующий уровень</td><td>— (финал; паспорт готов и сохранён)</td></tr>
+</table>
+</div>
+</section>
+
+<section id="passport-summary">
+<h2><span class="n">04</span>Карта полей паспорта: где что заполняется</h2>
+<p>Сводно — по разделам паспорта: на каких занятиях появляется каждое поле.</p>
+<table>
+<tr><th>Раздел паспорта</th><th>Поле</th><th>Когда заполняется</th></tr>
+<tr><td rowspan="4">1 · Титульный лист</td><td><span class="passcode">f-name</span> Название проекта</td><td>Занятие 2 (можно менять до конца)</td></tr>
+<tr><td><span class="passcode">f-author</span> Автор</td><td>Автоматически из профиля (входное тестирование, з. 1)</td></tr>
+<tr><td><span class="passcode">f-competition</span> Конкурс, <span class="passcode">f-nomination</span> номинация</td><td>Занятие 31–32 (конкурсный трек)</td></tr>
+<tr><td><span class="passcode">f-type</span> Тип проекта</td><td>Занятие 2 (каким будет проект)</td></tr>
+<tr><td rowspan="4">2 · Проблема, цель, задачи</td><td><span class="passcode">f-problem</span> Актуальность / проблема</td><td>Занятия 3–4, финализация на 20</td></tr>
+<tr><td><span class="passcode">f-goal</span> Цель</td><td>Занятие 5, финализация на 20</td></tr>
+<tr><td><span class="passcode">f-tasks</span> Задачи (3–5)</td><td>Занятие 7, финализация на 20</td></tr>
+<tr><td><span class="passcode">f-result-metric</span> Измеримый результат</td><td>Занятие 7</td></tr>
+<tr><td rowspan="3">3 · Продукт</td><td><span class="passcode">f-product-form</span> Форма продукта</td><td>Занятие 16</td></tr>
+<tr><td><span class="passcode">f-mvp</span> Минимальная версия (MVP)</td><td>Занятие 16</td></tr>
+<tr><td><span class="passcode">f-product-desc</span> Описание продукта</td><td>Занятие 17</td></tr>
+<tr><td rowspan="4">4 · План, команда, ресурсы</td><td><span class="passcode">f-plan</span> План работы (этапы и сроки)</td><td>Занятия 10–11</td></tr>
+<tr><td><span class="passcode">f-team</span> Команда / роли</td><td>Занятие 13</td></tr>
+<tr><td><span class="passcode">f-resources</span> Ресурсы / бюджет</td><td>Занятие 9</td></tr>
+<tr><td><span class="passcode">f-risks</span> Риски</td><td>Занятие 12</td></tr>
+<tr><td rowspan="5">5 · Результат и итоги</td><td><span class="passcode">f-testing</span> Тестирование / проверка</td><td>Занятие 21</td></tr>
+<tr><td><span class="passcode">f-result</span> Что создано (итог)</td><td>Занятие 22</td></tr>
+<tr><td><span class="passcode">f-conclusion</span> Выводы</td><td>Занятие 34</td></tr>
+<tr><td><span class="passcode">f-perspective</span> Перспективы развития</td><td>Занятие 34</td></tr>
+<tr><td><span class="passcode">f-sources</span> Источники</td><td>Занятие 14 (записываем сразу, пополняем весь год)</td></tr>
+<tr><td rowspan="3">6 · Приложения</td><td><span class="passcode">f-attachments</span> Список приложений</td><td>Занятие 32 (и в течение года: эскизы, скриншоты, фото)</td></tr>
+<tr><td><span class="passcode">f-presentation</span> Презентация / ссылки</td><td>Занятие 26, 32</td></tr>
+<tr><td><span class="passcode">f-technologies</span> Технологии / инструменты</td><td>Занятия 2, 16–17 (что используем для продукта)</td></tr>
+</table>
+<div class="tip"><b>Совет для педагога.</b> На занятии просите учеников открыть паспорт и заполнить именно те поля, которые указаны в колонке «Что берём в паспорт». Это занимает 3–5 минут, но к з. 33 паспорт полностью готов и не требует «писать в последнюю ночь».</div>
+</section>
+
+<section id="checkpoints">
+<h2><span class="n">05</span>Контрольные точки и защиты</h2>
+<table>
+<tr><th>№</th><th>Что происходит</th><th>Что проверяем</th></tr>
+<tr><td>8</td><td>Защита проектной идеи (1 минута)</td><td>Тема, проблема, цель ясны зрителю без вопросов</td></tr>
+<tr><td>15</td><td>Защита плана</td><td>Есть план по месяцам, ресурсы, риски, команда</td></tr>
+<tr><td>23</td><td>Промежуточная презентация (3 минуты)</td><td>Есть прототип/первый результат, понятна форма продукта</td></tr>
+<tr><td>29</td><td>Пробная защита</td><td>Есть итог, тестирование, выводы; выступление укладывается в 5 минут</td></tr>
+<tr><td>33</td><td>Школьная конференция</td><td>Весь проект: продукт + текст + презентация + ответы на вопросы</td></tr>
+</table>
+</section>
+
+<section id="links">
+<h2><span class="n">06</span>Полезные файлы курса</h2>
+<div class="links">
+  <div class="link-row"><span>Список занятий курса (главная страница, вход ученика/педагога)</span><a href="../index.html" target="_blank" rel="noopener">Открыть список занятий →</a></div>
+  <div class="link-row"><span>Паспорт проекта · универсальный шаблон (интерактивный, PDF/JSON)</span><a href="../Паспорт проекта универсальный.html" target="_blank" rel="noopener">Паспорт проекта универсальный →</a></div>
+  <div class="link-row"><span>Накопительное портфолио ученика</span><a href="../Накопительное портфолио.html" target="_blank" rel="noopener">Накопительное портфолио →</a></div>
+  <div class="link-row"><span>Мини-курс «Проектная деятельность с ИИ» (промпты, паспорт через ИИ)</span><a href="../../Мини курс Проектная деятельность с ИИ/Список модулей Проектная деятельность с ИИ.html" target="_blank" rel="noopener">Мини-курс «ИИ» →</a></div>
+</div>
+</section>
+
+<footer>
+<p>«Проектный навигатор: от идеи до внедрения с применением технологий ИИ» · ДОП социально-педагогической направленности · Технологическая лаборатория, 2026–2027 учебный год. Сформировано 28.10.2026.</p>
+<p><a href="../index.html">← Вернуться к списку занятий курса</a></p>
+</footer>
+</main>
+</body>
+</html>

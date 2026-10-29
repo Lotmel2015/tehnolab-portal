@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Снежинка как логотип ТЛ — варианты обработки</title>
+<style>
+  :root{
+    --bg:#0D0F14; --bg-card:#161921; --bg-elev:#1B1F2A; --ink:#EAECEF; --muted:#8B8FA3;
+    --line:#2A2D35; --accent:#2D7AFF; --ok:#00D68F; --warn:#FFAA00; --violet:#AA00FF;
+    --f-display:system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-body:system-ui,-apple-system,"Segoe UI",sans-serif;
+    --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+    --max:1120px;
+  }
+  html[data-theme="light"]{ --bg:#F4F6FA; --bg-card:#fff; --bg-elev:#EDF2FA; --ink:#1B2A4A; --muted:#5A6B85; --line:#D9E2EF; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body);overflow-x:hidden;transition:background .25s,color .25s}
+  .wrap{max-width:var(--max);margin:0 auto;padding:26px 24px 56px}
+  header.top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:22px}
+  .kicker{font-family:var(--f-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--warn);margin-bottom:8px}
+  h1{font:700 clamp(24px,3.4vw,34px)/1.12 var(--f-display);margin:0 0 8px;letter-spacing:-.015em}
+  h1 .ac{color:var(--accent)}
+  .lede{color:var(--muted);font-size:15px;max-width:76ch;margin:0}
+  .theme-btn{background:var(--bg-card);border:1px solid var(--line);color:var(--ink);font:600 13px var(--f-body);padding:9px 16px;border-radius:8px;cursor:pointer}
+  .theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  .src{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-top:22px}
+  .src .big{background:var(--bg-elev);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;place-items:center}
+  .src h2{font:600 17px var(--f-display);margin:0 0 6px}
+  .src p{margin:0;color:var(--muted);font-size:13.5px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;margin-top:22px}
+  .card{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .c-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .c-num{font-family:var(--f-mono);font-size:11px;color:var(--muted);letter-spacing:.1em}
+  .c-name{font:700 16.5px var(--f-display);margin:0}
+  .c-idea{color:var(--muted);font-size:13px;margin:6px 0 14px;min-height:38px}
+  .showcase{display:flex;align-items:center;justify-content:center;gap:26px;background:var(--bg-elev);border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:14px;flex-wrap:wrap}
+  .sizes{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .sz{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .sz span{font-family:var(--f-mono);font-size:9.5px;color:var(--muted)}
+  .cap{font-family:var(--f-mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin:0 0 6px}
+  .preview-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg-card);border:1px solid var(--line);border-radius:10px;padding:9px 14px}
+  .preview-logo{display:flex;align-items:center;gap:9px;min-width:0}
+  .p-name{font:700 13px var(--f-display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .p-sub{display:block;font-family:var(--f-mono);font-size:8.5px;color:var(--muted);letter-spacing:.13em;text-transform:uppercase}
+  .preview-tabs{display:flex;gap:5px;flex-wrap:wrap}
+  .ptag{font:600 9.5px var(--f-body);color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:3px 7px;white-space:nowrap}
+  .ptag.on{color:var(--ink);border-color:var(--accent)}
+  .pros{margin:12px 0 0;padding-left:18px}
+  .pros li{font-size:12.5px;color:var(--muted);margin-bottom:4px}
+  .pros li b{color:var(--ink)}
+  .rec{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ok);border:1px solid rgba(0,214,143,.45);border-radius:20px;padding:3px 9px;margin-top:12px}
+  .note{margin-top:30px;background:var(--bg-elev);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:16px 20px}
+  .note h3{margin:0 0 8px;font:600 16px var(--f-display)}
+  .note p,.note li{color:var(--muted);font-size:13.5px}
+  .note ul{margin:8px 0 0;padding-left:18px}
+  footer{margin-top:26px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+  @media print{body{background:#fff;color:#111}.theme-btn,.preview-tabs{display:none}.card{border-color:#ccc;break-inside:avoid}.showcase{background:#f5f5f5}.src{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="kicker">Технологическая лаборатория · айдентика</div>
+      <h1>Снежинка как <span class="ac">логотип</span> — варианты обработки</h1>
+      <p class="lede">Снежинка разложена на симметричную основу и переработана в фирменный знак для шапки портала. Четыре подхода: от геометрической снежинки до интеграции с монограммой ТЛ. Каждый показан крупно, в реальном размере 24 px и в макете шапки.</p>
+    </div>
+    <button class="theme-btn" type="button" onclick="toggleTheme()">🌓 Тема</button>
+  </header>
+
+  <!-- ИСХОДНАЯ ОСНОВА -->
+  <section class="src">
+    <div class="big">
+      <svg width="84" height="84" viewBox="0 0 32 32" fill="none" aria-label="Исходная снежинка">
+        <g stroke="#8B8FA3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 3v26M5.7 9.5l20.6 13M5.7 22.5l20.6-13"/>
+          <path d="M16 7.2l-2.6 2.7M16 7.2l2.6 2.7"/>
+          <path d="M16 11.4l-2.1 2.2M16 11.4l2.1 2.2"/>
+          <path d="M8.9 12.6l1.6 3.3M8.9 12.6l-3.4 1.2"/>
+          <path d="M23.1 12.6l-1.6 3.3M23.1 12.6l3.4 1.2"/>
+          <path d="M8.9 19.4l1.6-3.3M8.9 19.4l-3.4-1.2"/>
+          <path d="M23.1 19.4l-1.6-3.3M23.1 19.4l3.4-1.2"/>
+          <path d="M16 24.8l-2.6-2.7M16 24.8l2.6-2.7"/>
+          <path d="M16 20.6l-2.1-2.2M16 20.6l2.1-2.2"/>
+        </g>
+        <circle cx="16" cy="16" r="1.6" fill="#8B8FA3"/>
+      </svg>
+    </div>
+    <div>
+      <h2>Исходная основа</h2>
+      <p>Шестилучевая снежинка с ответвлениями — классическая кристаллографическая симметрия. В таком «сыром» виде она слишком детальна для шапки: ответвления исчезают уже к 32 px, а формы читаются как зимний декор, а не как инженерный бренд.</p>
+    </div>
+  </section>
+
+  <div class="grid">
+
+    <!-- 01 -->
+    <article class="card">
+      <div class="c-head"><span class="c-num">ОБРАБОТКА 01</span><span class="c-name">«Кристалл»</span></div>
+      <p class="c-idea">Снежинка упрощена до шестилучевого кристалла: лучи укорочены, ответвления сведены к трём ступеням. В центр вписан шестиугольник ТЛ.</p>
+
+      <div class="showcase">
+        <div class="sizes">
+          <div class="sz">
+            <svg width="56" height="56" viewBox="0 0 32 32" fill="none" aria-label="Кристалл, 56 px">
+              <g stroke="#2D7AFF" stroke-width="1.9" stroke-linecap="round">
+                <path d="M16 2.6v26.8M4.5 9.3l23 13.4M4.5 22.7l23-13.4"/>
+              </g>
+              <g stroke="#00D68F" stroke-width="1.7" stroke-linecap="round">
+                <path d="M16 8.2l-2.3 2.4M16 8.2l2.3 2.4"/>
+                <path d="M16 23.8l-2.3-2.4M16 23.8l2.3 2.4"/>
+                <path d="M7.4 13.1l3 1.1M7.4 13.1l1.2 3"/>
+                <path d="M24.6 13.1l-3 1.1M24.6 13.1l-1.2 3"/>
+                <path d="M7.4 18.9l3-1.1M7.4 18.9l1.2-3"/>
+                <path d="M24.6 18.9l-3-1.1M24.6 18.9l-1.2-3"/>
+              </g>
+              <path d="M16 11.6l3.8 2.2v4.4L16 20.4l-3.8-2.2v-4.4z" stroke="#FFAA00" stroke-width="1.6" fill="#0D0F14" fill-opacity=".9"/>
+              <circle cx="16" cy="16" r="1.5" fill="#FFAA00"/>
+            </svg>
+            <span>56 px</span>
+          </div>
+          <div class="sz">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-label="Кристалл, 24 px">
+              <g stroke="#2D7AFF" stroke-width="2.4" stroke-linecap="round">
+                <path d="M16 3.4v25.2M5.1 9.7l21.8 12.6M5.1 22.3l21.8-12.6"/>
+              </g>
+              <path d="M16 12.2l3.4 2v4L16 20.2l-3.4-2v-4z" fill="#FFAA00"/>
+            </svg>
+            <span>24 px</span>
+          </div>
+        </div>
+      </div>
+
+      <span class="cap">В шапке</span>
+      <div class="preview-nav">
+        <div class="preview-logo">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <g stroke="#2D7AFF" stroke-width="2.4" stroke-linecap="round"><path d="M16 3.4v25.2M5.1 9.7l21.8 12.6M5.1 22.3l21.8-12.6"/></g>
+            <path d="M16 12.2l3.4 2v4L16 20.2l-3.4-2v-4z" fill="#FFAA00"/>
+          </svg>
+          <div><span class="p-name">Технологическая лаборатория</span><span class="p-sub">Создавай · Управляй · Запускай</span></div>
+        </div>
+        <div class="preview-tabs"><span class="ptag on">Объединение</span><span class="ptag">Программа</span></div>
+      </div>
+
+      <ul class="pros">
+        <li><b>Читается в 24 px</b> — три луча и центр, лишние детали убраны.</li>
+        <li>Снежинка + шестиугольник = прямой отсыл к текущему знаку ТЛ.</li>
+        <li>Синие лучи, зелёные ответвления, янтарный центр — три глагола.</li>
+      </ul>
+      <span class="rec">✓ Рекомендую</span>
+    </article>
+
+    <!-- 02 -->
+    <article class="card">
+      <div class="c-head"><span class="c-num">ОБРАБОТКА 02</span><span class="c-name">«Кристалл-импульс»</span></div>
+      <p class="c-idea">Снежинка становится диаграммой роста: лучи нарастают по толщине, три из них акцентированы цветом. Центр — точка запуска.</p>
+
+      <div class="showcase">
+        <div class="sizes">
+          <div class="sz">
+            <svg width="56" height="56" viewBox="0 0 32 32" fill="none" aria-label="Кристалл-импульс, 56 px">
+              <g stroke-linecap="round">
+                <path d="M16 2.8v26.4" stroke="#2D7AFF" stroke-width="2.4"/>
+                <path d="M16 2.8v6.4M16 22.8v6.4" stroke="#00D68F" stroke-width="2.4"/>
+                <path d="M4.6 9.3l23 13.4M4.6 22.7l23-13.4" stroke="#2D7AFF" stroke-width="1.8"/>
+                <path d="M9.8 12.3 4.6 9.3l2.6 5.2" stroke="#FFAA00" stroke-width="1.8"/>
+                <path d="M22.2 19.7l5.2 3-2.6-5.2" stroke="#FFAA00" stroke-width="1.8"/>
+              </g>
+              <circle cx="16" cy="16" r="3.1" fill="#FFAA00"/>
+              <circle cx="16" cy="16" r="1.2" fill="#0D0F14"/>
+            </svg>
+            <span>56 px</span>
+          </div>
+          <div class="sz">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-label="Кристалл-импульс, 24 px">
+              <g stroke-linecap="round">
+                <path d="M16 3.2v25.6" stroke="#2D7AFF" stroke-width="2.8"/>
+                <path d="M5.2 9.6l21.6 12.8M5.2 22.4l21.6-12.8" stroke="#2D7AFF" stroke-width="2"/>
+              </g>
+              <circle cx="16" cy="16" r="3.4" fill="#FFAA00"/>
+            </svg>
+            <span>24 px</span>
+          </div>
+        </div>
+      </div>
+
+      <span class="cap">В шапке</span>
+      <div class="preview-nav">
+        <div class="preview-logo">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <g stroke-linecap="round">
+              <path d="M16 3.2v25.6" stroke="#2D7AFF" stroke-width="2.8"/>
+              <path d="M5.2 9.6l21.6 12.8M5.2 22.4l21.6-12.8" stroke="#2D7AFF" stroke-width="2"/>
+            </g>
+            <circle cx="16" cy="16" r="3.4" fill="#FFAA00"/>
+          </svg>
+          <div><span class="p-name">Технологическая лаборатория</span><span class="p-sub">Создавай · Управляй · Запускай</span></div>
+        </div>
+        <div class="preview-tabs"><span class="ptag on">Объединение</span><span class="ptag">Программа</span></div>
+      </div>
+
+      <ul class="pros">
+        <li>Хорошая динамика, читается как «импульс» и «запуск».</li>
+        <li>Янтарные насечки придают инженерный характер.</li>
+        <li>В малом размере упрощается до трёх лучей — важно для шапки.</li>
+      </ul>
+    </article>
+
+    <!-- 03 -->
+    <article class="card">
+      <div class="c-head"><span class="c-num">ОБРАБОТКА 03</span><span class="c-name">«Снежинка ТЛ»</span></div>
+      <p class="c-idea">Снежинка интегрирована с монограммой: три верхних луча образуют «Т», два нижних — «Л». Прямая связь знака с названием.</p>
+
+      <div class="showcase">
+        <div class="sizes">
+          <div class="sz">
+            <svg width="56" height="56" viewBox="0 0 32 32" fill="none" aria-label="Снежинка ТЛ, 56 px">
+              <path d="M6 6.4h20v3.6h-8v6.2h-3.6V10H6z" fill="#2D7AFF"/>
+              <path d="M14.2 12.6h3.6V26h-3.6z" fill="#2D7AFF"/>
+              <path d="M19.4 12.6h3.4v10h2.8v3.4h-6.2z" fill="#00D68F"/>
+              <g stroke="#FFAA00" stroke-width="1.5" stroke-linecap="round">
+                <path d="M16 1.6v3.2M3.4 8.2l2.7 1.6M28.6 8.2l-2.7 1.6"/>
+              </g>
+              <circle cx="16" cy="28.6" r="1.3" fill="#FFAA00"/>
+            </svg>
+            <span>56 px</span>
+          </div>
+          <div class="sz">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-label="Снежинка ТЛ, 24 px">
+              <path d="M5 6h22v4h-9v16h-4V10H5z" fill="#2D7AFF"/>
+              <path d="M21 10h3.6v11h2.4v4H21z" fill="#00D68F"/>
+            </svg>
+            <span>24 px</span>
+          </div>
+        </div>
+      </div>
+
+      <span class="cap">В шапке</span>
+      <div class="preview-nav">
+        <div class="preview-logo">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M5 6h22v4h-9v16h-4V10H5z" fill="#2D7AFF"/>
+            <path d="M21 10h3.6v11h2.4v4H21z" fill="#00D68F"/>
+          </svg>
+          <div><span class="p-name">Технологическая лаборатория</span><span class="p-sub">Создавай · Управляй · Запускай</span></div>
+        </div>
+        <div class="preview-tabs"><span class="ptag on">Объединение</span><span class="ptag">Программа</span></div>
+      </div>
+
+      <ul class="pros">
+        <li>Узнаваемость бренда выше, чем у «просто снежинки».</li>
+        <li>Работает как аватар и как печатный знак.</li>
+        <li>Тонкая грань между «монограммой» и «снежинкой» — требует аккуратного начертания.</li>
+      </ul>
+    </article>
+
+    <!-- 04 -->
+    <article class="card">
+      <div class="c-head"><span class="c-num">ОБРАБОТКА 04</span><span class="c-name">«Молекула»</span></div>
+      <p class="c-idea">Снежинка переосмыслена как молекула/схема: узлы-атомы на лучах, три узла акцентные. Технологичный, «лабораторный» характер.</p>
+
+      <div class="showcase">
+        <div class="sizes">
+          <div class="sz">
+            <svg width="56" height="56" viewBox="0 0 32 32" fill="none" aria-label="Молекула, 56 px">
+              <g stroke="#2D7AFF" stroke-width="1.7" stroke-linecap="round">
+                <path d="M16 5.6v6.2M16 20.2v6.2M9 10.8l4.8 4M18.2 17.2l4.8 4M9 21.2l4.8-4M18.2 14.8l4.8-4"/>
+              </g>
+              <g stroke="#2D7AFF" stroke-width="1.2" opacity=".45">
+                <path d="M16 16 9.4 8.2M16 16l6.6-7.8M16 16l-6.6 7.8M16 16l6.6 7.8"/>
+              </g>
+              <circle cx="16" cy="16" r="3.2" fill="#FFAA00"/>
+              <circle cx="16" cy="5.6" r="1.9" fill="#2D7AFF"/>
+              <circle cx="16" cy="26.4" r="1.9" fill="#2D7AFF"/>
+              <circle cx="9" cy="10.8" r="1.9" fill="#00D68F"/>
+              <circle cx="23" cy="10.8" r="1.9" fill="#00D68F"/>
+              <circle cx="9" cy="21.2" r="1.9" fill="#2D7AFF"/>
+              <circle cx="23" cy="21.2" r="1.9" fill="#2D7AFF"/>
+            </svg>
+            <span>56 px</span>
+          </div>
+          <div class="sz">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-label="Молекула, 24 px">
+              <g stroke="#2D7AFF" stroke-width="2" stroke-linecap="round"><path d="M16 6v6M16 20v6M9.5 11l4.4 3.6M18.1 17.4l4.4 3.6M9.5 21l4.4-3.6M18.1 14.6l4.4-3.6"/></g>
+              <circle cx="16" cy="16" r="3.4" fill="#FFAA00"/>
+              <circle cx="16" cy="6" r="2" fill="#2D7AFF"/>
+              <circle cx="16" cy="26" r="2" fill="#2D7AFF"/>
+              <circle cx="9.5" cy="11" r="2" fill="#00D68F"/>
+              <circle cx="22.5" cy="11" r="2" fill="#00D68F"/>
+              <circle cx="9.5" cy="21" r="2" fill="#2D7AFF"/>
+              <circle cx="22.5" cy="21" r="2" fill="#2D7AFF"/>
+            </svg>
+            <span>24 px</span>
+          </div>
+        </div>
+      </div>
+
+      <span class="cap">В шапке</span>
+      <div class="preview-nav">
+        <div class="preview-logo">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <g stroke="#2D7AFF" stroke-width="2" stroke-linecap="round"><path d="M16 6v6M16 20v6M9.5 11l4.4 3.6M18.1 17.4l4.4 3.6M9.5 21l4.4-3.6M18.1 14.6l4.4-3.6"/></g>
+            <circle cx="16" cy="16" r="3.4" fill="#FFAA00"/>
+            <circle cx="16" cy="6" r="2" fill="#2D7AFF"/>
+            <circle cx="16" cy="26" r="2" fill="#2D7AFF"/>
+            <circle cx="9.5" cy="11" r="2" fill="#00D68F"/>
+            <circle cx="22.5" cy="11" r="2" fill="#00D68F"/>
+            <circle cx="9.5" cy="21" r="2" fill="#2D7AFF"/>
+            <circle cx="22.5" cy="21" r="2" fill="#2D7AFF"/>
+          </svg>
+          <div><span class="p-name">Технологическая лаборатория</span><span class="p-sub">Создавай · Управляй · Запускай</span></div>
+        </div>
+        <div class="preview-tabs"><span class="ptag on">Объединение</span><span class="ptag">Программа</span></div>
+      </div>
+
+      <ul class="pros">
+        <li>Наиболее «лабораторный» и научный характер.</li>
+        <li>Хорошо масштабируется: узлы остаются точками.</li>
+        <li>В 24 px требует упрощения до 6 узлов — учтено.</li>
+      </ul>
+    </article>
+
+  </div>
+
+  <div class="note">
+    <h3>Что получилось и как выбирать</h3>
+    <p>Снежинка хорошо ложится в айдентику ТЛ: 6 лучей = 6 инженерных лабораторий (проектная — сквозная), а кристаллическая симметрия читается как точность и технологии. Но «сырая» снежинка в шапке не работает — нужна обработка.</p>
+    <ul>
+      <li><b>Обработка 01 «Кристалл»</b> — рекомендую: сохраняет снежинку, читается в 24 px, совместима с текущим шестиугольником.</li>
+      <li><b>Обработка 03 «Снежинка ТЛ»</b> — если приоритет на узнаваемость названия.</li>
+      <li><b>Обработка 04 «Молекула»</b> — если нужен более научный, «лабораторный» характер.</li>
+      <li>Все знаки — инлайн-SVG, готовы к вставке в шапку после выбора.</li>
+    </ul>
+  </div>
+
+  <footer>
+    Обработка снежинки как логотипа «Технологическая лаборатория» · 23.10.2026
+  </footer>
+</div>
+
+<script>
+  function toggleTheme(){
+    var d = document.documentElement;
+    d.dataset.theme = d.dataset.theme === 'light' ? '' : 'light';
+    try { localStorage.setItem('tl-snow-logo-theme', d.dataset.theme || 'dark'); } catch(e){}
+  }
+  (function(){
+    try { if (localStorage.getItem('tl-snow-logo-theme') === 'light') document.documentElement.dataset.theme = 'light'; } catch(e){}
+  })();
+</script>
+</body>
+</html>

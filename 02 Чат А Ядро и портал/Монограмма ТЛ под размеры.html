@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Монограмма ТЛ под размеры</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  :root {
+    --bg: #0D0F14; --panel: #151922; --panel2: #1C2130; --line: #2A3141;
+    --ink: #E8EDF7; --muted: #8C97AB; --blue: #2D7AFF; --green: #00D68F; --amber: #FFAA00;
+  }
+  body { background: var(--bg); color: var(--ink); font: 16px/1.62 "Segoe UI", system-ui, -apple-system, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+  header.top {
+    padding: 52px 0 36px; border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(880px 320px at 12% 0%, rgba(45,122,255,.20), transparent 70%),
+      radial-gradient(680px 260px at 88% 8%, rgba(255,170,0,.10), transparent 70%),
+      var(--bg);
+  }
+  .eyebrow { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #6E8BB8; margin-bottom: 16px; }
+  h1 { margin: 0 0 14px; font-size: clamp(26px, 3.6vw, 40px); line-height: 1.16; letter-spacing: -0.01em; }
+  .lead { margin: 0; max-width: 74ch; color: #A9B4C7; font-size: 16.5px; }
+
+  main { padding: 40px 0 76px; }
+  section { margin-bottom: 56px; }
+  h2 { margin: 0 0 8px; font-size: clamp(20px, 2.3vw, 26px); letter-spacing: -0.01em; }
+  .sub { margin: 0 0 22px; color: var(--muted); font-size: 14.5px; max-width: 84ch; }
+
+  .diag { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 14px; }
+  .diag .card { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); padding: 16px 18px; }
+  .diag .k { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6E8BB8; margin-bottom: 6px; }
+  .diag .v { font-size: 14.4px; color: #D6DEEB; }
+  .diag .v b { color: var(--amber); }
+
+  .note { border: 1px solid #4A3A18; background: #1A1608; border-radius: 14px; padding: 16px 18px; color: #CBBFA2; font-size: 14.5px; }
+  .note b { color: var(--amber); }
+  .note.good { border-color: #17593F; background: #0C2A20; color: #A9C9BC; }
+  .note.good b { color: var(--green); }
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+  table.matrix { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 760px; }
+  table.matrix th, table.matrix td { border-bottom: 1px solid #232A38; border-right: 1px solid #232A38; padding: 10px 12px; vertical-align: middle; }
+  table.matrix th:last-child, table.matrix td:last-child { border-right: 0; }
+  table.matrix tbody tr:last-child td { border-bottom: 0; }
+  table.matrix th { background: #1A1F2B; font-size: 12.5px; font-weight: 600; color: #B9C4D6; white-space: nowrap; text-align: left; }
+  table.matrix th small { display: block; font-weight: 400; color: #7E8A9F; font-size: 11px; }
+  table.matrix td { text-align: center; }
+  table.matrix td.sz { text-align: left; font-variant-numeric: tabular-nums; color: #B9C4D6; font-size: 13px; white-space: nowrap; }
+
+  .cell { position: relative; display: inline-flex; align-items: center; justify-content: center; padding: 8px; border-radius: 10px; }
+  .cell.bad { background: rgba(255,90,90,.09); box-shadow: inset 0 0 0 1px rgba(255,90,90,.28); }
+  .cell.warn { background: rgba(255,170,0,.08); box-shadow: inset 0 0 0 1px rgba(255,170,0,.28); }
+  .cell.ok { background: rgba(0,214,143,.08); box-shadow: inset 0 0 0 1px rgba(0,214,143,.28); }
+  .cell .cap { position: absolute; right: 3px; bottom: 1px; font-size: 9.5px; color: #7E8A9F; font-variant-numeric: tabular-nums; }
+  .cell.ok .cap { color: #58B995; }
+  .cell.warn .cap { color: #B99A4E; }
+  .cell.bad .cap { color: #B97070; }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; font-size: 13px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  .dot.bad { background: rgba(255,90,90,.35); }
+  .dot.warn { background: rgba(255,170,0,.4); }
+  .dot.ok { background: rgba(0,214,143,.4); }
+
+  .situations { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .sit { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); padding: 16px 18px; display: flex; gap: 14px; align-items: center; }
+  .sit .pic { width: 52px; height: 52px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; }
+  .sit .txt { font-size: 13.8px; color: #B9C4D6; }
+  .sit .txt b { display: block; color: var(--ink); font-size: 14.4px; margin-bottom: 2px; }
+  .sit .txt em { font-style: normal; color: var(--blue); }
+
+  .simp { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+  .simp .box { border: 1px solid var(--line); background: #0A0C11; border-radius: 14px; padding: 16px; text-align: center; }
+  .simp .box .cap { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+
+  .files { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+  .file { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; background: var(--panel); font-size: 13.5px; }
+  .file .fn { color: var(--ink); font-weight: 600; margin-bottom: 3px; }
+  .file .fd { color: var(--muted); font-size: 12.5px; }
+
+  footer { border-top: 1px solid var(--line); padding: 22px 0 40px; color: #6E7A90; font-size: 13px; }
+
+  @media (max-width: 560px) {
+    .wrap { padding: 0 16px; }
+    header.top { padding: 38px 0 28px; }
+    main { padding: 28px 0 52px; }
+    section { margin-bottom: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="eyebrow">Технологическая лаборатория · монограмма</div>
+    <h1>Монограмма ТЛ: варианты под размеры</h1>
+    <p class="lead">Буквы не читаются не из-за цвета, а из-за физики: высота заглавной измеряется единицами пикселей. Ниже — шесть вариантов монограммы, проверенные в реальных размерах, с порогом, после которого буквы начинают работать.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <h2>Диагноз в цифрах</h2>
+    <p class="sub">Гексагон занимает 49 % высоты знака. Текущая монограмма — 62 % его радиуса, то есть высота заглавной в пикселях получается такой:</p>
+    <div class="diag">
+      <div class="card"><div class="k">48 px знак</div><div class="v">Высота буквы <b>5,2 px</b> — ниже порога различимости</div></div>
+      <div class="card"><div class="k">64 px знак</div><div class="v">Высота буквы <b>7,0 px</b> — на границе</div></div>
+      <div class="card"><div class="k">96 px знак</div><div class="v">Высота буквы <b>10,5 px</b> — читается</div></div>
+      <div class="card"><div class="k">Порог</div><div class="v">Две буквы различимы от <b>8 px</b> высоты заглавной, одна буква — от 5 px</div></div>
+    </div>
+    <div class="note" style="margin-top:16px">
+      <b>Вывод.</b> При 26–48 px двухбуквенная монограмма не работает ни в каком начертании: чтобы уместить «ТЛ», буквы приходится делать мелкими. Значит нужны разные буквы для разных размеров, а не одна универсальная.
+    </div>
+  </section>
+
+  <section>
+    <h2>Шесть вариантов в реальных размерах</h2>
+    <p class="sub">Каждая клетка — настоящий рендер, размер указан слева. Цифра в углу — высота заглавной в пикселях. Рамка показывает запас: красная — не читается, жёлтая — на грани, зелёная — работает.</p>
+    <div class="tablewrap">
+      <table class="matrix" id="matrix">
+        <thead>
+          <tr id="thead"></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span><i class="dot bad"></i>высота меньше 5,5 px — буква не различается</span>
+      <span><i class="dot warn"></i>5,5–8 px — угадывается, но не читается</span>
+      <span><i class="dot ok"></i>от 8 px — читается уверенно</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Что под какую ситуацию</h2>
+    <p class="sub">Правило одной строкой: чем меньше знак, тем проще монограмма. Название рядом всё равно написано текстом, поэтому знак не обязан нести буквы в каждом размере.</p>
+    <div class="situations" id="situations"></div>
+  </section>
+
+  <section>
+    <h2>Упрощение контура для средних размеров</h2>
+    <p class="sub">На 32–48 px контур третьего порядка даёт визуальный шум: 192 сегмента сливаются в серое кольцо, и монограмма теряется на его фоне. Второй порядок убирает шум и оставляет форму читаемой.</p>
+    <div class="simp" id="simp"></div>
+    <div class="note good" style="margin-top:16px">
+      <b>Правило.</b> До 48 px — контур второго порядка, с 56 px — третьего. Это касается только малых носителей; основной знак остаётся третьего порядка.
+    </div>
+  </section>
+
+  <section>
+    <h2>Что меняется в файлах</h2>
+    <p class="sub">После выбора варианта обновляются знак, брендбук и таблица размеров.</p>
+    <div class="files" id="files"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">Монограмма ТЛ · шесть вариантов · порог читаемости 8 px по высоте заглавной</div>
+</footer>
+
+<script>
+(function () {
+  var R60 = Math.cos(Math.PI / 3), S60 = Math.sin(Math.PI / 3);
+
+  function baseTri(r) {
+    var p = [];
+    for (var k = 0; k < 3; k++) {
+      var a = Math.PI / 2 + k * 2 * Math.PI / 3;
+      p.push([r * Math.cos(a), r * Math.sin(a)]);
+    }
+    return p;
+  }
+
+  function step(pts) {
+    var out = [];
+    for (var i = 0; i < pts.length; i++) {
+      var a = pts[i], b = pts[(i + 1) % pts.length];
+      var dx = (b[0] - a[0]) / 3, dy = (b[1] - a[1]) / 3;
+      var p1 = [a[0] + dx, a[1] + dy], p2 = [a[0] + 2 * dx, a[1] + 2 * dy];
+      out.push(a, p1, [p1[0] + R60 * dx + S60 * dy, p1[1] - S60 * dx + R60 * dy], p2);
+    }
+    return out;
+  }
+
+  var CACHE = {};
+  function koch(n) {
+    if (CACHE[n]) return CACHE[n];
+    var p = baseTri(1);
+    for (var i = 0; i < n; i++) p = step(p);
+    CACHE[n] = p;
+    return p;
+  }
+
+  function geom(order, box, padRatio) {
+    var pts = koch(order), pad = box * padRatio;
+    var minx = 1e9, maxx = -1e9, miny = 1e9, maxy = -1e9;
+    for (var i = 0; i < pts.length; i++) {
+      var x = pts[i][0], y = pts[i][1];
+      if (x < minx) minx = x; if (x > maxx) maxx = x;
+      if (y < miny) miny = y; if (y > maxy) maxy = y;
+    }
+    var w = maxx - minx, h = maxy - miny;
+    var s = Math.min((box - 2 * pad) / w, (box - 2 * pad) / h);
+    var ox = (box - w * s) / 2 - minx * s;
+    var oy = (box - h * s) / 2 + maxy * s;
+    var d = '', minR = 1e9;
+    for (var j = 0; j < pts.length; j++) {
+      var ax = ox + pts[j][0] * s, ay = oy - pts[j][1] * s;
+      d += (j === 0 ? 'M' : 'L') + ax.toFixed(2) + ' ' + ay.toFixed(2);
+      var rr = Math.sqrt((ax - box / 2) * (ax - box / 2) + (ay - box / 2) * (ay - box / 2));
+      if (rr < minR) minR = rr;
+    }
+    return { d: d + 'Z', minR: minR };
+  }
+
+  function hexPoints(box, r, rot) {
+    var out = [];
+    for (var k = 0; k < 6; k++) {
+      var a = (rot || 0) + k * Math.PI / 3;
+      out.push((box / 2 + r * Math.cos(a)).toFixed(2) + ',' + (box / 2 + r * Math.sin(a)).toFixed(2));
+    }
+    return out.join(' ');
+  }
+
+  var V = [
+    { id: 'v1', title: 'Классика ТЛ', mono: 'tl', ff: 0.62, weight: 700, tr: 0 },
+    { id: 'v2', title: 'Крупная ТЛ', mono: 'tl', ff: 1.00, weight: 800, tr: -0.03 },
+    { id: 'v3', title: 'Плотная ТЛ', mono: 'tl', ff: 1.00, weight: 800, tr: -0.06 },
+    { id: 'v4', title: 'Стопка Т/Л', mono: 'stack', ff: 0.90, weight: 800, tr: 0 },
+    { id: 'v5', title: 'Одна Т', mono: 't', ff: 1.15, weight: 800, tr: 0 },
+    { id: 'v6', title: 'Без букв', mono: 'none', ff: 0, weight: 800, tr: 0 }
+  ];
+
+  var COLORS = { stroke: '#2D7AFF', hex: '#0D0F14', text: '#E8EDF7' };
+
+  function buildSvg(v, box, order) {
+    order = order || 3;
+    var g = geom(order, box, 0.07);
+    var mr = g.minR * 0.985;
+    var sw = box * 0.015, hsw = box * 0.013;
+
+    var s = '<svg viewBox="0 0 ' + box + ' ' + box + '" width="' + box + '" height="' + box + '" role="img" aria-label="Знак с монограммой ' + v.title + '">';
+    s += '<path d="' + g.d + '" fill="none" stroke="' + COLORS.stroke + '" stroke-width="' + sw.toFixed(2) + '" stroke-linejoin="round" stroke-linecap="round"/>';
+    s += '<polygon points="' + hexPoints(box, mr, 0) + '" fill="' + COLORS.hex + '" stroke="' + COLORS.stroke + '" stroke-width="' + hsw.toFixed(2) + '" stroke-linejoin="round"/>';
+
+    var F = mr * v.ff;
+    var fontAttrs = 'font-family="Segoe UI, Arial, Helvetica, sans-serif" font-weight="' + v.weight + '" fill="' + COLORS.text + '"';
+
+    if (v.mono === 'tl') {
+      var ls = v.tr ? ' letter-spacing="' + (F * v.tr).toFixed(2) + '"' : '';
+      s += '<text x="' + (box / 2) + '" y="' + (box / 2 + F * 0.36).toFixed(2) + '" text-anchor="middle" font-size="' + F.toFixed(2) + '"' + ls + ' ' + fontAttrs + '>ТЛ</text>';
+    } else if (v.mono === 'stack') {
+      s += '<text x="' + (box / 2) + '" y="' + (box / 2 - F * 0.10).toFixed(2) + '" text-anchor="middle" font-size="' + F.toFixed(2) + '" ' + fontAttrs + '>Т</text>';
+      s += '<text x="' + (box / 2) + '" y="' + (box / 2 + F * 0.85).toFixed(2) + '" text-anchor="middle" font-size="' + F.toFixed(2) + '" ' + fontAttrs + '>Л</text>';
+    } else if (v.mono === 't') {
+      s += '<text x="' + (box / 2) + '" y="' + (box / 2 + F * 0.36).toFixed(2) + '" text-anchor="middle" font-size="' + F.toFixed(2) + '" ' + fontAttrs + '>Т</text>';
+    }
+
+    s += '</svg>';
+    return { svg: s, hexR: mr, fontPx: F };
+  }
+
+  var SIZES = [16, 24, 32, 48, 64, 96];
+
+  function grade(capPx) {
+    if (capPx < 5.5) return 'bad';
+    if (capPx < 8) return 'warn';
+    return 'ok';
+  }
+
+  var thead = document.getElementById('thead');
+  var h = '<th>Размер</th>';
+  for (var i = 0; i < V.length; i++) {
+    h += '<th>' + V[i].title + '<small>' + (V[i].mono === 'none' ? 'силуэт' : Math.round(V[i].ff * 100) + '% радиуса') + '</small></th>';
+  }
+  thead.innerHTML = h;
+
+  var tbody = document.getElementById('tbody');
+  var rows = '';
+  for (var s2 = 0; s2 < SIZES.length; s2++) {
+    var sz = SIZES[s2];
+    rows += '<tr><td class="sz">' + sz + ' px</td>';
+    for (var v2 = 0; v2 < V.length; v2++) {
+      var v = V[v2];
+      var built = buildSvg(v, sz, 3);
+      var capPx = v.mono === 'none' ? 0 : v.ff * built.hexR * 0.72;
+      var cls = v.mono === 'none' ? '' : grade(capPx);
+      rows += '<td><span class="cell ' + cls + '">' + built.svg +
+        (v.mono === 'none' ? '' : '<span class="cap">' + capPx.toFixed(1) + '</span>') + '</span></td>';
+    }
+    rows += '</tr>';
+  }
+  tbody.innerHTML = rows;
+
+  var SIT = [
+    { v: 'v6', size: 24, title: 'favicon, 16–24 px', text: 'Только силуэт: буквы физически не помещаются. <em>Без букв</em>.' },
+    { v: 'v6', size: 26, title: 'Шапка портала, 26 px', text: 'Название стоит рядом текстом — знаку буквы не нужны. <em>Без букв</em>.' },
+    { v: 'v5', size: 32, title: 'Чипы, иконки, 32 px', text: 'Одна крупная Т читается, две — нет. <em>Одна Т</em>.' },
+    { v: 'v5', size: 48, title: 'Аватарка, 48 px', text: 'Ещё работает одна буква; «ТЛ» превратится в полосу. <em>Одна Т</em>.' },
+    { v: 'v4', size: 40, title: 'Заголовок курса, 40 px', text: 'Буквы в столбик дают почти вдвое большую высоту, чем в строку. <em>Стопка Т/Л</em>.' },
+    { v: 'v2', size: 64, title: 'Шапка документа, 64 px', text: 'Порог пройден: «ТЛ» читается уверенно. <em>Крупная ТЛ</em>.' },
+    { v: 'v2', size: 96, title: 'Слайд, обложка, 96+ px', text: 'Полная монограмма, можно добавлять подпись. <em>Крупная ТЛ</em>.' }
+  ];
+
+  var sitHtml = '';
+  for (var q = 0; q < SIT.length; q++) {
+    var item = SIT[q];
+    var vv = null;
+    for (var w = 0; w < V.length; w++) if (V[w].id === item.v) vv = V[w];
+    var b = buildSvg(vv, item.size, 3);
+    sitHtml += '<div class="sit"><span class="pic">' + b.svg + '</span><div class="txt"><b>' + item.title + '</b>' + item.text + '</div></div>';
+  }
+  document.getElementById('situations').innerHTML = sitHtml;
+
+  var SIMP = [
+    { order: 2, v: V[1], size: 48, cap: 'Второй порядок + крупная ТЛ · 48 px' },
+    { order: 3, v: V[1], size: 48, cap: 'Третий порядок + крупная ТЛ · 48 px' },
+    { order: 2, v: V[4], size: 32, cap: 'Второй порядок + одна Т · 32 px' },
+    { order: 3, v: V[4], size: 32, cap: 'Третий порядок + одна Т · 32 px' }
+  ];
+
+  var simpHtml = '';
+  for (var e = 0; e < SIMP.length; e++) {
+    var it = SIMP[e];
+    simpHtml += '<div class="box">' + buildSvg(it.v, it.size, it.order).svg + '<div class="cap">' + it.cap + '</div></div>';
+  }
+  document.getElementById('simp').innerHTML = simpHtml;
+
+  var FILES = [
+    { fn: 'Знак ТЛ основной для тёмного фона.svg', fd: 'Монограмма 80 % радиуса, начертание 800' },
+    { fn: 'Знак ТЛ основной для светлого фона.svg', fd: 'Та же геометрия, тёмные буквы' },
+    { fn: 'Знак ТЛ с одной Т 32 48 px.svg', fd: 'Новый файл для средних размеров' },
+    { fn: 'Знак ТЛ малый 16 32 px.svg', fd: 'Без изменений: звезда без монограммы' },
+    { fn: 'Брендбук Технологической лаборатории.html', fd: 'Раздел размеров переписан под пороги' }
+  ];
+
+  var fHtml = '';
+  for (var t = 0; t < FILES.length; t++) {
+    fHtml += '<div class="file"><div class="fn">' + FILES[t].fn + '</div><div class="fd">' + FILES[t].fd + '</div></div>';
+  }
+  document.getElementById('files').innerHTML = fHtml;
+})();
+</script>
+
+</body>
+</html>

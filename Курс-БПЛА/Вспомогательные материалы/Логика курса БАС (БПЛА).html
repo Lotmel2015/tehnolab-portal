@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Логика курса · БАС (БПЛА)</title>
+<style>
+:root { --bg:#fff; --ink:#1B2A4A; --muted:#5A6B85; --accent:#1F6FE0; --accent-soft:#EAF2FD; --vr:#4D008C; --vr-soft:#F0EBF5; --def:#B45309; --def-soft:#FDF1E1; --pr:#167A4D; --pr-soft:#E7F4EE; --line:#D9E2EF; }
+* { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; } .wrap { max-width:1000px; margin:0 auto; padding:2rem 1.25rem 3rem; } header .kicker { color:var(--accent); font-weight:700; font-size:.85rem; text-transform:uppercase; letter-spacing:.04em; } header h1 { font-size:2rem; line-height:1.2; margin:.2rem 0 .3rem; } header .sub { font-size:1.02rem; color:var(--muted); margin:0 0 .6rem; } .tldr { background:var(--accent-soft); border-left:4px solid var(--accent); padding:.95rem 1.15rem; border-radius:0 8px 8px 0; margin:1.5rem 0; } .tldr b { color:var(--accent); } .muted { color:var(--muted); font-size:.88rem; } .note { background:var(--def-soft); border-left:4px solid var(--def); border-radius:0 8px 8px 0; padding:.75rem .95rem; font-size:.92rem; margin:.9rem 0; } .note b { color:var(--def); } .tip { background:var(--pr-soft); border-left:4px solid var(--pr); border-radius:0 8px 8px 0; padding:.75rem .95rem; font-size:.92rem; margin:.9rem 0; } .tip b { color:var(--pr); } .remember { background:var(--vr-soft); border-left:4px solid var(--vr); border-radius:0 8px 8px 0; padding:.75rem .95rem; margin:1rem 0; } .remember b { color:var(--vr); } h2 { font-size:1.35rem; border-bottom:1px solid var(--line); padding-bottom:.4rem; margin:2.4rem 0 .9rem; } h2 .n { color:var(--accent); margin-right:.45rem; } table { width:100%; border-collapse:collapse; margin:1rem 0; font-size:.9rem; background:#fff; } th, td { border:1px solid var(--line); padding:.5rem .65rem; text-align:left; vertical-align:top; } th { background:var(--accent-soft); color:var(--ink); } .modtag { display:inline-block; font-size:.72rem; font-weight:700; border-radius:999px; padding:.1rem .6rem; background:var(--accent-soft); color:var(--accent); white-space:nowrap; } .steps-band { display:flex; gap:.9rem; flex-wrap:wrap; margin:1.2rem 0; } .kpi { border:1px solid var(--line); border-radius:14px; padding:.8rem 1.1rem; text-align:center; min-width:120px; flex:1; background:#fbfcfe; } .kpi b { display:block; font-size:1.5rem; color:var(--accent); } .kpi span { font-size:.8rem; color:var(--muted); } .flow { display:flex; flex-wrap:wrap; align-items:center; gap:.4rem .6rem; margin:1rem 0; font-size:.9rem; } .flow .node { background:var(--accent-soft); border:1px solid var(--line); border-radius:10px; padding:.4rem .8rem; font-weight:600; } .flow .node b { color:var(--accent); } .flow .arrow { color:var(--muted); } .links { display:grid; gap:.5rem; margin:1rem 0; } .link-row { border:1px solid var(--line); border-radius:10px; padding:.55rem .75rem; font-size:.9rem; background:#fff; display:flex; justify-content:space-between; align-items:center; gap:.6rem; flex-wrap:wrap; } .link-row a { color:var(--accent); font-weight:600; text-decoration:none; word-break:break-all; } .link-row a:hover { text-decoration:underline; } footer { color:var(--muted); font-size:.8rem; border-top:1px solid var(--line); margin-top:2.8rem; padding-top:.8rem; } a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; } @media print { .flow, table { break-inside:avoid; } } @media (max-width:640px){ .wrap { padding-left:14px !important; padding-right:14px !important; } h1 { font-size:1.7rem !important; } h2 { font-size:1.35rem !important; } th,td { padding:8px 6px; font-size:13px; } .flow { flex-direction:column; align-items:flex-start; } .flow .arrow { transform:rotate(90deg); align-self:center; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+<header>
+<p class="kicker">Технологическая лаборатория · Беспилотные авиационные системы</p>
+<h1>Логика курса «Инициативная навигация (БПЛА)»</h1>
+<p class="sub">Общая карта: что проходим на каждом занятии, зачем это нужно и как устроен путь от теории к зачётному полёту. Для педагога и администратора — понять логику курса до его начала.</p>
+<div class="tldr"><b>Главное.</b> Курс длится 28 занятий (7 модулей по 4 занятия). Начинаем с законодательства и физики полёта, собираем и настраиваем квадрокоптер, тренируемся на авиасимуляторе, затем переходим к реальным полётам и аэросъёмке. Завершается итоговой аттестацией: зачётный маршрут с восьмёркой и посадкой на мишень + устный вопрос по законодательству.</div>
+<div class="steps-band">
+  <div class="kpi"><b>28</b><span>занятий</span></div>
+  <div class="kpi"><b>7</b><span>модулей</span></div>
+  <div class="kpi"><b>6</b><span>контрольных точек</span></div>
+  <div class="kpi"><b>1</b><span>итоговый продукт</span></div>
+</div>
+</header>
+
+<section id="logic">
+<h2><span class="n">01</span>Общая логика курса</h2>
+<div class="flow"><span class="node"><b>Модуль 1</b> · Теория и законодательство</span><span class="arrow">→</span> <span class="node"><b>Модуль 2</b> · Компоненты и сборка</span><span class="arrow">→</span> <span class="node"><b>Модуль 3</b> · Симулятор и первые полёты</span><span class="arrow">→</span> <span class="node"><b>Модуль 4</b> · Зачёт и аэросъёмка</span><span class="arrow">→</span> <span class="node"><b>Модуль 5</b> · Обработка медиа и профессии</span><span class="arrow">→</span> <span class="node"><b>Модуль 6</b> · Подготовка к аттестации</span><span class="arrow">→</span> <span class="node"><b>Модуль 7</b> · Итоговая аттестация и итоги</span></div>
+<p>Каждый модуль — законченный этап: теория → практика → контрольная точка. Итог курса — Навык управления квадрокоптером (зачётный маршрут), понимание сборки/настройки БПЛА и законодательства РФ; навыки аэросъёмки и обработки медиа.</p>
+<div class="remember"><b>Сквозная идея.</b> Курс строится по принципу «от простого к сложному»: сначала база (языки/инструменты), затем применение в реальном продукте. Контрольные точки позволяют педагогу видеть прогресс ученика на каждом этапе и вовремя помочь.</div>
+</section>
+
+<section id="modules">
+<h2><span class="n">02</span>Модули курса</h2>
+<div class="tbl-wrap" style="overflow-x:auto;">
+<table>
+<tr><th>Модуль</th><th>Занятия</th><th>Тема</th><th>Что изучаем</th></tr>
+<tr><td><span class="modtag">Модуль 1</span></td><td>1–4</td><td><b>Теория и законодательство</b></td><td>Классификация БПЛА, Воздушный кодекс РФ, Постановление № 658, запретные зоны, приложение «Небо»; физика полёта квадрокоптера, LiPo-аккумуляторы, ТБ.</td></tr>
+<tr><td><span class="modtag">Модуль 2</span></td><td>5–8</td><td><b>Компоненты и сборка</b></td><td>Рама, моторы, ESC, полётный контроллер; схема подключения, Betaflight/ArduPilot, центр масс; сборка квадрокоптера, калибровка датчиков.</td></tr>
+<tr><td><span class="modtag">Модуль 3</span></td><td>9–12</td><td><b>Симулятор и первые полёты</b></td><td>Пульт, режимы Angle/Stabilized/AltHold, ориентация; тренировки в авиасимуляторе (взлёт/посадка, квадрат, разворот 360°); полёты в помещении.</td></tr>
+<tr><td><span class="modtag">Модуль 4</span></td><td>13–16</td><td><b>Зачёт и аэросъёмка</b></td><td>Зачётный полёт в помещении; параметры камеры (ISO, выдержка, правило 180°), gimbal; полёты на улице, аэрофотосъёмка полигона.</td></tr>
+<tr><td><span class="modtag">Модуль 5</span></td><td>17–20</td><td><b>Обработка медиа и профессии</b></td><td>Обработка видео в DaVinci Resolve, фотопанорамы; области применения БПЛА; профессия UAS-оператора, российские компании (Геоскан, ZALA, Supercam).</td></tr>
+<tr><td><span class="modtag">Модуль 6</span></td><td>21–24</td><td><b>Подготовка к аттестации</b></td><td>Ролевая игра «Оператор дрона», рефлексия; тренировочные зачётные маршруты, точность посадки, устный вопрос по законодательству.</td></tr>
+<tr><td><span class="modtag">Модуль 7</span></td><td>25–28</td><td><b>Итоговая аттестация и итоги</b></td><td>Зачётный маршрут — взлёт, восьмёрка, посадка на мишень; устный вопрос; итоговое занятие и резерв.</td></tr>
+</table>
+</div>
+</section>
+
+<section id="lessons">
+<h2><span class="n">03</span>Занятия пошагово</h2>
+<div class="tbl-wrap" style="overflow-x:auto;">
+<table>
+<tr><th>№</th><th>Занятие</th><th>Зачем / что получаем</th></tr>
+<tr><td>1</td><td>Классификация БПЛА. Законодательство РФ</td><td>Воздушный кодекс, Постановление № 658; классификация по массе и назначению</td></tr>
+<tr><td>2</td><td>Запретные зоны, приложение «Небо». Физика полёта</td><td>Запретные зоны, физика полёта квадрокоптера, LiPo-аккумуляторы, техника безопасности</td></tr>
+<tr><td>3</td><td>Тест по законодательству. Компоненты квадрокоптера</td><td>Проверяем теорию; рама, моторы, ESC, полётный контроллер</td></tr>
+<tr><td>4</td><td>Схема подключения. Betaflight / ArduPilot</td><td>Схема соединений, ПО для настройки; центр масс и балансировка</td></tr>
+<tr><td>5</td><td>Сборка учебного квадрокоптера</td><td>Собираем дрон по схеме под руководством педагога; балансируем пропеллеры</td></tr>
+<tr><td>6</td><td>Первичная калибровка в Betaflight</td><td>Калибровка датчиков, проверка вращения моторов, тест тяги (10%)</td></tr>
+<tr><td>7</td><td>Пульт управления: режимы и ошибки</td><td>Стики, Angle/Stabilized/AltHold; ориентация в пространстве, ошибки новичков</td></tr>
+<tr><td>8</td><td>Авиасимулятор (1): взлёт-посадка, висение</td><td>Первые «полёты» в симуляторе Liftoff/VelociDrone</td></tr>
+<tr><td>9</td><td>Авиасимулятор (2): движение по квадрату</td><td>Вперёд/назад/влево/вправо по квадрату 2×2 м</td></tr>
+<tr><td>10</td><td>Авиасимулятор (3): разворот 360°</td><td>Развороты вокруг оси, разбор типичных ошибок</td></tr>
+<tr><td>11</td><td>Полёты в помещении (1)</td><td>Взлёт-посадка × 10, висение 30 секунд</td></tr>
+<tr><td>12</td><td>Полёты в помещении (2)</td><td>Движение по квадрату 2×2 м</td></tr>
+<tr><td>13</td><td>Зачётный полёт в помещении</td><td>Облёт конуса, посадка на точку (мишень 50×50 см)</td></tr>
+<tr><td>14</td><td>Параметры камеры и планирование маршрута</td><td>ISO, выдержка, правило 180°, gimbal, форматы видео</td></tr>
+<tr><td>15</td><td>Полёты на улице</td><td>Первые внешние полёты под наблюдением педагога</td></tr>
+<tr><td>16</td><td>Аэрофотосъёмка учебного полигона</td><td>Систематический проход, контроль перекрытия кадров</td></tr>
+<tr><td>17</td><td>Обработка видео в DaVinci Resolve</td><td>Цветокоррекция, стабилизация</td></tr>
+<tr><td>18</td><td>Фотопанорама из 10+ снимков</td><td>Microsoft Image Composite Editor</td></tr>
+<tr><td>19</td><td>Области применения БПЛА</td><td>Картография, сельское хозяйство, промышленная инспекция, доставка</td></tr>
+<tr><td>20</td><td>Профессии и компании</td><td>UAS-оператор (сертификация), инженер БПЛА; Геоскан, ZALA, Supercam</td></tr>
+<tr><td>21</td><td>Ролевая игра «Оператор дрона»</td><td>Работа в сценарии промышленного объекта; рефлексия</td></tr>
+<tr><td>22</td><td>Подготовка к аттестации (1)</td><td>Тренировочный зачётный маршрут: взлёт → маневр → посадка</td></tr>
+<tr><td>23</td><td>Подготовка к аттестации (2)</td><td>Точность посадки на мишень</td></tr>
+<tr><td>24</td><td>Устный вопрос по законодательству</td><td>Разбор типичных ошибок при зачётном полёте</td></tr>
+<tr><td>25</td><td>Итоговая аттестация (1)</td><td>Зачётный маршрут: взлёт → восьмёрка → посадка на мишень 50 см</td></tr>
+<tr><td>26</td><td>Итоговая аттестация (2)</td><td>Устный вопрос по законодательству, разбор результатов</td></tr>
+<tr><td>27</td><td>Итоговое занятие</td><td>Анализ достижений; перспективы: сертификация оператора, DroneRace</td></tr>
+<tr><td>28</td><td>Резервное занятие</td><td>Дополнительные полётные тренировки, индивидуальная отработка</td></tr>
+</table>
+</div>
+</section>
+
+<section id="checkpoints">
+<h2><span class="n">04</span>Контрольные точки</h2>
+<table>
+<tr><th>№</th><th>Что происходит</th><th>Что проверяем</th></tr>
+<tr><td>6</td><td>Первичная калибровка</td><td>Калибровка датчиков в Betaflight, проверка вращения моторов, тест тяги</td></tr>
+<tr><td>8</td><td>Авиасимулятор</td><td>Начало пилотирования в Liftoff/VelociDrone (взлёт-посадка, висение)</td></tr>
+<tr><td>13</td><td>Зачётный полёт</td><td>В помещении: облёт конуса, посадка на мишень 50×50 см</td></tr>
+<tr><td>16</td><td>Аэрофотосъёмка</td><td>Съёмка полигона с контролем перекрытия кадров</td></tr>
+<tr><td>21</td><td>Ролевая игра</td><td>Оператор дрона на промышленном объекте</td></tr>
+<tr><td>25</td><td>Итоговая аттестация</td><td>Зачётный маршрут (взлёт → восьмёрка → посадка на мишень) + вопросы по законодательству</td></tr>
+</table>
+<div class="tip"><b>Совет для педагога.</b> Контрольные точки — это моменты, когда удобно зафиксировать прогресс ученика и при необходимости скорректировать темп. Итоговая аттестация (28 (или близкое)) — главный результат курса.</div>
+</section>
+
+<section id="summary">
+<h2><span class="n">05</span>Что получает ученик в конце</h2>
+<div class="note"><b>Результат курса:</b> Навык управления квадрокоптером (зачётный маршрут), понимание сборки/настройки БПЛА и законодательства РФ; навыки аэросъёмки и обработки медиа.</div>
+<div class="links">
+  <div class="link-row"><span>Список занятий курса (главная страница, вход ученика/педагога)</span><a href="../index.html" target="_blank" rel="noopener">Открыть список занятий →</a></div>
+  <div class="link-row"><span>Паспорт проекта · универсальный шаблон (для проектной части)</span><a href="../../Курс-Проектный-навигатор/Паспорт проекта универсальный.html" target="_blank" rel="noopener">Паспорт проекта →</a></div>
+</div>
+</section>
+
+<footer>
+<p>«Технологическая лаборатория» · БАС (БПЛА) · 2026–2027 учебный год. Сформировано 28.10.2026. Документ для педагогов и администраторов: логика курса до его начала.</p>
+</footer>
+</main>
+</body>
+</html>

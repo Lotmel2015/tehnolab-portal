@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Программа олимпиадного модуля «ВсОШ по труду (технологии)» · 68 часов (вариант А)</title>
+<style>
+  :root{--ink:#1B2A4A;--muted:#5A6B85;--line:#D9E2EF;--accent:#1F6FE0;--accent-soft:#EAF2FD;--pr:#167A4D;--pr-soft:#E7F4EE;--def:#B45309;--def-soft:#FDF1E1;--bg:#fff;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .wrap{max-width:1000px;margin:0 auto;padding:2.4rem 1.25rem 3rem}
+  header .kicker{color:var(--accent);font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em}
+  header h1{font-size:1.85rem;line-height:1.22;margin:.25rem 0 .4rem}
+  header .sub{color:var(--muted);font-size:1rem;margin:0 0 .5rem}
+  .meta{color:var(--muted);font-size:.86rem}
+  .tldr{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:.95rem 1.15rem;margin:1.4rem 0}
+  .tldr b{color:var(--accent)}
+  section{margin:2.1rem 0}
+  h2{font-size:1.2rem;border-bottom:1px solid var(--line);padding-bottom:.4rem;margin:0 0 .85rem}
+  h3{font-size:1rem;margin:1.1rem 0 .4rem}
+  ul,ol{margin:.35rem 0 .6rem 1.2rem}
+  li{margin:.2rem 0}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:.8rem;margin:.8rem 0}
+  .card{border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;background:#fbfcfe}
+  .card b{display:block;margin-bottom:.25rem}
+  table{border-collapse:collapse;width:100%;font-size:.88rem;margin:.6rem 0}
+  th,td{border-bottom:1px solid var(--line);padding:.42rem .5rem;text-align:left;vertical-align:top}
+  th{color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.03em;background:#fafbfd}
+  tr.part td{background:var(--accent-soft);font-weight:700;color:var(--accent)}
+  .num{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--muted)}
+  .tag{display:inline-block;font-size:.68rem;font-weight:700;border-radius:999px;padding:.08rem .45rem;white-space:nowrap}
+  .t-theory{background:var(--accent-soft);color:var(--accent)}
+  .t-prac{background:var(--pr-soft);color:var(--pr)}
+  .t-proj{background:var(--def-soft);color:var(--def)}
+  .note{background:var(--def-soft);border-left:4px solid var(--def);border-radius:0 8px 8px 0;padding:.7rem .9rem;font-size:.92rem;margin:.9rem 0}
+  .note b{color:var(--def)}
+  .ok{color:var(--pr);font-weight:700}.part{color:var(--def);font-weight:700}.no{color:#B91C1C;font-weight:700}
+  footer{color:var(--muted);font-size:.8rem;border-top:1px solid var(--line);margin-top:2.4rem;padding-top:.85rem}
+  @media print{body{font-size:10.5pt}.wrap{max-width:none;padding:0}section{break-inside:avoid}table{font-size:9pt}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">Технологическая лаборатория · олимпиадная подготовка · вариант А</div>
+  <h1>Программа олимпиадного модуля<br>«ВсОШ по труду (технологии)»</h1>
+  <p class="sub">Профиль «Техника, технологии и техническое творчество» · 68 часов · 2 ч/нед · 34 занятия · <b>теория усилена до 26 ч</b></p>
+  <div class="meta">7–11 классы (приоритет 8–10) · группа 8–14 человек · сентябрь–май · основание: Порядок ВсОШ (приказ № 678), приказы № 528 от 05.08.2024 и № 121 от 18.02.2025, ФГОС и ФРП «Труд (технология)», МР ЦПМК</div>
+</header>
+
+<div class="tldr">
+  <b>Что изменено против версии 1.</b> Теория выросла с 14 до <b>26 ч</b> и разложена по реальным разделам олимпиадной теории (ЕСКД и расчёты по чертежу, машиноведение, материаловедение, электротехника, автоматика и IoT, технологии обработки). Практика — 34 ч, введение и диагностика — 4 ч, проект и тренировочный тур — 4 ч. Проект при этом ведётся параллельно весь год (консультации 1 раз в месяц), а не «за два занятия».
+</div>
+
+<section>
+  <h2>1. Пояснительная записка</h2>
+  <p>Теоретический тур ВсОШ по труду (технологии) состоит из общей части (5–8 вопросов, одинаковых для профилей, 8 баллов) и специальной (15–17 вопросов по профилю + творческое задание на 5 баллов). На региональном этапе — 120 минут и максимум 30 баллов, на заключительном — 180 минут и компьютерное тестирование на «ТехноТест» (VK). Веса ответов — 0,5/1/1,5/2 балла, частичного кредита нет: ответ либо совпадает с ключом, либо оценивается в 0.</p>
+  <p>Практика показывает: 14 часов теории закрывают лишь часть разделов и дают уровень муниципального этапа. Для уверенного регионального нужен полный обход разделов с расчётными сериями и разбором ключей — поэтому в варианте А теория занимает 26 ч, а в дополнение к модулю идёт курс «Теория и тренировочные туры» (34 ч, вариант Б).</p>
+
+  <h3>Цель</h3>
+  <p>Сформировать устойчивую базу по всем разделам олимпиадной теории и навыки выполнения практик ТТиТТ, достаточные для уверенного выступления на муниципальном и региональном этапах.</p>
+
+  <h3>Планируемые результаты</h3>
+  <div class="grid2">
+    <div class="card"><b>Теория</b>Читает чертёж и схемы, выполняет расчёты по чертежу; знает марки материалов и их свойства; рассчитывает простые электрические цепи; разбирается в механизмах и передачах; понимает автоматику, датчики и протоколы IoT; считает себестоимость изделия.</div>
+    <div class="card"><b>Практика</b>Строит 3D-модель и готовит её к печати; собирает и программирует устройство на Arduino; составляет и выполняет полётное задание; режет и гравирует на станке 4060; выполняет изделие из дерева по карте контроля.</div>
+    <div class="card"><b>Метапредметные</b>Работает по критериям и в формате «на время»; ведёт тетрадь ошибок; планирует повторение; анализирует результат тренировочного тура.</div>
+  </div>
+</section>
+
+<section>
+  <h2>2. Учебно-тематический план (68 часов)</h2>
+  <table>
+    <thead><tr><th>№</th><th>Тема занятия</th><th>Ч</th><th>Тип</th><th>Результат / контроль</th></tr></thead>
+    <tbody>
+      <tr class="part"><td colspan="5">Раздел 1. Введение и диагностика — 4 ч</td></tr>
+      <tr><td class="num">1</td><td>ВсОШ по труду (технологии): этапы, два профиля, три тура, критерии, апелляция. Входная диагностика (40 заданий)</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Карта пробелов</td></tr>
+      <tr><td class="num">2</td><td>Разбор заданий прошлых лет (общая и специальная части). Индивидуальный маршрут</td><td class="num">2</td><td><span class="tag t-theory">теория</span> <span class="tag t-prac">практика</span></td><td>Инд. план</td></tr>
+
+      <tr class="part"><td colspan="5">Раздел 2. Теоретическая база — 26 ч (ядро программы)</td></tr>
+      <tr><td class="num">3</td><td>ЕСКД: линии, форматы, масштабы, шрифты; виды, расположение проекций</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Чертёж по ГОСТ</td></tr>
+      <tr><td class="num">4</td><td>Разрезы и сечения; нанесение размеров; обозначения и упрощения</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Чертёж с разрезом</td></tr>
+      <tr><td class="num">5</td><td>Допуски, посадки, шероховатость, отклонения формы; резьбы и крепёж</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Задачи по обозначениям</td></tr>
+      <tr><td class="num">6</td><td>Сборочный чертёж и спецификация; чтение кинематических и электрических схем</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Чтение сборочного чертежа</td></tr>
+      <tr><td class="num">7</td><td>Расчёты по чертежу: площади, объёмы, массы, усадка, масштабные пересчёты</td><td class="num">2</td><td><span class="tag t-theory">теория</span> <span class="tag t-prac">практика</span></td><td>Серия расчётных задач</td></tr>
+      <tr><td class="num">8</td><td>Машиноведение: механизмы и передачи; передаточное число; расчёт оборотов</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Расчёт передач</td></tr>
+      <tr><td class="num">9</td><td>Машиноведение: детали машин, подшипники, муфты; устройство станков; режимы резания</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Тест + задачи</td></tr>
+      <tr><td class="num">10</td><td>Материаловедение: древесина — породы, свойства, сушка, пороки</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Тест по свойствам</td></tr>
+      <tr><td class="num">11</td><td>Материаловедение: металлы и сплавы, марки сталей, термообработка, испытания</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Выбор материала под задачу</td></tr>
+      <tr><td class="num">12</td><td>Материаловедение: полимеры (PLA, PETG, PCTG, PC), композиты, клеи и покрытия</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Тест по полимерам</td></tr>
+      <tr><td class="num">13</td><td>Электротехника: закон Ома, соединения, мощность; ЭДС, внутреннее сопротивление, ток короткого замыкания</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Расчётные задачи</td></tr>
+      <tr><td class="num">14</td><td>Электроника: элементная база, измерения, датчики; альтернативная энергетика</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Схема + расчёт</td></tr>
+      <tr><td class="num">15</td><td>Автоматика, робототехника, IoT: приводы, обратная связь, протоколы (Zigbee, Wi-Fi), лидар, умный дом</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Кейс по выбору протокола</td></tr>
+
+      <tr class="part"><td colspan="5">Раздел 3. 3D-моделирование и печать — 10 ч</td></tr>
+      <tr><td class="num">16</td><td>Технический рисунок и эскиз: проекции, пропорции, размеры</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Эскиз изделия</td></tr>
+      <tr><td class="num">17</td><td>КОМПАС-3D: деталь, операция, сборка, ассоциативный чертёж</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Модель + чертёж</td></tr>
+      <tr><td class="num">18</td><td>Моделирование по образцу: задание муниципального этапа</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Модель по образцу</td></tr>
+      <tr><td class="num">19</td><td>Подготовка к печати: Cura, ориентация, поддержки, дефекты печати и контроль адгезии</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Файл печати + разбор дефектов</td></tr>
+      <tr><td class="num">20</td><td>Тренировочная практика «3D-моделирование и печать» по критериям, на время</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Протокол оценки</td></tr>
+
+      <tr class="part"><td colspan="5">Раздел 4. Автоматизированные технические системы (Arduino) — 8 ч</td></tr>
+      <tr><td class="num">21</td><td>Arduino IDE: структура скетча, digitalWrite/digitalRead, кнопки и светодиоды</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Работающая схема</td></tr>
+      <tr><td class="num">22</td><td>analogRead/analogWrite, потенциометр, ШИМ, делитель напряжения</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Регулятор</td></tr>
+      <tr><td class="num">23</td><td>Сервопривод, датчики, сборка устройства по техническому заданию</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Устройство по ТЗ</td></tr>
+      <tr><td class="num">24</td><td>Тренировочная практика АТС по карте пооперационного контроля</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Протокол оценки</td></tr>
+
+      <tr class="part"><td colspan="5">Раздел 5. Программирование полётного задания БПЛА — 6 ч</td></tr>
+      <tr><td class="num">25</td><td>Основы БАС: типы, полётный контроллер, регуляторика, безопасность полётов</td><td class="num">2</td><td><span class="tag t-theory">теория</span></td><td>Зачёт по ТБ</td></tr>
+      <tr><td class="num">26</td><td>Симулятор (Liftoff / VelociDrone): ручной пилотаж, координация</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Норматив</td></tr>
+      <tr><td class="num">27</td><td>Блочное программирование задания и выполнение в полётной зоне (2 попытки)</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Протокол попыток</td></tr>
+
+      <tr class="part"><td colspan="5">Раздел 6. Промышленный дизайн — 4 ч</td></tr>
+      <tr><td class="num">28</td><td>Дизайн-анализ, поиск формы, серия скетчей</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Скетчи</td></tr>
+      <tr><td class="num">29</td><td>Тренировочная практика «Промышленный дизайн» по критериям</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Протокол оценки</td></tr>
+
+      <tr class="part"><td colspan="5">Раздел 7. Материальные практики — 6 ч (ЛГМ и дерево — в ТЛ, металл — партнёр)</td></tr>
+      <tr><td class="num">30</td><td>ЛГМ на станке 4060: макет, режимы резки и гравировки, ТБ и вытяжка</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Изделие из фанеры</td></tr>
+      <tr><td class="num">31</td><td>Ручная деревообработка: разметка, пиление, строгание, шлифовка, соединения</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Изделие по карте</td></tr>
+      <tr><td class="num">32</td><td>Ручная металлообработка (база партнёра): разметка, резка, опиливание, сверление</td><td class="num">2</td><td><span class="tag t-prac">практика</span></td><td>Изделие из Ст3</td></tr>
+
+      <tr class="part"><td colspan="5">Раздел 8. Проект и тренировочный тур — 4 ч</td></tr>
+      <tr><td class="num">33</td><td>Проект: паспорт, пояснительная записка, репетиция защиты (6 минут + вопросы)</td><td class="num">2</td><td><span class="tag t-proj">проект</span></td><td>Защита по критериям</td></tr>
+      <tr><td class="num">34</td><td>Тренировочный тур: теория 120 минут + разбор по ключам; план на сезон</td><td class="num">2</td><td><span class="tag t-proj">контроль</span></td><td>Итоговый протокол</td></tr>
+    </tbody>
+  </table>
+  <p class="meta">Итого: 34 × 2 = 68 ч. Теория — 26 ч, практика — 34 ч, введение и диагностика — 4 ч, проект и контроль — 4 ч.</p>
+  <div class="note"><b>Проект ведётся параллельно.</b> Часы раздела 8 — только репетиция и защита; работа над изделием идёт через консультации (1 раз в месяц) и самостоятельные шаги по паспорту проекта в «Проектном навигаторе».</div>
+</section>
+
+<section>
+  <h2>3. Методика: как обеспечивается усвоение</h2>
+  <ol>
+    <li><b>Спиральное повторение.</b> Каждое занятие начинается с 10–15 минут разбора 5 задач из пройденного — темы возвращаются через 3, 10 и 30 дней.</li>
+    <li><b>Тетрадь ошибок.</b> Каждая ошибка → карточка: тема, причина, правильный ход. Повтор карточек перед каждым тренировочным туром.</li>
+    <li><b>Сверка с ключами.</b> После каждой серии — проверка по критериям (0,5/1/1,5/2) и разбор, «за что именно дают балл».</li>
+    <li><b>Перемешивание тем.</b> Итоговые наборы собираются из разных разделов, а не блоком «одна тема подряд».</li>
+    <li><b>Теория через практику.</b> Материаловедение — на образцах, электротехника — на макетной плате, черчение — на реальной детали.</li>
+    <li><b>Формат «на время».</b> Не менее двух раз в модуль — серия из 20–25 заданий за 120 минут без подсказок.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>4. Условия реализации</h2>
+  <table>
+    <thead><tr><th>Практика</th><th>Оборудование</th><th>Статус</th></tr></thead>
+    <tbody>
+      <tr><td>3D-моделирование и печать</td><td>ПК, КОМПАС-3D, Blender, Cura, FDM-принтер, PLA</td><td class="ok">Есть (LAB.03)</td></tr>
+      <tr><td>ЛГМ</td><td>Laser machine 4060 (поле 400×600 мм), вытяжка, фанера</td><td class="ok">Есть; сверить мощность и разрешение по паспорту</td></tr>
+      <tr><td>Ручная деревообработка</td><td>Верстак, ножовка, лобзик, стамески, шлифмашина, струбцины</td><td class="ok">Есть (мастерская)</td></tr>
+      <tr><td>АТС (Arduino)</td><td>Arduino UNO, макетная плата, компоненты, мультиметр, Arduino IDE</td><td class="ok">Есть (LAB.02), докупить расходники</td></tr>
+      <tr><td>БПЛА</td><td>Квадрокоптер, ПО, симулятор, полётная зона с сеткой</td><td class="ok">Есть (LAB.04), нужна зона 3×3×3 м</td></tr>
+      <tr><td>Металлообработка</td><td>Слесарный верстак, тиски, напильники, сверлильный станок</td><td class="no">Нет — партнёр</td></tr>
+      <tr><td>Механическая деревообработка</td><td>Токарный станок по дереву (СТД-120М), резцы</td><td class="no">Нет — партнёр</td></tr>
+    </tbody>
+  </table>
+  <h3>Кадры</h3>
+  <ul>
+    <li>тренер теории (ЕСКД, машиноведение, материаловедение, электротехника) — 26 ч + 4 ч туров;</li>
+    <li>тренер 3D/САПР — 10 ч; тренер АТС/электроники — 8 ч; тренер БПЛА — 6 ч; дизайн — 4 ч;</li>
+    <li>руководитель проектов — консультации 1 раз в месяц;</li>
+    <li>внешний консультант — член жюри регионального этапа (8 ч).</li>
+  </ul>
+</section>
+
+<section>
+  <h2>5. Оценка результатов и переход к варианту Б</h2>
+  <table>
+    <thead><tr><th>Тур</th><th>Формат</th><th>Максимум</th><th>Что оценивается</th></tr></thead>
+    <tbody>
+      <tr><td>Теоретический</td><td>20–25 заданий, 120 минут</td><td class="num">30</td><td>Точность, расчёты, знание материалов и схем</td></tr>
+      <tr><td>Практический</td><td>Работа по практике</td><td class="num">35</td><td>Организация места и ТБ, карта операций, качество, время</td></tr>
+      <tr><td>Защита проекта</td><td>6 минут + вопросы</td><td class="num">35</td><td>Новизна, композиция, качество, защита</td></tr>
+    </tbody>
+  </table>
+  <p><b>Порог перехода к варианту Б:</b> не менее 70% по каждому теоретическому блоку (ЕСКД, машиноведение, материаловедение, электротехника, автоматика) и участие минимум в одном тренировочном туре. Иначе — добор темы в индивидуальном режиме, а не переход «по календарю».</p>
+</section>
+
+<section>
+  <h2>6. Источники</h2>
+  <ol>
+    <li>Порядок проведения ВсОШ — приказ Минпросвещения России № 678 от 27.11.2020 (с изменениями).</li>
+    <li>Приказ № 528 от 05.08.2024; приказ № 121 от 18.02.2025 — два профиля по труду (технологии).</li>
+    <li>МР ЦПМК по труду (технологии): 2025/26 — протокол № 2 от 06.06.2025; 2026/27 — протокол № 9 от 10.06.2026.</li>
+    <li>Требования к региональному этапу 2025/26 (протокол № 3 от 13.10.2025) и к заключительному (протокол № 4 от 20.01.2026).</li>
+    <li>ФРП «Труд (технология)» 5–9 классы (ред. 2025), ФГОС ООО.</li>
+    <li>Архив заданий и ключей: <a href="https://vserosolimp.edsoo.ru/tehnologiya">vserosolimp.edsoo.ru/tehnologiya</a>, <a href="https://olimpiada.ru/activity/92/tasks">olimpiada.ru</a>.</li>
+    <li>Региональный оператор: <a href="https://cosmoschool.ru/vsosh">cosmoschool.ru/vsosh</a>.</li>
+  </ol>
+</section>
+
+<footer>
+  Вариант А (68 ч, усиленная теория) · Технологическая лаборатория · 28.10.2026<br>
+  Парный документ: «Программа модуля Теория и тренировочные туры 34 часа» (вариант Б). Профиль КДДиТ не охватывается.
+</footer>
+</div>
+</body>
+</html>
