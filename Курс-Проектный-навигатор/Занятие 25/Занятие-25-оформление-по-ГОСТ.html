@@ -117,6 +117,12 @@ body { overflow-x: hidden; }
     if(msg){ msg.textContent="Занятие отмечено пройденным: "+user.name+"."; msg.style.color="var(--pr)"; msg.style.fontWeight=""; }
     refreshState();
   };
+  /* API-совместимые обёртки: кнопки из старой вёрстки вызывают эти имена.
+     pdSaveReflection сохраняет черновик рефлексии, pdDoneLesson завершает занятие
+     через рабочий completeLesson (ставит pd_refl_* и прогресс курса). */
+  window.pdEntrySave = function(){ try{ saveDraft(); var m=document.getElementById("reflSaveMsg")||document.getElementById("saveMsg"); if(m){ m.textContent="Запись сохранена."; m.style.color="var(--pr)"; m.style.fontWeight="600"; } }catch(e){} };
+  window.pdSaveReflection = function(){ try{ saveDraft(); var m=document.getElementById("reflSaveMsg"); if(m){ m.textContent="Рефлексия сохранена. Теперь нажми «Завершить занятие»."; m.style.color="var(--pr)"; m.style.fontWeight="600"; } }catch(e){ if(!user){ var m2=document.getElementById("reflSaveMsg"); if(m2){ m2.textContent="Сначала войди в профиль на «Списке занятий» курса."; m2.style.color="var(--def)"; } } } };
+  window.pdDoneLesson = function(){ window.completeLesson(); };
   if(nextLink){ nextLink.addEventListener("click", function(ev){ if(!lessonComplete()){ ev.preventDefault(); ev.stopPropagation(); var box=document.getElementById("saveMsg")||document.getElementById("reflSaveMsg"); if(box){ box.textContent="Это занятие ещё не пройдено. Заполни все поля рефлексии и нажми «Отметить занятие пройденным»."; box.style.color="var(--def)"; box.style.fontWeight="700"; } var rbl=document.getElementById("reflect"); if(rbl) rbl.scrollIntoView({behavior:"smooth", block:"center"}); } }); }
   showWho(); refreshState();
 })();
